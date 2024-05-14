@@ -4,7 +4,7 @@ import com.jn.langx.util.Memoable;
 import com.jn.langx.util.MemoableResetException;
 import com.jn.langx.util.io.bytes.Bytes;
 
-public class _SHA512tDigest extends _AbstractLongDigest {
+public final class _SHA512tDigest extends _AbstractLongDigest {
     private int digestLength;      // non-final due to old flow analyser.
 
     private long H1t, H2t, H3t, H4t, H5t, H6t, H7t, H8t;

@@ -45,10 +45,6 @@ public class Symmetrics extends Ciphers {
         private CipherAlgorithmMode ref;
         private boolean hasIV;
 
-        MODE(CipherAlgorithmMode ref) {
-            this(ref, true);
-        }
-
         MODE(CipherAlgorithmMode ref, boolean hasIV) {
             this.ref = ref;
             this.hasIV = hasIV;

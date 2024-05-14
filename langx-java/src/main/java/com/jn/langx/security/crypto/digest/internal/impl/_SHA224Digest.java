@@ -16,7 +16,7 @@ import com.jn.langx.util.io.bytes.Bytes;
  * SHA-512 1024   64    512
  * </pre>
  */
-public class _SHA224Digest extends GeneralDigest {
+public final class _SHA224Digest extends GeneralDigest {
     private static final int DIGEST_LENGTH = 28;
 
     private int H1, H2, H3, H4, H5, H6, H7, H8;

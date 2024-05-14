@@ -11,7 +11,7 @@ import com.jn.langx.util.Memoable;
  * <b>NOTE</b>: This algorithm is only included for backwards compatability
  * with legacy applications, it's not secure, don't use it for anything new!
  */
-public class _MD4Digest extends GeneralDigest {
+public final class _MD4Digest extends GeneralDigest {
     private static final int DIGEST_LENGTH = 16;
 
     private int H1, H2, H3, H4;         // IV's

@@ -5,7 +5,7 @@ package com.jn.langx.security.crypto.digest.internal.impl;
  * <p>
  * Following the naming conventions used in the C source code to enable easy review of the implementation.
  */
-public class _SHA3Digest extends _KeccakDigest
+public final class _SHA3Digest extends _KeccakDigest
 {
     private static int checkBitLength(int bitLength)
     {

@@ -8,7 +8,7 @@ import com.jn.langx.util.io.bytes.Bytes;
 /**
  * implementation of MD5 as outlined in "Handbook of Applied Cryptography", pages 346 - 347.
  */
-public class _MD5Digest extends GeneralDigest {
+public final class _MD5Digest extends GeneralDigest {
     private static final int DIGEST_LENGTH = 16;
 
     private int H1, H2, H3, H4;         // IV's

@@ -8,7 +8,7 @@ import com.jn.langx.util.Memoable;
  * implementation of MD2
  * as outlined in RFC1319 by B.Kaliski from RSA Laboratories April 1992
  */
-public class _MD2Digest implements Digest, Memoable {
+public final class _MD2Digest implements Digest, Memoable {
     private static final int DIGEST_LENGTH = 16;
 
     /* X buffer */
