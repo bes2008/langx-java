@@ -1,6 +1,7 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 import org.bouncycastle.crypto.generators.SCrypt;
 
@@ -37,10 +38,9 @@ public class ScryptPBKDF implements PBKDF {
         int maxParallel = Integer.MAX_VALUE / (128 * memoryCost * 8);
         int parallelization = keyGenParameters.getParallel();
         if (parallelization < 1 || parallelization > maxParallel) {
-            throw new IllegalArgumentException("Parallelisation parameter p must be >= 1 and <= " + maxParallel
-                    + " (based on block size r of " + memoryCost + ")");
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Parallelisation parameter must be >= 1 and <= {}  (based on block size memoryCost of {})", maxParallel, memoryCost));
         }
-        if (keyBytesLength < 1 || keyBytesLength > Integer.MAX_VALUE) {
+        if (keyBytesLength < 1) {
             throw new IllegalArgumentException("Key length must be >= 1 and <= " + Integer.MAX_VALUE);
         }
 
