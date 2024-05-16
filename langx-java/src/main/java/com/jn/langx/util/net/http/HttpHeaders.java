@@ -523,7 +523,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 
         String credentialsString = username + ":" + password;
         byte[] encodedBytes = Base64.encodeBase64(credentialsString.getBytes(charset));
-        return new String(encodedBytes, charset);
+        return Strings.newString(encodedBytes, charset);
     }
 
     /**

@@ -93,7 +93,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
         }else if(Strings.equals("argon2id",type)) {
             paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id);
         }else{
-            throw new IllegalArgumentException("Invalid algorithm type: " + parts[0]);
+            throw new IllegalArgumentException("Invalid algorithm type: " + type);
         }
         if (parts[currentPart].startsWith("v=")) {
             paramsBuilder.withVersion(Integer.parseInt(parts[currentPart].substring(2)));

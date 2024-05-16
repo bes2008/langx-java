@@ -190,7 +190,7 @@ public class CryptoJS {
                     null, null
             );
 
-            String result = new String(rawBytes, Charsets.UTF_8);
+            String result = Strings.newString(rawBytes, Charsets.UTF_8);
             return result;
         }
 
