@@ -585,7 +585,7 @@ public class Strings {
      * or <code>null</code> if the input byte array was <code>null</code>.
      * @throws NullPointerException Thrown if charset is {@code null}
      */
-    private static String newString(final byte[] bytes, final Charset charset) {
+    public static String newString(final byte[] bytes, final Charset charset) {
         return bytes == null ? null : new String(bytes, charset);
     }
 

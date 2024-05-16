@@ -519,7 +519,7 @@ public class Base64 extends BaseNCodec {
      * @since 3.4.1
      */
     public static String encodeBase64ToString(final byte[] binaryData) {
-        return Strings.newString(encodeBase64(binaryData, false), Charsets.UTF_8);
+        return Strings.newStringUtf8(encodeBase64(binaryData, false));
     }
 
     /**
