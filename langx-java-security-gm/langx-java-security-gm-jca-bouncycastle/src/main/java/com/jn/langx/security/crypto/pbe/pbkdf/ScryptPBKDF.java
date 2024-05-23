@@ -44,8 +44,8 @@ public class ScryptPBKDF implements PBKDF {
             throw new IllegalArgumentException("Key length must be >= 1 and <= " + Integer.MAX_VALUE);
         }
 
-        byte[] secretKey = SCrypt.generate(Strings.getBytesUtf8(new String(rawPassword)), salt, cpuCost, memoryCost, parallelization, keyBytesLength);
-        DerivedPBEKey pbeKey = new DerivedPBEKey(pbeAlgorithm, keySpec, secretKey);
+        byte[] generatedKey = SCrypt.generate(Strings.getBytesUtf8(new String(rawPassword)), salt, cpuCost, memoryCost, parallelization, keyBytesLength);
+        DerivedPBEKey pbeKey = new DerivedPBEKey(pbeAlgorithm, keySpec, generatedKey);
         return pbeKey;
     }
 }

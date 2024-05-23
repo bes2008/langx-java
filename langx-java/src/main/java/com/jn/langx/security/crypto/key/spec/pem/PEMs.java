@@ -5,6 +5,7 @@ import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
+import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.digest.MessageDigests;
@@ -18,7 +19,6 @@ import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
@@ -426,7 +426,7 @@ public class PEMs extends Securitys {
      */
     private static Cipher getCipherFromParameters(String dekHeaderValue, char[] password) throws
             GeneralSecurityException, IOException {
-        final String padding = "PKCS5Padding";
+        final CipherAlgorithmPadding padding = CipherAlgorithmPadding.PKCS5Padding;
         final SecretKey encryptionKey;
         final String[] valueTokens = dekHeaderValue.split(",");
         if (valueTokens.length != 2) {
@@ -445,7 +445,7 @@ public class PEMs extends Securitys {
             encryptionKey = new SecretKeySpec(key, JCAEStandardName.DES.getName());
         } else if ("DES-EDE3-CBC".equals(algorithm)) {
             byte[] key = generateOpenSslKey(password, iv, 24);
-            encryptionKey = new SecretKeySpec(key, "DESede");
+            encryptionKey = PKIs.createSecretKey(JCAEStandardName.DESede, key);
         } else if ("AES-128-CBC".equals(algorithm)) {
             byte[] key = generateOpenSslKey(password, iv, 16);
             encryptionKey = new SecretKeySpec(key, "AES");
@@ -480,7 +480,7 @@ public class PEMs extends Securitys {
         while (copied < keyLength) {
             remaining = keyLength - copied;
             md5.update(passwordBytes, 0, passwordBytes.length);
-            md5.update(salt, 0, 8);// AES IV (salt) is longer but we only need 8 bytes
+            md5.update(salt, 0, 8);// AES IV (salt) is longer, but we only need 8 bytes
             byte[] tempDigest = md5.digest();
             int bytesToCopy = Math.min(remaining, 16); // MD5 digests are 16 bytes
             System.arraycopy(tempDigest, 0, key, copied, bytesToCopy);

@@ -7,6 +7,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmSuite;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.key.store.KeyStores;
@@ -223,6 +224,10 @@ public class PKIs extends KeyStores {
 
     public static KeyGenerator getSecretKeyGenerator(@NotEmpty String algorithm, @Nullable String provider) {
         return getKeyGenerator(algorithm, provider);
+    }
+
+    public static SecretKey createSecretKey(@NotEmpty JCAEStandardName algorithm, byte[] bytes) {
+        return createSecretKey(algorithm.getName(), bytes);
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, byte[] bytes) {
