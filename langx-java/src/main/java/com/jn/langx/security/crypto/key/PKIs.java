@@ -196,6 +196,7 @@ public class PKIs extends KeyStores {
 
     public static SecretKey createSecretKey(String algorithm) {
         KeyGenerator keyGenerator = getKeyGenerator(algorithm, null);
+        keyGenerator.init(getSecureRandom());
         return keyGenerator.generateKey();
     }
 
