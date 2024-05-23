@@ -33,6 +33,7 @@
         <jmh.version>1.23</jmh.version>
         <junit.version>4.13.1</junit.version>
 
+        <junsafe.version>1.0.0</junsafe.version>
 
         <!-- sonarqube -->
         <sonar.host.url>http://192.168.137.133:9000</sonar.host.url>
@@ -145,6 +146,13 @@
                 <groupId>io.github.bes2008.solution.langx.security</groupId>
                 <artifactId>langx-java-security-gm-jca-jsse</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>io.github.bes2008.solution.junsafe</groupId>
+                <artifactId>junsafe</artifactId>
+                <version>${junsafe.version}</version>
             </dependency>
 
             <dependency>
@@ -293,7 +301,13 @@
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
+                <!--
                 <version>3.2</version>
+                <version>3.11.0.3922</version>
+                -->
+                <version>3.3.0.603</version>
+
+
             </plugin>
 
         </plugins>

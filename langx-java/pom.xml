@@ -19,7 +19,6 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
     <properties>
-        <maven.compiler.target>1.6</maven.compiler.target>
         <Automatic-Module-Name>com.jn.langx.base</Automatic-Module-Name>
     </properties>
     <dependencies>
@@ -30,6 +29,12 @@
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.github.bes2008.solution.junsafe</groupId>
+            <artifactId>junsafe</artifactId>
         </dependency>
 
     </dependencies>

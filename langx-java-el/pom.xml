@@ -13,7 +13,6 @@
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
     <properties>
-        <maven.compiler.target>1.6</maven.compiler.target>
         <Automatic-Module-Name>com.jn.langx.el</Automatic-Module-Name>
     </properties>
     <dependencies>

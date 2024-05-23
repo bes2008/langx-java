@@ -6,14 +6,14 @@ package com.jn.langx.util.concurrent.clhm;
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
+import com.jn.junsafe.unsafe.UnsafeProxy;
+import com.jn.junsafe.unsafe.Unsafes;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.unsafe.UnsafeProxy;
-import com.jn.langx.util.unsafe.Unsafes;
 
 import java.io.ObjectStreamField;
 import java.io.Serializable;

@@ -1,10 +1,10 @@
 package com.jn.langx.util.concurrent;
 
+import com.jn.junsafe.unsafe.Unsafes;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.unsafe.Unsafes;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

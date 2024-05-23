@@ -12,7 +12,6 @@
     <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
 
     <properties>
-        <maven.compiler.target>1.6</maven.compiler.target>
         <Automatic-Module-Name>com.jn.langx.security.gm.jca.bouncycastle</Automatic-Module-Name>
     </properties>
 
