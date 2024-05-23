@@ -208,7 +208,7 @@ public class Base16 extends BaseNCodec {
         }
 
         if (decoded == -1) {
-            throw new IllegalArgumentException("Invalid octet in encoded value: " + (int)octet);
+            throw new IllegalArgumentException("Invalid octet in encoded value: " + decodeTable[octet]);
         }
 
         return decoded;

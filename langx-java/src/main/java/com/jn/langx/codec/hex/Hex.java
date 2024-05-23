@@ -223,7 +223,7 @@ public class Hex extends Hexs {
     private static int toDecimal(final char ch, final int index) throws CodecException {
         final int digit = Character.digit(ch, 16);
         if (digit == -1) {
-            throw new CodecException("Illegal hexadecimal character " + ch + " at index " + index);
+            throw new CodecException("Illegal hexadecimal character " + ch );
         }
         return digit;
     }
