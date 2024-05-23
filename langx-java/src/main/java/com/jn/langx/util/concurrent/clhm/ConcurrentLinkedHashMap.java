@@ -4,7 +4,6 @@ import com.jn.langx.annotation.GuardedBy;
 import com.jn.langx.annotation.Immutable;
 import com.jn.langx.annotation.ThreadSafe;
 import com.jn.langx.util.ClassLoaders;
-import com.jn.langx.util.unsafe.Unsafes;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;

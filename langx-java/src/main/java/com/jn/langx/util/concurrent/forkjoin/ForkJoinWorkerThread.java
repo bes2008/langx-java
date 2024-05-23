@@ -35,8 +35,9 @@ package com.jn.langx.util.concurrent.forkjoin;
  */
 
 
-import com.jn.langx.util.unsafe.UnsafeProxy;
-import com.jn.langx.util.unsafe.Unsafes;
+
+import com.jn.junsafe.unsafe.UnsafeProxy;
+import com.jn.junsafe.unsafe.Unsafes;
 
 import java.util.Collection;
 import java.util.concurrent.RejectedExecutionException;
