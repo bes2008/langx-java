@@ -530,6 +530,9 @@ public class Numbers {
                 case 'F':
                     try {
                         Float f = createFloat(numeric);
+                        if(f==null){
+                            return null;
+                        }
                         if (!(f.isInfinite() || (f == 0.0F && !allZeros))) {
                             number = f;
                         }
@@ -541,6 +544,9 @@ public class Numbers {
                 case 'D':
                     try {
                         Double d = createDouble(numeric);
+                        if(d==null){
+                            return null;
+                        }
                         if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
                             number = d;
                             break;

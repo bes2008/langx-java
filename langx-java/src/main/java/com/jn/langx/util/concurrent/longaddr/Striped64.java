@@ -104,8 +104,7 @@ abstract class Striped64 extends Number {
             try {
                 UNSAFE = Unsafes.getUnsafe();
                 Class<?> ak = Cell.class;
-                valueOffset = UNSAFE.objectFieldOffset
-                        (Reflects.getDeclaredField(ak,"value"));
+                valueOffset = UNSAFE.objectFieldOffset(Reflects.getDeclaredField(ak,"value"));
             } catch (Exception e) {
                 throw new Error(e);
             }
@@ -132,7 +131,7 @@ abstract class Striped64 extends Number {
     /**
      * Table of cells. When non-null, size is a power of 2.
      */
-    transient volatile Cell[] cells;
+    transient Cell[] cells;
 
     /**
      * Base value, used mainly when there is no contention, but also as
