@@ -1,7 +1,7 @@
-package com.jn.langx.text.xml.cutomizer.secure;
+package com.jn.langx.text.xml.cutomizer;
 
+import com.jn.langx.Customizer;
 import com.jn.langx.text.xml.Xmls;
-import com.jn.langx.text.xml.cutomizer.SchemaFactoryCustomizer;
 
 import javax.xml.XMLConstants;
 import javax.xml.validation.SchemaFactory;
@@ -9,8 +9,7 @@ import javax.xml.validation.SchemaFactory;
 /**
  * @since 5.2.9
  */
-public class SecureSchemaFactoryCustomizer implements SchemaFactoryCustomizer {
-    public static final SecureSchemaFactoryCustomizer DEFAULT = new SecureSchemaFactoryCustomizer();
+public class SecureSchemaFactoryCustomizer implements Customizer<SchemaFactory> {
 
     @Override
     public void customize(SchemaFactory factory) {

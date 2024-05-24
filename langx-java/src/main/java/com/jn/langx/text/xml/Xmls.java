@@ -1,10 +1,8 @@
 package com.jn.langx.text.xml;
 
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
-import com.jn.langx.text.xml.cutomizer.TransformerFactoryCustomizer;
-import com.jn.langx.text.xml.cutomizer.secure.SecureDocumentBuilderFactoryCustomizer;
-import com.jn.langx.text.xml.cutomizer.secure.SecureTransformerFactoryCustomizer;
+import com.jn.langx.text.xml.cutomizer.SecureDocumentBuilderFactoryCustomizer;
+import com.jn.langx.text.xml.cutomizer.SecureTransformerFactoryCustomizer;
 import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
 import com.jn.langx.text.xml.resolver.NullEntityResolver;
@@ -78,7 +76,7 @@ public class Xmls {
             boolean ignoreComments,
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware,
-            DocumentBuilderFactoryCustomizer customizer
+            SecureDocumentBuilderFactoryCustomizer customizer
     ) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
@@ -89,7 +87,7 @@ public class Xmls {
         }
 
         if (customizer == null) {
-            customizer = SecureDocumentBuilderFactoryCustomizer.DEFAULT;
+            customizer = new SecureDocumentBuilderFactoryCustomizer();
         }
         customizer.customize(factory);
 
@@ -135,10 +133,10 @@ public class Xmls {
     /**
      * @since 5.2.9
      */
-    public static Transformer newTransformer(TransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
+    public static Transformer newTransformer(SecureTransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
         TransformerFactory factory = TransformerFactory.newInstance();
         if (customizer == null) {
-            customizer = SecureTransformerFactoryCustomizer.DEFAULT;
+            customizer = new SecureTransformerFactoryCustomizer();
         }
         customizer.customize(factory);
         final Transformer trans = factory.newTransformer();

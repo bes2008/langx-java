@@ -1,15 +1,14 @@
-package com.jn.langx.text.xml.cutomizer.secure;
+package com.jn.langx.text.xml.cutomizer;
 
+import com.jn.langx.Customizer;
 import com.jn.langx.text.xml.Xmls;
-import com.jn.langx.text.xml.cutomizer.SaxParserFactoryCustomizer;
 
 import javax.xml.parsers.SAXParserFactory;
 
 /**
  * @since 5.2.9
  */
-public class SecureSaxParserFactoryCustomizer implements SaxParserFactoryCustomizer {
-    public static final SecureSaxParserFactoryCustomizer DEFAULT = new SecureSaxParserFactoryCustomizer();
+public class SecureSaxParserFactoryCustomizer implements Customizer<SAXParserFactory> {
 
     @Override
     public void customize(SAXParserFactory factory) {

@@ -1,16 +1,14 @@
-package com.jn.langx.text.xml.cutomizer.secure;
+package com.jn.langx.text.xml.cutomizer;
 
+import com.jn.langx.Customizer;
 import com.jn.langx.text.xml.Xmls;
-import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * @since 5.2.9
  */
-public class SecureDocumentBuilderFactoryCustomizer implements DocumentBuilderFactoryCustomizer {
-    public static final SecureDocumentBuilderFactoryCustomizer DEFAULT = new SecureDocumentBuilderFactoryCustomizer();
-
+public class SecureDocumentBuilderFactoryCustomizer implements Customizer<DocumentBuilderFactory> {
     @Override
     public void customize(DocumentBuilderFactory factory) {
 
