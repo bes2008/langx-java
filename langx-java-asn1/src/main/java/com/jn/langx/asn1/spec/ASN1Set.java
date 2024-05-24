@@ -17,8 +17,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * element types like other sequences and/or sets) in which the order of those
  * elements should not be considered significant.
  */
-public final class ASN1Set
-        extends ASN1Element {
+public final class ASN1Set extends ASN1Element {
     /**
      * The serial version UID for this serializable class.
      */
@@ -57,7 +56,7 @@ public final class ASN1Set
     // A volatile variable used to guard publishing the encodedValue array.  See
     // the note above to explain why this is needed.
     @Nullable
-    private volatile byte[] encodedValueGuard;
+    private byte[] encodedValueGuard;
 
 
     /**

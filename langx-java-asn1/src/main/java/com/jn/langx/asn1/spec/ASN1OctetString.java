@@ -8,6 +8,7 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.unicode.Utf8s;
 
+
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
@@ -54,7 +55,7 @@ public final class ASN1OctetString extends ASN1Element implements ByteString {
     // A volatile variable used to guard publishing the valueBytes array.  See the
     // note above to explain why this is needed.
     @Nullable
-    private volatile byte[] valueBytesGuard;
+    private byte[] valueBytesGuard;
 
     // The length of the value in the byte array, if applicable.
     private int length;

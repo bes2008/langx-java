@@ -63,7 +63,7 @@ public final class ASN1StreamReader implements Closeable {
     // The SASL client that will be used to unwrap any data read over this
     // stream reader.
     @Nullable
-    private volatile SaslClient saslClient;
+    private SaslClient saslClient;
 
 
     /**

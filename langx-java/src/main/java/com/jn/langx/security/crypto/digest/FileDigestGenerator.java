@@ -10,6 +10,7 @@ import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
 
 import java.io.*;
@@ -260,7 +261,7 @@ public class FileDigestGenerator {
             try {
                 currentMMapBuffer = input.map(FileChannel.MapMode.READ_ONLY, nextMapStartPosition, mmapsize);
             } catch (IOException e) {
-                e.printStackTrace();
+                Loggers.getLogger(FileDigestGenerator.class).error(e.getMessage(), e);
             }
             nextMapStartPosition = nextMapStartPosition + mmapsize;
             return mmapsize;
