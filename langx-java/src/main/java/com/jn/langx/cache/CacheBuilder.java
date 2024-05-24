@@ -30,7 +30,7 @@ public class CacheBuilder<K, V> {
     private long refreshAllInterval = TimeUnit.HOURS.toMillis(1);
 
     // unit: mills
-    private long evictExpiredInterval = 5 * 60 * 1000;
+    private long evictExpiredInterval = 5 * 60 * 1000L;
     private RemoveListener<K, V> removeListener;
     private int maxCapacity = Integer.MAX_VALUE;
 

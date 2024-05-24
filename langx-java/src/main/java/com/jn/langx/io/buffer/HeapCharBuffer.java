@@ -19,7 +19,7 @@ public class HeapCharBuffer extends CharBuffer<HeapCharBuffer> {
 
     public HeapCharBuffer(char[] buf, int off, int len) {
 
-        super(-1, off, off + len, buf.length, buf, 0);
+        super(-1, off, (off + len), buf.length, buf, 0);
     }
 
     public HeapCharBuffer(char[] buf,

@@ -269,7 +269,7 @@ public class FileDigestGenerator {
     }
 
     static class FileReaderFactory {
-        private static final long SIZE_10M = 10 * 1024 * 1024;
+        private static final long SIZE_10M = 10 * 1024 * 1024L;
 
         private FileReaderFactory() {
 

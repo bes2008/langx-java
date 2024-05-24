@@ -24,6 +24,10 @@ public class Pair<K, V> implements Map.Entry<K, V> {
         return key;
     }
 
+    public static <K,V> Pair<K,V> of(K k, V v){
+        return new Pair<K,V>(k, v);
+    }
+
     public V getValue() {
         return value;
     }
