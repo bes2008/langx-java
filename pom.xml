@@ -17,8 +17,8 @@
 
     <properties>
         <!--maven build properties-->
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--custom build properties-->
@@ -78,7 +78,6 @@
         <module>langx-java-fastdateformat</module>
         <module>langx-java-pinyin</module>
         <module>langx-java-el</module>
-        <module>langx-java-asn1</module>
         <module>langx-java-distributed</module>
         <module>langx-java-all</module>
     </modules>
