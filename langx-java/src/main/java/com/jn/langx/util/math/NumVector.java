@@ -1,6 +1,7 @@
 package com.jn.langx.util.math;
 
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.collection.PrimitiveArrays;
 
 public class NumVector {
     private final double[] array;
@@ -14,7 +15,7 @@ public class NumVector {
     }
 
     public int hashCode(){
-        return Objs.hash(array);
+        return Objs.hash(PrimitiveArrays.wrap(array));
     }
 
     public boolean equals(Object object) {

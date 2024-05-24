@@ -108,10 +108,14 @@ public enum JCAEStandardName {
     @Algorithm(name = "SM2", apply = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
     SM2,
 
+
+    /********************* Secret Key **********************/
     @Algorithm(name = "AES", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
     AES,
     @Algorithm(name = "DES", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
     DES,
+    @Algorithm(name="DESede", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
+    DESede,
     @Algorithm(name = "SM4", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
     SM4,
 

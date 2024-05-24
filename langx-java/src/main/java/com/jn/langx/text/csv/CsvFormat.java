@@ -14,6 +14,8 @@ import java.util.Set;
 
 
 /**
+ * https://www.rfc-editor.org/rfc/rfc4180
+ *
  * Specifies the format of a CSV file and parses input.
  * <p>
  * <h2>Using predefined formats</h2>
@@ -647,7 +649,7 @@ public final class CsvFormat implements Serializable {
     private final boolean autoFlush;
 
     private final Character commentMarker; // null if commenting is disabled
-
+    // 在一行内，字段之间的分隔符
     private final char delimiter;
 
     private final Character escapeCharacter; // null if escaping is disabled

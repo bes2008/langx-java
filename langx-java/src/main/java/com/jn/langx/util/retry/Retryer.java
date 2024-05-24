@@ -19,6 +19,8 @@ public class Retryer<R> {
     @NonNull
     private Consumer<RetryInfo<R>> attemptsListener;
 
+    @NonNull
+    private WaitStrategy waitStrategy;
 
     public Retryer(RetryConfig config) {
         this(null, config);
@@ -29,10 +31,15 @@ public class Retryer<R> {
     }
 
     public Retryer(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig config, Consumer<RetryInfo<R>> attemptsListener) {
+        this(errorRetryPredicate, resultRetryPredicate, config, attemptsListener, null);
+    }
+
+    public Retryer(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig config, Consumer<RetryInfo<R>> attemptsListener, WaitStrategy waitStrategy) {
         this.errorRetryPredicate = errorRetryPredicate == null ? Functions.<Throwable>truePredicate() : errorRetryPredicate;
         this.resultRetryPredicate = resultRetryPredicate == null ? Functions.<R>falsePredicate() : resultRetryPredicate;
         this.attemptsListener = attemptsListener == null ? Functions.<RetryInfo<R>>noopConsumer() : attemptsListener;
         this.config = config;
+        this.waitStrategy = waitStrategy==null ? new ThreadSleepWaitStrategy():waitStrategy;
     }
 
     public static <R> R execute(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig retryConfig, Consumer<RetryInfo<R>> attemptsListener, Callable<R> task) throws Exception {
@@ -95,11 +102,10 @@ public class Retryer<R> {
         if(needRetry){
             try {
                 if (retryInfo.getBackoff() > 0) {
-                   Thread.sleep(retryInfo.getBackoff());
+                    waitStrategy.await(retryInfo.getBackoff());
                 } else {
                     return false;
                 }
-
             } catch (InterruptedException interruptedException) {
                 Thread.currentThread().interrupt();
                 if(retryInfo.hasError()){

@@ -75,7 +75,7 @@ public class IOs {
         try {
             target.close();
         } catch (Throwable e) {
-            Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", target);
+            Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", e.getMessage(), e);
         }
     }
 
@@ -87,7 +87,7 @@ public class IOs {
             try {
                 ((Closeable) target).close();
             } catch (Exception e) {
-                Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", target);
+                Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", e.getMessage(), e);
             }
         } else {
             ObjectCloser.close(target);

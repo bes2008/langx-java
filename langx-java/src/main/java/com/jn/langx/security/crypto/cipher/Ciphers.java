@@ -7,7 +7,6 @@ import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.CryptoException;
-import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
@@ -410,25 +409,9 @@ public class Ciphers extends Securitys {
         return createIvParameterSpec(null, ivBitLength);
     }
 
-    public static IvParameterSpec createIvParameterSpec(byte[] seed, int ivBitLength) {
-        return createIvParameterSpec(null, seed, ivBitLength);
-    }
-
-    public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, byte[] seed, int ivBitLength) {
-        if (secureRandom == null) {
-            try {
-                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
-            } catch (Throwable ex) {
-                throw Throwables.wrapAsRuntimeException(ex);
-            }
-        }
-        if (Objs.isNotEmpty(seed)) {
-            secureRandom.setSeed(seed);
-        }
-
-        int byteLength = (ivBitLength + 7) / 8;
-        byte[] ivBytes = new byte[byteLength];
-        secureRandom.nextBytes(ivBytes);
+    public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, int ivBitLength) {
+        byte[] ivBytes = randomBytes(secureRandom, ivBitLength);
         return new IvParameterSpec(ivBytes);
     }
+
 }

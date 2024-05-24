@@ -1,6 +1,7 @@
 package com.jn.langx.util.memory.leak;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.text.properties.PropertiesAccessor;
@@ -278,7 +279,7 @@ public class ResourceLeakDetector<T> {
             // Store the hash of the tracked object to later assert it in the close(...) method.
             // It's important that we not store a reference to the referent as this would disallow it from
             // be collected via the WeakReference.
-            trackedHash = System.identityHashCode(referent);
+            trackedHash = Objs.id(referent);
             Preconditions.checkNotNull(allLeaks);
             allLeaks.add(this);
             // Create a new Record so we always have the creation stacktrace included.
@@ -370,7 +371,7 @@ public class ResourceLeakDetector<T> {
         @Override
         public boolean close(T trackedObject) {
             // Ensure that the object that was tracked is the same as the one that was passed to close(...).
-            assert trackedHash == System.identityHashCode(trackedObject);
+            assert trackedHash == Objs.id(trackedObject);
 
             try {
                 return close();

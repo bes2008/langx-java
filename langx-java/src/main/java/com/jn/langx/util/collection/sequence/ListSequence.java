@@ -102,6 +102,9 @@ public class ListSequence<E> implements Sequence<E> {
 
     @Override
     public boolean equals(Object o) {
+        if(!(o instanceof ListSequence)){
+            return false;
+        }
         return Objs.equals(list,o);
     }
 

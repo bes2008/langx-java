@@ -660,7 +660,7 @@ public class StringEscapes {
      * escapes. Supports HTML 4.0 entities.</p>
      *
      * <p>For example, the string {@code "&lt;Fran&ccedil;ais&gt;"}
-     * will become {@code "<Fran�ais>"}</p>
+     * will become </p>
      *
      * <p>If an entity is unrecognized, it is left alone, and inserted
      * verbatim into the result string. e.g. {@code "&gt;&zzzz;x"} will

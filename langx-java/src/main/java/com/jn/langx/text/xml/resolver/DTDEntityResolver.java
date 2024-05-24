@@ -37,14 +37,14 @@ public class DTDEntityResolver implements EntityResolver {
             }
             source = new InputSource(new ByteArrayInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes(Charsets.UTF_8)));
         } catch (Exception ex) {
+            // ignore it
         }
         return source;
     }
 
     void setDtdInputStream(final InputStream dtdInputStream) {
-        String content = null;
         try {
-            content = IOs.readAsString(dtdInputStream);
+            String content = IOs.readAsString(dtdInputStream);
             StringReader reader = new StringReader(content);
             this.dtdReader = reader;
         } catch (Throwable e) {

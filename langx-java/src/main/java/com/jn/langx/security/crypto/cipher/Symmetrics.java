@@ -2,6 +2,8 @@ package com.jn.langx.security.crypto.cipher;
 
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import java.security.Provider;
 import java.security.SecureRandom;
 
@@ -42,10 +44,6 @@ public class Symmetrics extends Ciphers {
 
         private CipherAlgorithmMode ref;
         private boolean hasIV;
-
-        MODE(CipherAlgorithmMode ref) {
-            this(ref, true);
-        }
 
         MODE(CipherAlgorithmMode ref, boolean hasIV) {
             this.ref = ref;

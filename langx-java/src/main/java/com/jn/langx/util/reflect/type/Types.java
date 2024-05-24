@@ -297,6 +297,7 @@ public class Types {
                         clz = Class.forName(prefix + "D");
                     }
                 } catch (ClassNotFoundException e) {
+                    // ignore it
                 }
             }
         }

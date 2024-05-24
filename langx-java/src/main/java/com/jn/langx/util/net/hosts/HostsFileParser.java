@@ -1,6 +1,9 @@
 package com.jn.langx.util.net.hosts;
 
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
@@ -23,8 +26,8 @@ import java.util.*;
  */
 public final class HostsFileParser {
 
-    private static final String WINDOWS_DEFAULT_SYSTEM_ROOT = "C:\\Windows";
-    private static final String WINDOWS_HOSTS_FILE_RELATIVE_PATH = "\\system32\\drivers\\etc\\hosts";
+    private static final String WINDOWS_DEFAULT_SYSTEM_ROOT = "C:/Windows";
+    private static final String WINDOWS_HOSTS_FILE_RELATIVE_PATH = "/system32/drivers/etc/hosts";
     private static final String X_PLATFORMS_HOSTS_FILE_PATH = "/etc/hosts";
 
     private static final Regexp WHITESPACES = Regexps.compile("[ \t]+");
@@ -62,14 +65,19 @@ public final class HostsFileParser {
     public static HostsFileEntries parseSilently(Charset... charsets) {
         File hostsFile = locateHostsFile();
         try {
-            return parse(hostsFile, charsets);
+            if(Objs.isEmpty(charsets)){
+                charsets = new Charset[]{Charsets.UTF_8};
+            }
+            if(hostsFile != null) {
+                return parse(hostsFile, charsets);
+            }
         } catch (IOException e) {
             Logger logger = Loggers.getLogger(HostsFileParser.class);
             if (logger.isWarnEnabled()) {
                 logger.warn("Failed to load and parse hosts file at " + hostsFile.getPath(), e);
             }
-            return HostsFileEntries.EMPTY;
         }
+        return HostsFileEntries.EMPTY;
     }
 
     /**
@@ -106,8 +114,7 @@ public final class HostsFileParser {
         Preconditions.checkNotNull(charsets, "charsets");
         if (file.exists() && file.isFile()) {
             for (Charset charset : charsets) {
-                HostsFileEntries entries = parse(new BufferedReader(new InputStreamReader(
-                        new FileInputStream(file), charset)));
+                HostsFileEntries entries = parse(new BufferedReader(new InputStreamReader(new FileInputStream(file), charset)));
                 if (entries != HostsFileEntries.EMPTY) {
                     return entries;
                 }
@@ -193,6 +200,7 @@ public final class HostsFileParser {
                 Logger logger = Loggers.getLogger(HostsFileParser.class);
                 logger.warn("Failed to close a reader", e);
             }
+            IOs.close(reader);
         }
     }
 

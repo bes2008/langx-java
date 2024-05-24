@@ -42,7 +42,7 @@ public class CalendaristConstants {
      * 1901年代码为 19168，转成二进制为 0b100101011100000, 最后四位为0，当年无闰月，月份数据为 010010101110 分别代表12月的大小情况
      * 1903年代码为 21717，转成二进制为 0b101010011010101，最后四位为5，当年为闰五月，首四位为0，闰月为29天， 月份数据为 010101001101，分别代表12月的大小情况
      */
-    protected static final int[] LUNAR_CODE = new int[]{
+    static final int[] LUNAR_CODE = new int[]{
             19416,
             19168, 42352, 21717, 53856, 55632, 91476, 22176, 39632,
             21970, 19168, 42422, 42192, 53840, 119381, 46400, 54944,
@@ -74,7 +74,7 @@ public class CalendaristConstants {
     /**
      * 阳历年份编码
      */
-    protected static final int[] SOLAR_CODE = {
+    static final int[] SOLAR_CODE = {
             1887, 0xec04c, 0xec23f, 0xec435, 0xec649,
             0xec83e, 0xeca51, 0xecc46, 0xece3a, 0xed04d, 0xed242, 0xed436,
             0xed64a, 0xed83f, 0xeda53, 0xedc48, 0xede3d, 0xee050, 0xee244,
@@ -114,7 +114,7 @@ public class CalendaristConstants {
     /**
      * 从1900年，至2100年每年的农历春节对应的阳历日期
      */
-    protected static final int[] CHINESE_NEW_YEAR = new int[]{
+    static final int[] CHINESE_NEW_YEAR = new int[]{
             19000131,
             19010219, 19020208, 19030129, 19040216, 19050204,
             19060125, 19070213, 19080202, 19090122, 19100210,
@@ -161,7 +161,7 @@ public class CalendaristConstants {
     /**
      * 从1900年，至2100年每年的农历春节对应的阳历日期时间戳
      */
-    protected static final long[] CHINESE_NEW_YEAR_TIMESTAMP = new long[]{
+    static final long[] CHINESE_NEW_YEAR_TIMESTAMP = new long[]{
             -2206425943000L, -2173248000000L, -2142662400000L, -2111990400000L, -2078899200000L,
             -2048313600000L, -2017641600000L, -1984464000000L, -1953878400000L, -1923206400000L,
             -1890028800000L, -1859443200000L, -1826265600000L, -1795680000000L, -1765094400000L,
@@ -205,7 +205,7 @@ public class CalendaristConstants {
             4105785600000L
     };
 
-    protected static final int[] LUNAR_MONTH_DAYS = {
+    static final int[] LUNAR_MONTH_DAYS = {
             1887, 0x1694, 0x16aa, 0x4ad5,
             0xab6, 0xc4b7, 0x4ae, 0xa56, 0xb52a, 0x1d2a, 0xd54, 0x75aa, 0x156a,
             0x1096d, 0x95c, 0x14ae, 0xaa4d, 0x1a4c, 0x1b2a, 0x8d55, 0xad4,
@@ -246,22 +246,22 @@ public class CalendaristConstants {
     /**
      * 天干
      */
-    protected static final String[] TIANGAN_INFO = {"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
+    static final String[] TIANGAN_INFO = {"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
 
     /**
      * 地支
      */
-    protected static final String[] DIZHI_INFO = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
+    static final String[] DIZHI_INFO = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
 
     /**
      * 生肖
      */
-    protected static final String[] ZODIAC_INFO = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
+    static final String[] ZODIAC_INFO = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
 
     /**
      * 24节气
      */
-    protected static final long[] SOLAR_TERM_INFO = new long[]{
+    static final long[] SOLAR_TERM_INFO = new long[]{
             0, 21208, 42467, 63836, 85337, 107014, 128867, 150921,
             173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033,
             353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758

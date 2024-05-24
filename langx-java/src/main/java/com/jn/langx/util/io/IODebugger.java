@@ -56,6 +56,7 @@ public class IODebugger {
                 try {
                     inputStream.reset();
                 } catch (IOException ex) {
+                    // ignore it
                 }
             }
         }

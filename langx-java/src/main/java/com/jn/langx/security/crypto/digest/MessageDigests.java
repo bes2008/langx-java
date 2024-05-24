@@ -1,5 +1,6 @@
 package com.jn.langx.security.crypto.digest;
 
+import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
@@ -85,6 +86,14 @@ public class MessageDigests extends Securitys {
 
     public static byte[] digest(String algorithm, byte[] source, byte[] salt, int iterations) {
         return new MessageDigestHasher(algorithm, salt, iterations).hash(source);
+    }
+
+    /**
+     * @since 5.3.9
+     */
+    public static String digestToString(String algorithm, byte[] source, byte[] salt, int iterations, StringifyFormat stringifyFormat) {
+        String out = new MessageDigestHasher(algorithm, salt, iterations).hash(source, stringifyFormat);
+        return out;
     }
 
     public static byte[] digest(String algorithm, byte[] source, int offset, int length) {

@@ -111,6 +111,7 @@ public class Manifests {
             Object descriptor = module.getClass().getMethod("getDescriptor").invoke(module);
             return (String) descriptor.getClass().getMethod("rawVersion").invoke(descriptor);
         } catch (Throwable x) {
+            // ignore it
         }
         return null;
     }

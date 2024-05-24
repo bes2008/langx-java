@@ -433,8 +433,8 @@ public class MimeTypes {
                 if (this.size < this.maxSize) {
                     return cached;
                 }
-                this.lock.readLock().lock();
                 try {
+                    this.lock.readLock().lock();
                     this.queue.remove(key);
                     this.queue.add(key);
                     return cached;
@@ -442,8 +442,9 @@ public class MimeTypes {
                     this.lock.readLock().unlock();
                 }
             }
-            this.lock.writeLock().lock();
+
             try {
+                this.lock.writeLock().lock();
                 // Retrying in case of concurrent reads on the same key
                 cached = this.cache.get(key);
                 if (cached != null) {

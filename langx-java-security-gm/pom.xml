@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>5.3.8</version>
+        <version>5.3.9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,9 +16,6 @@
 
     <packaging>pom</packaging>
     <properties>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
-
 
     </properties>
 

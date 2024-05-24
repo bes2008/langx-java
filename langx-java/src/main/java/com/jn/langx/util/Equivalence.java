@@ -286,7 +286,7 @@ public abstract class Equivalence<T> {
 
     /**
      * Returns an equivalence that uses {@code ==} to compare values and {@link
-     * System#identityHashCode(Object)} to compute the hash code.  {@link Equivalence#equivalent}
+     * Objs#id(Object)} to compute the hash code.  {@link Equivalence#equivalent}
      * returns {@code true} if {@code a == b}, including in the case that a and b are both null.
      *
      * 
@@ -330,7 +330,7 @@ public abstract class Equivalence<T> {
 
         @Override
         protected int doHash(Object o) {
-            return System.identityHashCode(o);
+            return Objs.id(o);
         }
 
         private Object readResolve() {

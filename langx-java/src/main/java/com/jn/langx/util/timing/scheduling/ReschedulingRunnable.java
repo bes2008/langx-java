@@ -15,9 +15,9 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
     private final Trigger trigger;
 
     private final SimpleTriggerContext triggerContext = new SimpleTriggerContext();
-    private volatile ScheduledFuture currentFuture;
+    private ScheduledFuture currentFuture;
     private ScheduledExecutorService executor;
-    private volatile Date scheduledExecutionTime;
+    private Date scheduledExecutionTime;
     private final Runnable delegateTask;
     private final ErrorHandler errorHandler;
 

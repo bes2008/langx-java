@@ -324,6 +324,9 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> implements C
 
     @Override
     public boolean equals(Object o) {
+        if(!(o instanceof OrderedList)){
+            return false;
+        }
         return Objs.equals(map,o);
     }
 

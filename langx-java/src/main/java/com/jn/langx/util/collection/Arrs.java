@@ -226,7 +226,7 @@ public class Arrs extends PrimitiveArrays{
      *
      * 前后颠倒反转索引：
      *  0,   1,  2,   3,   4  // 正序遍历时的索引
-     *  4,   3,  2    1,   0  // 倒序遍历是的索引
+     *  4,   3,  2    1,   0  // 倒序遍历时的索引
      *
      */
     public static int reverseIndex(int length, int index, boolean positiveNegativeInterChangeMode) {
@@ -336,5 +336,26 @@ public class Arrs extends PrimitiveArrays{
         return isMixed;
     }
 
+    public static <E> E get(E[] array, int index){
+        if(isValidIndex(array.length, index)){
+             index=toPositiveIndex(array.length, index);
+             return array[index];
+        }else{
+            throw new IndexOutOfBoundsException("length="+array.length+" , index="+index);
+        }
+    }
+
+    public static <E> E[] subarray(E[] array, int start, int end){
+        start=toPositiveIndex(array.length, start);
+        end=toPositiveIndex(array.length, end);
+        if(start>end){
+            int tmp = start;
+            start= end;
+            end=tmp;
+        }
+        E[] dest = (E[])createArray(array.getClass(), end-start);
+        System.arraycopy(array, start, dest, 0, dest.length);
+        return dest;
+    }
 
 }

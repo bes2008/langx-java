@@ -5,40 +5,26 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 public abstract class LookAheadLexer extends AbstractLexer {
+    private int myTokenStart;
     private int myLastOffset;
 
     private int myLastState;
 
-    private final AbstractLexer myBaseLexer;
+    private final AbstractLexer delegate;
 
-    private int myTokenStart;
-
-    private final MutableRandomAccessQueue<TokenType> myTypeCache;
+    private final MutableRandomAccessQueue<Integer> myTypeCache;
 
     private final MutableRandomAccessQueue<Integer> myEndOffsetCache;
 
-    protected LookAheadLexer(@NonNull AbstractLexer baseLexer, int capacity) {
-        this.myBaseLexer = baseLexer;
-        this.myTypeCache = new MutableRandomAccessQueue<TokenType>(capacity);
+    public LookAheadLexer(@NonNull AbstractLexer delegate, int capacity) {
+        Preconditions.checkNotNullArgument(delegate, "delegate");
+        this.delegate = delegate;
+        this.myTypeCache = new MutableRandomAccessQueue<Integer>(capacity);
         this.myEndOffsetCache = new MutableRandomAccessQueue<Integer>(capacity);
     }
 
-    protected LookAheadLexer(@NonNull AbstractLexer baseLexer) {
-        this(baseLexer, 64);
-    }
-
-    protected void addToken(TokenType type) {
-        addToken(this.myBaseLexer.getTokenEnd(), type);
-    }
-
-    protected void addToken(int endOffset, TokenType type) {
-        this.myTypeCache.addLast(type);
-        this.myEndOffsetCache.addLast(endOffset);
-    }
-
-    protected void lookAhead(@NonNull Lexer baseLexer) {
-        Preconditions.checkNotNullArgument(baseLexer, "baseLexer");
-        advanceLexer(baseLexer);
+    public LookAheadLexer(@NonNull AbstractLexer delegate) {
+        this(delegate, 64);
     }
 
     public void next() {
@@ -53,21 +39,31 @@ public abstract class LookAheadLexer extends AbstractLexer {
 
     private void doLookAhead() {
         this.myLastOffset = this.myTokenStart;
-        this.myLastState = this.myBaseLexer.getState();
-        lookAhead(this.myBaseLexer);
+        this.myLastState = this.delegate.getState();
+        addToken(this.delegate.getTokenType());
+        this.delegate.next();
         assert !this.myTypeCache.isEmpty();
+    }
+
+    protected void addToken(int type) {
+        addToken(this.delegate.getTokenEnd(), type);
+    }
+
+    protected void addToken(int endOffset, int type) {
+        this.myTypeCache.addLast(type);
+        this.myEndOffsetCache.addLast(endOffset);
     }
 
     @NonNull
     public CharSequence getBufferSequence() {
-        if (this.myBaseLexer.getBufferSequence() == null) {
+        if (this.delegate.getBufferSequence() == null) {
             throw new NullPointerException();
         }
-        return this.myBaseLexer.getBufferSequence();
+        return this.delegate.getBufferSequence();
     }
 
     public int getBufferEnd() {
-        return this.myBaseLexer.getBufferEnd();
+        return this.delegate.getBufferEnd();
     }
 
     protected int getCacheSize() {
@@ -81,11 +77,11 @@ public abstract class LookAheadLexer extends AbstractLexer {
         }
     }
 
-    public TokenType replaceCachedType(int index, TokenType token) {
-        return this.myTypeCache.set(index, token);
+    public int replaceCachedType(int index, int type) {
+        return this.myTypeCache.set(index, type);
     }
 
-    protected final TokenType getCachedType(int index) {
+    protected final int getCachedType(int index) {
         return this.myTypeCache.get(index);
     }
 
@@ -120,23 +116,23 @@ public abstract class LookAheadLexer extends AbstractLexer {
 
     protected void restore(@NonNull LookAheadLexerPosition position) {
         Preconditions.checkNotNullArgument(position, "position");
-        start(this.myBaseLexer.getBufferSequence(), position.lastOffset, this.myBaseLexer.getBufferEnd(), position.lastState);
+        start(this.delegate.getBufferSequence(), position.lastOffset, this.delegate.getBufferEnd(), position.lastState);
         for (int i = 0; i < position.advanceCount; i++) {
             next();
         }
     }
 
-    public TokenType getTokenType() {
+    public int getTokenType() {
         return this.myTypeCache.peekFirst();
     }
 
     public void start(@NonNull CharSequence buf, int startOffset, int endOffset, int initialState) {
         Preconditions.checkNotNullArgument(buf, "buffer");
-        this.myBaseLexer.startInternal(buf, startOffset, endOffset, initialState & 0xFFFF);
+        this.delegate.startInternal(buf, startOffset, endOffset, initialState & 0xFFFF);
         this.myTokenStart = startOffset;
         this.myTypeCache.clear();
         this.myEndOffsetCache.clear();
-        doLookAhead();
+        next();
     }
 
     protected static class LookAheadLexerPosition implements LexerPosition {
@@ -174,14 +170,9 @@ public abstract class LookAheadLexer extends AbstractLexer {
         }
     }
 
-    protected final void advanceLexer(@NonNull Lexer lexer) {
-        Preconditions.checkNotNullArgument(lexer, "lexer");
-        advanceAs(lexer, lexer.getTokenType());
-    }
 
-    protected final void advanceAs(@NonNull Lexer lexer, TokenType type) {
-        Preconditions.checkNotNullArgument(lexer, "lexer");
-        addToken(type);
-        lexer.next();
+    @Override
+    public Token getToken() {
+        return delegate.getToken();
     }
 }

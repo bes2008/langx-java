@@ -16,7 +16,6 @@ import java.security.SecureRandom;
  * SM4 在 非ECB 模式下，必须要用到的。
  */
 public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
-    private static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4AlgorithmSpecSupplier.class).getBytes(Charsets.UTF_8);
 
     public SM4AlgorithmSpecSupplier() {
     }
@@ -43,7 +42,7 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
         }
 
         // 生成 IV,因为 SM4的 iv 长度与 sm4的 iv 长度是一致的，都是128 bit的随机数，所以可以利用下面的方式生成 iv
-        return Ciphers.createIvParameterSpec(null, SECURE_RANDOM_SEED_DEFAULT, 128);
+        return Ciphers.createIvParameterSpec(null, 128);
     }
 
 }

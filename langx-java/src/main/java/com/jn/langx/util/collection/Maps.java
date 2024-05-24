@@ -158,6 +158,10 @@ public class Maps {
         return Collects.newHashMap();
     }
 
+    public static <K,V> Map<K,V> newImmutableMap(){
+        return Collects.immutableMap();
+    }
+
     public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
         return Collects.newHashMap(map);
     }
@@ -185,6 +189,11 @@ public class Maps {
     public static <K, V> ConcurrentMap<K, V> newConcurrentMap() {
         return Collects.newConcurrentMap();
     }
+
+    public static <K, V> ConcurrentMap<K, V> newConcurrentMap(Map<K,V> map) {
+        return Collects.newConcurrentMap(map);
+    }
+
 
     public static <K, V> TreeMap<K, V> newTreeMap() {
         return Collects.newTreeMap();

@@ -6,26 +6,36 @@ import com.jn.langx.annotation.Nullable;
 
 interface Lexer {
 
+    /**
+     * 前进
+     */
+    void next();
+
     void start(@NonNull CharSequence buf, int start, int end);
 
     void start(@NonNull CharSequence buf);
 
+    /**
+     * @return 获取当前 token 的文本
+     */
     @NonNull
     String getTokenText();
 
     int getState();
 
     @Nullable
-    TokenType getTokenType();
-
-    int getTokenStart();
-
-    int getTokenEnd();
+    int getTokenType();
 
     /**
-     * 前进
+     * @return 获取当前token的开始 offset,包含
      */
-    void next();
+    int getTokenStart();
+
+    /**
+     *  @return 获取当前token的结束位置 ,不包含
+     */
+    int getTokenEnd();
+
 
     @NonNull
     LexerPosition getCurrentPosition();

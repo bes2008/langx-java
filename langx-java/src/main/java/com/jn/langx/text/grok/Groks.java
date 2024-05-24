@@ -44,5 +44,5 @@ public class Groks {
         return namedGroups;
     }
 
-    public static Set<String> GROK_PATTERN_NAMED_GROUPS = getNameGroups(GROK_PATTERN_STR);
+    public static final Set<String> GROK_PATTERN_NAMED_GROUPS = getNameGroups(GROK_PATTERN_STR);
 }

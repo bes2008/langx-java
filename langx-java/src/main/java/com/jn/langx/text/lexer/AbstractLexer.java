@@ -19,6 +19,10 @@ public abstract class AbstractLexer implements Lexer {
         startInternal(buf, 0, buf.length(), 0);
     }
 
+    public Token getToken(){
+        return new BaseToken(getTokenType(), getTokenStart(), getTokenEnd(), getTokenText());
+    }
+
     @NonNull
     public String getTokenText() {
         return getBufferSequence().subSequence(getTokenStart(), getTokenEnd()).toString();
@@ -31,6 +35,10 @@ public abstract class AbstractLexer implements Lexer {
         return new LexerPositionImpl(offset, intState);
     }
 
+    /**
+     * 从指定位置开始处理
+     * @param position 指定的位置
+     */
     public void restore(@NonNull LexerPosition position) {
         Preconditions.checkNotNullArgument(position, "position");
         startInternal(getBufferSequence(), position.getOffset(), getBufferEnd(), position.getState());

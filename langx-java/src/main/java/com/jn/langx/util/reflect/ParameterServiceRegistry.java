@@ -37,6 +37,7 @@ public class ParameterServiceRegistry implements Registry<String, ParameterSuppl
             Class.forName("java.lang.reflect.Parameter");
             JDK_PARAMETER_FOUND = true;
         } catch (ClassNotFoundException ex) {
+            // ignore it
         }
 
         loadMethodParameterSuppliers();

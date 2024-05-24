@@ -26,11 +26,14 @@ public class Syslinks {
 
     @NonNull
     public static File createSymbolicLink(@NonNull File symlink, File target) throws IOException {
-        Path link = symlink.toPath();
-        if (!Files.exists(link, LinkOption.NOFOLLOW_LINKS)) {
-            link = Files.createSymbolicLink(link, target.toPath());
+        Path path = symlink.toPath();
+        Path linkPath;
+        if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+            linkPath = Files.createSymbolicLink(path, target.toPath());
+        }else{
+            linkPath=path;
         }
-        return link.toFile();
+        return linkPath.toFile();
 
     }
 }

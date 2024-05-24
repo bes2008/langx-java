@@ -14,6 +14,7 @@ public class JMXLocalConnection extends JMXConnection {
     @Override
     public void close() throws IOException {
         if (this.conn instanceof MBeanServer) {
+            // ignore it
         }
     }
 }

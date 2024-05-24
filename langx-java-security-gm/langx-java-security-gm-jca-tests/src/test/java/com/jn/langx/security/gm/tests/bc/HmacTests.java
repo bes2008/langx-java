@@ -3,6 +3,7 @@ package com.jn.langx.security.gm.tests.bc;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.crypto.key.SecureRandoms;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -45,7 +46,7 @@ public class HmacTests {
         String str = "hello-123: hmac";
 
         KeyGenerator keyGenerator = PKIs.getKeyGenerator(algorithm, null);
-
+        keyGenerator.init(SecureRandoms.getSecureRandom());
         System.out.println(StringTemplates.formatWithPlaceholder("key generator: {}", keyGenerator.getClass()));
         SecretKey secretKey = keyGenerator.generateKey();
         Mac mac = Mac.getInstance(algorithm);

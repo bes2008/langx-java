@@ -318,6 +318,7 @@ class TypeDescriptor implements Serializable {
         }
         if (streamAvailable && Reflects.isSubClassOrEquals("java.util.stream.Stream", getType())) {
             //  return getRelatedIfResolvable(this);
+            // ignore it
         }
         return getRelatedIfResolvable(this, getResolvableType().asCollection().getGeneric(0));
     }

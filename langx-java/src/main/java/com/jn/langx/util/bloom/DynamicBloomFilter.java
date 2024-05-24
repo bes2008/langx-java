@@ -225,9 +225,7 @@ public class DynamicBloomFilter extends Filter {
     private void addRow() {
         BloomFilter[] tmp = new BloomFilter[matrix.length + 1];
 
-        for (int i = 0; i < matrix.length; i++) {
-            tmp[i] = matrix[i];
-        }
+        System.arraycopy(matrix, 0, tmp, 0, matrix.length);
 
         tmp[tmp.length - 1] = new BloomFilter(vectorSize, nbHash, hasherName);
 

@@ -35,10 +35,10 @@
 
 package com.jn.langx.util.concurrent.forkjoin;
 
+import com.jn.junsafe.unsafe.UnsafeProxy;
+import com.jn.junsafe.unsafe.Unsafes;
 import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.random.Randoms;
-import com.jn.langx.util.unsafe.UnsafeProxy;
-import com.jn.langx.util.unsafe.Unsafes;
 
 import java.util.*;
 import java.util.concurrent.*;

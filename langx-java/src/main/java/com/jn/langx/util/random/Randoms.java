@@ -4,7 +4,6 @@ import com.jn.langx.security.crypto.key.SecureRandoms;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.id.Nanoids;

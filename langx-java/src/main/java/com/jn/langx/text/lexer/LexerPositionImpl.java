@@ -1,6 +1,9 @@
 package com.jn.langx.text.lexer;
 
 class LexerPositionImpl implements LexerPosition {
+    /**
+     * token 开始偏移量
+     */
     private final int offset;
 
     private final int state;

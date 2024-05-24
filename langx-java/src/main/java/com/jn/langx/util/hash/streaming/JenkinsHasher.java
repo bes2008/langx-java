@@ -98,7 +98,7 @@ public class JenkinsHasher extends AbstractStreamingHasher {
         a = b = c = (0x00000000deadbeefL + length + initValue) & INT_MASK;
         int offset = 0;
         for (; length > 12; offset += 12, length -= 12) {
-            a = (a + (key[offset + 0] & BYTE_MASK)) & INT_MASK;
+            a = (a + (key[offset] & BYTE_MASK)) & INT_MASK;
             a = (a + (((key[offset + 1] & BYTE_MASK) << 8) & INT_MASK)) & INT_MASK;
             a = (a + (((key[offset + 2] & BYTE_MASK) << 16) & INT_MASK)) & INT_MASK;
             a = (a + (((key[offset + 3] & BYTE_MASK) << 24) & INT_MASK)) & INT_MASK;
@@ -210,7 +210,7 @@ public class JenkinsHasher extends AbstractStreamingHasher {
             case 2:
                 a = (a + (((key[offset + 1] & BYTE_MASK) << 8) & INT_MASK)) & INT_MASK;
             case 1:
-                a = (a + (key[offset + 0] & BYTE_MASK)) & INT_MASK;
+                a = (a + (key[offset] & BYTE_MASK)) & INT_MASK;
                 break;
             case 0:
                 return (int) (c & INT_MASK);

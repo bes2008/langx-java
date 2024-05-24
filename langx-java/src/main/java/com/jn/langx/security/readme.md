@@ -133,9 +133,12 @@ SM9主要用于用户的身份认证。据新华网公开报道，SM9的加密�
 1）http://www.scctc.org.cn/templates/Download/index.aspx?nodeid=71
 2）http://gmssl.org/
 
+# 6. PBE (Password Based Encryption)
+PBE 主要包含两个方面：
+ + 对密码本身进行加密 （通常是进行一定的hash算法，不可逆算法）
+ + 基于密码派生Secret Key，然后结合对称加密算法对其它数据进行加密
 
-
-# 算法分析
+# 附录：算法分析
 
 加密算法的基本操作：移位、置换、编码
 ```text

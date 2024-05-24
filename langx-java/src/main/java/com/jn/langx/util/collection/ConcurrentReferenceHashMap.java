@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 
@@ -109,7 +110,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * @param <V> the type of mapped values
  */
 public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implements java.util.concurrent.ConcurrentMap<K, V> {
-    private static final long serialVersionUID = 7249069246763182397L;
 
     /*
      * The basic strategy is to subdivide the table among Segments,
@@ -228,8 +228,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
     private int hashOf(Object key) {
         return hash(
-                identityComparisons ?
-                        System.identityHashCode(key) : key.hashCode()
+                identityComparisons ? Objs.id(key) : key.hashCode()
         );
     }
 
@@ -1580,7 +1579,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      * This class is needed for JDK5 compatibility.
      */
     static class SimpleEntry<K, V> implements Entry<K, V> {
-        private static final long serialVersionUID = -8499721149061103585L;
 
         private final K key;
         private V value;
@@ -1644,8 +1642,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      * changes to the underlying map.
      */
     final class WriteThroughEntry extends SimpleEntry<K, V> {
-        private static final long serialVersionUID = -7900634345345313646L;
-
         WriteThroughEntry(K k, V v) {
             super(k, v);
         }

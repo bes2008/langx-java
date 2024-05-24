@@ -4,7 +4,6 @@ import com.jn.langx.annotation.GuardedBy;
 import com.jn.langx.annotation.Immutable;
 import com.jn.langx.annotation.ThreadSafe;
 import com.jn.langx.util.ClassLoaders;
-import com.jn.langx.util.unsafe.Unsafes;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -216,6 +215,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
         try {
             unsafeClass = ClassLoaders.loadClass("sun.misc.Unsafe");
         } catch (ClassNotFoundException ex) {
+            // ignore it
         }
         if (unsafeClass != null) {
             data = new ConcurrentHashMapV8<K, Node<K, V>>(builder.initialCapacity, 0.75f, concurrencyLevel);
@@ -1396,7 +1396,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * An entry that allows updates to write through to the map.
      */
     final class WriteThroughEntry extends SimpleEntry<K, V> {
-        static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         WriteThroughEntry(Node<K, V> node) {
             super(node.key, node.getValue());
@@ -1417,7 +1417,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * A weigher that enforces that the weight falls within a valid range.
      */
     static final class BoundedEntryWeigher<K, V> implements EntryWeigher<K, V>, Serializable {
-        static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
         final transient EntryWeigher<? super K, ? super V> weigher;
 
         BoundedEntryWeigher(EntryWeigher<? super K, ? super V> weigher) {
@@ -1485,7 +1485,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
 
     /* ---------------- Serialization Support -------------- */
 
-    static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     Object writeReplace() {
         return new SerializationProxy<K, V>(this);
@@ -1528,7 +1528,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
             return map;
         }
 
-        static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
     }
 
     /* ---------------- Builder -------------- */

@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.util.Objs;
+
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.*;
@@ -137,7 +139,7 @@ public class WeakIdentityHashMap<K, V> implements Map<K, V> {
         @SuppressWarnings("unchecked")
         IdentityWeakReference(Object obj) {
             super((K) obj, queue);
-            hash = System.identityHashCode(obj);
+            hash = Objs.id(obj);
         }
 
         public int hashCode() {

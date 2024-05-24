@@ -1,6 +1,7 @@
 package com.jn.langx.util.converter;
 
 import com.jn.langx.Converter;
+import com.jn.langx.util.reflect.type.Primitives;
 
 import java.util.Date;
 
@@ -9,7 +10,7 @@ public class LongToDateConverter implements Converter<Long, Date> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        return sourceClass != Long.class || sourceClass != Long.TYPE;
+        return Primitives.isLong(sourceClass);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class HmacTests {
         String str = "hello-123: hmac";
         System.out.println(StringTemplates.formatWithPlaceholder("test algorithm: {}", algorithm));
         KeyGenerator keyGenerator = PKIs.getKeyGenerator(algorithm, null);
-
+        keyGenerator.init(PKIs.getSecureRandom());
         System.out.println(StringTemplates.formatWithPlaceholder("key generator: {}", keyGenerator.getClass()));
         SecretKey secretKey = keyGenerator.generateKey();
 

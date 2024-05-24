@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.random.IRandom;
@@ -347,6 +348,12 @@ public class Pipeline<E> {
             return (List<E>) collection;
         }
         return new ArrayList<E>(getAll());
+    }
+    public String join(String separator){
+        return join(separator,null,null);
+    }
+    public String join(String separator, String prefix, String suffix){
+        return Strings.join(separator, prefix, suffix, false,this.collection.iterator());
     }
 
     public <K> Map<K, E> asMap(@NonNull final Map<K, E> map, @NonNull final Function<E, K> keyMapper) {

@@ -4,6 +4,7 @@ import com.jn.langx.annotation.IntLimit;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.Function3;
@@ -123,11 +124,14 @@ public class Nanoids {
         if (expectedIdLength < 1) {
             expectedIdLength = 21;
         }
-        Preconditions.checkNotEmpty(alphabet, "alphabet is empty or null");
+        if(Objs.isEmpty(alphabet)){
+            alphabet = DEFAULT_ALPHABET;
+        }
         Preconditions.checkNotNullArgument(randomBytesSupplier, "randomBytesSupplier");
         Preconditions.checkNotNullArgument(idGenFun, "idGenFun");
         return idGenFun.apply(alphabet, expectedIdLength, randomBytesSupplier);
     }
 
+    public static final String DEFAULT_ALPHABET="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 }

@@ -1,11 +1,11 @@
 package com.jn.langx.util.concurrent.longaddr;
 
 
+import com.jn.junsafe.unsafe.UnsafeProxy;
+import com.jn.junsafe.unsafe.Unsafes;
 import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.random.Randoms;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.unsafe.UnsafeProxy;
-import com.jn.langx.util.unsafe.Unsafes;
 
 
 /**
@@ -104,8 +104,7 @@ abstract class Striped64 extends Number {
             try {
                 UNSAFE = Unsafes.getUnsafe();
                 Class<?> ak = Cell.class;
-                valueOffset = UNSAFE.objectFieldOffset
-                        (Reflects.getDeclaredField(ak,"value"));
+                valueOffset = UNSAFE.objectFieldOffset(Reflects.getDeclaredField(ak,"value"));
             } catch (Exception e) {
                 throw new Error(e);
             }
@@ -132,7 +131,7 @@ abstract class Striped64 extends Number {
     /**
      * Table of cells. When non-null, size is a power of 2.
      */
-    transient volatile Cell[] cells;
+    transient Cell[] cells;
 
     /**
      * Base value, used mainly when there is no contention, but also as
@@ -235,8 +234,7 @@ abstract class Striped64 extends Number {
                     try {
                         if (cells == as) {      // Expand table unless stale
                             Cell[] rs = new Cell[n << 1];
-                            for (int i = 0; i < n; ++i)
-                                rs[i] = as[i];
+                            System.arraycopy(as, 0, rs, 0, n);
                             cells = rs;
                         }
                     } finally {

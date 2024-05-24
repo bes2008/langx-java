@@ -177,7 +177,7 @@ public final class _WhirlpoolDigest implements Memoable, Digest {
     }
 
     private long bytesToLongFromBuffer(byte[] buffer, int startPos) {
-        long rv = (((buffer[startPos + 0] & 0xffL) << 56) |
+        long rv = (((buffer[startPos] & 0xffL) << 56) |
                 ((buffer[startPos + 1] & 0xffL) << 48) |
                 ((buffer[startPos + 2] & 0xffL) << 40) |
                 ((buffer[startPos + 3] & 0xffL) << 32) |
@@ -208,7 +208,7 @@ public final class _WhirlpoolDigest implements Memoable, Digest {
         for (int round = 1; round <= ROUNDS; round++) {
             for (int i = 0; i < 8; i++) {
                 _L[i] = 0;
-                _L[i] ^= C0[(int) (_K[(i - 0) & 7] >>> 56) & 0xff];
+                _L[i] ^= C0[(int) (_K[(i) & 7] >>> 56) & 0xff];
                 _L[i] ^= C1[(int) (_K[(i - 1) & 7] >>> 48) & 0xff];
                 _L[i] ^= C2[(int) (_K[(i - 2) & 7] >>> 40) & 0xff];
                 _L[i] ^= C3[(int) (_K[(i - 3) & 7] >>> 32) & 0xff];
@@ -226,7 +226,7 @@ public final class _WhirlpoolDigest implements Memoable, Digest {
             for (int i = 0; i < 8; i++) {
                 _L[i] = _K[i];
 
-                _L[i] ^= C0[(int) (_state[(i - 0) & 7] >>> 56) & 0xff];
+                _L[i] ^= C0[(int) (_state[(i    ) & 7] >>> 56) & 0xff];
                 _L[i] ^= C1[(int) (_state[(i - 1) & 7] >>> 48) & 0xff];
                 _L[i] ^= C2[(int) (_state[(i - 2) & 7] >>> 40) & 0xff];
                 _L[i] ^= C3[(int) (_state[(i - 3) & 7] >>> 32) & 0xff];

@@ -12,6 +12,7 @@ public class URLConnections {
             String value = conn.getHeaderField(name);
             return Long.parseLong(value);
         } catch (Exception e) {
+            // ignore it
         }
         return defaultValue;
     }
@@ -22,6 +23,7 @@ public class URLConnections {
             String value = conn.getHeaderField(name);
             return Integer.parseInt(value);
         } catch (Exception e) {
+            // ignore it
         }
         return defaultValue;
     }
@@ -31,6 +33,7 @@ public class URLConnections {
             String value = conn.getHeaderField(name);
             return Date.parse(value);
         } catch (Exception e) {
+            // ignore it
         }
         return defaultValue;
     }

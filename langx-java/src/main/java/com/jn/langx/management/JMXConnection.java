@@ -224,6 +224,7 @@ public abstract class JMXConnection implements Closeable {
                 hasObject = true;
             }
         } catch (Throwable t) {
+            // ignore it
         }
         return hasObject;
     }

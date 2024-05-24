@@ -15,7 +15,7 @@ public class NativeLocalTcpPortGenerator implements LocalPortGenerator {
             socket.bind(new InetSocketAddress(0));
             port = socket.getLocalPort();
         } catch (IOException ex) {
-
+            // ignore it
         } finally {
             IOs.close(socket);
         }

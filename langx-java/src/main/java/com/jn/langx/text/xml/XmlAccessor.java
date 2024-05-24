@@ -175,7 +175,7 @@ public class XmlAccessor {
     }
 
     public NodeList getNodeList(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
-        final XPath xpath = factory.newXPath();
+        final XPath xpath =  (factory == null ? XPathFactory.newInstance() : factory).newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
         boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
         elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);

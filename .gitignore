@@ -4,7 +4,3 @@
 target/
 dependency-reduced-pom.xml
 .gitignore
-/bin/
-.classpath
-.project
-.settings/

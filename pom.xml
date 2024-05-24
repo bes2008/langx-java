@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.3.8</version>
+    <version>5.3.9</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -17,8 +17,8 @@
 
     <properties>
         <!--maven build properties-->
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--custom build properties-->
@@ -32,6 +32,8 @@
         <bouncycastle.version>1.70</bouncycastle.version>
         <jmh.version>1.23</jmh.version>
         <junit.version>4.13.1</junit.version>
+
+        <junsafe.version>1.0.0</junsafe.version>
 
     </properties>
 
@@ -76,7 +78,6 @@
         <module>langx-java-fastdateformat</module>
         <module>langx-java-pinyin</module>
         <module>langx-java-el</module>
-        <module>langx-java-asn1</module>
         <module>langx-java-distributed</module>
         <module>langx-java-all</module>
     </modules>
@@ -137,17 +138,17 @@
                 <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <!--
-            <dependency>
-                <groupId>io.github.bes2008.solution.langx.security</groupId>
-                <artifactId>langx-java-security-gm-jca-gmsslorg</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            -->
             <dependency>
                 <groupId>io.github.bes2008.solution.langx.security</groupId>
                 <artifactId>langx-java-security-gm-jca-jsse</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>io.github.bes2008.solution.junsafe</groupId>
+                <artifactId>junsafe</artifactId>
+                <version>${junsafe.version}</version>
             </dependency>
 
             <dependency>
@@ -292,6 +293,15 @@
                     </includes>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.11.0.3922</version>
+
+
+            </plugin>
+
         </plugins>
     </build>
 

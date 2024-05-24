@@ -69,13 +69,9 @@ public class Files {
      */
     public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
-        for (final String name : names) {
-            if (file == null) {
-                String cleanedPath = Filenames.getFullDirectory(name) + Filenames.getFileName(name);
-                file = new File(cleanedPath);
-            } else {
-                file = new File(file, name);
-            }
+        for (String name : names) {
+            name = Filenames.normalize(name, true);
+            file = file==null ? new File(name) : new File(file, name);
         }
         return file;
     }
@@ -1977,13 +1973,9 @@ public class Files {
             dir = tmpdir;
         }
         File f;
-        try {
+        f = generateTempPath(prefix, suffix, dir);
+        while (f.exists()) {
             f = generateTempPath(prefix, suffix, dir);
-            while (f.exists()) {
-                f = generateTempPath(prefix, suffix, dir);
-            }
-        } catch (InvalidPathException e) {
-            throw e;
         }
         try {
             if (createDirectory) {

@@ -91,6 +91,9 @@ interface Trie<T> extends Map<CharSequence, T> {
         }
 
         public boolean equals(Object other) {
+            if(!(other instanceof Trie)){
+                return false;
+            }
             return Objs.equals(wrapped,other);
         }
 

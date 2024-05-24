@@ -530,6 +530,9 @@ public class Numbers {
                 case 'F':
                     try {
                         Float f = createFloat(numeric);
+                        if(f==null){
+                            return null;
+                        }
                         if (!(f.isInfinite() || (f == 0.0F && !allZeros))) {
                             number = f;
                         }
@@ -541,15 +544,20 @@ public class Numbers {
                 case 'D':
                     try {
                         Double d = createDouble(numeric);
+                        if(d==null){
+                            return null;
+                        }
                         if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
                             number = d;
                             break;
                         }
                     } catch (NumberFormatException nfe) {
+                        // ignore it
                     }
                     try {
                         number = createBigDecimal(numeric);
                     } catch (NumberFormatException e) {
+                        // ignore it
                     }
                     break;
                 default:
@@ -695,7 +703,7 @@ public class Numbers {
             } catch (ParseException ex) {
                 throw new IllegalArgumentException("Could not parse number: " + ex.getMessage());
             } finally {
-                if (resetBigDecimal && decimalFormat != null) {
+                if (resetBigDecimal && decimalFormat!=null) {
                     decimalFormat.setParseBigDecimal(false);
                 }
             }

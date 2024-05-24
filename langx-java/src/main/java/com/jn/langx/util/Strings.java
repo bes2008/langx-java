@@ -10,6 +10,7 @@ import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.enums.Enums;
@@ -94,6 +95,17 @@ public class Strings {
     );
 
     public static final String WHITESPACE = join("", WHITESPACE_CHAR);
+
+    public static final boolean isWhitespace(String str){
+        for (int i =0; i< str.length(); i++){
+            char c = str.charAt(i);
+            if(!WHITESPACE.contains(""+c)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * judge a string is null or ""
      *
@@ -480,6 +492,26 @@ public class Strings {
         }).toArray(String[].class);
     }
 
+    public static String[] slice(String str, int substringLength){
+        if(isEmpty(str)){
+            return Emptys.EMPTY_STRINGS;
+        }
+        if(str.length()<=substringLength){
+            return new String[]{str};
+        }
+
+        List<String> substrings = Lists.newArrayList();
+
+        int startOffset=0;
+        while(startOffset<str.length()){
+            int endOffsetExclude= Maths.min(startOffset+substringLength, str.length());
+            if(endOffsetExclude>startOffset){
+                substrings.add(str.substring(startOffset, endOffsetExclude));
+            }
+            startOffset=endOffsetExclude;
+        }
+        return Collects.toArray(substrings, String[].class);
+    }
 
     /**
      * Helper to decode half of a hexadecimal number from a string.
@@ -553,7 +585,7 @@ public class Strings {
      * or <code>null</code> if the input byte array was <code>null</code>.
      * @throws NullPointerException Thrown if charset is {@code null}
      */
-    private static String newString(final byte[] bytes, final Charset charset) {
+    public static String newString(final byte[] bytes, final Charset charset) {
         return bytes == null ? null : new String(bytes, charset);
     }
 
@@ -2254,7 +2286,7 @@ public class Strings {
         }
 
         if (Reflects.isSubClassOrEquals(Character.class, targetClass)) {
-            return (T) new Character(Preconditions.checkNotEmpty(str).charAt(0));
+            return (T) Character.valueOf(Preconditions.checkNotEmpty(str).charAt(0));
         }
         return null;
     }

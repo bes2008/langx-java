@@ -26,7 +26,7 @@ public class GUID implements Serializable, Cloneable, Comparable {
     /**
      * The serial version id, @since 1.6
      */
-    static final long serialVersionUID = 3289509836244263718L;
+    private static final long serialVersionUID = 3289509836244263718L;
     /**
      * The virtual machine identifier
      */

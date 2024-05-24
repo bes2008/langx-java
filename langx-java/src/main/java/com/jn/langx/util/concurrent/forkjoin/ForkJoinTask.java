@@ -1,6 +1,7 @@
 package com.jn.langx.util.concurrent.forkjoin;
-import com.jn.langx.util.unsafe.UnsafeProxy;
-import com.jn.langx.util.unsafe.Unsafes;
+import com.jn.junsafe.unsafe.UnsafeProxy;
+import com.jn.junsafe.unsafe.Unsafes;
+import com.jn.langx.util.Objs;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -396,7 +397,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
      * @return status on exit
      */
     private int setExceptionalCompletion(Throwable ex) {
-        int h = System.identityHashCode(this);
+        int h = Objs.id(this);
         final ReentrantLock lock = exceptionTableLock;
         lock.lock();
         try {
@@ -421,7 +422,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
      * Removes exception node and clears status
      */
     private void clearExceptionalCompletion() {
-        int h = System.identityHashCode(this);
+        int h = Objs.id(this);
         final ReentrantLock lock = exceptionTableLock;
         lock.lock();
         try {
@@ -465,7 +466,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
     private Throwable getThrowableException() {
         if (status != EXCEPTIONAL)
             return null;
-        int h = System.identityHashCode(this);
+        int h = Objs.id(this);
         ExceptionNode e;
         final ReentrantLock lock = exceptionTableLock;
         lock.lock();
@@ -512,7 +513,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
             if (x instanceof ExceptionNode) {
                 ForkJoinTask<?> key = ((ExceptionNode)x).get();
                 ExceptionNode[] t = exceptionTable;
-                int i = System.identityHashCode(key) & (t.length - 1);
+                int i = Objs.id(key) & (t.length - 1);
                 ExceptionNode e = t[i];
                 ExceptionNode pred = null;
                 while (e != null) {

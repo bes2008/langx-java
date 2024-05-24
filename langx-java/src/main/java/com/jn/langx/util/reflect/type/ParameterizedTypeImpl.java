@@ -170,7 +170,6 @@ public class ParameterizedTypeImpl implements ParameterizedType {
             return typeToString(componentType) + "[]";
         }
 
-        private static final long serialVersionUID = 0;
     }
 
     @Override

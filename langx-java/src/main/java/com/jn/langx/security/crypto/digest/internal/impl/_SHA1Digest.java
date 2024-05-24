@@ -11,7 +11,7 @@ import com.jn.langx.util.io.bytes.Bytes;
  * It is interesting to ponder why the, apart from the extra IV, the other difference here from MD5
  * is the "endianness" of the word processing!
  */
-public class _SHA1Digest extends GeneralDigest {
+public final class _SHA1Digest extends GeneralDigest {
     private static final int DIGEST_LENGTH = 20;
 
     private int H1, H2, H3, H4, H5;
