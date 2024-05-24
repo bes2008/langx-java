@@ -20,13 +20,12 @@ import com.jn.langx.util.io.unicode.Utf8s;
  * This class provides a growable byte array to which data can be appended.
  * Methods in this class are not synchronized.
  */
-public final class ByteStringBuffer
-        implements Serializable, Appendable {
+public final class ByteStringBuffer implements Serializable, Appendable {
     /**
      * The default initial capacity for this buffer.
      */
     private static final int DEFAULT_INITIAL_CAPACITY = 20;
-
+    private static final String ERROR_MESSAGE_NULL_ARRAY="The provided array is null.";
 
     /**
      * The pre-allocated array that will be used for a boolean value of "false".
@@ -131,7 +130,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final byte[] b)
             throws NullPointerException {
         if (b == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return append(b, 0, b.length);
@@ -155,7 +154,7 @@ public final class ByteStringBuffer
                                    final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         if ((off < 0) || (len < 0) || (off + len > b.length)) {
@@ -196,7 +195,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final ByteString b)
             throws NullPointerException {
         if (b == null) {
-            throw new NullPointerException("The provided byte string is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         b.appendValueTo(this);
@@ -216,7 +215,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final ByteStringBuffer buffer)
             throws NullPointerException {
         if (buffer == null) {
-            throw new NullPointerException("The provided buffer is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return append(buffer.array, 0, buffer.endPos);
@@ -255,7 +254,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final char[] c)
             throws NullPointerException {
         if (c == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return append(c, 0, c.length);
@@ -280,7 +279,7 @@ public final class ByteStringBuffer
                                    final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         if ((off < 0) || (len < 0) || (off + len > c.length)) {
@@ -511,7 +510,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final byte[] b)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return insert(pos, b, 0, b.length);
@@ -541,7 +540,7 @@ public final class ByteStringBuffer
                                    final int off, final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         if ((pos < 0) || (pos > endPos) || (off < 0) || (len < 0) ||
@@ -590,7 +589,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final ByteString b)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            throw new NullPointerException("The provided byte string is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return insert(pos, b.getValue());
@@ -614,7 +613,7 @@ public final class ByteStringBuffer
                                    @NonNull final ByteStringBuffer buffer)
             throws NullPointerException, IndexOutOfBoundsException {
         if (buffer == null) {
-            throw new NullPointerException("The provided buffer is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return insert(pos, buffer.array, 0, buffer.endPos);
@@ -675,7 +674,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final char[] c)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return insert(pos, new String(c, 0, c.length));
@@ -703,7 +702,7 @@ public final class ByteStringBuffer
                                    final int off, final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         return insert(pos, new String(c, off, len));
@@ -726,7 +725,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final CharSequence s)
             throws NullPointerException, IndexOutOfBoundsException {
         if (s == null) {
-            throw new NullPointerException("The provided character sequence is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         if ((pos < 0) || (pos > endPos)) {
@@ -911,7 +910,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final byte[] b)
             throws NullPointerException {
         if (b == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         endPos = 0;
@@ -937,7 +936,7 @@ public final class ByteStringBuffer
                                 final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         if ((off < 0) || (len < 0) || (off + len > b.length)) {
@@ -972,7 +971,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final ByteString b)
             throws NullPointerException {
         if (b == null) {
-            throw new NullPointerException("The provided byte string is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         endPos = 0;
@@ -994,7 +993,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final ByteStringBuffer buffer)
             throws NullPointerException {
         if (buffer == null) {
-            throw new NullPointerException("The provided buffer is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         endPos = 0;
@@ -1028,7 +1027,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final char[] c)
             throws NullPointerException {
         if (c == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         endPos = 0;
@@ -1055,7 +1054,7 @@ public final class ByteStringBuffer
                                 final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            throw new NullPointerException("The provided array is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         if ((off < 0) || (len < 0) || (off + len > c.length)) {
@@ -1090,7 +1089,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final CharSequence s)
             throws NullPointerException {
         if (s == null) {
-            throw new NullPointerException("The provided character sequence is null.");
+            throw new NullPointerException(ERROR_MESSAGE_NULL_ARRAY);
         }
 
         endPos = 0;

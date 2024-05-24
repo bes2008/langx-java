@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.StrTokenizer;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
 
@@ -42,13 +43,8 @@ public final class OID implements Serializable, Comparable<OID> {
      * @param oidString The string to use to create this OID.
      */
     public OID(@Nullable final String oidString) {
-        if (oidString == null) {
-            this.oidString = "";
-        } else {
-            this.oidString = oidString;
-        }
-
-        components = parseComponents(oidString);
+        this.oidString= Objs.useValueIfNull(oidString,"");
+        components = parseComponents(this.oidString);
     }
 
 
@@ -161,12 +157,12 @@ public final class OID implements Serializable, Comparable<OID> {
      */
     @Nullable()
     public static List<Integer> parseComponents(@Nullable final String oidString) {
-        if (Strings.isEmpty(oidString) ||  (oidString.indexOf("..") > 0) || oidString.startsWith(".") || oidString.endsWith(".") ) {
+        if (Strings.isEmpty(oidString) ||  (oidString.contains("..")) || oidString.startsWith(".") || oidString.endsWith(".") ) {
             return Lists.newArrayList();
         }
 
         final StrTokenizer tokenizer = new StrTokenizer(oidString, ".");
-        final ArrayList<Integer> compList = new ArrayList<Integer>(10);
+        final ArrayList<Integer> compList = Lists.newArrayListWithCapacity(10);
         while (tokenizer.hasNext()) {
             final String token = tokenizer.next();
             try {
@@ -210,7 +206,7 @@ public final class OID implements Serializable, Comparable<OID> {
         }
 
         int componentStartPos = 0;
-        final List<Integer> components = new ArrayList<Integer>(oidString.length());
+        final List<Integer> components = Lists.newArrayListWithCapacity(oidString.length());
         final StringBuilder buffer = new StringBuilder(oidString.length());
         for (int i = 0; i < oidString.length(); i++) {
             final char c = oidString.charAt(i);
