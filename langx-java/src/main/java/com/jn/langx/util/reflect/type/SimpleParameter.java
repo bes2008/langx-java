@@ -58,19 +58,19 @@ public class SimpleParameter {
     Map<Integer, Integer> typeIndexesPerLevel;
 
     /** The containing class. Could also be supplied by overriding {@link #getContainingClass()} */
-    private volatile Class<?> containingClass;
+    private Class<?> containingClass;
 
-    private volatile Class<?> parameterType;
+    private Class<?> parameterType;
 
-    private volatile Type genericParameterType;
+    private Type genericParameterType;
 
-    private volatile Annotation[] parameterAnnotations;
+    private Annotation[] parameterAnnotations;
 
-    private volatile ParameterNameDiscoverer parameterNameDiscoverer;
+    private ParameterNameDiscoverer parameterNameDiscoverer;
 
     private volatile String parameterName;
 
-    private volatile SimpleParameter nestedMethodParameter;
+    private SimpleParameter nestedMethodParameter;
 
 
     /**

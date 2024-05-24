@@ -343,7 +343,7 @@ public abstract class SerializableTypeWrapper {
 
         private transient Method method;
 
-        private transient volatile Object result;
+        private transient Object result;
 
         public MethodInvokeTypeProvider(TypeProvider provider, Method method, int index) {
             this.provider = provider;

@@ -14,13 +14,13 @@ import java.util.Date;
 public class SimpleTriggerContext implements TriggerContext {
 
     @Nullable
-    private volatile Date lastScheduledExecutionTime;
+    private Date lastScheduledExecutionTime;
 
     @Nullable
-    private volatile Date lastActualExecutionTime;
+    private Date lastActualExecutionTime;
 
     @Nullable
-    private volatile Date lastCompletionTime;
+    private Date lastCompletionTime;
 
 
     /**
