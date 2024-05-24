@@ -1,6 +1,5 @@
 package com.jn.langx.security.ssl;
 
-import com.jn.langx.security.ssl.trustmanager.NoopTrustManager;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 
