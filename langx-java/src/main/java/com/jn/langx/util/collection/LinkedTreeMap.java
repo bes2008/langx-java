@@ -299,37 +299,39 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
 
             int delta = leftHeight - rightHeight;
             if (delta == -2) {
-                Node<K, V> rightLeft = right.left;
-                Node<K, V> rightRight = right.right;
-                int rightRightHeight = rightRight != null ? rightRight.height : 0;
-                int rightLeftHeight = rightLeft != null ? rightLeft.height : 0;
+                if(right!=null) {
+                    Node<K, V> rightLeft = right.left;
+                    Node<K, V> rightRight = right.right;
+                    int rightRightHeight = rightRight != null ? rightRight.height : 0;
+                    int rightLeftHeight = rightLeft != null ? rightLeft.height : 0;
 
-                int rightDelta = rightLeftHeight - rightRightHeight;
-                if (rightDelta != -1 && (rightDelta != 0 || insert)) {
-                    assert (rightDelta == 1);
-                    rotateRight(right); // AVL right left
+                    int rightDelta = rightLeftHeight - rightRightHeight;
+                    if (rightDelta != -1 && (rightDelta != 0 || insert)) {
+                        assert (rightDelta == 1);
+                        rotateRight(right); // AVL right left
+                    }
+                    rotateLeft(node); // AVL right right
+                    if (insert) {
+                        break; // no further rotations will be necessary
+                    }
                 }
-                rotateLeft(node); // AVL right right
-                if (insert) {
-                    break; // no further rotations will be necessary
-                }
-
             } else if (delta == 2) {
-                Node<K, V> leftLeft = left.left;
-                Node<K, V> leftRight = left.right;
-                int leftRightHeight = leftRight != null ? leftRight.height : 0;
-                int leftLeftHeight = leftLeft != null ? leftLeft.height : 0;
+                if(left!=null) {
+                    Node<K, V> leftLeft = left.left;
+                    Node<K, V> leftRight = left.right;
+                    int leftRightHeight = leftRight != null ? leftRight.height : 0;
+                    int leftLeftHeight = leftLeft != null ? leftLeft.height : 0;
 
-                int leftDelta = leftLeftHeight - leftRightHeight;
-                if (leftDelta != 1 && (leftDelta != 0 || insert)) {
-                    assert (leftDelta == -1);
-                    rotateLeft(left); // AVL left right
+                    int leftDelta = leftLeftHeight - leftRightHeight;
+                    if (leftDelta != 1 && (leftDelta != 0 || insert)) {
+                        assert (leftDelta == -1);
+                        rotateLeft(left); // AVL left right
+                    }
+                    rotateRight(node); // AVL left left
+                    if (insert) {
+                        break; // no further rotations will be necessary
+                    }
                 }
-                rotateRight(node); // AVL left left
-                if (insert) {
-                    break; // no further rotations will be necessary
-                }
-
             } else if (delta == 0) {
                 node.height = leftHeight + 1; // leftHeight == rightHeight
                 if (insert) {

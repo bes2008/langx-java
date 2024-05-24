@@ -61,7 +61,9 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
         if (this.delegate == null && Platform.is8VMOrGreater()) {
             throw new JarNotFoundException("Can't find the langx-java8.jar in the classpath");
         }
-        Preconditions.checkNotNull(this.delegate,"the delegate is null");
+        if(this.delegate==null){
+            throw new NullPointerException("the delegate is null");
+        }
         // 低于 java 8的根本走不到这里，所以不会报 NPE
         MethodParameter delegate = this.delegate.get(meta);
         if (Strings.isEmpty(parameterName)) {

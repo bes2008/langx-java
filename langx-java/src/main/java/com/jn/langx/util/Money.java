@@ -760,7 +760,9 @@ public class Money implements Serializable, Comparable<Money> {
         }
 
         long remainder = cent;
-        Preconditions.checkTrue(total > 0);
+        if(total <= 0){
+            throw new IllegalArgumentException("ratios");
+        }
         for (int i = 0; i < results.length; i++) {
             results[i] = newMoneyWithSameCurrency((cent * ratios[i]) / total);
             remainder -= results[i].cent;

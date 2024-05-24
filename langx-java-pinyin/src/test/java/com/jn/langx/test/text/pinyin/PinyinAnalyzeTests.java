@@ -5,6 +5,7 @@ import com.jn.langx.text.pinyin.Pinyins;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
