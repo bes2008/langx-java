@@ -4,7 +4,6 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,9 +13,6 @@ public class SSLs {
 
     public static final String TLS = SSLProtocolVersion.TLSv12.getName();
 
-    public static X509TrustManager noopX509TrustManager() {
-        return new NoopTrustManager();
-    }
 
     /**
      * Creates default factory based on the standard JSSE trust material
