@@ -10,18 +10,8 @@ public abstract class DatabaseBasedConfigurationWriter<T extends Configuration> 
     }
 
     @Override
-    public void write(T configuration) {
-
-    }
-
-    @Override
     public boolean isSupportsRewrite() {
         return false;
-    }
-
-    @Override
-    public void rewrite(T configuration) {
-
     }
 
     @Override
@@ -29,8 +19,4 @@ public abstract class DatabaseBasedConfigurationWriter<T extends Configuration> 
         return false;
     }
 
-    @Override
-    public void remove(String id) {
-
-    }
 }
