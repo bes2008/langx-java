@@ -210,11 +210,7 @@ public class Xmls {
     public static void setFeature(SAXParserFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (SAXNotRecognizedException e) {
-            // ignore it
-        } catch (SAXNotSupportedException e) {
-            // ignore it
-        } catch (ParserConfigurationException e) {
+        } catch (Throwable e) {
             // ignore it
         }
     }
@@ -258,11 +254,7 @@ public class Xmls {
     public static void setProperty(SchemaFactory factory, String feature, Object value) {
         try {
             factory.setProperty(feature, value);
-        } catch (IllegalArgumentException e) {
-            // ignore it
-        } catch (SAXNotRecognizedException e) {
-            // ignore it
-        } catch (SAXNotSupportedException e) {
+        } catch (Throwable e) {
             // ignore it
         }
     }
@@ -273,9 +265,7 @@ public class Xmls {
     public static void setFeature(SchemaFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (SAXNotSupportedException e) {
-            // ignore it
-        } catch (SAXNotRecognizedException e) {
+        } catch (Throwable e) {
             // ignore it
         }
     }

@@ -586,7 +586,7 @@ public class Strings {
      * @throws NullPointerException Thrown if charset is {@code null}
      */
     public static String newString(final byte[] bytes, final Charset charset) {
-        return bytes == null ? null : new String(bytes, charset);
+        return bytes == null ? null : new String(bytes, Objs.useValueIfEmpty(charset, Charsets.UTF_8));
     }
 
     /**
@@ -2091,10 +2091,7 @@ public class Strings {
      * @return the lower cased String, {@code null} if null String input
      */
     public static String lowerCase(final String str) {
-        if (str == null) {
-            return null;
-        }
-        return str.toLowerCase();
+        return lowerCase(str, Locale.getDefault());
     }
 
     /**
