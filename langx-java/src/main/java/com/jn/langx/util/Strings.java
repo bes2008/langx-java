@@ -2071,6 +2071,49 @@ public class Strings {
         return name.substring(0, firstLetterIndex) + uppercased + name.substring(firstLetterIndex + 1);
     }
 
+    public static String transformFirstChar(String str, Transformer<String, String> transformer){
+        Preconditions.checkNotNull(str,"null");
+        char firstChar=str.charAt(0);
+        String replacement=transformer.transform(firstChar+"");
+        return replacement+(str.length()>1?Strings.substring(str,1):"");
+    }
+
+    public static String lowerCaseFirstChar(String str){
+        return transformFirstChar(str, new Transformer<String, String>() {
+            @Override
+            public String transform(String input) {
+                return Strings.lowerCase(input);
+            }
+        });
+    }
+
+    public static String upperCaseFirstChar(String str){
+        return transformFirstChar(str, new Transformer<String, String>() {
+            @Override
+            public String transform(String input) {
+                return Strings.upperCase(input);
+            }
+        });
+    }
+
+    public static String removeFirstChar(String str){
+        return transformFirstChar(str, new Transformer<String, String>() {
+            @Override
+            public String transform(String input) {
+                return "";
+            }
+        });
+    }
+
+    public static String replaceFirstChar(String str,final String replacement){
+        return transformFirstChar(str, new Transformer<String, String>() {
+            @Override
+            public String transform(String input) {
+                return replacement;
+            }
+        });
+    }
+
     /**
      * <p>Converts a String to lower case as per {@link String#toLowerCase()}.</p>
      * <p>

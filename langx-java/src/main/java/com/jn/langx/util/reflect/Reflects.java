@@ -1393,11 +1393,10 @@ public class Reflects {
             String fieldName = null;
             if (methodName.startsWith("set") || methodName.startsWith("get")) {
                 fieldName = methodName.substring(3);
-            }
-            if (methodName.startsWith("is")) {
+            } else if (methodName.startsWith("is")) {
                 fieldName = methodName.substring(2);
             }
-            if (Strings.isEmpty(fieldName)) {
+            if (fieldName == null) {
                 fieldName = methodName;
             }
             return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
@@ -1451,16 +1450,12 @@ public class Reflects {
         if (Strings.isEmpty(fieldName)) {
             return false;
         }
-        fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
-        if (Strings.isEmpty(fieldName)) {
-            return false;
-        }
+        fieldName = Strings.lowerCaseFirstChar(fieldName);
         if (filterNonFields) {
             Class beanClass = method.getDeclaringClass();
             Field field = getAnyField(beanClass, fieldName);
             return field != null;
         }
-
 
         return true;
     }
