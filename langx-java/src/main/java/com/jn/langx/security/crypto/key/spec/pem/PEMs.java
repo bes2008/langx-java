@@ -99,12 +99,9 @@ public class PEMs extends Securitys {
         FileInputStream fileInputStream = null;
         try {
             fileInputStream = Files.openInputStream(keyFile);
-            if (fileInputStream != null) {
-                bReader = new BufferedReader(new InputStreamReader(fileInputStream, Charsets.UTF_8));
-                return readPrivateKey(bReader, passwordSupplier);
-            } else {
-                return null;
-            }
+            bReader = new BufferedReader(new InputStreamReader(fileInputStream, Charsets.UTF_8));
+            return readPrivateKey(bReader, passwordSupplier);
+
         } finally {
             IOs.close(fileInputStream);
             IOs.close(bReader);

@@ -188,11 +188,13 @@ public class Files {
             File f = URLs.getFile(URLs.toURL(file.toURI()));
             if (f != null) {
                 return new FileInputStream(f);
+            }else{
+                throw new IOException(StringTemplates.formatWithPlaceholder("file not found: {}",file.getPath()));
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
+            throw Throwables.wrapAsRuntimeIOException(e);
         }
-        return null;
     }
 
     /**
