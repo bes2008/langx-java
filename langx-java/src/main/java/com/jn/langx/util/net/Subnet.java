@@ -40,7 +40,7 @@ public class Subnet {
         final int mask;
 
 
-        if (pattern.matches("(\\d+\\.)*\\*(\\.\\*)*")) {
+        if (pattern.matches("(\\d+)(.\\d+){3}")) {
             // Asterisk subnet notation
             String[] parts = pattern.split("\\.");
             int asteriskCount = 0;

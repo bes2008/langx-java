@@ -6,12 +6,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AtomicIntegerCounter extends IntegerCounter {
     private AtomicInteger vh;
+    private int initValue;
 
     public AtomicIntegerCounter() {
         this(0);
     }
 
     public AtomicIntegerCounter(int init) {
+        this.initValue = init;
         this.vh = new AtomicInteger(init);
     }
 
@@ -43,4 +45,8 @@ public class AtomicIntegerCounter extends IntegerCounter {
         return vh.toString();
     }
 
+    @Override
+    public void reset() {
+        set(initValue);
+    }
 }
