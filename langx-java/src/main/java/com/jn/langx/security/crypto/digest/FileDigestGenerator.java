@@ -12,7 +12,6 @@ import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
-import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -144,7 +143,7 @@ public class FileDigestGenerator {
     }
 
 
-    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Iterable<byte[]>, Closeable {
+    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Closeable {
         protected INPUT input;
         protected long fileLength;
         protected long readedLength = 0L;
@@ -167,11 +166,6 @@ public class FileDigestGenerator {
 
         @Override
         public abstract byte[] next();
-
-        @Override
-        public Iterator<byte[]> iterator() {
-            return this;
-        }
 
         @Override
         public void remove() {
