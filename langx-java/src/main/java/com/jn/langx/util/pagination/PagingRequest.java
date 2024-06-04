@@ -77,7 +77,7 @@ public class PagingRequest<E> {
             if (pageNo <= 0) {
                 pageNo = 1;
             }
-            return (pageNo - 1) * pageSize;
+            return (long) (pageNo - 1) * pageSize;
         }
         return -1;
     }

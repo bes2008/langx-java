@@ -1946,7 +1946,10 @@ public class Files {
     }
 
     public static void setLastModified(File file, long time) {
-        file.setLastModified(time);
+        boolean actionResult = file.setLastModified(time);
+        if(!actionResult){
+            Loggers.getLogger(Files.class).warn("touch file failed, file path: {}", file.getPath());
+        }
     }
 
     public static long getLastModified(File file) {
