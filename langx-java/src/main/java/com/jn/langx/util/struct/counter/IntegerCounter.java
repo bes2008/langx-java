@@ -22,4 +22,6 @@ public abstract class IntegerCounter implements Counter<Integer>{
         return getAndIncrement(1);
     }
 
+    public abstract void reset();
+
 }

@@ -4,15 +4,21 @@ import com.jn.langx.util.Preconditions;
 
 public class ThreadLocalLongCounter extends LongCounter {
     private ThreadLocal<Long> valueHolder;
+    private long initValue;
 
     public ThreadLocalLongCounter() {
         this(0L);
     }
 
     public ThreadLocalLongCounter(Long value) {
-        Preconditions.checkNotNull(value);
-        this.valueHolder = new ThreadLocal<Long>();
-        this.valueHolder.set(value);
+        this.initValue= value==null?0L:value;
+        this.valueHolder = new ThreadLocal<Long>(){
+            @Override
+            protected Long initialValue() {
+                return initValue;
+            }
+        };
+        this.valueHolder.set(this.initValue);
     }
 
     @Override
@@ -41,5 +47,10 @@ public class ThreadLocalLongCounter extends LongCounter {
     public void set(Long value) {
         Preconditions.checkNotNull(value);
         this.valueHolder.set(value);
+    }
+
+    @Override
+    public void reset() {
+        this.valueHolder.remove();
     }
 }

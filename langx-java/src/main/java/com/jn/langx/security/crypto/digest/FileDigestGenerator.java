@@ -143,7 +143,7 @@ public class FileDigestGenerator {
     }
 
 
-    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Iterable<byte[]>, Closeable {
+    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Closeable {
         protected INPUT input;
         protected long fileLength;
         protected long readedLength = 0L;
@@ -166,11 +166,6 @@ public class FileDigestGenerator {
 
         @Override
         public abstract byte[] next();
-
-        @Override
-        public Iterator<byte[]> iterator() {
-            return this;
-        }
 
         @Override
         public void remove() {
@@ -196,7 +191,7 @@ public class FileDigestGenerator {
             try {
                 length = input.read(bytes);
             } catch (IOException e) {
-                e.printStackTrace();
+                Loggers.getLogger(FileDigestGenerator.class).error("error when read file: {}", e.getMessage());
             }
             if (length != -1) {
                 byte[] ret;
@@ -269,7 +264,7 @@ public class FileDigestGenerator {
     }
 
     static class FileReaderFactory {
-        private static final long SIZE_10M = 10 * 1024 * 1024;
+        private static final long SIZE_10M = 10 * 1024 * 1024L;
 
         private FileReaderFactory() {
 

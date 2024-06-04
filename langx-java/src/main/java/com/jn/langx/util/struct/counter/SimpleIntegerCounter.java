@@ -4,12 +4,13 @@ import com.jn.langx.util.Preconditions;
 
 public class SimpleIntegerCounter extends IntegerCounter {
     int value = 0;
-
+    int initValue;
     public SimpleIntegerCounter() {
         this.value = 0;
     }
 
     public SimpleIntegerCounter(Integer value) {
+        this.initValue=value;
         set(value);
     }
 
@@ -36,6 +37,11 @@ public class SimpleIntegerCounter extends IntegerCounter {
     public void set(Integer value) {
         Preconditions.checkNotNull(value);
         this.value = value;
+    }
+
+    @Override
+    public void reset() {
+        set(initValue);
     }
 
     @Override

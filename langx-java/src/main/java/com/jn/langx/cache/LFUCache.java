@@ -15,7 +15,7 @@ import java.util.TreeMap;
 @Unreleased
 class LFUCache <K, V> extends AbstractCache<K, V> {
     public LFUCache() {
-        super(Integer.MAX_VALUE, 60 * 1000);
+        super(Integer.MAX_VALUE, 60 * 1000L);
     }
 
     public LFUCache(int maxCapacity, long evictExpiredInterval) {

@@ -5,6 +5,7 @@ import com.jn.langx.io.buffer.BigByteBuffer;
 import com.jn.langx.io.buffer.BigByteBufferBuilder;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.IOs;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class RewindableInputStream extends FilterInputStream implements Rewindab
             doRead();
         }
         if (this.buffer.hasRemaining()) {
-            return this.buffer.get();
+            return IOs.filterInputStreamRead(this.buffer.get());
         } else {
             return -1;
         }

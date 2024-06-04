@@ -498,9 +498,7 @@ public class Reflects {
         Collection<Field> declaredFields = getAllDeclaredFields(clazz, containsStatic);
         result.addAll(declaredFields);
         Class superClass = clazz.getSuperclass();
-        if (superClass == null || Object.class == superClass) {
-
-        } else {
+        if (superClass != null && Object.class != superClass) {
             findAllFields(result, superClass, containsStatic);
         }
     }
@@ -530,7 +528,7 @@ public class Reflects {
             try {
                 result = clazz.getDeclaredFields();
                 declaredFieldsCache.put(clazz, (result.length == 0 ? EMPTY_FIELD_ARRAY : result));
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
                         "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
             }
@@ -566,11 +564,7 @@ public class Reflects {
     }
 
     public static <V> V getPublicFieldValueForcedIfPresent(@NonNull Object object, @NonNull String fieldName) {
-        try {
-            return getPublicFieldValue(object, fieldName, false);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return getPublicFieldValue(object, fieldName, false);
     }
 
     public static <V> V getPublicFieldValue(@NonNull Object object, @NonNull String fieldName, boolean throwException) {
@@ -585,16 +579,16 @@ public class Reflects {
                 return (V) field.get(object);
             }
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }else{
+                return null;
+            }
         }
     }
 
     public static <V> V getDeclaredFieldValueForcedIfPresent(@NonNull Object object, @NonNull String fieldName) {
-        try {
-            return getDeclaredFieldValue(object, fieldName, true, false);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return getDeclaredFieldValue(object, fieldName, true, false);
     }
 
     public static <V> V getDeclaredFieldValue(@NonNull Object object, String fieldName, boolean force, boolean throwException) {
@@ -614,11 +608,7 @@ public class Reflects {
     }
 
     public static <V> V getAnyFieldValueForcedIfPresent(@NonNull Object object, @NonNull String fieldName) {
-        try {
-            return getAnyFieldValue(object, fieldName, true, false);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return getAnyFieldValue(object, fieldName, true, false);
     }
 
     public static <V> V getAnyFieldValue(@NonNull Object object, @NonNull String fieldName, boolean force, boolean throwException) {
@@ -633,7 +623,11 @@ public class Reflects {
                 return getFieldValue(field, object, force, throwException);
             }
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }else{
+                return null;
+            }
         }
     }
 
@@ -647,29 +641,17 @@ public class Reflects {
             }
 
             // accessible
-            if (field.isAccessible()) {
-                try {
-                    return (V) field.get(object);
-                } catch (IllegalArgumentException ex) {
-                    if (throwException) {
-                        throw ex;
-                    }
-                    return null;
-                }
+            if (!field.isAccessible()) {
+                // unaccessible && force
+                makeAccessible(field);
             }
-
-            // unaccessible && force
-            makeAccessible(field);
-            try {
-                return (V) field.get(object);
-            } catch (IllegalArgumentException ex) {
-                if (throwException) {
-                    throw ex;
-                }
+            return (V) field.get(object);
+        } catch (Throwable ex) {
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }else{
                 return null;
             }
-        } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
@@ -687,30 +669,15 @@ public class Reflects {
                     return;
                 }
 
-                if (field.isAccessible()) {
-                    if (throwException) {
-                        field.set(target, value);
-                    } else {
-                        try {
-                            field.set(target, value);
-                        } catch (Throwable ex) {
-                            // ignore it
-                        }
-                    }
-                    return;
+                if (!field.isAccessible()) {
+                    makeAccessible(field);
                 }
-
-                makeAccessible(field);
-                try {
-                    field.set(target, value);
-                } catch (Throwable ex) {
-                    if (throwException) {
-                        throw new RuntimeException(ex);
-                    }
-                }
+                field.set(target, value);
             }
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
         }
     }
 
@@ -1036,11 +1003,7 @@ public class Reflects {
     }
 
     public static <V> V invokePublicMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
-        try {
-            return invokePublicMethod(object, methodName, parameterTypes, parameters, true, false);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return invokePublicMethod(object, methodName, parameterTypes, parameters, true, false);
     }
 
     public static <V> V invokePublicMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) {
@@ -1054,16 +1017,16 @@ public class Reflects {
             }
             return invoke(method, object, parameters, force, throwException);
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }else{
+                return null;
+            }
         }
     }
 
     public static <V> V invokeDeclaredMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
-        try {
-            return invokeDeclaredMethod(object, methodName, parameterTypes, parameters, true, false);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return invokeDeclaredMethod(object, methodName, parameterTypes, parameters, true, false);
     }
 
     public static <V> V invokeDeclaredMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) {
@@ -1077,16 +1040,16 @@ public class Reflects {
             }
             return invoke(method, object, parameters, force, throwException);
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }else{
+                return null;
+            }
         }
     }
 
     public static <V> V invokeAnyMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
-        try {
-            return invokeAnyMethod(object, methodName, parameterTypes, parameters, true, false);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return invokeAnyMethod(object, methodName, parameterTypes, parameters, true, false);
     }
 
     public static <V> V invokeAnyMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) {
@@ -1100,7 +1063,11 @@ public class Reflects {
             }
             return invoke(method, object, parameters, force, throwException);
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            if(throwException) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }else{
+                return null;
+            }
         }
     }
 
@@ -1397,18 +1364,14 @@ public class Reflects {
             try {
                 return Collection.class.getMethod("isEmpty");
             } catch (NoSuchMethodException ignore) {
+                // ignore it
             }
         }
 
         for (Method method : clazz.getMethods()) {
-            if (Modifiers.isPublic(method) && !Modifiers.isStatic(method) && method.getParameterTypes().length == 0) {
+            if(isGetter(method) && candidate == null){
                 String methodName = method.getName();
-                if ((getter.equals(methodName) || field.equals(methodName) || ((isGet.equals(methodName) || simpleIsGet.equals(methodName)) && method.getReturnType() == boolean.class)
-                        || simple.equals(methodName))) {
-                    if (candidate == null || isSubClassOrEquals(candidate.getReturnType(), method.getReturnType())) {
-                        candidate = method;
-                    }
-                }
+                candidate = method;
             }
         }
         return candidate;
@@ -1430,11 +1393,10 @@ public class Reflects {
             String fieldName = null;
             if (methodName.startsWith("set") || methodName.startsWith("get")) {
                 fieldName = methodName.substring(3);
-            }
-            if (methodName.startsWith("is")) {
+            } else if (methodName.startsWith("is")) {
                 fieldName = methodName.substring(2);
             }
-            if (Objs.isEmpty(fieldName)) {
+            if (fieldName == null) {
                 fieldName = methodName;
             }
             return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
@@ -1453,7 +1415,7 @@ public class Reflects {
     public static boolean isGetter(@NonNull Method method) {
         if (isGetterOrSetter(method)) {
             String methodName = method.getName();
-            return methodName.startsWith("get") || methodName.startsWith("is");
+            return (methodName.startsWith("get") || methodName.startsWith("is")) && method.getReturnType() == boolean.class;
         }
         return false;
     }
@@ -1463,10 +1425,7 @@ public class Reflects {
     }
 
     public static boolean isGetterOrSetter(@NonNull Method method, boolean filterNonFields) {
-        if (method == null) {
-            return false;
-        }
-        if (!Modifiers.isPublic(method) || Modifiers.isStatic(method) || Modifiers.isAbstract(method)) {
+        if (method == null || Modifiers.isStatic(method) || Modifiers.isAbstract(method) || !Modifiers.isPublic(method) ) {
             return false;
         }
 
@@ -1491,17 +1450,13 @@ public class Reflects {
         if (Strings.isEmpty(fieldName)) {
             return false;
         }
-        if (Objs.length(fieldName) >= 1) {
-            fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
-        }
-        if (Strings.isEmpty(fieldName)) {
-            return false;
-        }
+        fieldName = Strings.lowerCaseFirstChar(fieldName);
         if (filterNonFields) {
             Class beanClass = method.getDeclaringClass();
             Field field = getAnyField(beanClass, fieldName);
             return field != null;
         }
+
         return true;
     }
 
@@ -1633,35 +1588,37 @@ public class Reflects {
         Preconditions.checkNotNull(parent);
         Preconditions.checkNotNull(child);
 
-        if (checkInterfaces || checkSuperClass) {
-            if (checkInterfaces) {
-                Class[] interfaces = child.getInterfaces();
-                if (Pipeline.of(interfaces)
-                        .anyMatch(new Predicate<Class>() {
-                            @Override
-                            public boolean test(Class itfc) {
-                                if (Objs.equals(parent, Reflects.getFQNClassName(itfc))) {
-                                    return true;
-                                }
-                                return isSubClassOrEquals(parent, itfc, checkSuperClass, checkInterfaces);
+        if(!checkInterfaces && !checkSuperClass){
+            return Objs.equals(parent, Reflects.getFQNClassName(child));
+        }
+
+        if (checkInterfaces) {
+            Class[] interfaces = child.getInterfaces();
+            if (Pipeline.of(interfaces)
+                    .anyMatch(new Predicate<Class>() {
+                        @Override
+                        public boolean test(Class itfc) {
+                            if (Objs.equals(parent, Reflects.getFQNClassName(itfc))) {
+                                return true;
                             }
-                        })) {
+                            return isSubClassOrEquals(parent, itfc, checkSuperClass, checkInterfaces);
+                        }
+                    })) {
+                return true;
+            }
+        }
+
+        if (checkSuperClass) {
+            Class parentClass = child.getSuperclass();
+            if (parentClass != null) {
+                String parentClassName = Reflects.getFQNClassName(parentClass);
+                if (Objs.equals(parentClassName, parent)) {
                     return true;
                 }
+                return isSubClassOrEquals(parent, parentClass, checkSuperClass, checkInterfaces);
             }
-
-            if (checkSuperClass) {
-                Class parentClass = child.getSuperclass();
-                if (parentClass != null) {
-                    String parentClassName = Reflects.getFQNClassName(parentClass);
-                    if (Objs.equals(parentClassName, parent)) {
-                        return true;
-                    }
-                    return isSubClassOrEquals(parent, parentClass, checkSuperClass, checkInterfaces);
-                }
-            }
-
         }
+
 
         return false;
     }

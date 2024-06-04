@@ -1,7 +1,6 @@
 package com.jn.langx.text.translate;
 
 
-import com.jn.langx.text.csv.CsvTranslators;
 import com.jn.langx.util.Emptys;
 
 import java.io.IOException;
@@ -203,7 +202,6 @@ public class StringEscapes {
      * object allows the CSV escaping functionality to be used
      * as the foundation for a custom translator.
      */
-    public static final CharSequenceTranslator ESCAPE_CSV = new CsvTranslators.CsvEscaper();
 
     /**
      * Translator object for escaping Shell command language.
@@ -335,7 +333,6 @@ public class StringEscapes {
      * object allows the CSV unescaping functionality to be used
      * as the foundation for a custom translator.
      */
-    public static final CharSequenceTranslator UNESCAPE_CSV = new CsvTranslators.CsvUnescaper();
 
     /**
      * Translator object for unescaping escaped XSI Value entries.
@@ -773,52 +770,6 @@ public class StringEscapes {
 
     //-----------------------------------------------------------------------
 
-    /**
-     * <p>Returns a {@code String} value for a CSV column enclosed in double quotes,
-     * if required.</p>
-     *
-     * <p>If the value contains a comma, newline or double quote, then the
-     * String value is returned enclosed in double quotes.</p>
-     *
-     * <p>Any double quote characters in the value are escaped with another double quote.</p>
-     *
-     * <p>If the value does not contain a comma, newline or double quote, then the
-     * String value is returned unchanged.</p>
-     * <p>
-     * see <a href="http://en.wikipedia.org/wiki/Comma-separated_values">Wikipedia</a> and
-     * <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
-     *
-     * @param input the input CSV column String, may be null
-     * @return The input String, enclosed in double quotes if the value contains a comma,
-     * newline or double quote, {@code null} if null string input
-     */
-    public static String escapeCsv(final String input) {
-        return ESCAPE_CSV.transform(input);
-    }
-
-    /**
-     * <p>Returns a {@code String} value for an unescaped CSV column.</p>
-     *
-     * <p>If the value is enclosed in double quotes, and contains a comma, newline
-     * or double quote, then quotes are removed.
-     * </p>
-     *
-     * <p>Any double quote escaped characters (a pair of double quotes) are unescaped
-     * to just one double quote.</p>
-     *
-     * <p>If the value is not enclosed in double quotes, or is and does not contain a
-     * comma, newline or double quote, then the String value is returned unchanged.</p>
-     * <p>
-     * see <a href="http://en.wikipedia.org/wiki/Comma-separated_values">Wikipedia</a> and
-     * <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
-     *
-     * @param input the input CSV column String, may be null
-     * @return The input String, with enclosing double quotes removed and embedded double
-     * quotes unescaped, {@code null} if null string input
-     */
-    public static String unescapeCsv(final String input) {
-        return UNESCAPE_CSV.transform(input);
-    }
 
     /**
      * <p>Escapes the characters in a {@code String} using XSI rules.</p>

@@ -107,7 +107,7 @@ public class RoundRobinLoadBalanceStrategy<NODE extends Node, INVOCATION> extend
                 }
             });
         }
-        if (selectedNode != null) {
+        if (selectedNode != null && selectedWRR!=null) {
             selectedWRR.sel(totalWeight);
             return selectedNode;
         }

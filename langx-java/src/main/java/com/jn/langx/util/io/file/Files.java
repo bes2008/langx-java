@@ -188,11 +188,13 @@ public class Files {
             File f = URLs.getFile(URLs.toURL(file.toURI()));
             if (f != null) {
                 return new FileInputStream(f);
+            }else{
+                throw new IOException(StringTemplates.formatWithPlaceholder("file not found: {}",file.getPath()));
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
+            throw Throwables.wrapAsRuntimeIOException(e);
         }
-        return null;
     }
 
     /**
@@ -585,7 +587,10 @@ public class Files {
                     srcFile + "' to '" + destFile + "' Expected length: " + srcLen + " Actual: " + dstLen);
         }
         if (preserveFileDate) {
-            destFile.setLastModified(srcFile.lastModified());
+            boolean actionResult = destFile.setLastModified(srcFile.lastModified());
+            if(!actionResult){
+                logger.error("touch file failed, filepath: {}", srcFile.getPath());
+            }
         }
     }
 
@@ -861,7 +866,10 @@ public class Files {
 
         // Do this last, as the above has probably affected directory metadata
         if (preserveFileDate) {
-            destDir.setLastModified(srcDir.lastModified());
+            boolean actionResult = destDir.setLastModified(srcDir.lastModified());
+            if(!actionResult){
+                logger.error("touch file failed, the filepath: {}", destDir.getPath());
+            }
         }
     }
 
@@ -1058,7 +1066,10 @@ public class Files {
 
         if (FileSystems.isNotSymlink(directory)) {
             cleanDirectory(directory);
-            directory.delete();
+            boolean actionResult= directory.delete();
+            if(!actionResult){
+                logger.warn("delete directory failed, directory path is: {}", directory.getPath());
+            }
         }
         if (directory.exists() && directory.isDirectory()) {
             deleteDirectory(directory);
@@ -1112,14 +1123,20 @@ public class Files {
             File[] children = directory.listFiles((java.io.FileFilter) new IsFileFilter());
             if (children != null) {
                 for (File child : children) {
-                    child.delete();
+                    boolean actionResult = child.delete();
+                    if(!actionResult){
+                        logger.warn("delete file failed, file path: {}", child.getPath());
+                    }
                 }
             }
             children = directory.listFiles((java.io.FileFilter) new IsDirectoryFileFilter());
             if (children != null) {
                 for (File child : children) {
                     cleanDirectory(child);
-                    child.delete();
+                    boolean actionResult= child.delete();
+                    if(!actionResult){
+                        logger.warn("delete directory failed, directory path: {}", child.getPath());
+                    }
                 }
             }
         }
@@ -1761,9 +1778,9 @@ public class Files {
         try {
             inputStream = new FileInputStream(file);
             long filesize = file.length();
-            if (filesize > (long) MAX_BUFFER_SIZE)
+            if (filesize > (long) MAX_BUFFER_SIZE) {
                 throw new OutOfMemoryError("Required array size too large");
-
+            }
             return read(inputStream, (int) filesize);
         } finally {
             IOs.close(inputStream);
@@ -1929,7 +1946,10 @@ public class Files {
     }
 
     public static void setLastModified(File file, long time) {
-        file.setLastModified(time);
+        boolean actionResult = file.setLastModified(time);
+        if(!actionResult){
+            Loggers.getLogger(Files.class).warn("touch file failed, file path: {}", file.getPath());
+        }
     }
 
     public static long getLastModified(File file) {

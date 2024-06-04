@@ -105,11 +105,16 @@ public class IOs {
     }
 
     public static String readAsString(InputStream reader) throws IOException {
+        return readAsString(reader, Charsets.UTF_8);
+    }
+
+    public static String readAsString(InputStream reader, Charset charset) throws IOException {
         StringBuilder stringBuilder = new StringBuilder(256);
         byte[] bytes = new byte[1024];
         int length;
+        charset = charset == null? Charsets.UTF_8:charset;
         while ((length = reader.read(bytes)) != -1) {
-            stringBuilder.append(new String(bytes, 0, length, Charsets.UTF_8));
+            stringBuilder.append(new String(bytes, 0, length, charset));
         }
         return stringBuilder.toString();
     }
@@ -2798,7 +2803,8 @@ public class IOs {
      * 解决该问题的办法，就是两者范围统一。
      */
     public static int filterInputStreamRead(byte theByte) {
-        return theByte < 0 ? (theByte + 256) : theByte;
+        // return theByte < 0 ? (theByte + 256) : theByte;
+        return theByte & 0xFF;
     }
 
     public static int filterInputStreamRead(int theByte) {

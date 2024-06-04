@@ -56,6 +56,8 @@ public class FieldAttributes implements MemberAttributes<Field>{
      * {@code listParameterizedType} for the {@code red} field.
      *
      * @return the specific type declared for this field
+     *
+     * @deprecated
      */
     @Deprecated
     public Type getDeclaredType() {

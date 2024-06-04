@@ -2,6 +2,8 @@ package com.jn.langx.io.stream.bandwidthlimit;
 
 import com.jn.langx.util.DataSizes;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.retry.ThreadSleepWaitStrategy;
+import com.jn.langx.util.retry.WaitStrategy;
 import org.slf4j.Logger;
 
 /**
@@ -31,8 +33,15 @@ public class BandwidthLimiter {
     //在maxRate的速率下，通过chunk大小的字节流要多少时间（纳秒）
     private long timeCostPerChunk;
 
+    private WaitStrategy waitStrategy;
+
     public BandwidthLimiter(int maxRate) {
+        this(maxRate, new ThreadSleepWaitStrategy());
+    }
+
+    public BandwidthLimiter(int maxRate, WaitStrategy waitStrategy) {
         this.setMaxRate(maxRate);
+        this.waitStrategy=waitStrategy;
     }
 
     //动态调整最大速率
@@ -61,9 +70,11 @@ public class BandwidthLimiter {
             long missedTime = this.timeCostPerChunk - passTime;
             if (missedTime > 0) {
                 try {
-                    Thread.sleep(missedTime / 1000000, (int) (missedTime % 1000000));
+                    long waitTime = missedTime / 1000000;
+                    waitStrategy.await(waitTime);
                 } catch (InterruptedException e) {
                     LOGGER.error(e.getMessage(), e);
+                    Thread.currentThread().interrupt();
                 }
             }
             this.bytesWillBeSentOrReceive -= CHUNK_LENGTH;

@@ -76,7 +76,7 @@ public final class HashFunction {
         long h = 0;
         for (int i = 0; i < nbHash; i++) {
             h = Hashs.hash(this.hasher, b, h);
-            result[i] = Math.abs(Long.valueOf(h).intValue() % maxValue);
+            result[i] = Math.abs((int)h % maxValue);
         }
         return result;
     }

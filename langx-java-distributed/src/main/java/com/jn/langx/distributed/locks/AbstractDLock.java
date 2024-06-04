@@ -24,6 +24,10 @@ public abstract class AbstractDLock implements DLock {
         try {
             return tryLock(tryTime, tryTimeUnit, ttl, ttlUnit, false);
         } catch (InterruptedException ex) {
+            boolean interrupted=Thread.interrupted();
+            if(interrupted){
+                // ignore it
+            }
             return false;
         }
     }

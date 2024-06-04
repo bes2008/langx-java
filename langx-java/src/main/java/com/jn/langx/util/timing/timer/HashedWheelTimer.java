@@ -11,6 +11,8 @@ import com.jn.langx.util.memory.leak.ResourceLeakDetectorFactory;
 import com.jn.langx.util.memory.leak.ResourceLeakTracker;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.retry.ThreadSleepWaitStrategy;
+import com.jn.langx.util.retry.WaitStrategy;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -90,6 +92,7 @@ public class HashedWheelTimer extends AbstractTimer {
      * 分桶轮，轮中每个元素都是一个分桶。一个分桶是一个 timeout 链表
      */
     private final HashedWheelBucket[] wheel;
+    private final WaitStrategy waitStrategy;
     private final int mask;
     private final CountDownLatch startTimeInitialized = new CountDownLatch(1);
     // 所有的 定时任务
@@ -227,8 +230,11 @@ public class HashedWheelTimer extends AbstractTimer {
     public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor) {
         this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, taskExecutor, HashedWheelTimeoutFactory.INSTANCE);
     }
+    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor, TimeoutFactory<HashedWheelTimer, ? extends HashedWheelTimeout> timeoutFactory){
+        this(threadFactory,tickDuration,unit,ticksPerWheel,leakDetection,maxPendingTimeouts, taskExecutor, timeoutFactory, null);
+    }
 
-    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor, TimeoutFactory<HashedWheelTimer, ? extends HashedWheelTimeout> timeoutFactory) {
+    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor, TimeoutFactory<HashedWheelTimer, ? extends HashedWheelTimeout> timeoutFactory, WaitStrategy waitStrategy) {
 
         Preconditions.checkNotNull(threadFactory, "threadFactory is null");
         Preconditions.checkNotNull(unit, "unit is null");
@@ -265,6 +271,8 @@ public class HashedWheelTimer extends AbstractTimer {
         } else {
             this.tickDuration = duration;
         }
+
+        this.waitStrategy = waitStrategy==null?new ThreadSleepWaitStrategy():waitStrategy;
 
         workerThread = threadFactory.newThread(worker);
 
@@ -347,7 +355,10 @@ public class HashedWheelTimer extends AbstractTimer {
             try {
                 startTimeInitialized.await();
             } catch (InterruptedException ignore) {
-                // Ignore - it will be ready very soon.
+                boolean interrupted = Thread.interrupted();
+                if(interrupted){
+                    // Ignore - it will be ready very soon.
+                }
             }
         }
     }
@@ -355,10 +366,7 @@ public class HashedWheelTimer extends AbstractTimer {
     @Override
     public Set<Timeout> stop() {
         if (Thread.currentThread() == workerThread) {
-            throw new IllegalStateException(
-                    HashedWheelTimer.class.getSimpleName() +
-                            ".stop() cannot be called from " +
-                            TimerTask.class.getSimpleName());
+            throw new IllegalStateException( HashedWheelTimer.class.getSimpleName() + ".stop() cannot be called from " + TimerTask.class.getSimpleName());
         }
         this.running = false;
         if (!WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_STARTED, WORKER_STATE_SHUTDOWN)) {
@@ -573,12 +581,18 @@ public class HashedWheelTimer extends AbstractTimer {
                     sleepTimeMs = sleepTimeMs / 10 * 10;
                 }
 
+
                 try {
-                    Thread.sleep(sleepTimeMs);
+                    waitStrategy.await(sleepTimeMs);
                 } catch (InterruptedException ignored) {
+                    boolean interrupted=Thread.interrupted();
+                    if(interrupted){
+                        // ignore it
+                    }
                     if (WORKER_STATE_UPDATER.get(HashedWheelTimer.this) == WORKER_STATE_SHUTDOWN) {
                         return Long.MIN_VALUE;
                     }
+
                 }
             }
         }

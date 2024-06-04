@@ -29,20 +29,17 @@ public class Maps {
 
     public static <K, V> V get(@NonNull Map<K, V> map, @NonNull K key, Supplier<K, V> defaultValueSupplier) {
         V v = map.get(key);
-        if (v == null) {
-            if (defaultValueSupplier != null) {
+        if (v == null && defaultValueSupplier != null) {
                 v = defaultValueSupplier.get(key);
-            }
         }
         return v;
     }
 
     public static <K, V> V get(@NonNull Map<K, V> map, @NonNull K key, Supplier0<V> defaultValueSupplier) {
         V v = map.get(key);
-        if (v == null) {
-            if (defaultValueSupplier != null) {
+        if (v == null && defaultValueSupplier != null) {
                 v = defaultValueSupplier.get();
-            }
+
         }
         return v;
     }

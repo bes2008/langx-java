@@ -3,10 +3,13 @@ package com.jn.langx.util.retry;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.function.*;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
 import java.util.concurrent.Callable;
 
 public class Retryer<R> {
+    private static final Logger LOGGER = Loggers.getLogger(Retryer.class);
     @NonNull
     private RetryConfig config;
 
@@ -61,12 +64,12 @@ public class Retryer<R> {
         try {
             if (retryInfo.isFirstAttempts()) {
                 if (this.config.getDelay() > 0) {
-                    this.config.getTimeUnit().sleep(this.config.getDelay());
+                    this.waitStrategy.await( this.config.getTimeUnit().toMillis(this.config.getDelay()));
                 }
             }
             R r = task.call();
             retryInfo.setResult(r);
-        } catch (Throwable e) {
+        }catch (Throwable e){
             retryInfo.setError(e);
         }
 

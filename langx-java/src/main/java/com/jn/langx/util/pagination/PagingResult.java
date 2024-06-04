@@ -45,7 +45,7 @@ public class PagingResult<E>{
     }
 
     public int getMaxPage() {
-        return Long.valueOf(getMaxPageCount(pageSize)).intValue();
+        return (int)getMaxPageCount(pageSize);
     }
 
     public long getMaxPageCount(int pageSize) {
