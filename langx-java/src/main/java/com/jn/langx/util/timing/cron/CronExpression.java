@@ -227,15 +227,15 @@ public final class CronExpression implements Serializable, Cloneable {
         dayMap.put("SAT", 7);
     }
 
-    private final String cronExpression;
+    private final String originalExpression;
     private TimeZone timeZone = null;
-    private transient TreeSet<Integer> seconds;
-    private transient TreeSet<Integer> minutes;
-    private transient TreeSet<Integer> hours;
-    private transient TreeSet<Integer> daysOfMonth;
-    private transient TreeSet<Integer> months;
-    private transient TreeSet<Integer> daysOfWeek;
-    private transient TreeSet<Integer> years;
+    private final transient TreeSet<Integer> seconds = new TreeSet<Integer>();
+    private final transient TreeSet<Integer> minutes = new TreeSet<Integer>();
+    private final transient TreeSet<Integer> hours = new TreeSet<Integer>();
+    private final transient TreeSet<Integer> daysOfMonth = new TreeSet<Integer>();
+    private final transient TreeSet<Integer> months = new TreeSet<Integer>();
+    private final transient TreeSet<Integer> daysOfWeek = new TreeSet<Integer>();
+    private final transient TreeSet<Integer> years = new TreeSet<Integer>();
 
     private transient boolean lastdayOfWeek = false;
     private transient int nthdayOfWeek = 0;
@@ -260,9 +260,9 @@ public final class CronExpression implements Serializable, Cloneable {
             throw new IllegalArgumentException("cronExpression cannot be null");
         }
 
-        this.cronExpression = cronExpression.toUpperCase(Locale.US);
+        this.originalExpression = cronExpression.toUpperCase(Locale.US);
 
-        buildExpression(this.cronExpression);
+        buildExpression(this.originalExpression);
     }
 
     /**
@@ -277,9 +277,9 @@ public final class CronExpression implements Serializable, Cloneable {
          * ParseException. We also elide some of the sanity checking as it is
          * not logically trippable.
          */
-        this.cronExpression = expression.getCronExpression();
+        this.originalExpression = expression.getCronExpression();
         try {
-            buildExpression(cronExpression);
+            buildExpression(originalExpression);
         } catch (ParseException ex) {
             throw new AssertionError(ex);
         }
@@ -388,7 +388,7 @@ public final class CronExpression implements Serializable, Cloneable {
      */
     @Override
     public String toString() {
-        return cronExpression;
+        return originalExpression;
     }
 
     /**
@@ -424,30 +424,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
     void buildExpression(String expression) throws ParseException {
         expressionParsed = true;
-
         try {
-
-            if (seconds == null) {
-                seconds = new TreeSet<Integer>();
-            }
-            if (minutes == null) {
-                minutes = new TreeSet<Integer>();
-            }
-            if (hours == null) {
-                hours = new TreeSet<Integer>();
-            }
-            if (daysOfMonth == null) {
-                daysOfMonth = new TreeSet<Integer>();
-            }
-            if (months == null) {
-                months = new TreeSet<Integer>();
-            }
-            if (daysOfWeek == null) {
-                daysOfWeek = new TreeSet<Integer>();
-            }
-            if (years == null) {
-                years = new TreeSet<Integer>();
-            }
 
             int exprOn = SECOND;
 
@@ -478,8 +455,7 @@ public final class CronExpression implements Serializable, Cloneable {
             }
 
             if (exprOn <= DAY_OF_WEEK) {
-                throw new ParseException("Unexpected end of expression.",
-                        expression.length());
+                throw new ParseException("Unexpected end of expression.", expression.length());
             }
 
             if (exprOn <= YEAR) {
@@ -493,11 +469,10 @@ public final class CronExpression implements Serializable, Cloneable {
             boolean dayOfMSpec = !dom.contains(NO_SPEC);
             boolean dayOfWSpec = !dow.contains(NO_SPEC);
 
-            if (!dayOfMSpec || dayOfWSpec) {
-                if (!dayOfWSpec || dayOfMSpec) {
+            if (!dayOfMSpec || dayOfWSpec && (!dayOfWSpec || dayOfMSpec)) {
                     throw new ParseException(
                             "Support for specifying both a day-of-week AND a day-of-month parameter is not implemented.", 0);
-                }
+
             }
         } catch (ParseException pe) {
             throw pe;
@@ -507,8 +482,7 @@ public final class CronExpression implements Serializable, Cloneable {
         }
     }
 
-    int storeExpressionVals(int pos, String s, int type)
-            throws ParseException {
+    int storeExpressionVals(int pos, String s, int type) throws ParseException {
 
         int incr = 0;
         int i = skipWhiteSpace(pos, s);
@@ -539,8 +513,7 @@ public final class CronExpression implements Serializable, Cloneable {
             } else if (type == DAY_OF_WEEK) {
                 sval = getDayOfWeekNumber(sub);
                 if (sval < 0) {
-                    throw new ParseException("Invalid Day-of-Week value: '"
-                            + sub + "'", i);
+                    throw new ParseException("Invalid Day-of-Week value: '" + sub + "'", i);
                 }
                 if (s.length() > i + 3) {
                     c = s.charAt(i + 3);
@@ -549,9 +522,7 @@ public final class CronExpression implements Serializable, Cloneable {
                         sub = s.substring(i, i + 3);
                         eval = getDayOfWeekNumber(sub);
                         if (eval < 0) {
-                            throw new ParseException(
-                                    "Invalid Day-of-Week value: '" + sub
-                                            + "'", i);
+                            throw new ParseException( "Invalid Day-of-Week value: '" + sub + "'", i);
                         }
                     } else if (c == '#') {
                         try {
@@ -561,9 +532,7 @@ public final class CronExpression implements Serializable, Cloneable {
                                 throw new Exception();
                             }
                         } catch (Exception e) {
-                            throw new ParseException(
-                                    "A numeric value between 1 and 5 must follow the '#' option",
-                                    i);
+                            throw new ParseException( "A numeric value between 1 and 5 must follow the '#' option", i);
                         }
                     } else if (c == 'L') {
                         lastdayOfWeek = true;
@@ -844,7 +813,7 @@ public final class CronExpression implements Serializable, Cloneable {
     }
 
     public String getCronExpression() {
-        return cronExpression;
+        return originalExpression;
     }
 
     public String getExpressionSummary() {
@@ -953,8 +922,7 @@ public final class CronExpression implements Serializable, Cloneable {
         return i;
     }
 
-    void addToSet(int val, int end, int incr, int type)
-            throws ParseException {
+    void addToSet(int val, int end, int incr, int type) throws ParseException {
 
         TreeSet<Integer> set = getSet(type);
 
@@ -1117,9 +1085,8 @@ public final class CronExpression implements Serializable, Cloneable {
             case DAY_OF_WEEK:
                 return daysOfWeek;
             case YEAR:
-                return years;
             default:
-                return null;
+                return years;
         }
     }
 
@@ -1640,11 +1607,17 @@ public final class CronExpression implements Serializable, Cloneable {
 
         stream.defaultReadObject();
         try {
-            buildExpression(cronExpression);
+            buildExpression(originalExpression);
         } catch (Exception ignore) {
-        } // never happens
+            // ignore it
+        }
     }
 
+    /**
+     *
+     * @return
+     * @deprecated
+     */
     @Override
     @Deprecated
     public Object clone() {
