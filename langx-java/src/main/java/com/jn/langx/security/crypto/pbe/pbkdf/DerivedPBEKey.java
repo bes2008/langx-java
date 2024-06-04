@@ -39,9 +39,6 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
     @NonNull
     private byte[] key;
 
-    @Nullable
-    private byte[] iv;
-
     public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key){
         this(pbeAlgorithm, null, keySpec, key, null);
     }
@@ -53,7 +50,6 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
 
     public DerivedPBEKey(String pbeAlgorithm, String cipherAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
         super(Objs.useValueIfEmpty(iv, Emptys.EMPTY_BYTES));
-        setIV(super.getIV());
         this.key=key;
         this.pbeAlgorithm=pbeAlgorithm;
         this.cipherAlgorithm=cipherAlgorithm;
@@ -65,15 +61,6 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
         return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(keySpec.getSalt()), Hex.encodeHexString(key), getIV()==null?"":Hex.encodeHexString(getIV()));
     }
 
-    public void setIV(byte[] iv) {
-        this.iv = iv;
-    }
-
-    @Override
-    public byte[] getIV() {
-        return this.iv;
-    }
-
     @Override
     public byte[] getEncoded() {
         return this.key;
@@ -83,8 +70,6 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
     public String getFormat() {
         return Base64.encodeBase64String(this.key);
     }
-
-
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
