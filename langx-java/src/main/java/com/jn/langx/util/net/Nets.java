@@ -645,19 +645,9 @@ public class Nets {
                 wordLen > 0 && (colons < 8 || compressBegin <= start);
     }
 
-    private static boolean isValidIpV4Word(CharSequence word, int from, int toExclusive) {
-        int len = toExclusive - from;
-        char c0, c1, c2;
-        if (len < 1 || len > 3 || (c0 = word.charAt(from)) < '0') {
-            return false;
-        }
-        if (len == 3) {
-            return (c1 = word.charAt(from + 1)) >= '0' &&
-                    (c2 = word.charAt(from + 2)) >= '0' &&
-                    (c0 <= '1' && c1 <= '9' && c2 <= '9' ||
-                            c0 == '2' && c1 <= '5' && (c2 <= '5' || c1 < '5' && c2 <= '9'));
-        }
-        return c0 <= '9' && (len == 1 || Chars.isNumber(word.charAt(from + 1)));
+    private static boolean isValidIpV4Word(String word) {
+        int num = Numbers.createInteger(word);
+        return num>=0 && num <=255;
     }
 
     private static boolean isValidHexChar(char c) {
@@ -821,24 +811,20 @@ public class Nets {
 
     private static boolean isValidIpV4Address(String ip, int from, int toExcluded) {
         int len = toExcluded - from;
-        int i;
-        return len <= 15 && len >= 7 &&
-                (i = ip.indexOf('.', from + 1)) > 0 && isValidIpV4Word(ip, from, i) &&
-                (i = ip.indexOf('.', from = i + 2)) > 0 && isValidIpV4Word(ip, from - 1, i) &&
-                (i = ip.indexOf('.', from = i + 2)) > 0 && isValidIpV4Word(ip, from - 1, i) &&
-                isValidIpV4Word(ip, i + 1, toExcluded);
-    }
-
-
-    @SuppressWarnings("DuplicateBooleanBranch")
-    private static boolean isValidIpV4Address0(CharSequence ip, int from, int toExcluded) {
-        int len = toExcluded - from;
-        int i;
-        return len <= 15 && len >= 7 &&
-                (i = indexOf(ip, '.', from + 1)) > 0 && isValidIpV4Word(ip, from, i) &&
-                (i = indexOf(ip, '.', from = i + 2)) > 0 && isValidIpV4Word(ip, from - 1, i) &&
-                (i = indexOf(ip, '.', from = i + 2)) > 0 && isValidIpV4Word(ip, from - 1, i) &&
-                isValidIpV4Word(ip, i + 1, toExcluded);
+        if(len <= 15 && len >= 7){
+            String[] words =Strings.split(ip,":");
+            if(words.length!=4){
+                return false;
+            }
+            return Pipeline.of(words).allMatch(new Predicate<String>() {
+                @Override
+                public boolean test(String word) {
+                    return isValidIpV4Word(word);
+                }
+            });
+        }else{
+            return false;
+        }
     }
 
 
@@ -1804,9 +1790,9 @@ public class Nets {
                 mac.append("-");
             }
             currentByte = (byte) ((b & 240) >> 4);
-            mac.append(Integer.toHexString(currentByte));
+            mac.append(String.format("%02X", currentByte));
             currentByte = (byte) (b & 15);
-            mac.append(Integer.toHexString(currentByte));
+            mac.append(String.format("%02X", currentByte));
             first = true;
         }
         return mac.toString().toUpperCase();

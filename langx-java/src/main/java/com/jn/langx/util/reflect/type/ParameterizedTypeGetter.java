@@ -75,8 +75,14 @@ public abstract class ParameterizedTypeGetter<T> {
     }
 
     public final Type getActualArgumentType(int index) {
-        Preconditions.checkIndex(index, actualTypeArguments == null ? 0 : actualTypeArguments.length);
-        return actualTypeArguments[index];
+        int length = actualTypeArguments == null ? 0 : actualTypeArguments.length;
+        if(index>=0 && index<length){
+            return actualTypeArguments[index];
+        }
+        else{
+           throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal index: {}", index));
+        }
+
     }
 
     public final Type getType() {

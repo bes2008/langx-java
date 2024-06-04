@@ -123,10 +123,6 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         private static final long serialVersionUID = 0;
     }
 
-    static boolean equal(Object a, Object b) {
-        return a == b || (a != null && a.equals(b));
-    }
-
     static void checkArgument(boolean condition) {
         if (!condition) {
             throw new IllegalArgumentException();
