@@ -2798,7 +2798,8 @@ public class IOs {
      * 解决该问题的办法，就是两者范围统一。
      */
     public static int filterInputStreamRead(byte theByte) {
-        return theByte < 0 ? (theByte + 256) : theByte;
+        // return theByte < 0 ? (theByte + 256) : theByte;
+        return theByte & 0xFF;
     }
 
     public static int filterInputStreamRead(int theByte) {
