@@ -6,12 +6,14 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class AtomicLongCounter extends LongCounter {
     private AtomicLong vh;
+    private long initValue;
 
     public AtomicLongCounter() {
-        this(0);
+        this(0L);
     }
 
     public AtomicLongCounter(long init) {
+        this.initValue=init;
         this.vh = new AtomicLong(init);
     }
 
@@ -37,5 +39,10 @@ public class AtomicLongCounter extends LongCounter {
     public void set(Long value) {
         Preconditions.checkNotNull(value);
         vh.set(value);
+    }
+
+    @Override
+    public void reset() {
+        set(initValue);
     }
 }

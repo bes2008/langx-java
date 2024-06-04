@@ -4,13 +4,14 @@ import com.jn.langx.util.Preconditions;
 
 public class SimpleLongCounter extends LongCounter {
     private long value;
-
+    private long initValue;
     public SimpleLongCounter() {
-        this.value = 0L;
+        this(0L);
     }
 
     public SimpleLongCounter(Long value) {
-        set(value);
+        this.initValue=value==null?0L:value;
+        set(this.initValue);
     }
 
 
@@ -37,5 +38,10 @@ public class SimpleLongCounter extends LongCounter {
     public void set(Long value) {
         Preconditions.checkNotNull(value);
         this.value = value;
+    }
+
+    @Override
+    public void reset() {
+        set(initValue);
     }
 }

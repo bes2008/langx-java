@@ -47,4 +47,6 @@ public interface Counter<E extends Number> {
      * 设置值
      */
     void set(E value);
+
+    void reset();
 }
