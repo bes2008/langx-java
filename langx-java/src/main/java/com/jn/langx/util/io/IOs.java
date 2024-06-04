@@ -105,11 +105,16 @@ public class IOs {
     }
 
     public static String readAsString(InputStream reader) throws IOException {
+        return readAsString(reader, Charsets.UTF_8);
+    }
+
+    public static String readAsString(InputStream reader, Charset charset) throws IOException {
         StringBuilder stringBuilder = new StringBuilder(256);
         byte[] bytes = new byte[1024];
         int length;
+        charset = charset == null? Charsets.UTF_8:charset;
         while ((length = reader.read(bytes)) != -1) {
-            stringBuilder.append(new String(bytes, 0, length, Charsets.UTF_8));
+            stringBuilder.append(new String(bytes, 0, length, charset));
         }
         return stringBuilder.toString();
     }

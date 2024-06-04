@@ -44,7 +44,7 @@ public class Nanoids {
             // The number of random bytes gets decided upon the ID size, mask,
             // alphabet size, and magic number 1.6 (using 1.6 peaks at performance
             // according to benchmarks).
-            int step = Double.valueOf(Math.ceil((1.6 * mask * expectedIdLength) / alphabet.length())).intValue();
+            int step = (int)(Math.ceil((1.6 * mask * expectedIdLength) / alphabet.length()));
 
             StringBuilder id = new StringBuilder();
 

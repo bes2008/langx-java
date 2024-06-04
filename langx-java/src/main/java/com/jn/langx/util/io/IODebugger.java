@@ -3,7 +3,6 @@ package com.jn.langx.util.io;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Throwables;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,26 +40,11 @@ public class IODebugger {
     }
 
     public static String showBytes(@NonNull InputStream inputStream, @NonNull Charset charset) {
-        Preconditions.checkNotNull(inputStream);
-        int remaining = IOs.getRemaining(inputStream);
-        if (remaining > 0 && inputStream.markSupported()) {
-            inputStream.mark(remaining + 10);
-            try {
-                byte[] bytes = new byte[remaining];
-                inputStream.read(bytes);
-
-                return showBytes(bytes, charset);
-            } catch (IOException ex) {
-                throw Throwables.wrapAsRuntimeIOException(ex);
-            } finally {
-                try {
-                    inputStream.reset();
-                } catch (IOException ex) {
-                    // ignore it
-                }
-            }
+        try {
+            return IOs.readAsString(inputStream, charset);
+        }catch (IOException e){
+            return "IO ERROR";
         }
-        return "";
     }
 
     private IODebugger() {
