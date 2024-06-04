@@ -65,7 +65,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
         }
     }
 
-    private final TrieNode<V> root;
+    private transient final TrieNode<V> root;
     int size;
     /**
      * 修改次数
@@ -145,12 +145,14 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
         }
 
         if (currentNode == null) {
-            /* We could not find the node for the given key, so create it */
-            currentNode = lastNode;
-            final TrieNode<V> newNode = new TrieNode<V>(true);
+            if(lastNode!=null) {
+                /* We could not find the node for the given key, so create it */
+                currentNode = lastNode;
+                final TrieNode<V> newNode = new TrieNode<V>(true);
 
-            addNode(currentNode, checkedKey, --i, newNode);
-            modifyData(newNode, value);
+                addNode(currentNode, checkedKey, --i, newNode);
+                modifyData(newNode, value);
+            }
             replacedValue = null;
         } else if (currentNode.inUse) {
             /* We found the node and it is in use, so replace the value */
@@ -724,9 +726,9 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
 
         private static final long serialVersionUID = 1;
 
-        private TrieNode<V> subRootNode;
-        private TrieMap<V> parent;
-        private final CharSequence prefix;
+        private transient TrieNode<V> subRootNode;
+        private transient TrieMap<V> parent;
+        private transient final CharSequence prefix;
 
         public SubTrieMap(final TrieMap<V> parent, final CharSequence prefix) {
             this.parent = parent;
