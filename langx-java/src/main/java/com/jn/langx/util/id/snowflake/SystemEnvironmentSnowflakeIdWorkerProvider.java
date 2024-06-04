@@ -6,21 +6,16 @@ public final class SystemEnvironmentSnowflakeIdWorkerProvider implements Snowfla
 
     public static final String SYSTEM_ENVIRONMENT_SNOWFLAKE = "SYSTEM_ENVIRONMENT_SNOWFLAKE";
 
-    private static volatile SnowflakeIdWorker worker = null;
+    private final static SnowflakeIdWorker worker;
+
+    static {
+        long workId = SystemPropertys.getAccessor().getLong("idgen.snowflake.workerId", 0L);
+        long dataCenterId = SystemPropertys.getAccessor().getLong("idgen.snowflake.dataCenterId", 0L);
+        worker = new CnblogsSnowflakeIdWorker(workId, dataCenterId);
+    }
 
     @Override
     public SnowflakeIdWorker get() {
-        if (worker == null) {
-            synchronized (SystemEnvironmentSnowflakeIdWorkerProvider.class) {
-                if (worker == null) {
-                    long workId = SystemPropertys.getAccessor().getLong("idgen.snowflake.workerId", 0L);
-                    long dataCenterId = SystemPropertys.getAccessor().getLong("idgen.snowflake.dataCenterId", 0L);
-
-                    worker = new CnblogsSnowflakeIdWorker(workId, dataCenterId);
-                    return worker;
-                }
-            }
-        }
         return worker;
     }
 
