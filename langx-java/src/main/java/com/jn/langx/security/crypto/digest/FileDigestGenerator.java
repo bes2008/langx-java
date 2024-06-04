@@ -12,6 +12,7 @@ import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -196,7 +197,7 @@ public class FileDigestGenerator {
             try {
                 length = input.read(bytes);
             } catch (IOException e) {
-                e.printStackTrace();
+                Loggers.getLogger(FileDigestGenerator.class).error("error when read file: {}", e.getMessage());
             }
             if (length != -1) {
                 byte[] ret;
