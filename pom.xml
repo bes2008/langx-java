@@ -105,11 +105,6 @@
             </dependency>
             <dependency>
                 <groupId>io.github.bes2008.solution.langx</groupId>
-                <artifactId>langx-java-asn1</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.bes2008.solution.langx</groupId>
                 <artifactId>langx-java-distributed</artifactId>
                 <version>${project.version}</version>
             </dependency>
