@@ -122,7 +122,10 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
         try {
             await(timeoutMillis, true);
         } catch (InterruptedException e) {
-            // ignore it
+            boolean interrupted=Thread.interrupted();
+            if(interrupted) {
+                // ignore it
+            }
         }
         return this.isDone();
     }
@@ -193,6 +196,11 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
         if (isDone()) {
             try {
                 return this.future.get(0, TimeUnit.MILLISECONDS);
+            }catch (InterruptedException e){
+                boolean interrupted =Thread.interrupted();
+                if(interrupted){
+                    // ignore it
+                }
             } catch (Throwable e) {
                 // ignore it;
             }

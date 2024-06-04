@@ -211,9 +211,10 @@ public final class StripedExecutor implements Executor {
                         Runnable task = taskQueue.take();
                         process(task);
                     } catch (InterruptedException ignore) {
-                        // we can safely ignore this exception since we'll check if the
-                        // striped executor is still alive in the next iteration of the loop.
-                        // ignore ite
+                        boolean interrupted = Thread.interrupted();
+                        if(interrupted){
+                            // ignore it
+                        }
                     }
                 }
             } catch (Throwable t) {

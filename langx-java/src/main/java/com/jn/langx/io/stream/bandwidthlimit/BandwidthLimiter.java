@@ -74,6 +74,7 @@ public class BandwidthLimiter {
                     waitStrategy.await(waitTime);
                 } catch (InterruptedException e) {
                     LOGGER.error(e.getMessage(), e);
+                    Thread.currentThread().interrupt();
                 }
             }
             this.bytesWillBeSentOrReceive -= CHUNK_LENGTH;

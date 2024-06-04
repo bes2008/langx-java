@@ -228,7 +228,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
                 }
             }
         } catch (InterruptedException ie) {
-            // caller must check termination
+            Thread.interrupted();
         }
     }
 

@@ -904,6 +904,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                 } else {
                     logger.trace("IGNORED", e);
                 }
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -948,7 +949,6 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                             registerDir(path, config);
                             break;
                         case IGNORE:
-                            break;
                         default:
                             break;
                     }
