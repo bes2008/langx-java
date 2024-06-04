@@ -272,7 +272,7 @@ public class HashedWheelTimer extends AbstractTimer {
             this.tickDuration = duration;
         }
 
-        this.waitStrategy = waitStrategy==null?new ThreadSleepWaitStrategy():waitStrategy;
+        this.waitStrategy = waitStrategy==null ? new ThreadSleepWaitStrategy(365 * 24 * 3600 * 1000L):waitStrategy;
 
         workerThread = threadFactory.newThread(worker);
 
