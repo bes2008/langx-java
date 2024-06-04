@@ -76,7 +76,7 @@ public abstract class ParameterizedTypeGetter<T> {
 
     public final Type getActualArgumentType(int index) {
         int length = actualTypeArguments == null ? 0 : actualTypeArguments.length;
-        if(index>=0 && index<length){
+        if(actualTypeArguments != null && index>=0 && index<length ){
             return actualTypeArguments[index];
         }
         else{
