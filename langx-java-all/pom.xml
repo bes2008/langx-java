@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>5.3.10</version>
+        <version>5.3.11</version>
     </parent>
 
     <artifactId>langx-java-all</artifactId>
@@ -15,15 +15,6 @@
         <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven-shade-plugin.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -98,6 +89,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven-shade-plugin.version}</version>
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
                     <useDependencyReducedPomInJar>true</useDependencyReducedPomInJar>
@@ -128,7 +120,7 @@
                                 </filter>
                             </filters>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                             </transformers>
                         </configuration>
                     </execution>

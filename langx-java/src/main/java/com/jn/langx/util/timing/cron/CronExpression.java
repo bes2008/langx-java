@@ -1615,7 +1615,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
     /**
      *
-     * @return
+     * @return return a clone object
      * @deprecated
      */
     @Override
