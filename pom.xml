@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.3.10</version>
+    <version>5.3.11</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -17,8 +17,8 @@
 
     <properties>
         <!--maven build properties-->
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--custom build properties-->
