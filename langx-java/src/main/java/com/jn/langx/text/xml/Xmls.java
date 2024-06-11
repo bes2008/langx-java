@@ -2,8 +2,9 @@ package com.jn.langx.text.xml;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
 import com.jn.langx.text.xml.cutomizer.SecureDocumentBuilderFactoryCustomizer;
-import com.jn.langx.text.xml.cutomizer.SecureTransformerFactoryCustomizer;
+import com.jn.langx.text.xml.cutomizer.TransformerFactoryCustomizer;
 import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
 import com.jn.langx.text.xml.resolver.NullEntityResolver;
@@ -34,6 +35,27 @@ import java.io.*;
 public class Xmls {
     public static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
+    /**
+     * @since 5.3.12
+     */
+    public static class SecuredPropertyNames{
+        private SecuredPropertyNames(){
+
+        }
+
+        public static final String XML_PROPERTY_ACCESS_EXTERNAL_DTD = "http://javax.xml.XMLConstants/property/accessExternalDTD";
+
+        public static final String XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA = "http://javax.xml.XMLConstants/property/accessExternalSchema";
+
+        public static final String XML_PROPERTY_ACCESS_EXTERNAL_STYLESHEET = "http://javax.xml.XMLConstants/property/accessExternalStylesheet";
+
+        public static final String XML_FEATURE_SECURE_PROCESSING="http://javax.xml.XMLConstants/feature/secure-processing";
+        public static final String SAX_FEATURE_EXTERNAL_GENERAL_ENTITIES="http://xml.org/sax/features/external-general-entities";
+        public static final String SAX_FEATURE_EXTERNAL_PARAMETER_ENTITIES="http://xml.org/sax/features/external-parameter-entities";
+        public static final String APACHE_XML_FEATURE_NO_VALIDATING_LOAD_EXTERNAL_DTD="http://apache.org/xml/features/nonvalidating/load-external-dtd";
+        public static final String APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL= "http://apache.org/xml/features/disallow-doctype-decl";
+    }
+
     private Xmls() {
     }
 
@@ -62,7 +84,7 @@ public class Xmls {
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware
     ) throws Exception {
-        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, new SecureDocumentBuilderFactoryCustomizer());
+        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, null);
     }
 
     /**
@@ -75,8 +97,7 @@ public class Xmls {
             boolean ignoreComments,
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware,
-            @NonNull
-            SecureDocumentBuilderFactoryCustomizer customizer
+            DocumentBuilderFactoryCustomizer customizer
     ) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
@@ -86,7 +107,10 @@ public class Xmls {
             factory.setValidating(true);
         }
 
-        customizer.customize(factory);
+        securedDocumentBuilderFactory(factory);
+        if(customizer!=null) {
+            customizer.customize(factory);
+        }
 
         final DocumentBuilder builder = factory.newDocumentBuilder();
         entityResolver = ((entityResolver == null) ? new NullEntityResolver() : entityResolver);
@@ -130,14 +154,62 @@ public class Xmls {
     /**
      * @since 5.2.9
      */
-    public static Transformer newTransformer(@NonNull SecureTransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
+    public static Transformer newTransformer(@NonNull TransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
         TransformerFactory factory = TransformerFactory.newInstance();
-        customizer.customize(factory);
+        securedTransformerFactory(factory);
+        if(customizer!=null) {
+            customizer.customize(factory);
+        }
         return factory.newTransformer();
     }
 
+    public static void securedDocumentBuilderFactory(DocumentBuilderFactory factory){
+        factory.setAttribute( SecuredPropertyNames.SAX_FEATURE_EXTERNAL_GENERAL_ENTITIES, false); // 不包括外部一般实体。
+        factory.setAttribute( SecuredPropertyNames.SAX_FEATURE_EXTERNAL_PARAMETER_ENTITIES, false); // 不包含外部参数实体或外部DTD子集。
+        factory.setAttribute(SecuredPropertyNames.APACHE_XML_FEATURE_NO_VALIDATING_LOAD_EXTERNAL_DTD , false); // 忽略外部DTD
+        factory.setAttribute( SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
+        factory.setAttribute( SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
+        factory.setAttribute( SecuredPropertyNames.XML_FEATURE_SECURE_PROCESSING, true);
+
+        // 设置 XInclude 处理的状态为false,禁止实体扩展引用
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
+    }
+
+    public static void securedTransformerFactory(TransformerFactory factory){
+        factory.setAttribute(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_STYLESHEET, "");
+        factory.setAttribute(SecuredPropertyNames.XML_FEATURE_SECURE_PROCESSING, true);
+    }
+
+    public static void securedXmlInputFactory(XMLInputFactory factory){
+        factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+        factory.setProperty(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, "");
+        factory.setProperty(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, "");
+    }
+
+    public static void securedSchemaFactory(SchemaFactory factory) {
+        try {
+            factory.setFeature(SecuredPropertyNames.APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL, true);
+            factory.setProperty(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, "");
+            factory.setProperty(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, "");
+        }catch (Exception e){
+            // ignore it
+        }
+    }
+
+    public static void securedSAXParserFactory(SAXParserFactory factory){
+        Xmls.setFeature(factory, SecuredPropertyNames.APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL, true);
+
+        Xmls.setFeature(factory, SecuredPropertyNames.SAX_FEATURE_EXTERNAL_GENERAL_ENTITIES, false);
+        Xmls.setFeature(factory, SecuredPropertyNames.SAX_FEATURE_EXTERNAL_PARAMETER_ENTITIES, false);
+        Xmls.setFeature(factory, SecuredPropertyNames.APACHE_XML_FEATURE_NO_VALIDATING_LOAD_EXTERNAL_DTD, false);
+
+    }
+
     public static Transformer newTransformer() throws TransformerConfigurationException {
-        return newTransformer(new SecureTransformerFactoryCustomizer());
+        return newTransformer(null);
     }
 
     public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) {
@@ -203,7 +275,7 @@ public class Xmls {
     public static void setFeature(SAXParserFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // ignore it
         }
     }
@@ -247,7 +319,7 @@ public class Xmls {
     public static void setProperty(SchemaFactory factory, String feature, Object value) {
         try {
             factory.setProperty(feature, value);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // ignore it
         }
     }
@@ -258,7 +330,7 @@ public class Xmls {
     public static void setFeature(SchemaFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // ignore it
         }
     }
