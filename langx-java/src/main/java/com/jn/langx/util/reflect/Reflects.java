@@ -578,7 +578,7 @@ public class Reflects {
             } else {
                 return (V) field.get(object);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }else{
@@ -602,7 +602,7 @@ public class Reflects {
             } else {
                 return getFieldValue(field, object, force, throwException);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }
@@ -622,7 +622,7 @@ public class Reflects {
             } else {
                 return getFieldValue(field, object, force, throwException);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }else{
@@ -646,7 +646,7 @@ public class Reflects {
                 makeAccessible(field);
             }
             return (V) field.get(object);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }else{
@@ -674,7 +674,7 @@ public class Reflects {
                 }
                 field.set(target, value);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }
@@ -691,7 +691,7 @@ public class Reflects {
             } else {
                 setFieldValue(field, object, value, force, throwException);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }
@@ -706,7 +706,7 @@ public class Reflects {
             } else {
                 setFieldValue(field, object, value, force, throwException);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }
@@ -723,7 +723,7 @@ public class Reflects {
             } else {
                 setFieldValue(field, object, value, force, throwException);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }
@@ -748,7 +748,7 @@ public class Reflects {
         Preconditions.checkNotNull(clazz);
         try {
             return clazz.newInstance();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Logger logger = Loggers.getLogger(Reflects.class);
             if (logger.isDebugEnabled()) {
                 logger.debug("Create {} instance fail", getFQNClassName(clazz), ex);
@@ -770,7 +770,7 @@ public class Reflects {
         Preconditions.checkNotNull(constructor, "the constructor is null");
         try {
             return constructor.newInstance(parameters);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Logger logger = Loggers.getLogger(Reflects.class);
             if (logger.isDebugEnabled()) {
                 logger.debug("Create {} instance fail", getFQNClassName(constructor.getDeclaringClass()), ex);
@@ -978,9 +978,8 @@ public class Reflects {
                     result = declaredMethods;
                 }
                 declaredMethodsCache.put(clazz, (result.length == 0 ? EMPTY_METHOD_ARRAY : result));
-            } catch (Throwable ex) {
-                throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
-                        "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
+            } catch (SecurityException ex) {
+                throw new RuntimeException("Failed to introspect Class [" + clazz.getName() + "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
             }
         }
         return (result.length == 0 || !defensive) ? result : result.clone();
@@ -1016,7 +1015,7 @@ public class Reflects {
                 return null;
             }
             return invoke(method, object, parameters, force, throwException);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }else{
@@ -1039,7 +1038,7 @@ public class Reflects {
                 return null;
             }
             return invoke(method, object, parameters, force, throwException);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }else{
@@ -1062,7 +1061,7 @@ public class Reflects {
                 return null;
             }
             return invoke(method, object, parameters, force, throwException);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(throwException) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }else{
@@ -1091,7 +1090,7 @@ public class Reflects {
             // force && unaccessible
             makeAccessible(method);
             return invokeMethodOrNull(method, object, parameters, throwException);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }
@@ -1136,7 +1135,7 @@ public class Reflects {
             if (Modifiers.isStatic(method)) {
                 return invoke(method, null, parameters, force, throwException);
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
         return null;

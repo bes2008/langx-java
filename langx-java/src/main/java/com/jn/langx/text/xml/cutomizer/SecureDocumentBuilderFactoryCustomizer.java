@@ -10,6 +10,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class SecureDocumentBuilderFactoryCustomizer implements DocumentBuilderFactoryCustomizer {
     @Override
     public void customize(DocumentBuilderFactory factory) {
-        Xmls.securedDocumentBuilderFactory(factory);
+        Xmls.securedDocumentBuilderFactory(factory,factory.isValidating());
     }
 }
