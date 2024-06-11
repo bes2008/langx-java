@@ -3,7 +3,6 @@ package com.jn.langx.text.xml;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
-import com.jn.langx.text.xml.cutomizer.SecureDocumentBuilderFactoryCustomizer;
 import com.jn.langx.text.xml.cutomizer.TransformerFactoryCustomizer;
 import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
@@ -37,6 +36,8 @@ public class Xmls {
 
     /**
      * @since 5.3.12
+     *
+     * @see <a href="https://blog.spoock.com/2018/10/23/java-xxe/" >java-xxe</a>
      */
     public static class SecuredPropertyNames{
         private SecuredPropertyNames(){
