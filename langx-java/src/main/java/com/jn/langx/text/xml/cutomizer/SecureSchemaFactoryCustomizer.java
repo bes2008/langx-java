@@ -14,7 +14,7 @@ public class SecureSchemaFactoryCustomizer implements Customizer<SchemaFactory> 
     @Override
     public void customize(SchemaFactory factory) {
         Xmls.setFeature(factory, "http://apache.org/xml/features/disallow-doctype-decl", true);
-        Xmls.setProperty(factory, XMLConstants.ACCESS_EXTERNAL_DTD, false);
-        Xmls.setProperty(factory, XMLConstants.ACCESS_EXTERNAL_SCHEMA, false);
+        Xmls.setProperty(factory, "http://javax.xml.XMLConstants/property/accessExternalDTD", false);
+        Xmls.setProperty(factory, "http://javax.xml.XMLConstants/property/accessExternalSchema", false);
     }
 }

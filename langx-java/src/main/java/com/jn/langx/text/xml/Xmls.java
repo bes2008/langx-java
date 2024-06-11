@@ -1,5 +1,6 @@
 package com.jn.langx.text.xml;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.xml.cutomizer.SecureDocumentBuilderFactoryCustomizer;
 import com.jn.langx.text.xml.cutomizer.SecureTransformerFactoryCustomizer;
@@ -15,8 +16,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -63,7 +62,7 @@ public class Xmls {
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware
     ) throws Exception {
-        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, null);
+        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, new SecureDocumentBuilderFactoryCustomizer());
     }
 
     /**
@@ -76,6 +75,7 @@ public class Xmls {
             boolean ignoreComments,
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware,
+            @NonNull
             SecureDocumentBuilderFactoryCustomizer customizer
     ) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -86,9 +86,6 @@ public class Xmls {
             factory.setValidating(true);
         }
 
-        if (customizer == null) {
-            customizer = new SecureDocumentBuilderFactoryCustomizer();
-        }
         customizer.customize(factory);
 
         final DocumentBuilder builder = factory.newDocumentBuilder();
@@ -133,18 +130,14 @@ public class Xmls {
     /**
      * @since 5.2.9
      */
-    public static Transformer newTransformer(SecureTransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
+    public static Transformer newTransformer(@NonNull SecureTransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
         TransformerFactory factory = TransformerFactory.newInstance();
-        if (customizer == null) {
-            customizer = new SecureTransformerFactoryCustomizer();
-        }
         customizer.customize(factory);
-        final Transformer trans = factory.newTransformer();
-        return trans;
+        return factory.newTransformer();
     }
 
     public static Transformer newTransformer() throws TransformerConfigurationException {
-        return newTransformer(null);
+        return newTransformer(new SecureTransformerFactoryCustomizer());
     }
 
     public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) {
