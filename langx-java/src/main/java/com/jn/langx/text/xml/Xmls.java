@@ -166,18 +166,18 @@ public class Xmls {
     }
 
     public static void securedDocumentBuilderFactory(DocumentBuilderFactory factory, boolean validation){
-        factory.setAttribute(SecuredPropertyNames.XML_FEATURE_SECURE_PROCESSING, true);
-        factory.setAttribute(SecuredPropertyNames.APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL,true);
-        factory.setAttribute(SecuredPropertyNames.SAX_FEATURE_EXTERNAL_GENERAL_ENTITIES, false); // 不包括外部一般实体。
-        factory.setAttribute(SecuredPropertyNames.SAX_FEATURE_EXTERNAL_PARAMETER_ENTITIES, false); // 不包含外部参数实体或外部DTD子集。
-        factory.setAttribute(SecuredPropertyNames.APACHE_XML_FEATURE_NO_VALIDATING_LOAD_EXTERNAL_DTD , false); // 忽略外部DTD
+        Xmls.setFeature(factory,SecuredPropertyNames.XML_FEATURE_SECURE_PROCESSING, true);
+        Xmls.setFeature(factory,SecuredPropertyNames.APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL,true);
+        Xmls.setFeature(factory,SecuredPropertyNames.SAX_FEATURE_EXTERNAL_GENERAL_ENTITIES, false); // 不包括外部一般实体。
+        Xmls.setFeature(factory,SecuredPropertyNames.SAX_FEATURE_EXTERNAL_PARAMETER_ENTITIES, false); // 不包含外部参数实体或外部DTD子集。
+        Xmls.setFeature(factory,SecuredPropertyNames.APACHE_XML_FEATURE_NO_VALIDATING_LOAD_EXTERNAL_DTD , false); // 忽略外部DTD
 
 
-        factory.setAttribute(SecuredPropertyNames.APACHE_XML_FEATURE_VALIDATION, validation);
-        factory.setAttribute(SecuredPropertyNames.APACHE_XML_FEATURE_VALIDATION_SCHEMA, validation);
+        Xmls.setFeature(factory, SecuredPropertyNames.APACHE_XML_FEATURE_VALIDATION, validation);
+        Xmls.setFeature(factory,SecuredPropertyNames.APACHE_XML_FEATURE_VALIDATION_SCHEMA, validation);
 
-        factory.setAttribute(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
-        factory.setAttribute(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
+        Xmls.setFeature(factory,SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
+        Xmls.setFeature(factory,SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
 
         // 设置 XInclude 处理的状态为false,禁止实体扩展引用
         factory.setXIncludeAware(false);
@@ -198,13 +198,9 @@ public class Xmls {
     }
 
     public static void securedSchemaFactory(SchemaFactory factory) {
-        try {
-            factory.setFeature(SecuredPropertyNames.APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL, true);
-            factory.setProperty(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, "");
-            factory.setProperty(SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, "");
-        }catch (Exception e){
-            // ignore it
-        }
+        Xmls.setFeature(factory,SecuredPropertyNames.APACHE_XML_FEATURE_DISALLOW_DOCTYPE_DECL, true);
+        Xmls.setFeature(factory,SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_DTD, false);
+        Xmls.setFeature(factory,SecuredPropertyNames.XML_PROPERTY_ACCESS_EXTERNAL_SCHEMA, false);
     }
 
     public static void securedSAXParserFactory(SAXParserFactory factory){
