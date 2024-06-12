@@ -5,6 +5,7 @@ import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Pipeline;
@@ -57,11 +58,17 @@ public class MessageDigests extends Securitys {
         BufferedInputStream bi = new BufferedInputStream(inputStream);
         byte[] bytes = new byte[8192];
         int length;
+        boolean bytesReadIsEmpty=true;
         try {
             while ((length = bi.read(bytes, 0, 8192)) != -1) {
                 messageDigest.update(bytes, 0, length);
+                bytesReadIsEmpty=false;
             }
-            return messageDigest.digest();
+            if(!bytesReadIsEmpty) {
+                return messageDigest.digest();
+            }else{
+                return Emptys.EMPTY_BYTES;
+            }
         } catch (IOException ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }

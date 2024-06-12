@@ -2,10 +2,7 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Arrs;
-import com.jn.langx.util.function.Functions;
-import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.function.Supplier;
-import com.jn.langx.util.function.Supplier0;
+import com.jn.langx.util.function.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -62,6 +59,31 @@ public abstract class Objs{
             return Arrs.deepEquals(a,b);
         }
         return false;
+    }
+
+    public static <T> boolean equalsWithToString(T thisObj, Object thatObj){
+        return equalsTemplate(thisObj, thatObj, new Predicate2<T, T>() {
+            @Override
+            public boolean test(T key, T value) {
+                return Objs.equals(key.toString(), value.toString());
+            }
+        });
+    }
+
+    public static <T> boolean equalsTemplate(T thisObj, Object thatObj, Predicate2<T,T> predicate){
+        Preconditions.checkNotNull(thisObj,"this is null");
+        if(thatObj==null){
+            return false;
+        }
+        if(thisObj==thatObj){
+            return true;
+        }
+        if(thisObj.getClass()!=thatObj.getClass()){
+            return false;
+        }
+
+        T thatT=(T)thatObj;
+        return predicate.test(thisObj, thatT);
     }
 
     /**

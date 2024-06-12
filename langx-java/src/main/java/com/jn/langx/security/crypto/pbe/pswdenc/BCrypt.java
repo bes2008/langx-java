@@ -713,26 +713,26 @@ public class BCrypt {
     /**
      * Generate a salt for use with the BCrypt.hashpw() method
      *
-     * @param log_rounds the log2 of the number of rounds of
+     * @param logRounds the log2 of the number of rounds of
      *                   hashing to apply - the work factor therefore increases as
      *                   2**log_rounds.
      * @param random     an instance of SecureRandom to use
      * @return an encoded salt value
      */
-    public static String gensalt(int log_rounds, SecureRandom random) {
+    public static String gensalt(int logRounds, SecureRandom random) {
         StringBuilder rs = new StringBuilder();
         byte rnd[] = new byte[BCRYPT_SALT_LEN];
 
         random.nextBytes(rnd);
 
         rs.append("$2a$");
-        if (log_rounds < 10)
+        if (logRounds < 10)
             rs.append("0");
-        if (log_rounds > 30) {
+        if (logRounds > 30) {
             throw new IllegalArgumentException(
                     "log_rounds exceeds maximum (30)");
         }
-        rs.append(Integer.toString(log_rounds));
+        rs.append(Integer.toString(logRounds));
         rs.append("$");
         rs.append(encode_base64(rnd, rnd.length));
         return rs.toString();
@@ -741,13 +741,13 @@ public class BCrypt {
     /**
      * Generate a salt for use with the BCrypt.hashpw() method
      *
-     * @param log_rounds the log2 of the number of rounds of
+     * @param logRounds the log2 of the number of rounds of
      *                   hashing to apply - the work factor therefore increases as
      *                   2**log_rounds.
      * @return an encoded salt value
      */
-    public static String gensalt(int log_rounds) {
-        return gensalt(log_rounds, new SecureRandom());
+    public static String gensalt(int logRounds) {
+        return gensalt(logRounds, new SecureRandom());
     }
 
     /**

@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>5.3.11</version>
+        <version>5.3.12</version>
     </parent>
 
     <artifactId>langx-java</artifactId>
@@ -30,7 +30,6 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>io.github.bes2008.solution.junsafe</groupId>
