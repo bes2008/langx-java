@@ -8,8 +8,11 @@ import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -333,4 +336,18 @@ public class Platform {
         return CpuCoreSensor.availableProcessors();
     }
 
+    public static boolean isInDockerEnv(){
+        return Docker.isDocker();
+    }
+
+    public static long getTotalPhysicalMemory() {
+        try {
+            MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+            Object attribute = mBeanServer.getAttribute(new ObjectName("java.lang", "type", "OperatingSystem"), "TotalPhysicalMemorySize");
+            return (Long)attribute;
+        } catch (Exception e) {
+            Loggers.getLogger(Platform.class).error(e.getMessage(),e);
+            return -1L;
+        }
+    }
 }

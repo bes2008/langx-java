@@ -6,10 +6,7 @@ import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.privileged.CommonPrivilegedAction;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Throwables;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
@@ -1771,6 +1768,15 @@ public class Files {
 
     public static boolean isWritable(File file) {
         return file != null && file.canWrite();
+    }
+    public static String readAsText(File file) throws IOException{
+        return readAsText(file,Charsets.UTF_8);
+    }
+
+    public static String readAsText(File file,Charset charset) throws IOException{
+        byte[] bytes= readAllBytes(file);
+        String str=Strings.newString(bytes,charset==null?Charsets.UTF_8:charset);
+        return str;
     }
 
     public static byte[] readAllBytes(File file) throws IOException {
