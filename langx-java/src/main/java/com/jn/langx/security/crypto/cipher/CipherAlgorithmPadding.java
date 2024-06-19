@@ -6,6 +6,8 @@ package com.jn.langx.security.crypto.cipher;
 public enum CipherAlgorithmPadding {
     NoPadding,
     ZeroPadding,
+    AnsiX923Padding,
+    ISO97971Padding,
     ISO10126Padding,
     OAEPPadding,
     PKCS1Padding,

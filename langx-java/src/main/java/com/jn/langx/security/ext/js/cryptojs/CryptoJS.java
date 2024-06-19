@@ -10,12 +10,13 @@ import com.jn.langx.security.crypto.pbe.PBEs;
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.struct.Holder;
 
 public class CryptoJS {
-
+    private CryptoJS(){}
     public static class SymmetricConfig {
 
         public int keyBitSize;
@@ -104,12 +105,12 @@ public class CryptoJS {
             if (Objs.isNull(salt)) {
                 resultBytes = ciphertext;
             } else {
-                byte[] saltPrefix = this.saltPrefix.getBytes(Charsets.UTF_8);
-                resultBytes = new byte[saltPrefix.length + salt.length + ciphertext.length];
+                byte[] saltPrefixBytes = this.saltPrefix.getBytes(Charsets.UTF_8);
+                resultBytes = new byte[saltPrefixBytes.length + salt.length + ciphertext.length];
 
-                System.arraycopy(saltPrefix, 0, resultBytes, 0, saltPrefix.length);
-                System.arraycopy(salt, 0, resultBytes, saltPrefix.length, salt.length);
-                System.arraycopy(ciphertext, 0, resultBytes, saltPrefix.length + salt.length, ciphertext.length);
+                System.arraycopy(saltPrefixBytes, 0, resultBytes, 0, saltPrefixBytes.length);
+                System.arraycopy(salt, 0, resultBytes, saltPrefixBytes.length, salt.length);
+                System.arraycopy(ciphertext, 0, resultBytes, saltPrefixBytes.length + salt.length, ciphertext.length);
             }
             String result = Base64.encodeBase64String(resultBytes);
             return result;
@@ -143,13 +144,13 @@ public class CryptoJS {
         }
     }
 
-    public static class AES {
-        private static SaltedCipherTextHandler CIPHERTEXT_HANDLER = new FixedPrefixSaltedCipherTextHandler("Salted__");
+    public static abstract class Symmetric{
+        private static final SaltedCipherTextHandler CIPHERTEXT_HANDLER = new FixedPrefixSaltedCipherTextHandler("Salted__");
 
-        public static String encrypt(String message, String passphrase, CryptoJS.AESConfig cfg) {
-            if (cfg == null) {
-                cfg = new CryptoJS.AESConfig();
-            }
+        private Symmetric(){}
+
+        protected static String encryptWithPBE(String message, String passphrase, CryptoJS.PBEConfig cfg) {
+            Preconditions.checkNotNull(cfg);
 
             byte[] salt = Securitys.randomBytes(cfg.saltBitSize);
             PBKDFKeySpec pbeKeySpec = new PBKDFKeySpec(passphrase.toCharArray(), salt, cfg.keyBitSize, cfg.ivBitSize, cfg.iterations, cfg.hashAlgorithm);
@@ -167,10 +168,8 @@ public class CryptoJS {
             return CIPHERTEXT_HANDLER.stringify(salt, encryptedBytes);
         }
 
-        public static String decrypt(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
-            if (cfg == null) {
-                cfg = new CryptoJS.AESConfig();
-            }
+        protected static String decryptWithPBE(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
+            Preconditions.checkNotNull(cfg);
 
             Holder<byte[]> saltHolder = new Holder<byte[]>();
             Holder<byte[]> ciphertextHolder = new Holder<byte[]>();
@@ -193,6 +192,24 @@ public class CryptoJS {
             String result = Strings.newStringUtf8(rawBytes);
             return result;
         }
+    }
+
+    public static class AES extends Symmetric{
+        public static String encrypt(String message, String passphrase, CryptoJS.AESConfig cfg) {
+            if (cfg == null) {
+                cfg = new CryptoJS.AESConfig();
+            }
+            return encryptWithPBE(message,passphrase,cfg);
+        }
+
+        public static String decrypt(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
+            if (cfg == null) {
+                cfg = new CryptoJS.AESConfig();
+            }
+            return decryptWithPBE(encryptedText,passphrase,cfg);
+        }
 
     }
+
+
 }
