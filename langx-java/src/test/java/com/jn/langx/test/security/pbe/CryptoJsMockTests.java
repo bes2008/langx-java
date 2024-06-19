@@ -37,8 +37,8 @@ public class CryptoJsMockTests {
                 "U2FsdGVkX1/F8ZZaOsRHo9buLUkyHrHxI5MrjaPB9X4="
 
         );
-        for (String cipherText: encryptedTexts ){
-            decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,null);
+        for (String encryptedText2: encryptedTexts ){
+            decryptedText = CryptoJS.AES.decrypt(encryptedText2, passphrase,null);
             System.out.println(decryptedText);
             System.out.println(Objs.equals(message,decryptedText));
         }
