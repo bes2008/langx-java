@@ -22,8 +22,8 @@ import com.jn.langx.util.regexp.Regexps;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.interfaces.PBEKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.util.Map;
@@ -104,7 +104,7 @@ public class PBEs {
         return secretKeyFactory;
     }
 
-    private static byte[] doEncryptOrDecrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom, boolean encrypt){
+    private static byte[] doEncryptOrDecrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom, byte[] iv, boolean encrypt){
         try {
             boolean isLangxSecretKeyFactory = false;
             SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
@@ -116,8 +116,8 @@ public class PBEs {
             PBEKey pbeKey = (PBEKey) secretKey;
 
             if (!isLangxSecretKeyFactory) {
-                PBEParameterSpec parameterSpec = new PBEParameterSpec(pbeKey.getSalt(), pbeKey.getIterationCount());
-                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), pbeAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), parameterSpec, encrypt);
+                String cipherAlgorithm=Ciphers.extractAlgorithm(algorithmTransformation);
+                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), Ciphers.createIvParameterSpec(iv==null?pbeKey.getEncoded():iv), encrypt);
             } else {
                 DerivedPBEKey derivedKey = (DerivedPBEKey) pbeKey;
                 String cipherAlgorithm = derivedKey.getCipherAlgorithm();
@@ -129,19 +129,19 @@ public class PBEs {
                     cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
                 }
 
-                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), derivedKey, encrypt);
+                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), (IvParameterSpec)derivedKey, encrypt);
             }
         }catch (Throwable e){
             throw new SecurityException(e);
         }
     }
 
-    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
-        return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,true);
+    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, byte[] iv, Provider provider, SecureRandom secureRandom){
+        return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,iv,true);
     }
 
-    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
-        return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,false);
+    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation,byte[] iv, Provider provider, SecureRandom secureRandom){
+        return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,iv,false);
     }
     private static final Regexp PBE_ALGORITHM_REGEXP=Regexps.createRegexp("PBEWith(?<HASH>:.*)And(?<CIPHER>.*)(\\-.*)*", Option.fromJavaScriptFlags("ig"));
     public static String extractHashAlgorithm(String pbeAlgorithm){

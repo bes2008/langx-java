@@ -411,7 +411,10 @@ public class Ciphers extends Securitys {
 
     public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, int ivBitLength) {
         byte[] ivBytes = randomBytes(secureRandom, ivBitLength);
-        return new IvParameterSpec(ivBytes);
+        return createIvParameterSpec(ivBytes);
     }
 
+    public static IvParameterSpec createIvParameterSpec(byte[] bytes){
+        return new IvParameterSpec(bytes);
+    }
 }
