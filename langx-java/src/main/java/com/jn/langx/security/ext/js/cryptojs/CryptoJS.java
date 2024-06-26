@@ -23,7 +23,7 @@ public class CryptoJS {
         public int ivBitSize;
         public int saltBitSize;
         public int iterations;
-
+        public byte[] iv;
         public String cipherAlgorithm;
         public Symmetrics.MODE mode;
         public CipherAlgorithmPadding padding;
@@ -35,6 +35,16 @@ public class CryptoJS {
                                String cipherAlgorithm,
                                Symmetrics.MODE mode,
                                CipherAlgorithmPadding padding) {
+            this(saltBitSize,keyBitSize,ivBitSize,iterations,cipherAlgorithm,mode,padding,null);
+        }
+
+        public SymmetricConfig(int saltBitSize,
+                               int keyBitSize,
+                               int ivBitSize,
+                               int iterations,
+                               String cipherAlgorithm,
+                               Symmetrics.MODE mode,
+                               CipherAlgorithmPadding padding, byte[] iv) {
             this.saltBitSize = saltBitSize;
             this.keyBitSize = keyBitSize;
             this.ivBitSize = ivBitSize;
@@ -43,7 +53,7 @@ public class CryptoJS {
             this.cipherAlgorithm = cipherAlgorithm;
             this.mode = mode;
             this.padding = padding;
-
+            this.iv=iv;
         }
     }
 
@@ -60,8 +70,9 @@ public class CryptoJS {
                 Symmetrics.MODE mode,
                 CipherAlgorithmPadding padding,
                 String hashAlgorithm,
-                String pbeAlgorithm) {
-            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding);
+                String pbeAlgorithm,
+                byte[] iv) {
+            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding,iv);
             this.hashAlgorithm = hashAlgorithm;
             this.pbeAlgorithm = pbeAlgorithm;
         }
@@ -69,7 +80,7 @@ public class CryptoJS {
 
     public static class AESConfig extends PBEConfig {
         public AESConfig() {
-            this(64, 256, 128, 1, JCAEStandardName.AES.getName(), Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP");
+            this(64, 256, 128, 1, JCAEStandardName.AES.getName(), Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP", null);
         }
 
         public AESConfig(
@@ -81,8 +92,8 @@ public class CryptoJS {
                 Symmetrics.MODE mode,
                 CipherAlgorithmPadding padding,
                 String hashAlgorithm,
-                String pbeAlgorithm) {
-            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding, hashAlgorithm, pbeAlgorithm);
+                String pbeAlgorithm, byte[] iv) {
+            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding, hashAlgorithm, pbeAlgorithm,iv);
         }
     }
 
@@ -161,6 +172,7 @@ public class CryptoJS {
                     cfg.pbeAlgorithm,
                     pbeKeySpec,
                     transformation,
+                    cfg.iv,
                     null, null
             );
 
@@ -186,6 +198,7 @@ public class CryptoJS {
                     cfg.pbeAlgorithm,
                     pbeKeySpec,
                     transformation,
+                    cfg.iv,
                     null, null
             );
 
@@ -206,7 +219,7 @@ public class CryptoJS {
             if (cfg == null) {
                 cfg = new CryptoJS.AESConfig();
             }
-            return decryptWithPBE(encryptedText,passphrase,cfg);
+            return decryptWithPBE(encryptedText,passphrase, cfg);
         }
 
     }
