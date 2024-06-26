@@ -98,9 +98,9 @@ public class CryptoJS {
     }
 
     public static interface SaltedCipherTextHandler {
-        String stringify(byte[] salt, byte[] ciphertext);
+        String stringify(byte[] salt, byte[] ciphertext, SymmetricConfig cfg);
 
-        void extract(String saltedCipherText, int saltBitSize, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder);
+        void extract(String saltedCipherText, SymmetricConfig cfg, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder);
     }
 
     public static class FixedPrefixSaltedCipherTextHandler implements SaltedCipherTextHandler {
@@ -111,7 +111,7 @@ public class CryptoJS {
         }
 
         @Override
-        public String stringify(byte[] salt, byte[] ciphertext) {
+        public String stringify(byte[] salt, byte[] ciphertext, SymmetricConfig cfg) {
             byte[] resultBytes;
             if (Objs.isNull(salt)) {
                 resultBytes = ciphertext;
@@ -128,12 +128,12 @@ public class CryptoJS {
         }
 
         @Override
-        public void extract(String saltedCipherText, int saltBitSize, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder) {
+        public void extract(String saltedCipherText, SymmetricConfig cfg, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder) {
             byte[] salt;
             byte[] encryptedBytes;
 
             boolean hasSalt = Objs.isNotEmpty(this.saltPrefix) && Base64.decodeBase64ToString(saltedCipherText).startsWith(this.saltPrefix);
-
+            int saltBitSize= cfg.saltBitSize;
             byte[] saltAndEncryptedBytes = Base64.decodeBase64(saltedCipherText);
             if (!hasSalt) {
                 salt = Emptys.EMPTY_BYTES;
@@ -177,7 +177,7 @@ public class CryptoJS {
             );
 
 
-            return CIPHERTEXT_HANDLER.stringify(salt, encryptedBytes);
+            return CIPHERTEXT_HANDLER.stringify(salt, encryptedBytes, cfg);
         }
 
         protected static String decryptWithPBE(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
@@ -185,7 +185,7 @@ public class CryptoJS {
 
             Holder<byte[]> saltHolder = new Holder<byte[]>();
             Holder<byte[]> ciphertextHolder = new Holder<byte[]>();
-            CIPHERTEXT_HANDLER.extract(encryptedText, cfg.saltBitSize, saltHolder, ciphertextHolder);
+            CIPHERTEXT_HANDLER.extract(encryptedText, cfg, saltHolder, ciphertextHolder);
 
             byte[] salt = saltHolder.get();
             byte[] encryptedBytes = ciphertextHolder.get();
