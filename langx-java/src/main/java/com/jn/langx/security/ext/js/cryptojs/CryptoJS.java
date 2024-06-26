@@ -61,6 +61,8 @@ public class CryptoJS {
         public String hashAlgorithm;
         public String pbeAlgorithm;
 
+        public SaltedCipherTextHandler cipherTextHandler;
+
         public PBEConfig(
                 int saltBitSize,
                 int keyBitSize,
@@ -75,12 +77,13 @@ public class CryptoJS {
             super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding,iv);
             this.hashAlgorithm = hashAlgorithm;
             this.pbeAlgorithm = pbeAlgorithm;
+            this.cipherTextHandler = new FixedPrefixSaltedCipherTextHandler("Salted__");
         }
     }
 
     public static class AESConfig extends PBEConfig {
         public AESConfig() {
-            this(64, 256, 128, 1, JCAEStandardName.AES.getName(), Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP", null);
+            this(64, 256, 128, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP", null);
         }
 
         public AESConfig(
@@ -88,12 +91,11 @@ public class CryptoJS {
                 int keyBitSize,
                 int ivBitSize,
                 int iterations,
-                String cipherAlgorithm,
                 Symmetrics.MODE mode,
                 CipherAlgorithmPadding padding,
                 String hashAlgorithm,
                 String pbeAlgorithm, byte[] iv) {
-            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding, hashAlgorithm, pbeAlgorithm,iv);
+            super(saltBitSize, keyBitSize, ivBitSize, iterations, JCAEStandardName.AES.getName(), mode, padding, hashAlgorithm, pbeAlgorithm, iv);
         }
     }
 
@@ -156,7 +158,6 @@ public class CryptoJS {
     }
 
     public static abstract class Symmetric{
-        private static final SaltedCipherTextHandler CIPHERTEXT_HANDLER = new FixedPrefixSaltedCipherTextHandler("Salted__");
 
         private Symmetric(){}
 
@@ -177,7 +178,7 @@ public class CryptoJS {
             );
 
 
-            return CIPHERTEXT_HANDLER.stringify(salt, encryptedBytes, cfg);
+            return cfg.cipherTextHandler.stringify(salt, encryptedBytes, cfg);
         }
 
         protected static String decryptWithPBE(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
@@ -185,7 +186,7 @@ public class CryptoJS {
 
             Holder<byte[]> saltHolder = new Holder<byte[]>();
             Holder<byte[]> ciphertextHolder = new Holder<byte[]>();
-            CIPHERTEXT_HANDLER.extract(encryptedText, cfg, saltHolder, ciphertextHolder);
+            cfg.cipherTextHandler.extract(encryptedText, cfg, saltHolder, ciphertextHolder);
 
             byte[] salt = saltHolder.get();
             byte[] encryptedBytes = ciphertextHolder.get();
