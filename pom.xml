@@ -139,13 +139,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>io.github.bes2008.solution.junsafe</groupId>
-                <artifactId>junsafe</artifactId>
-                <version>${junsafe.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.openjdk.jmh</groupId>
                 <artifactId>jmh-core</artifactId>

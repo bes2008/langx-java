@@ -1269,7 +1269,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      * or <tt>null</tt> if there was no mapping for the key
      * @throws NullPointerException if the specified key or value is null
      */
-    @Override
     public V putIfAbsent(K key, V value) {
         if (key == null || value == null) {
             return null;
@@ -1315,7 +1314,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      *
      * @throws NullPointerException if the specified key is null
      */
-    @Override
     public boolean remove(Object key, Object value) {
         if (key == null || value == null) {
             return false;
@@ -1329,7 +1327,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      *
      * @throws NullPointerException if any of the arguments are null
      */
-    @Override
     public boolean replace(K key, V oldValue, V newValue) {
         if (key == null || oldValue == null || newValue == null) {
             throw new NullPointerException();
@@ -1345,7 +1342,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      * or <tt>null</tt> if there was no mapping for the key
      * @throws NullPointerException if the specified key or value is null
      */
-    @Override
     public V replace(K key, V value) {
         if (key == null || value == null) {
             return null;

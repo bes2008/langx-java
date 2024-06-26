@@ -1,12 +1,9 @@
 package com.jn.langx.util.concurrent;
 
-import com.jn.junsafe.unsafe.Unsafes;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.reflect.Reflects;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -416,24 +413,5 @@ public class Threads {
             }
         }
         return Collections.unmodifiableCollection(result);
-    }
-
-    /**
-     * @since 5.2.0
-     */
-    private static final long THREAD_NAME_OFFSET;
-    static {
-        // @since 5.2.0
-        Field nameFiled = Reflects.getDeclaredField(Thread.class, "name");
-        THREAD_NAME_OFFSET = Unsafes.getUnsafe().objectFieldOffset(nameFiled);
-    }
-
-    /**
-     * @since 5.2.0
-     */
-    public static void setName(Thread thread, String name){
-        Preconditions.checkNotNull(thread, "Thread is required");
-        Preconditions.checkNotNull(name, "Thread name is required");
-        Unsafes.getUnsafe().putObjectVolatile(thread, THREAD_NAME_OFFSET, name);
     }
 }

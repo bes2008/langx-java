@@ -211,17 +211,8 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
         // The data store and its maximum capacity
         concurrencyLevel = builder.concurrencyLevel;
         capacity = new AtomicLong(Math.min(builder.capacity, MAXIMUM_CAPACITY));
-        Class unsafeClass = null;
-        try {
-            unsafeClass = ClassLoaders.loadClass("sun.misc.Unsafe");
-        } catch (ClassNotFoundException ex) {
-            // ignore it
-        }
-        if (unsafeClass != null) {
-            data = new ConcurrentHashMapV8<K, Node<K, V>>(builder.initialCapacity, 0.75f, concurrencyLevel);
-        } else {
-            data = new ConcurrentHashMap<K, Node<K, V>>(builder.initialCapacity, 0.75f, concurrencyLevel);
-        }
+        data = new ConcurrentHashMap<K, Node<K, V>>(builder.initialCapacity, 0.75f, concurrencyLevel);
+
         // The eviction support
         weigher = builder.weigher;
         evictionLock = new ReentrantLock();
