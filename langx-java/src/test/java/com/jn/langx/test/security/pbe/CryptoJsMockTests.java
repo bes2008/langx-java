@@ -5,6 +5,7 @@ import com.jn.langx.security.crypto.cipher.CipherAlgorithmMode;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
+import com.jn.langx.security.crypto.pbe.PBEs;
 import com.jn.langx.security.ext.js.cryptojs.CryptoJS;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Lists;
@@ -58,7 +59,26 @@ public class CryptoJsMockTests {
         String passphrase="NsFoCus$#";
 
         IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
-        CryptoJS.AESConfig cfg=new CryptoJS.AESConfig(256,256,128,1, "AES", Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA_256.getName(), "PBKDF2WithHmacSHA256",ivParameterSpec.getIV());
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,256,128,1, "AES", Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA_256.getName(), PBEs.PBKDF2WithHmacSHA256,ivParameterSpec.getIV());
+
+        String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
+        System.out.println(encryptedText);
+
+
+        String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,cfg);
+        System.out.println(decryptedText);
+        System.out.println(Objs.equals(message,decryptedText));
+
+
+    }
+
+    @Test
+    public void mock_PBKDF2WithSha224_AES(){
+        String message="test@123";
+        String passphrase="NsFoCus$#";
+
+        IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(224,256,128,1, "AES", Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
 
         String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
         System.out.println(encryptedText);

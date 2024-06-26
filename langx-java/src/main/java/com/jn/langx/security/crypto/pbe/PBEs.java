@@ -32,7 +32,10 @@ import java.util.Map;
  * @since 5.3.9
  */
 public class PBEs {
-
+    public static String PBKDF2WithHmacSHA224="PBKDF2WithHmacSHA224";
+    public static String PBKDF2WithHmacSHA256="PBKDF2WithHmacSHA256";
+    public static String PBKDF2WithHmacSHA384="PBKDF2WithHmacSHA384";
+    public static String PBKDF2WithHmacSHA512="PBKDF2WithHmacSHA512";
 
     /**
      * key: pbe algorithm regex
