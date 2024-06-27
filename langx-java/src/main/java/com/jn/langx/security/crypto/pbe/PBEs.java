@@ -131,6 +131,7 @@ public class PBEs {
                 }
                 IvParameterSpec ivObj=Ciphers.createIvParameterSpec(ivHolder.get());
                 if(mode== Symmetrics.MODE.ECB){
+                    ivHolder.set(null);
                     ivObj=null;
                 }
                 return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj , encrypt);
@@ -155,6 +156,7 @@ public class PBEs {
                     ivHolder.set(ivObj.getIV());
                 }
                 if(mode== Symmetrics.MODE.ECB){
+                    ivHolder.set(null);
                     ivObj = null;
                 }
                 return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj, encrypt);
