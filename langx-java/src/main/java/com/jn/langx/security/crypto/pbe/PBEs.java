@@ -3,12 +3,14 @@ package com.jn.langx.security.crypto.pbe;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.UnsupportedCipherAlgorithmException;
 import com.jn.langx.security.crypto.cipher.Ciphers;
+import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.LangxSecretKeyFactory;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedPBEKey;
 import com.jn.langx.security.crypto.pbe.pbkdf.OpenSSLEvpKDFKeyFactorySpi;
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeyFactorySpi;
+import com.jn.langx.security.ext.js.cryptojs.CryptoJS;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -119,8 +121,16 @@ public class PBEs {
             PBEKey pbeKey = (PBEKey) secretKey;
 
             if (!isLangxSecretKeyFactory) {
-                String cipherAlgorithm=Ciphers.extractAlgorithm(algorithmTransformation);
-                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), Ciphers.createIvParameterSpec(iv==null?pbeKey.getEncoded():iv), encrypt);
+                String cipherAlgorithm = Ciphers.extractAlgorithm(algorithmTransformation);
+                if (Objs.isEmpty(cipherAlgorithm)) {
+                    cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
+                }
+                Symmetrics.MODE mode=Ciphers.extractSymmetricMode(algorithmTransformation);
+                IvParameterSpec ivObj=Ciphers.createIvParameterSpec(iv==null?pbeKey.getEncoded():iv);
+                if(mode== Symmetrics.MODE.ECB){
+                    ivObj=null;
+                }
+                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj , encrypt);
             } else {
                 DerivedPBEKey derivedKey = (DerivedPBEKey) pbeKey;
                 String cipherAlgorithm = derivedKey.getCipherAlgorithm();
@@ -131,7 +141,11 @@ public class PBEs {
                 if (Objs.isEmpty(cipherAlgorithm)) {
                     cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
                 }
-
+                Symmetrics.MODE mode=Ciphers.extractSymmetricMode(algorithmTransformation);
+                IvParameterSpec ivObj=(IvParameterSpec)derivedKey;
+                if(mode== Symmetrics.MODE.ECB){
+                    ivObj=null;
+                }
                 return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), (IvParameterSpec)derivedKey, encrypt);
             }
         }catch (Throwable e){
