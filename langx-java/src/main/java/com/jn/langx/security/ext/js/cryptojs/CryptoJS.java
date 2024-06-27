@@ -83,19 +83,18 @@ public class CryptoJS {
 
     public static class AESConfig extends PBEConfig {
         public AESConfig() {
-            this(64, 256, 128, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP", null);
+            this(64, 256, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP", null);
         }
 
         public AESConfig(
                 int saltBitSize,
                 int keyBitSize,
-                int ivBitSize,
                 int iterations,
                 Symmetrics.MODE mode,
                 CipherAlgorithmPadding padding,
                 String hashAlgorithm,
                 String pbeAlgorithm, byte[] iv) {
-            super(saltBitSize, keyBitSize, ivBitSize, iterations, JCAEStandardName.AES.getName(), mode, padding, hashAlgorithm, pbeAlgorithm, iv);
+            super(saltBitSize, keyBitSize, 128, iterations, JCAEStandardName.AES.getName(), mode, padding, hashAlgorithm, pbeAlgorithm, iv);
         }
     }
 

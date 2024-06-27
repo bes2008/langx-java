@@ -6,5 +6,7 @@ package com.jn.langx.codec;
 public enum StringifyFormat {
     HEX,
     BASE64,
-    UTF8;
+    UTF8,
+    // 也叫 latin1 编码
+    ISO_8859_1;
 }

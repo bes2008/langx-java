@@ -59,7 +59,7 @@ public class CryptoJsMockTests {
         String passphrase="NsFoCus$#";
 
         IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
-        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,256,128,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA_256.getName(), PBEs.PBKDF2WithHmacSHA256, ivParameterSpec.getIV());
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,256,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA_256.getName(), PBEs.PBKDF2WithHmacSHA256, ivParameterSpec.getIV());
 
         String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
         System.out.println(encryptedText);
@@ -76,7 +76,7 @@ public class CryptoJsMockTests {
         String passphrase="NsFoCus$#";
 
         IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
-        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(224,256,128,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(224,256,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
 
         String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
         System.out.println(encryptedText);
