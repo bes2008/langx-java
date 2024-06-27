@@ -1,3 +1,5 @@
+## 5.4.0
++ 增强Crypto-JS, 支持PBKDF2
 
 ## 5.3.13
 + 支持Files.readAsText
