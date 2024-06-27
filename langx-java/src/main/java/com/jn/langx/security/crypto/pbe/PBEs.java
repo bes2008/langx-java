@@ -20,6 +20,7 @@ import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
+import com.jn.langx.util.struct.Holder;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -66,7 +67,7 @@ public class PBEs {
             throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: "+pbeAlgorithm);
         }
 
-        Supplier<String, PBKDFKeyFactorySpi> supplier =PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
+        Supplier<String, PBKDFKeyFactorySpi> supplier = PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
 
         if(supplier==null) {
             Map.Entry supplierEntry = Collects.findFirst(PBE_DEFAULT_KEY_FACTORY_REGISTRY, new Predicate2<String, Supplier<String, PBKDFKeyFactorySpi>>() {
@@ -109,7 +110,7 @@ public class PBEs {
         return secretKeyFactory;
     }
 
-    private static byte[] doEncryptOrDecrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom, byte[] iv, boolean encrypt){
+    private static byte[] doEncryptOrDecrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom, Holder<byte[]> ivHolder, boolean encrypt){
         try {
             boolean isLangxSecretKeyFactory = false;
             SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
@@ -126,7 +127,7 @@ public class PBEs {
                     cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
                 }
                 Symmetrics.MODE mode=Ciphers.extractSymmetricMode(algorithmTransformation);
-                IvParameterSpec ivObj=Ciphers.createIvParameterSpec(iv==null?pbeKey.getEncoded():iv);
+                IvParameterSpec ivObj=Ciphers.createIvParameterSpec(Objs.isEmpty(ivHolder.get())?pbeKey.getEncoded():ivHolder.get());
                 if(mode== Symmetrics.MODE.ECB){
                     ivObj=null;
                 }
@@ -141,10 +142,18 @@ public class PBEs {
                 if (Objs.isEmpty(cipherAlgorithm)) {
                     cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
                 }
-                Symmetrics.MODE mode=Ciphers.extractSymmetricMode(algorithmTransformation);
+                Symmetrics.MODE mode = Ciphers.extractSymmetricMode(algorithmTransformation);
+
                 IvParameterSpec ivObj=(IvParameterSpec)derivedKey;
+                if(ivObj.getIV().length==0){
+                    // 如果派生算法没有生成iv，则使用自定义的iv
+                    ivObj=new IvParameterSpec(ivHolder.get());
+                }else{
+                    // 反之则反馈生成的iv
+                    ivHolder.set(ivObj.getIV());
+                }
                 if(mode== Symmetrics.MODE.ECB){
-                    ivObj=null;
+                    ivObj = null;
                 }
                 return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj, encrypt);
             }
@@ -153,13 +162,14 @@ public class PBEs {
         }
     }
 
-    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, byte[] iv, Provider provider, SecureRandom secureRandom){
+    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Holder<byte[]> iv, Provider provider, SecureRandom secureRandom){
         return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,iv,true);
     }
 
-    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation,byte[] iv, Provider provider, SecureRandom secureRandom){
+    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation,Holder<byte[]> iv, Provider provider, SecureRandom secureRandom){
         return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,iv,false);
     }
+
     private static final Regexp PBE_ALGORITHM_REGEXP=Regexps.createRegexp("PBEWith(?<HASH>:.*)And(?<CIPHER>.*)(\\-.*)*", Option.fromJavaScriptFlags("ig"));
     public static String extractHashAlgorithm(String pbeAlgorithm){
         Map<String,String> groups=Regexps.findNamedGroup(PBE_ALGORITHM_REGEXP, pbeAlgorithm);
