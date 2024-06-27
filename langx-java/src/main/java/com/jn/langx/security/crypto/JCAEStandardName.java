@@ -75,6 +75,8 @@ public enum JCAEStandardName {
     /*********************MessageDigest**********************/
     @Algorithm(name = "SHA-1", apply = MessageDigest.class)
     SHA_1,
+    @Algorithm(name = "SHA-224", apply = MessageDigest.class)
+    SHA_224,
     @Algorithm(name = "SHA-256", apply = MessageDigest.class)
     SHA_256,
     @Algorithm(name = "SHA-384", apply = MessageDigest.class)
