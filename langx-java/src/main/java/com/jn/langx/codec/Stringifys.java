@@ -4,6 +4,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.Charsets;
 
 /**
  * @since 5.3.9
@@ -16,6 +17,8 @@ public class Stringifys {
                 return Hex.encodeHexString(bytes);
             case BASE64:
                 return Base64.encodeBase64ToString(bytes);
+            case ISO_8859_1:
+                return Strings.newString(bytes, Charsets.ISO_8859_1);
             default:
                 return Strings.newStringUtf8(bytes);
         }
