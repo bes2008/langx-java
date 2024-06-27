@@ -146,7 +146,7 @@ public class PBEs {
                 if(mode== Symmetrics.MODE.ECB){
                     ivObj=null;
                 }
-                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), (IvParameterSpec)derivedKey, encrypt);
+                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj, encrypt);
             }
         }catch (Throwable e){
             throw new SecurityException(e);
