@@ -17,8 +17,14 @@ public class Stringifys {
                 return Hex.encodeHexString(bytes);
             case BASE64:
                 return Base64.encodeBase64ToString(bytes);
+            case BASE64URL:
+                return Base64.encodeBase64URLSafeString(bytes);
             case ISO_8859_1:
                 return Strings.newString(bytes, Charsets.ISO_8859_1);
+            case UTF_16BE:
+                return Strings.newString(bytes, Charsets.UTF_16BE);
+            case UTF_16LE:
+                return Strings.newString(bytes, Charsets.UTF_16LE);
             default:
                 return Strings.newStringUtf8(bytes);
         }
@@ -32,7 +38,17 @@ public class Stringifys {
                 bytes = Hex.decodeHex(text);
                 break;
             case BASE64:
+            case BASE64URL:
                 bytes = Base64.decodeBase64(text);
+                break;
+            case ISO_8859_1:
+                bytes= text.getBytes(Charsets.ISO_8859_1);
+                break;
+            case UTF_16BE:
+                bytes= text.getBytes(Charsets.UTF_16BE);
+                break;
+            case UTF_16LE:
+                bytes= text.getBytes(Charsets.UTF_16LE);
                 break;
             default:
                 bytes = Strings.getBytesUtf8(text);
