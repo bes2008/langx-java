@@ -62,7 +62,7 @@ public class CryptoJS {
         public String hashAlgorithm;
         public String pbeAlgorithm;
 
-        public SaltedCipherTextHandler cipherTextHandler;
+        public CipherTextFormatter cipherTextFormatter;
 
         public PBEConfig(
                 int saltBitSize,
@@ -78,7 +78,7 @@ public class CryptoJS {
             super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding,iv);
             this.hashAlgorithm = hashAlgorithm;
             this.pbeAlgorithm = pbeAlgorithm;
-            this.cipherTextHandler = new FixedPrefixSaltedCipherTextHandler("Salted__");
+            this.cipherTextFormatter = new FixedSaltedPrefixCipherTextFormatter("Salted__");
         }
     }
 
@@ -100,16 +100,16 @@ public class CryptoJS {
         }
     }
 
-    public static interface SaltedCipherTextHandler {
+    public static interface CipherTextFormatter {
         String stringify(byte[] salt, byte[] ciphertext, SymmetricConfig cfg);
 
-        void extract(String saltedCipherText, SymmetricConfig cfg, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder);
+        void parse(String saltedCipherText, SymmetricConfig cfg, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder, Holder<byte[]> ivHolder);
     }
 
-    public static class FixedPrefixSaltedCipherTextHandler implements SaltedCipherTextHandler {
+    public static class FixedSaltedPrefixCipherTextFormatter implements CipherTextFormatter {
         private String saltPrefix;
 
-        public FixedPrefixSaltedCipherTextHandler(String saltPrefix) {
+        public FixedSaltedPrefixCipherTextFormatter(String saltPrefix) {
             this.saltPrefix = Objs.useValueIfNull(saltPrefix, "");
         }
 
@@ -131,7 +131,7 @@ public class CryptoJS {
         }
 
         @Override
-        public void extract(String saltedCipherText, SymmetricConfig cfg, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder) {
+        public void parse(String saltedCipherText, SymmetricConfig cfg, Holder<byte[]> saltHolder, Holder<byte[]> ciphertextHolder, Holder<byte[]> ivHolder) {
             byte[] salt;
             byte[] encryptedBytes;
 
@@ -168,19 +168,21 @@ public class CryptoJS {
             byte[] salt = Securitys.randomBytes(cfg.saltBitSize);
             PBKDFKeySpec pbeKeySpec = new PBKDFKeySpec(passphrase.toCharArray(), salt, cfg.keyBitSize, cfg.ivBitSize, cfg.iterations, cfg.hashAlgorithm);
             String transformation = Ciphers.createAlgorithmTransformation(cfg.cipherAlgorithm, cfg.mode.name(), cfg.padding);
-
+            byte[] iv = cfg.iv;
+            if(iv == null){
+                iv = Ciphers.createIvParameterSpec(cfg.ivBitSize).getIV();
+            }
             byte[] encryptedBytes = PBEs.encrypt(
                     Strings.getBytesUtf8(message),
                     cfg.pbeAlgorithm,
                     pbeKeySpec,
                     transformation,
-                    cfg.iv,
+                    new Holder<byte[]>(iv),
                     Securitys.getProvider(cfg.provider),
                     null
             );
 
-
-            return cfg.cipherTextHandler.stringify(salt, encryptedBytes, cfg);
+            return cfg.cipherTextFormatter.stringify(salt, encryptedBytes, cfg);
         }
 
         protected static String decryptWithPBE(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
@@ -188,8 +190,11 @@ public class CryptoJS {
 
             Holder<byte[]> saltHolder = new Holder<byte[]>();
             Holder<byte[]> ciphertextHolder = new Holder<byte[]>();
-            cfg.cipherTextHandler.extract(encryptedText, cfg, saltHolder, ciphertextHolder);
-
+            Holder<byte[]> ivHolder=new Holder<byte[]>();
+            cfg.cipherTextFormatter.parse(encryptedText, cfg, saltHolder, ciphertextHolder,ivHolder);
+            if(Objs.isEmpty(ivHolder.get())){
+                ivHolder.set(cfg.iv);
+            }
             byte[] salt = saltHolder.get();
             byte[] encryptedBytes = ciphertextHolder.get();
 
@@ -201,7 +206,7 @@ public class CryptoJS {
                     cfg.pbeAlgorithm,
                     pbeKeySpec,
                     transformation,
-                    cfg.iv,
+                    ivHolder,
                     Securitys.getProvider(cfg.provider),
                     null
             );
