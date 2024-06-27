@@ -10,7 +10,6 @@ import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeyS
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedPBEKey;
 import com.jn.langx.security.crypto.pbe.pbkdf.OpenSSLEvpKDFKeyFactorySpi;
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeyFactorySpi;
-import com.jn.langx.security.ext.js.cryptojs.CryptoJS;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -127,7 +126,10 @@ public class PBEs {
                     cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
                 }
                 Symmetrics.MODE mode=Ciphers.extractSymmetricMode(algorithmTransformation);
-                IvParameterSpec ivObj=Ciphers.createIvParameterSpec(Objs.isEmpty(ivHolder.get())?pbeKey.getEncoded():ivHolder.get());
+                if(Objs.isEmpty(ivHolder.get())){
+                    ivHolder.set(pbeKey.getEncoded());
+                }
+                IvParameterSpec ivObj=Ciphers.createIvParameterSpec(ivHolder.get());
                 if(mode== Symmetrics.MODE.ECB){
                     ivObj=null;
                 }

@@ -76,7 +76,41 @@ public class CryptoJsMockTests {
         String passphrase="NsFoCus$#";
 
         IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
-        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(224,256,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,256,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
+
+        String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
+        System.out.println(encryptedText);
+
+        String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,cfg);
+        System.out.println(decryptedText);
+        System.out.println(Objs.equals(message,decryptedText));
+
+    }
+
+    @Test
+    public void mock_PBKDF2WithSha384_AES(){
+        String message="test@123";
+        String passphrase="NsFoCus$#";
+
+        IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,384,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
+
+        String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
+        System.out.println(encryptedText);
+
+        String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,cfg);
+        System.out.println(decryptedText);
+        System.out.println(Objs.equals(message,decryptedText));
+
+    }
+
+    @Test
+    public void mock_PBKDF2WithSha512_AES(){
+        String message="test@123";
+        String passphrase="NsFoCus$#";
+
+        IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,512,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA3_224.getName(), PBEs.PBKDF2WithHmacSHA224,ivParameterSpec.getIV());
 
         String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
         System.out.println(encryptedText);
