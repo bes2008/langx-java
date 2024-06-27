@@ -1,7 +1,4 @@
-## 5.4.0
-+ 增强Crypto-JS, 支持PBKDF2
-
-## 5.3.13
+## 5.3.13 （此版本废弃，全部并入 5.4.0）
 + 支持Files.readAsText
 + 支持docker环境检测
 + 提供AnsiX923Padding,ISO97971Padding
@@ -14,7 +11,7 @@
 ## 5.3.11
 + 是5.3.10版本的重新构建版本（5.3.10构建时，jdk版本搞错了）
 
-## 5.3.10
+## 5.3.10 （此版本废弃）
 + 移除ans1支持
 + 整理 xml 相关的 customizer接口
 + 移除空类 IPFilter
