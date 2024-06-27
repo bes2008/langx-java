@@ -8,6 +8,8 @@ import java.security.SecureRandom;
  * BCrypt implements OpenBSD-style Blowfish password hashing using
  * the scheme described in "A Future-Adaptable Password Scheme" by
  * Niels Provos and David Mazieres.
+ *
+ * 用户密码和随机生成的盐（salt）一起被用来生成一个Blowfish密钥，然后这个密钥被用来初始化Blowfish的密钥调度数组
  * <p>
  * This password hashing system tries to thwart off-line password
  * cracking using a computationally-intensive hashing algorithm,
