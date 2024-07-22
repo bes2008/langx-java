@@ -1,5 +1,6 @@
-package com.jn.langx.test.security.pbe;
+package com.jn.langx.security.gm.tests.pbe;
 
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Ciphers;
@@ -8,6 +9,7 @@ import com.jn.langx.security.crypto.pbe.PBEs;
 import com.jn.langx.security.ext.js.cryptojs.CryptoJS;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Lists;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 
 import javax.crypto.spec.IvParameterSpec;
@@ -16,12 +18,19 @@ import java.util.List;
 public class CryptoJsMockTests {
     @Test
     public void mockOPENSSL_EVP_AES(){
+
+        Securitys.addProvider(new BouncyCastleProvider());
+
+        CryptoJS.AESConfig cfg = new CryptoJS.AESConfig();
+        cfg.provider="BC";
+
+
         String message="test@123";
         String passphrase="NsFoCus$#";
-        String encryptedText=CryptoJS.AES.encrypt(message,passphrase,null);
+        String encryptedText= CryptoJS.AES.encrypt(message,passphrase,cfg);
         System.out.println(encryptedText);
 
-        String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,null);
+        String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,cfg);
         System.out.println(decryptedText);
         System.out.println(Objs.equals(message,decryptedText));
 
@@ -31,7 +40,7 @@ public class CryptoJsMockTests {
                 "U2FsdGVkX1+EkiwP7zttFvziuAOM0MDoPYvKcIxvz3w="
         );
         for (String cipherText: encryptedTexts ){
-            decryptedText = CryptoJS.AES.decrypt(cipherText, passphrase,null);
+            decryptedText = CryptoJS.AES.decrypt(cipherText, passphrase,cfg);
             System.out.println(decryptedText);
             System.out.println(Objs.equals(message,decryptedText));
         }
@@ -56,7 +65,7 @@ public class CryptoJsMockTests {
         String message="test@123";
         String passphrase="NsFoCus$#";
 
-        IvParameterSpec ivParameterSpec=Ciphers.createIvParameterSpec(128);
+        IvParameterSpec ivParameterSpec= Ciphers.createIvParameterSpec(128);
         CryptoJS.AESConfig cfg = new CryptoJS.AESConfig(256,128,1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.SHA_256.getName(), PBEs.PBKDF2WithHmacSHA256, ivParameterSpec.getIV());
 
         String encryptedText=CryptoJS.AES.encrypt(message,passphrase,cfg);
