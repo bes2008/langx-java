@@ -58,6 +58,7 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            checkKeyLength(key);
             cipher = initCipher(cipher, operateMode, key, secureRandom);
             return cipher;
         } catch (Throwable ex) {
@@ -89,6 +90,7 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            checkKeyLength(key);
             cipher = initCipher(cipher, operateMode, key, parameterSpec, secureRandom);
             return cipher;
         } catch (Throwable ex) {
@@ -127,17 +129,19 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
-            int maxAllowedKeyLength=javax.crypto.Cipher.getMaxAllowedKeyLength(key.getAlgorithm());
-            int actualKeyLength = key.getEncoded().length * 8;
-            if(actualKeyLength>maxAllowedKeyLength){
-                Loggers.getLogger(Ciphers.class).error("key length > max allowed key length, check : 1. whether your key is invalid or not? 2. crypto.policy key length limit? ref: https://www.baeldung.com/jce-enable-unlimited-strength; if is crypto.policy, upgrade your jdk version >= JDK 1.8.0u151" );
-
-            }
-
+            checkKeyLength(key);
             cipher = initCipher(cipher, operateMode, key, parameters, secureRandom);
             return cipher;
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    private static void checkKeyLength(Key key) throws NoSuchAlgorithmException{
+        int maxAllowedKeyLength = javax.crypto.Cipher.getMaxAllowedKeyLength(key.getAlgorithm());
+        int actualKeyLength = key.getEncoded().length * 8;
+        if (actualKeyLength > maxAllowedKeyLength) {
+            Loggers.getLogger(Ciphers.class).error("key length > max allowed key length, check : 1. whether your key is invalid or not? 2. crypto.policy key length limit? ref: https://www.baeldung.com/jce-enable-unlimited-strength; if is crypto.policy, upgrade your jdk version >= JDK 1.8.0u151");
         }
     }
 
