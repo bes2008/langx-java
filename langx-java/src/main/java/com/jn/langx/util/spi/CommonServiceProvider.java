@@ -24,23 +24,36 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
 
     @Override
     public Iterator<T> get(Class<T> serviceClass) {
-        ServiceLoader<T> loader = ServiceLoader.load(serviceClass);
-        Iterator<T> iter = loader.iterator();
         Collection<T> ret = Collects.emptyArrayList();
-        while (iter.hasNext()) {
-            try {
-                T t = iter.next();
-                if (predicate.test(t)) {
-                    ret.add(t);
-                }
-            }catch (Exception e){
-                logger.error(e.getMessage(),e);
-            }
-
+        int serviceInstanceCount = loadServices(serviceClass, Thread.currentThread().getContextClassLoader(), ret);
+        if(serviceInstanceCount==0 && Thread.currentThread().getContextClassLoader() != serviceClass.getClassLoader()){
+            loadServices(serviceClass, serviceClass.getClassLoader(), ret);
         }
         if (comparator != null) {
             ret = Collects.sort(ret, comparator);
         }
         return ret.iterator();
+    }
+
+    private int loadServices(Class<T> serviceClass, ClassLoader classLoader, Collection<T> tmpStorage){
+        ServiceLoader<T> loader = ServiceLoader.load(serviceClass, classLoader);
+        Iterator<T> iter = loader.iterator();
+        int loadedServiceInstanceCount=0;
+        while (iter.hasNext()) {
+            try {
+                T t = iter.next();
+                if (predicate.test(t)) {
+                    tmpStorage.add(t);
+                }
+            }catch (Exception e){
+                logger.error(e.getMessage(),e);
+            }
+            loadedServiceInstanceCount++;
+        }
+        return loadedServiceInstanceCount;
+    }
+
+    public static <T> Iterable<T> loadService(Class<T> serviceClass){
+        return Collects.asIterable(new CommonServiceProvider<T>().get(serviceClass));
     }
 }

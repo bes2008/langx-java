@@ -14,6 +14,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.regexp.jdk.JdkRegexpEngine;
 import com.jn.langx.util.regexp.named.Jdk6NamedRegexpEngine;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -48,7 +49,7 @@ public class Regexps {
             registry.register(new JdkRegexpEngine());
         }
         // SPI for joni or others
-        Collects.forEach(ServiceLoader.load(RegexpEngine.class), new Consumer<RegexpEngine>() {
+        Collects.forEach(CommonServiceProvider.loadService(RegexpEngine.class), new Consumer<RegexpEngine>() {
             @Override
             public void accept(RegexpEngine regexpFactory) {
                 registry.register(regexpFactory);

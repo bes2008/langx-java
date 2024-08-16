@@ -11,6 +11,7 @@ import com.jn.langx.util.datetime.parser.Java6CandidateDateTimeParseService;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -84,7 +85,7 @@ public class Dates {
     private static final Map<String, CandidateDateTimeParseService> candidateDateTimeParseServiceMap = new HashMap<String, CandidateDateTimeParseService>();
 
     static {
-        Collects.forEach(ServiceLoader.load(CandidateDateTimeParseService.class), new Consumer<CandidateDateTimeParseService>() {
+        Collects.forEach(CommonServiceProvider.loadService(CandidateDateTimeParseService.class), new Consumer<CandidateDateTimeParseService>() {
             @Override
             public void accept(CandidateDateTimeParseService candidateDateTimeParseService) {
                 candidateDateTimeParseServiceMap.put(candidateDateTimeParseService.getName(), candidateDateTimeParseService);

@@ -9,6 +9,7 @@ import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import com.jn.langx.util.struct.Holder;
 
 import java.lang.reflect.Field;
@@ -126,7 +127,7 @@ public class Securitys {
     }
 
     private static void loadGMSupports() {
-        for (GmInitializer initializer : ServiceLoader.load(GmInitializer.class)) {
+        for (GmInitializer initializer : CommonServiceProvider.loadService(GmInitializer.class)) {
             initializer.init();
         }
     }

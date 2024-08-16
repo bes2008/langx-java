@@ -12,6 +12,7 @@ import com.jn.langx.util.hash.streaming.MessageDigestHasher;
 import com.jn.langx.util.hash.streaming.crc.CRCs;
 import com.jn.langx.util.hash.streaming.crc.CrcHasher;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import org.slf4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
@@ -30,7 +31,7 @@ public class Hashs {
     static {
         final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>(Collects.<String, Hasher>emptyHashMap(true));
         registry.init();
-        Collects.forEach(ServiceLoader.load(Hasher.class), new Consumer<Hasher>() {
+        Collects.forEach(CommonServiceProvider.loadService(Hasher.class), new Consumer<Hasher>() {
             @Override
             public void accept(Hasher factory) {
                 registry.register(factory);

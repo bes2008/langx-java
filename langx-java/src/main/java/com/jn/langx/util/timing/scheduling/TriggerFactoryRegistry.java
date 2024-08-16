@@ -5,6 +5,7 @@ import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.util.ServiceLoader;
 
@@ -21,7 +22,7 @@ public class TriggerFactoryRegistry extends GenericRegistry<TriggerFactory> {
     }
     @Override
     protected void doInit() throws InitializationException {
-        Pipeline.of(ServiceLoader.load(TriggerFactory.class))
+        Pipeline.of(CommonServiceProvider.loadService(TriggerFactory.class))
                 .forEach(new Consumer<TriggerFactory>() {
                     @Override
                     public void accept(TriggerFactory triggerFactory) {

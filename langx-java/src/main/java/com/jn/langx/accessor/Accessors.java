@@ -7,6 +7,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class Accessors {
     private static final Map<Class, AccessorFactory> accessorFactoryRegistry = new LinkedHashMap<Class, AccessorFactory>();
 
     static {
-        Collects.forEach(ServiceLoader.load(AccessorFactory.class), new Consumer<AccessorFactory>() {
+        Collects.forEach(CommonServiceProvider.loadService(AccessorFactory.class), new Consumer<AccessorFactory>() {
             @Override
             public void accept(AccessorFactory accessorFactory) {
                 register(accessorFactory);
