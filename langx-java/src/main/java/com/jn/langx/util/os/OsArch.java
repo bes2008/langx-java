@@ -51,7 +51,7 @@ public enum OsArch implements CommonEnum {
                 .findFirst(new Predicate<OsArch>() {
                     @Override
                     public boolean test(OsArch arch) {
-                        return theName.contains(arch.getName());
+                        return Strings.contains(theName, arch.getName(), true);
                     }
                 });
     }
