@@ -23,7 +23,7 @@ public enum OsArch implements CommonEnum {
     PPC64(4002, "ppc64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
     POWERPC(4003, "powerpc", "32 位 PowerPC 架构", OsArchSeries.POWER, 32),
     S390X(5001, "s390x", "64 位 IBM System z 架构", OsArchSeries.Z, 64),
-    S390(5002, "s390", "31 位 IBM System z 架构", OsArchSeries.Z, 31),
+    S390(5002, "s390", "32 位 IBM System z 架构", OsArchSeries.Z, 32),
     MIPS64(6001, "mips64", "64 位 MIPS 架构", OsArchSeries.MIPS, 64),
     MIPS(6002, "mips", "32 位 MIPS 架构", OsArchSeries.MIPS, 32),
     SH(7001, "sh", "SuperH 架构", OsArchSeries.SH, 64);
@@ -41,13 +41,17 @@ public enum OsArch implements CommonEnum {
         return bit;
     }
 
+    public boolean is64Bit(){
+        return bit==64;
+    }
+
     public static OsArch findByName(String osArch) {
         final String theName = Strings.lowerCase(osArch);
         return Pipeline.of(EnumSet.allOf(OsArch.class))
                 .findFirst(new Predicate<OsArch>() {
                     @Override
                     public boolean test(OsArch arch) {
-                        return arch.getName().contains(theName);
+                        return theName.contains(arch.getName());
                     }
                 });
     }

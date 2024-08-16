@@ -350,4 +350,20 @@ public class Platform {
             return -1L;
         }
     }
+    private static OsArch getCurrentOSArch(){
+        String osarchString = SystemPropertys.getOSArch();
+        return OsArch.findByName(osarchString);
+    }
+    public static final OsArch osArch = getCurrentOSArch();
+
+    private static int getJvmBit(){
+        String dataModel = System.getProperty("sun.arch.data.model");
+        try {
+            return Integer.parseInt(dataModel);
+        }catch (Throwable e){
+            return osArch.getBit();
+        }
+    }
+    public static int jvmBit = getJvmBit();
+
 }
