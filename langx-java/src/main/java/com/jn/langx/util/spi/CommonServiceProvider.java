@@ -1,5 +1,6 @@
 package com.jn.langx.util.spi;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.comparator.OrderedComparator;
 import com.jn.langx.util.function.Functions;
@@ -14,6 +15,16 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
     private Predicate<T> predicate = Functions.truePredicate();
     private Comparator<T> comparator = new OrderedComparator<T>();
 
+    @Nullable
+    private ClassLoader classLoader;
+    public CommonServiceProvider(){
+        this(null);
+    }
+
+    public CommonServiceProvider(ClassLoader classLoader){
+        this.classLoader=classLoader;
+    }
+
     public void setPredicate(Predicate<T> predicate) {
         this.predicate = predicate;
     }
@@ -25,9 +36,13 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
     @Override
     public Iterator<T> get(Class<T> serviceClass) {
         Collection<T> ret = Collects.emptyArrayList();
-        int serviceInstanceCount = loadServices(serviceClass, Thread.currentThread().getContextClassLoader(), ret);
-        if(serviceInstanceCount==0 && Thread.currentThread().getContextClassLoader() != serviceClass.getClassLoader()){
-            loadServices(serviceClass, serviceClass.getClassLoader(), ret);
+        if(this.classLoader!=null){
+            loadServicesInternal(serviceClass, this.classLoader,ret);
+        }else {
+            int serviceInstanceCount = loadServicesInternal(serviceClass, Thread.currentThread().getContextClassLoader(), ret);
+            if (serviceInstanceCount == 0 && Thread.currentThread().getContextClassLoader() != serviceClass.getClassLoader()) {
+                loadServicesInternal(serviceClass, serviceClass.getClassLoader(), ret);
+            }
         }
         if (comparator != null) {
             ret = Collects.sort(ret, comparator);
@@ -35,7 +50,7 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
         return ret.iterator();
     }
 
-    private int loadServices(Class<T> serviceClass, ClassLoader classLoader, Collection<T> tmpStorage){
+    private int loadServicesInternal(Class<T> serviceClass, ClassLoader classLoader, Collection<T> tmpStorage){
         ServiceLoader<T> loader = ServiceLoader.load(serviceClass, classLoader);
         Iterator<T> iter = loader.iterator();
         int loadedServiceInstanceCount=0;
