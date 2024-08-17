@@ -27,13 +27,16 @@ public enum OsArch implements CommonEnum {
     S390(5002, "s390", "32 位 IBM System z 架构", OsArchSeries.Z, 32),
     MIPS64(6001, "mips64", "64 位 MIPS 架构", OsArchSeries.MIPS, 64),
     MIPS(6002, "mips", "32 位 MIPS 架构", OsArchSeries.MIPS, 32),
-    SH(7001, "sh", "SuperH 架构", OsArchSeries.SH, 64),
-    SPARC_V9(8001, "sparcv9", "64 位 SPARC 架构", OsArchSeries.SPARC, 64 ),
-    SPARC(8001, "sparc", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ),
-    PA_RISC(9001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
-    ALPHA(10001, "alpha", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64),
+    SPARC_V9(7001, "sparcv9", "64 位 SPARC 架构", OsArchSeries.SPARC, 64 ),
+    SPARC(7001, "sparc", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ),
+    PA_RISC(8001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
+    ALPHA(9001, "alpha", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64),
 
-    VAX(11001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32)
+
+
+
+    VAX(98001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32),
+    SH(99001, "sh", "SuperH 架构", OsArchSeries.SH, 64),
     ;
     EnumDelegate delegate;
     private OsArchSeries series;
