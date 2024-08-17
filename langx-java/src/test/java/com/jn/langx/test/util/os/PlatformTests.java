@@ -10,7 +10,7 @@ public class PlatformTests {
     public void testOSArch(){
         OsArch osArch = Platform.osArch;
         System.out.println(osArch);
-        System.out.println(StringTemplates.formatWithPlaceholder("OS is {} bit",osArch.is64Bit()));
+        System.out.println(StringTemplates.formatWithPlaceholder("OS is {} bit",osArch.getBit()));
         System.out.println(StringTemplates.formatWithPlaceholder("JVM is {} bit",Platform.jvmBit));
     }
 }

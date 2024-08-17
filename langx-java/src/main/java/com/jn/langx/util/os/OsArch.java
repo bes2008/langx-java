@@ -1,5 +1,6 @@
 package com.jn.langx.util.os;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.enums.base.CommonEnum;
@@ -15,26 +16,34 @@ public enum OsArch implements CommonEnum {
     X86(2003, "x86", "32 位 x86 架构", OsArchSeries.X86, 32),
     X32(2004, "x32", "32 位 x86 架构", OsArchSeries.X86, 32),
     I386(2005, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
-    AMD64(3005, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
+    AMD64(2006, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
     ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64),
     ARM(3002, "arm", "32 位 ARM 架构", OsArchSeries.ARM, 32),
     AARCH64(3003, "aarch64", "64 位 ARM 架构", OsArchSeries.ARM, 64), // ARM v8
     PPC64LE(4001, "ppc64le", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
     PPC64(4002, "ppc64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
-    POWERPC(4003, "powerpc", "32 位 PowerPC 架构", OsArchSeries.POWER, 32),
+    POWERPC(4003, "powerpc", "32 位 PowerPC 架构", OsArchSeries.POWER, 32, "ppc", "power"),
     S390X(5001, "s390x", "64 位 IBM System z 架构", OsArchSeries.Z, 64),
     S390(5002, "s390", "32 位 IBM System z 架构", OsArchSeries.Z, 32),
     MIPS64(6001, "mips64", "64 位 MIPS 架构", OsArchSeries.MIPS, 64),
     MIPS(6002, "mips", "32 位 MIPS 架构", OsArchSeries.MIPS, 32),
-    SH(7001, "sh", "SuperH 架构", OsArchSeries.SH, 64);
+    SH(7001, "sh", "SuperH 架构", OsArchSeries.SH, 64),
+    SPARC_V9(8001, "sparcv9", "64 位 SPARC 架构", OsArchSeries.SPARC, 64 ),
+    SPARC(8001, "sparc", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ),
+    PA(9001, "pa", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa_risc"),
+    ALPHA(10001, "alpha", "64 位 Alpha架构", OsArchSeries.ALPHA, 64)
+    ;
     EnumDelegate delegate;
     private OsArchSeries series;
     private int bit;
 
-    OsArch(int code, String name, String displayName, OsArchSeries series, int bit) {
+    private String[] aliases;
+
+    OsArch(int code, String name, String displayName, OsArchSeries series, int bit, String... aliases) {
         this.delegate = new EnumDelegate(code, name, displayName);
         this.series = series;
         this.bit = bit;
+        this.aliases = aliases;
     }
 
     public int getBit() {
@@ -51,7 +60,16 @@ public enum OsArch implements CommonEnum {
                 .findFirst(new Predicate<OsArch>() {
                     @Override
                     public boolean test(OsArch arch) {
-                        return Strings.contains(theName, arch.getName(), true);
+                        boolean c = Strings.contains(theName, arch.getName(), true);
+                        if (!c && !Objs.isEmpty(arch.aliases)){
+                            c = Pipeline.of(arch.aliases).anyMatch(new Predicate<String>() {
+                                @Override
+                                public boolean test(String alias) {
+                                    return Strings.contains(theName, alias, true);
+                                }
+                            });
+                        }
+                        return c;
                     }
                 });
     }

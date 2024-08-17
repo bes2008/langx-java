@@ -9,5 +9,9 @@ public enum OsArchSeries {
     MIPS,
     Z,
     SH,
-    IA;
+    IA,
+    SPARC,
+    PA_RISC,
+
+    ALPHA;
 }

@@ -354,6 +354,10 @@ public class Platform {
         String osarchString = SystemPropertys.getOSArch();
         return OsArch.findByName(osarchString);
     }
+
+    /**
+     * 这个得到的其实是JVM的情况
+     */
     public static final OsArch osArch = getCurrentOSArch();
 
     private static int getJvmBit(){
