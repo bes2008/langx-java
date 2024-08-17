@@ -30,8 +30,10 @@ public enum OsArch implements CommonEnum {
     SH(7001, "sh", "SuperH 架构", OsArchSeries.SH, 64),
     SPARC_V9(8001, "sparcv9", "64 位 SPARC 架构", OsArchSeries.SPARC, 64 ),
     SPARC(8001, "sparc", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ),
-    PA(9001, "pa", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa_risc"),
-    ALPHA(10001, "alpha", "64 位 Alpha架构", OsArchSeries.ALPHA, 64)
+    PA_RISC(9001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
+    ALPHA(10001, "alpha", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64),
+
+    VAX(11001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32)
     ;
     EnumDelegate delegate;
     private OsArchSeries series;

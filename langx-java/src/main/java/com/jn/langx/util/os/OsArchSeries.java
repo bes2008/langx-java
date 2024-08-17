@@ -12,6 +12,6 @@ public enum OsArchSeries {
     IA,
     SPARC,
     PA_RISC,
-
-    ALPHA;
+    ALPHA,
+    VAX;
 }
