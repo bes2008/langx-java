@@ -1,11 +1,12 @@
 package com.jn.langx.util.memory.objectsize;
 
-import com.jn.langx.cache.AbstractCacheLoader;
-import com.jn.langx.cache.Cache;
-import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.IdentityHashSet;
+import com.jn.langx.util.collection.Maps;
+import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.reflect.type.Primitives;
 
 import java.lang.management.ManagementFactory;
@@ -69,13 +70,14 @@ public class ObjectSizeCalculator {
     // added.
     private final int superclassFieldPadding;
 
-    private final Cache<Class<?>, ClassSizeInfo> classSizeInfos =
+    private static final ConcurrentReferenceHashMap<Class<?>, ClassSizeInfo> classSizeInfos = new ConcurrentReferenceHashMap<Class<?>, ClassSizeInfo>(100, ReferenceType.WEAK, ReferenceType.STRONG);
+            /*
             CacheBuilder.<Class<?>, ClassSizeInfo>newBuilder().loader(new AbstractCacheLoader<Class<?>, ClassSizeInfo>() {
                 public ClassSizeInfo load(Class<?> clazz) {
                     return new ClassSizeInfo(clazz);
                 }
             }).build();
-
+*/
 
     private final Set<Object> alreadyVisited = new IdentityHashSet<Object>();
     private final Deque<Object> pending = new ArrayDeque<Object>(16 * 1024);
@@ -140,7 +142,13 @@ public class ObjectSizeCalculator {
             if (clazz.isArray()) {
                 visitArray(obj);
             } else {
-                classSizeInfos.get(clazz).visit(obj, this);
+                Maps.putIfAbsent(classSizeInfos, clazz, new Supplier<Class<?>, ClassSizeInfo>() {
+                    @Override
+                    public ClassSizeInfo get(Class<?> clazz) {
+                        return new ClassSizeInfo(clazz);
+                    }
+                }).visit(obj, this);
+                // classSizeInfos.get(clazz).visit(obj, this);
             }
         }
     }
@@ -233,7 +241,13 @@ public class ObjectSizeCalculator {
             }
             final Class<?> superClass = clazz.getSuperclass();
             if (superClass != null) {
-                final ClassSizeInfo superClassInfo = classSizeInfos.get(superClass);
+               // final ClassSizeInfo superClassInfo = classSizeInfos.get(superClass);
+                final ClassSizeInfo superClassInfo = Maps.putIfAbsent(classSizeInfos, superClass, new Supplier<Class<?>, ClassSizeInfo>() {
+                    @Override
+                    public ClassSizeInfo get(Class<?> clazz) {
+                        return new ClassSizeInfo(clazz);
+                    }
+                });
                 fieldsSize += roundTo(superClassInfo.fieldsSize, superclassFieldPadding);
                 referenceFields.addAll(Arrays.asList(superClassInfo.referenceFields));
             }
