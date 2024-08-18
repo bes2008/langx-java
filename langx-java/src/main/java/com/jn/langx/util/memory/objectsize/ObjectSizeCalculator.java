@@ -299,17 +299,14 @@ public class ObjectSizeCalculator {
             throw new UnsupportedOperationException("ObjectSizeCalculator only supported on HotSpot VM");
         }
 
-        final String dataModel = System.getProperty("sun.arch.data.model");
-        if ("32".equals(dataModel)) {
+        if (Platform.jvmBit==32) {
             // Running with 32-bit data model
             return new Arch32MemoryLayoutSpecification();
-        } else if (!"64".equals(dataModel)) {
-            throw new UnsupportedOperationException("Unrecognized value '" + dataModel + "' of sun.arch.data.model system property");
+        } else if (Platform.jvmBit!=64) {
+            throw new UnsupportedOperationException("Unrecognized value '" + Platform.jvmBit + "' of sun.arch.data.model system property");
         }
 
-        final String strVmVersion = System.getProperty("java.vm.version");
-        final int vmVersion = Integer.parseInt(strVmVersion.substring(0, strVmVersion.indexOf('.')));
-        if (vmVersion >= 17) {
+        if (Platform.is17VMOrGreater()) {
             long maxMemory = 0;
             for (MemoryPoolMXBean mp : ManagementFactory.getMemoryPoolMXBeans()) {
                 maxMemory += mp.getUsage().getMax();

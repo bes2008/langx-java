@@ -49,6 +49,8 @@ public interface JvmConstants {
     short MINOR_20 = 0;
     short MAJOR_21 = 65;
     short MINOR_21 = 0;
+    short MAJOR_22 = 66;
+    short MINOR_22 = 0;
 
     int PREVIEW_MINOR_VERSION = 65535;
 

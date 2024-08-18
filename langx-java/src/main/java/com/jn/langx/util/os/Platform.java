@@ -98,8 +98,7 @@ public class Platform {
         } else {
             majorVersion = majorVersionFromJavaSpecificationVersion();
         }
-        Logger logger = Loggers.getLogger(Platform.class);
-        logger.debug("Java version: {}", majorVersion);
+        Loggers.getLogger(Platform.class).debug("Java version: {}", majorVersion);
 
         return majorVersion;
     }
@@ -186,10 +185,24 @@ public class Platform {
     public static boolean is13VMOrGreater() {
         return JAVA_VERSION_INT >= 13;
     }
+    public static boolean is15VMOrGreater() {
+        return JAVA_VERSION_INT >= 15;
+    }
+    public static boolean is17VMOrGreater() {
+        return JAVA_VERSION_INT >= 17;
+    }
+
+    public static boolean is21VMOrGreater() {
+        return JAVA_VERSION_INT >= 21;
+    }
+    public static boolean is22VMOrGreater() {
+        return JAVA_VERSION_INT >= 22;
+    }
 
     private static final Map<Integer, Integer> classMajorVersionToJdkVersion = new LinkedHashMap<Integer, Integer>();
 
     static {
+        // jdk 版本发布矩阵：https://www.java.com/en/releases/matrix/
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_1, 1);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_2, 2);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_3, 3);
@@ -211,6 +224,7 @@ public class Platform {
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_19, 19);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_20, 20);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_21, 21);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_22, 22);
     }
 
     public static int getJavaVersion(int classMajorVersion) {
