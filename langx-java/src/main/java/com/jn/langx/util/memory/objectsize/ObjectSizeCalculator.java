@@ -209,12 +209,12 @@ public class ObjectSizeCalculator {
         }
 
         public void visit(ObjectSizeCalculator calc) {
-                // 这个算法是全部记录下来
-                for (Object elem : array) {
-                    if (elem != null) {
-                        calc.visit(elem);
-                    }
+            // 这个算法是全部记录下来
+            for (Object elem : array) {
+                if (elem != null) {
+                    calc.visit(elem);
                 }
+            }
         }
 
     }
