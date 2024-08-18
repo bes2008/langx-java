@@ -21,21 +21,53 @@ import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
 public class Platform {
     private static final String OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
+    public static final boolean isAndroid = isAndroid0();
+
+    public static final JVMImpl JVM = getJvmImpl();
+    public static final int JAVA_VERSION_INT = javaVersion();
 
     public static final boolean isWindows = isWindows0();
-    public static final int JAVA_VERSION_INT = javaVersion();
-    public static final boolean isAndroid = isAndroid0();
-    public static final boolean isKaffeJVM = isKaffeJVM();
+
+    public static final boolean isKaffeJVM = JVM==JVMImpl.KAFFE;
     private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
     public static final boolean isGroovyAvailable = isGroovyAvailable0();
     public static final boolean isMaxOS = OS.isMaxOSX();
     public static final boolean isOSX = isOSX();
+
     public static final String processId = getProcessId0();
     // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
     private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
 
     private Platform() {
 
+    }
+
+    private static JVMImpl getJvmImpl() {
+        JVMImpl jvm = null;
+        String vmName = System.getProperty("java.vm.name");
+
+        if (isAndroid0()) {
+            if (Strings.contains(vmName, JVMImpl.DALVIK.getName(), true)) {
+                jvm = JVMImpl.DALVIK;
+            } else {
+                jvm = JVMImpl.ART;
+            }
+        } else {
+            if (Strings.contains(vmName, JVMImpl.HOTSPOT.getName(), true)) {
+                jvm = JVMImpl.HOTSPOT;
+            } else if (Strings.contains(vmName, JVMImpl.OPEN_J9.getName(), true) || Strings.contains(vmName, "IBM", true)) {
+                jvm = JVMImpl.OPEN_J9;
+            } else if (Strings.contains(vmName, JVMImpl.ZING_VM.getName(), true)) {
+                jvm = JVMImpl.ZING_VM;
+            } else if (Strings.contains(vmName, JVMImpl.JROCKIT.getName(), true)) {
+                jvm = JVMImpl.JROCKIT;
+            } else if (Strings.contains(vmName, JVMImpl.KAFFE.getName(), true) || isKaffeJVM()) {
+                jvm = JVMImpl.KAFFE;
+            } else {
+                jvm = JVMImpl.HOTSPOT;
+            }
+        }
+        return jvm;
     }
 
     /**
