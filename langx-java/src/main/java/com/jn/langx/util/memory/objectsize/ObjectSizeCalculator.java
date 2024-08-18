@@ -1,7 +1,9 @@
 package com.jn.langx.util.memory.objectsize;
 
+import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.IdentityHashSet;
 import com.jn.langx.util.collection.Maps;
@@ -13,8 +15,8 @@ import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.reflect.type.Primitives;
 
+import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryPoolMXBean;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
@@ -297,10 +299,11 @@ public class ObjectSizeCalculator {
 
     static MemoryLayoutSpecification getEffectiveMemoryLayoutSpecification() {
         final String vmName = System.getProperty("java.vm.name");
+        /*
         if (vmName == null || !(vmName.startsWith("Java HotSpot(TM) ") || vmName.startsWith("OpenJDK") || vmName.startsWith("TwitterJDK"))) {
             throw new UnsupportedOperationException("ObjectSizeCalculator only supported on HotSpot VM");
         }
-
+        */
         if (Platform.jvmBit==32) {
             // Running with 32-bit data model
             return new Arch32MemoryLayoutSpecification();
@@ -308,6 +311,28 @@ public class ObjectSizeCalculator {
             throw new UnsupportedOperationException("Unrecognized value '" + Platform.jvmBit + "' of sun.arch.data.model system property");
         }
 
+        boolean isCompressedOops = false;
+        String javaVendor = System.getProperty("java.vendor");
+        if (javaVendor.contains("IBM") || javaVendor.contains("OpenJ9")) {
+            isCompressedOops = System.getProperty("java.vm.info").contains("Compressed Ref");
+        }
+
+        try {
+            String hotSpotMBeanName = "com.sun.management:type=HotSpotDiagnostic";
+            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+
+            // NOTE: This should throw an exception in non-Sun JVMs
+            Object bean = ManagementFactory.newPlatformMXBeanProxy(server, hotSpotMBeanName, ClassLoaders.loadClass("com.sun.management.HotSpotDiagnosticMXBean"));
+            Object optionValue = Reflects.invokeDeclaredMethod(bean, "getVMOption", new Class[]{String.class}, new Object[]{"UseCompressedOops"}, true, true);
+            isCompressedOops= Strings.contains(optionValue.toString(), "true");
+        } catch (Exception e) {
+            // Guess whether they've enabled UseCompressedOops based on whether maxMemory < 32 GB
+            boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
+            Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
+            isCompressedOops= guess;
+        }
+
+        /*
         if (Platform.is17VMOrGreater()) {
             long maxMemory = 0;
             for (MemoryPoolMXBean mp : ManagementFactory.getMemoryPoolMXBeans()) {
@@ -319,8 +344,9 @@ public class ObjectSizeCalculator {
                 return new Arch64CompressedMemoryLayoutSpecified();
             }
         }
+        */
 
         // In other cases, it's a 64-bit uncompressed OOPs object model
-        return new Arch64UncompressedMemoryLayoutSpecification();
+        return isCompressedOops ? new Arch64CompressedMemoryLayoutSpecified() : new Arch64UncompressedMemoryLayoutSpecification();
     }
 }
