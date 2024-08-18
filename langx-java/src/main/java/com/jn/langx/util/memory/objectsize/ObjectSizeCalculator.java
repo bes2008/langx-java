@@ -197,11 +197,13 @@ public class ObjectSizeCalculator {
         }
 
         public void visit(ObjectSizeCalculator calc) {
+            // 这个算法是全部记录下来
             for (Object elem : array) {
                 if (elem != null) {
                     calc.visit(elem);
                 }
             }
+            // Spark 的SizeEstimator会在 数组size > 400时，随机取两个400的样本，将两个样本的大小统计后，估算整体大小
         }
     }
 
