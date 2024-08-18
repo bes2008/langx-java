@@ -1,9 +1,6 @@
 package com.jn.langx.util.memory.objectsize;
 
-import com.jn.langx.util.ClassLoaders;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.IdentityHashSet;
 import com.jn.langx.util.collection.Maps;
@@ -39,8 +36,8 @@ import java.util.*;
 public class ObjectSizeCalculator {
 
 
-    private static class CurrentLayout {
-        private static final MemoryLayoutSpecification SPEC = getEffectiveMemoryLayoutSpecification();
+    static class CurrentLayout {
+        static final MemoryLayoutSpecification SPEC = getEffectiveMemoryLayoutSpecification();
     }
 
     /**
@@ -59,8 +56,21 @@ public class ObjectSizeCalculator {
      * retains.
      * @throws UnsupportedOperationException if the current vm memory layout cannot be detected.
      */
-    public static long getObjectSize(Object obj) throws UnsupportedOperationException {
-        return obj == null ? 0 : new ObjectSizeCalculator(CurrentLayout.SPEC).calculateObjectSize(obj);
+    public static long getObjectSize(Object obj) {
+        return getObjectSize(obj,false);
+    }
+    public static long getObjectSize(Object obj, boolean estimateMode) {
+        if(obj==null){
+            return 0L;
+        }
+        try {
+            if(estimateMode){
+                return ObjectSizeEstimator.estimate(obj);
+            }
+            return new ObjectSizeCalculator(CurrentLayout.SPEC).calculateObjectSize(obj);
+        }catch (Throwable e){
+            throw Throwables.wrapAsRuntimeException(e);
+        }
     }
 
     // Fixed object header size for arrays.
@@ -97,11 +107,11 @@ public class ObjectSizeCalculator {
      */
     public ObjectSizeCalculator(MemoryLayoutSpecification memoryLayoutSpecification) {
         Preconditions.checkNotNull(memoryLayoutSpecification);
-        arrayHeaderSize = memoryLayoutSpecification.getArrayHeaderSize();
-        objectHeaderSize = memoryLayoutSpecification.getObjectHeaderSize();
-        objectPadding = memoryLayoutSpecification.getObjectPadding();
-        referenceSize = memoryLayoutSpecification.getReferenceSize();
-        superclassFieldPadding = memoryLayoutSpecification.getSuperclassFieldPadding();
+        this.arrayHeaderSize = memoryLayoutSpecification.getArrayHeaderSize();
+        this.objectHeaderSize = memoryLayoutSpecification.getObjectHeaderSize();
+        this.objectPadding = memoryLayoutSpecification.getObjectPadding();
+        this.referenceSize = memoryLayoutSpecification.getReferenceSize();
+        this.superclassFieldPadding = memoryLayoutSpecification.getSuperclassFieldPadding();
     }
 
     /**
@@ -118,7 +128,7 @@ public class ObjectSizeCalculator {
      * @return the total allocated size of the object and all other objects it
      * retains.
      */
-    public synchronized long calculateObjectSize(Object obj) {
+    private synchronized long calculateObjectSize(Object obj) {
         // Breadth-first traversal instead of naive depth-first with recursive
         // implementation, so we don't blow the stack traversing long linked lists.
         try {
@@ -191,7 +201,7 @@ public class ObjectSizeCalculator {
         increaseSize(roundTo(arrayHeaderSize + length * elementSize, objectPadding));
     }
 
-    private static class ArrayElementsVisitor {
+    private class ArrayElementsVisitor {
         private final Object[] array;
 
         ArrayElementsVisitor(Object[] array) {
@@ -199,14 +209,14 @@ public class ObjectSizeCalculator {
         }
 
         public void visit(ObjectSizeCalculator calc) {
-            // 这个算法是全部记录下来
-            for (Object elem : array) {
-                if (elem != null) {
-                    calc.visit(elem);
+                // 这个算法是全部记录下来
+                for (Object elem : array) {
+                    if (elem != null) {
+                        calc.visit(elem);
+                    }
                 }
-            }
-            // Spark 的SizeEstimator会在 数组size > 400时，随机取两个400的样本，将两个样本的大小统计后，估算整体大小
         }
+
     }
 
     void enqueue(Object obj) {
