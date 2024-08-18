@@ -312,24 +312,30 @@ public class ObjectSizeCalculator {
         }
 
         boolean isCompressedOops = false;
-        String javaVendor = System.getProperty("java.vendor");
-        if (javaVendor.contains("IBM") || javaVendor.contains("OpenJ9")) {
-            isCompressedOops = System.getProperty("java.vm.info").contains("Compressed Ref");
-        }
-
-        try {
-            String hotSpotMBeanName = "com.sun.management:type=HotSpotDiagnostic";
-            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-
-            // NOTE: This should throw an exception in non-Sun JVMs
-            Object bean = ManagementFactory.newPlatformMXBeanProxy(server, hotSpotMBeanName, ClassLoaders.loadClass("com.sun.management.HotSpotDiagnosticMXBean"));
-            Object optionValue = Reflects.invokeDeclaredMethod(bean, "getVMOption", new Class[]{String.class}, new Object[]{"UseCompressedOops"}, true, true);
-            isCompressedOops= Strings.contains(optionValue.toString(), "true");
-        } catch (Exception e) {
-            // Guess whether they've enabled UseCompressedOops based on whether maxMemory < 32 GB
-            boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
-            Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
-            isCompressedOops= guess;
+        switch (Platform.JVM) {
+            case OPEN_J9: {
+                isCompressedOops = System.getProperty("java.vm.info").contains("Compressed Ref");
+                break;
+            }
+            case HOTSPOT: {
+                try {
+                    String hotSpotMBeanName = "com.sun.management:type=HotSpotDiagnostic";
+                    MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+                    // NOTE: This should throw an exception in non-Sun JVMs
+                    Object bean = ManagementFactory.newPlatformMXBeanProxy(server, hotSpotMBeanName, ClassLoaders.loadClass("com.sun.management.HotSpotDiagnosticMXBean"));
+                    Object optionValue = Reflects.invokeDeclaredMethod(bean, "getVMOption", new Class[]{String.class}, new Object[]{"UseCompressedOops"}, true, true);
+                    isCompressedOops = Strings.contains(optionValue.toString(), "true");
+                }catch (Exception e){
+                    // ignore it
+                }
+                break;
+            }
+            default: {
+                boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
+                Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
+                isCompressedOops = guess;
+                break;
+            }
         }
 
         /*
