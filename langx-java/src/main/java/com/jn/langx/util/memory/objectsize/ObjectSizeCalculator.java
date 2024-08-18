@@ -1,10 +1,14 @@
 package com.jn.langx.util.memory.objectsize;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.IdentityHashSet;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.os.Platform;
+import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -13,7 +17,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+
 import java.util.*;
 
 /**
@@ -157,7 +161,7 @@ public class ObjectSizeCalculator {
         final Class<?> componentType = array.getClass().getComponentType();
         final int length = Array.getLength(array);
         if (componentType.isPrimitive()) {
-            increaseByArraySize(length, getPrimitiveFieldSize(componentType));
+            increaseByArraySize(length, Primitives.sizeOf(componentType));
         } else {
             increaseByArraySize(length, referenceSize);
             // If we didn't use an ArrayElementsVisitor, we would be enqueueing every
@@ -227,15 +231,30 @@ public class ObjectSizeCalculator {
             long fieldsSize = 0;
             final List<Field> referenceFields = new LinkedList<Field>();
             for (Field f : Reflects.getAllDeclaredFields(clazz)) {
-                if (Modifier.isStatic(f.getModifiers())) {
+                if (Modifiers.isStatic(f)) {
                     continue;
                 }
+                String fieldName = f.getName();
                 final Class<?> type = f.getType();
                 if (type.isPrimitive()) {
-                    fieldsSize += getPrimitiveFieldSize(type);
+                    fieldsSize += Primitives.sizeOf(type);
                 } else {
-                    Reflects.makeAccessible(f);
-                    referenceFields.add(f);
+                    try {
+                        Reflects.makeAccessible(f);
+                        referenceFields.add(f);
+                    }catch (SecurityException e) {
+                        // do nothing
+                        // Java 9+ can throw InaccessibleObjectException but the class is Java 9+-only
+                    } catch (RuntimeException re) {
+                        if (Objs.equals(re.getClass().getSimpleName(), "InaccessibleObjectException")) {
+                            if(Platform.is9VMOrGreater()){
+                                // 需要对出错的模块加上 --add-open
+                                Loggers.getLogger(ObjectSizeCalculator.class).error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+                            }
+                        }else {
+                            Loggers.getLogger(ObjectSizeCalculator.class).warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+                        }
+                    }
                     fieldsSize += referenceSize;
                 }
             }
@@ -273,9 +292,6 @@ public class ObjectSizeCalculator {
         }
     }
 
-    private static long getPrimitiveFieldSize(Class<?> type) {
-        return Primitives.sizeOf(type);
-    }
 
     static MemoryLayoutSpecification getEffectiveMemoryLayoutSpecification() {
         final String vmName = System.getProperty("java.vm.name");
