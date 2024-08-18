@@ -8,7 +8,6 @@ import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.OpenHashSet;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.logging.Loggers;
-import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
@@ -191,29 +190,11 @@ class ObjectSizeEstimator {
         for (Field field : cls.getDeclaredFields()) {
             if (!Modifiers.isStatic(field)) {
                 Class fieldClass = field.getType();
-                String fieldName = field.getName();
                 if (fieldClass.isPrimitive()) {
                     int size = Primitives.sizeOf(fieldClass);
                     sizeCount[size]= sizeCount[size] + 1;
                 } else {
-                    // Note: in Java 9+ this would be better with trySetAccessible and canAccess
-                    try {
-                        field.setAccessible(true); // Enable future get()'s on this field
-                        pointerFields.add(0, field);
-                    } catch (SecurityException e) {
-                        // do nothing
-                        // Java 9+ can throw InaccessibleObjectException but the class is Java 9+-only
-                    } catch (RuntimeException re) {
-                        if (Objs.equals(re.getClass().getSimpleName(), "InaccessibleObjectException")) {
-                            if(Platform.is9VMOrGreater()){
-                                // 需要对出错的模块加上 --add-open
-                                Loggers.getLogger(ObjectSizeEstimator.class).error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(cls),re.getMessage());
-                            }
-                        }else {
-                            Loggers.getLogger(ObjectSizeEstimator.class).warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(cls),re.getMessage());
-                        }
-
-                    }
+                    ObjectSizeCalculator.addReferenceFiled(Loggers.getLogger(ObjectSizeEstimator.class), pointerFields, field);
                     sizeCount[pointerSize]=sizeCount[pointerSize]+ 1;
                 }
             }
@@ -339,4 +320,5 @@ class ObjectSizeEstimator {
     static {
         initialize();
     }
+
 }

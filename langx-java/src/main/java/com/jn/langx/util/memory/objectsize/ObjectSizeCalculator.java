@@ -11,6 +11,7 @@ import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.reflect.type.Primitives;
+import org.slf4j.Logger;
 
 import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
@@ -248,27 +249,11 @@ public class ObjectSizeCalculator {
                 if (Modifiers.isStatic(f)) {
                     continue;
                 }
-                String fieldName = f.getName();
                 final Class<?> type = f.getType();
                 if (type.isPrimitive()) {
                     fieldsSize += Primitives.sizeOf(type);
                 } else {
-                    try {
-                        Reflects.makeAccessible(f);
-                        referenceFields.add(f);
-                    }catch (SecurityException e) {
-                        // do nothing
-                        // Java 9+ can throw InaccessibleObjectException but the class is Java 9+-only
-                    } catch (RuntimeException re) {
-                        if (Objs.equals(re.getClass().getSimpleName(), "InaccessibleObjectException")) {
-                            if(Platform.is9VMOrGreater()){
-                                // 需要对出错的模块加上 --add-open
-                                Loggers.getLogger(ObjectSizeCalculator.class).error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
-                            }
-                        }else {
-                            Loggers.getLogger(ObjectSizeCalculator.class).warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
-                        }
-                    }
+                    addReferenceFiled(Loggers.getLogger(ObjectSizeCalculator.class),referenceFields, f);
                     fieldsSize += referenceSize;
                 }
             }
@@ -297,8 +282,8 @@ public class ObjectSizeCalculator {
         public void enqueueReferencedObjects(Object obj, ObjectSizeCalculator calc) {
             for (Field f : referenceFields) {
                 try {
-                    calc.enqueue(f.get(obj));
-                } catch (IllegalAccessException e) {
+                    calc.enqueue(Reflects.getFieldValue(f,obj,true,true));
+                } catch (Throwable e) {
                     final AssertionError ae = new AssertionError("Unexpected denial of access to " + f);
                     throw ae;
                 }
@@ -364,5 +349,26 @@ public class ObjectSizeCalculator {
 
         // In other cases, it's a 64-bit uncompressed OOPs object model
         return isCompressedOops ? new Arch64CompressedMemoryLayoutSpecified() : new Arch64UncompressedMemoryLayoutSpecification();
+    }
+
+    static void addReferenceFiled(Logger logger, List<Field> referenceFields, Field f){
+        try {
+            Reflects.makeAccessible(f);
+            referenceFields.add(f);
+        }catch (SecurityException e) {
+            // do nothing
+            // Java 9+ can throw InaccessibleObjectException but the class is Java 9+-only
+        } catch (RuntimeException re) {
+            String fieldName = f.getName();
+            Class clazz = f.getDeclaringClass();
+            if (Objs.equals(re.getClass().getSimpleName(), "InaccessibleObjectException")) {
+                if(Platform.is9VMOrGreater()){
+                    // 需要对出错的模块加上 --add-open
+                    logger.error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+                }
+            }else {
+                logger.warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+            }
+        }
     }
 }
