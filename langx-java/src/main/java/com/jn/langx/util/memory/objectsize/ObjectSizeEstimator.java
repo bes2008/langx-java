@@ -7,7 +7,6 @@ import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.OpenHashSet;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
-import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
@@ -194,7 +193,7 @@ class ObjectSizeEstimator {
                     int size = Primitives.sizeOf(fieldClass);
                     sizeCount[size]= sizeCount[size] + 1;
                 } else {
-                    ObjectSizeCalculator.addReferenceFiled(Loggers.getLogger(ObjectSizeEstimator.class), pointerFields, field);
+                    ObjectSizeCalculator.addReferenceFiled(ObjectSizeEstimator.class, pointerFields, field);
                     sizeCount[pointerSize]=sizeCount[pointerSize]+ 1;
                 }
             }

@@ -11,7 +11,6 @@ import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.reflect.type.Primitives;
-import org.slf4j.Logger;
 
 import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
@@ -253,7 +252,7 @@ public class ObjectSizeCalculator {
                 if (type.isPrimitive()) {
                     fieldsSize += Primitives.sizeOf(type);
                 } else {
-                    addReferenceFiled(Loggers.getLogger(ObjectSizeCalculator.class),referenceFields, f);
+                    addReferenceFiled(ObjectSizeCalculator.class, referenceFields, f);
                     fieldsSize += referenceSize;
                 }
             }
@@ -351,7 +350,7 @@ public class ObjectSizeCalculator {
         return isCompressedOops ? new Arch64CompressedMemoryLayoutSpecified() : new Arch64UncompressedMemoryLayoutSpecification();
     }
 
-    static void addReferenceFiled(Logger logger, List<Field> referenceFields, Field f){
+    static void addReferenceFiled(Class caller, List<Field> referenceFields, Field f){
         try {
             Reflects.makeAccessible(f);
             referenceFields.add(f);
@@ -364,10 +363,10 @@ public class ObjectSizeCalculator {
             if (Objs.equals(re.getClass().getSimpleName(), "InaccessibleObjectException")) {
                 if(Platform.is9VMOrGreater()){
                     // 需要对出错的模块加上 --add-open
-                    logger.error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+                    Loggers.getLogger(caller).error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
                 }
             }else {
-                logger.warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+                Loggers.getLogger(caller).warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
             }
         }
     }
