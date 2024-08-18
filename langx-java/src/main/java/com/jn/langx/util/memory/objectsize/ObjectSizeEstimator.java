@@ -31,10 +31,6 @@ class ObjectSizeEstimator {
 
     }
 
-    // Alignment boundary for objects
-    // Is this arch dependent ?
-    private static final int ALIGN_SIZE = 8;
-
     // Estimate the size of arrays larger than ARRAY_SIZE_FOR_SAMPLING by sampling.
     private static final int ARRAY_SIZE_FOR_SAMPLING = 400;
     private static final int ARRAY_SAMPLE_SIZE = 100; // should be lower than ARRAY_SIZE_FOR_SAMPLING
@@ -101,12 +97,6 @@ class ObjectSizeEstimator {
     // We use weakKeys to allow GC of dynamically created classes
     private static final ConcurrentReferenceHashMap<Class, ClassInfo> classInfos = new ConcurrentReferenceHashMap(100, ReferenceType.WEAK, ReferenceType.SOFT);
 
-    private static boolean isCompressedOops = false;
-    private static int pointerSize = 4;
-
-    // Minimum size of a java.lang.Object
-    private static int objectSize = 8;
-
     /**
      * Estimate the number of bytes that the given object takes up on the JVM heap. The estimate
      * includes space taken up by objects referenced by the given object, their references, and so on
@@ -121,15 +111,14 @@ class ObjectSizeEstimator {
         return estimate(obj, new IdentityHashMap());
     }
 
+    private static MemoryLayoutSpecification memoryLayout;
 
     // Sets object size, pointer size based on architecture and CompressedOops settings
     // from the JVM.
     private static void initialize() {
-        MemoryLayoutSpecification memoryLayout = ObjectSizeCalculator.CurrentLayout.SPEC;
-        objectSize = memoryLayout.getObjectHeaderSize();
-        pointerSize = memoryLayout.getReferenceSize();
+        memoryLayout = ObjectSizeCalculator.CurrentLayout.SPEC;
         classInfos.clear();
-        classInfos.put(Object.class, new ClassInfo(objectSize, Collects.<Field>immutableList()));
+        classInfos.put(Object.class, new ClassInfo(memoryLayout.getObjectHeaderSize(), Collects.<Field>immutableList()));
 
     }
 
@@ -194,7 +183,7 @@ class ObjectSizeEstimator {
                     sizeCount[size]= sizeCount[size] + 1;
                 } else {
                     ObjectSizeCalculator.addReferenceFiled(ObjectSizeEstimator.class, pointerFields, field);
-                    sizeCount[pointerSize]=sizeCount[pointerSize]+ 1;
+                    sizeCount[memoryLayout.getReferenceSize()]=sizeCount[memoryLayout.getReferenceSize()]+ 1;
                 }
             }
         }
@@ -226,7 +215,7 @@ class ObjectSizeEstimator {
 
         // Should choose a larger size to be new shellSize and clearly alignedSize >= shellSize, and
         // round up the instance filed blocks
-        shellSize = alignSizeUp(alignedSize, pointerSize);
+        shellSize = alignSizeUp(alignedSize, memoryLayout.getReferenceSize());
 
         // Create and cache a new ClassInfo
         ClassInfo newInfo = new ClassInfo(shellSize, pointerFields);
@@ -235,7 +224,7 @@ class ObjectSizeEstimator {
     }
 
     private static long alignSize(long size) {
-        return alignSizeUp(size, ALIGN_SIZE);
+        return alignSizeUp(size, memoryLayout.getObjectPadding());
     }
 
     /**
@@ -255,13 +244,13 @@ class ObjectSizeEstimator {
         Class elementClass = arrayClass.getComponentType();
 
         // Arrays have object header and length field which is an integer
-        long arrSize = alignSize(objectSize + Primitives.sizeOf(Integer.TYPE));
+        long arrSize = alignSize(memoryLayout.getObjectHeaderSize() + Primitives.sizeOf(Integer.TYPE));
 
         if (elementClass.isPrimitive()) {
             arrSize += alignSize((long) length * Primitives.sizeOf(elementClass));
             state.size += arrSize;
         } else {
-            arrSize += alignSize((long) length * pointerSize);
+            arrSize += alignSize((long) length * memoryLayout.getReferenceSize());
             state.size += arrSize;
 
             if (length <= ARRAY_SIZE_FOR_SAMPLING) {

@@ -320,7 +320,9 @@ public class ObjectSizeCalculator {
                     Object optionValue = Reflects.invokeDeclaredMethod(bean, "getVMOption", new Class[]{String.class}, new Object[]{"UseCompressedOops"}, true, true);
                     isCompressedOops = Strings.contains(optionValue.toString(), "true");
                 }catch (Exception e){
-                    // ignore it
+                    boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
+                    Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
+                    isCompressedOops = guess;
                 }
                 break;
             }
