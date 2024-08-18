@@ -135,9 +135,6 @@ class ObjectSizeEstimator {
 
     }
 
-
-    private static final String TEST_USE_COMPRESSED_OOPS_KEY = "spark.test.useCompressedOops";
-
     // Size of an object reference
     // Based on https://wikis.oracle.com/display/HotSpotInternals/CompressedOops
 
