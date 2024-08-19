@@ -282,11 +282,11 @@ public class ObjectSizeCalculator {
         if(Platform.JVM != JVMCore.OPEN_J9 && Platform.JVM != JVMCore.HOTSPOT) {
             throw new UnsupportedOperationException(StringTemplates.formatWithPlaceholder("unsupported jvm: {}", Platform.JVM.getName()));
         }
-        if (Platform.jvmBit==32) {
+        if (Platform.JVM_BITs==32) {
             // Running with 32-bit data model
             return new Arch32MemoryLayoutSpecification();
-        } else if (Platform.jvmBit!=64) {
-            throw new UnsupportedOperationException("Unrecognized value '" + Platform.jvmBit + "' of sun.arch.data.model system property");
+        } else if (Platform.JVM_BITs!=64) {
+            throw new UnsupportedOperationException("Unrecognized value '" + Platform.JVM_BITs + "' of sun.arch.data.model system property");
         }
 
         // 内存压缩技术

@@ -417,6 +417,7 @@ public class Platform {
             return osArch.getBit();
         }
     }
-    public static int jvmBit = getJvmBit();
+
+    public static int JVM_BITs = getJvmBit();
 
 }
