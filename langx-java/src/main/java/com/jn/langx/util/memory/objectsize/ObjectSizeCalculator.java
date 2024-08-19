@@ -279,7 +279,7 @@ public class ObjectSizeCalculator {
 
 
     static MemoryLayoutSpecification getEffectiveMemoryLayoutSpecification() {
-        if(Platform.JVM!= JVMCore.OPEN_J9 || Platform.JVM!=JVMCore.HOTSPOT) {
+        if(Platform.JVM != JVMCore.OPEN_J9 && Platform.JVM != JVMCore.HOTSPOT) {
             throw new UnsupportedOperationException(StringTemplates.formatWithPlaceholder("unsupported jvm: {}", Platform.JVM.getName()));
         }
         if (Platform.jvmBit==32) {
