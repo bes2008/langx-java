@@ -235,8 +235,9 @@ public class Platform {
     public static boolean is21VMOrGreater() {
         return JAVA_VERSION_INT >= 21;
     }
-    public static boolean is22VMOrGreater() {
-        return JAVA_VERSION_INT >= 22;
+
+    public static boolean isXXVMorGerater(int xx){
+        return JAVA_VERSION_INT>=xx;
     }
 
     private static final Map<Integer, Integer> classMajorVersionToJdkVersion = new LinkedHashMap<Integer, Integer>();
