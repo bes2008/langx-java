@@ -54,17 +54,21 @@ public class Platform {
                 jvm = JVMCore.ART;
             }
         } else {
-            if (Strings.contains(vmName, JVMCore.HOTSPOT.getName(), true) || Strings.contains(vmName, "zing", true)) {
+            if (Strings.contains(vmName, JVMCore.HOTSPOT.getName(), true)) {
                 jvm = JVMCore.HOTSPOT;
             } else if (Strings.contains(vmName, JVMCore.OPEN_J9.getName(), true) || Strings.contains(vmName, "IBM", true)) {
+                // 大部分基于OpenJDK改造的JDK，并使用了 OpenJ9 vm时，通常是包含有 with OpenJ9 字样
                 jvm = JVMCore.OPEN_J9;
             } else if (Strings.contains(vmName, JVMCore.JROCKIT.getName(), true)) {
                 jvm = JVMCore.JROCKIT;
             } else if (Strings.contains(vmName, JVMCore.KAFFE.getName(), true) || isKaffeJVM()) {
                 jvm = JVMCore.KAFFE;
-            } else {
-                jvm = JVMCore.HOTSPOT;
             }
+        }
+        if(jvm==null){
+            // 大部分 jvm 都是基于OpenJDK改造，并使用 HotSpot VM
+            // 例如： zing, Corretto, Graalvm
+            jvm = JVMCore.HOTSPOT;
         }
         return jvm;
     }
