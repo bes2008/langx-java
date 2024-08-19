@@ -31,8 +31,8 @@ public enum OsArch implements CommonEnum {
     SPARC(7001, "sparc", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ),
     PA_RISC(8001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
     ALPHA(9001, "alpha", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64),
-
-
+    LOONGARCH64(10001, "loongarch64", "64 位龙芯架构", OsArchSeries.LOONGARCH, 64),
+    LOONGARCH(10002, "loongarch", "32 位龙芯架构", OsArchSeries.LOONGARCH, 32),
 
 
     VAX(98001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32),

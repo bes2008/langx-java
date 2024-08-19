@@ -32,6 +32,7 @@ public enum OsArchSeries {
     SPARC,
     PA_RISC,
     ALPHA,
+    LOONGARCH,
     // 属于 CISC的：
     X86,
     Z,
