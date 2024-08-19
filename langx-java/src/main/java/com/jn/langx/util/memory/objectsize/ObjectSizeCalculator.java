@@ -1,11 +1,13 @@
 package com.jn.langx.util.memory.objectsize;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.IdentityHashSet;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.os.JVMCore;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
@@ -292,12 +294,9 @@ public class ObjectSizeCalculator {
 
 
     static MemoryLayoutSpecification getEffectiveMemoryLayoutSpecification() {
-        final String vmName = System.getProperty("java.vm.name");
-        /*
-        if (vmName == null || !(vmName.startsWith("Java HotSpot(TM) ") || vmName.startsWith("OpenJDK") || vmName.startsWith("TwitterJDK"))) {
-            throw new UnsupportedOperationException("ObjectSizeCalculator only supported on HotSpot VM");
+        if(Platform.JVM!= JVMCore.OPEN_J9 || Platform.JVM!=JVMCore.HOTSPOT) {
+            throw new UnsupportedOperationException(StringTemplates.formatWithPlaceholder("unsupported jvm: {}", Platform.JVM.getName()));
         }
-        */
         if (Platform.jvmBit==32) {
             // Running with 32-bit data model
             return new Arch32MemoryLayoutSpecification();
@@ -328,7 +327,9 @@ public class ObjectSizeCalculator {
                 break;
             }
             default:{
-                isCompressedOops = true;
+                boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
+                Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
+                isCompressedOops = guess;
                 break;
             }
         }
