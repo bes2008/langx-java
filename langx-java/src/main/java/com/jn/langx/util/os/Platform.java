@@ -409,7 +409,7 @@ public class Platform {
      */
     public static final OsArch osArch = getCurrentOSArch();
 
-    private static int getJvmBit(){
+    private static int getJvmBits(){
         String dataModel = System.getProperty("sun.arch.data.model");
         try {
             return Integer.parseInt(dataModel);
@@ -418,6 +418,6 @@ public class Platform {
         }
     }
 
-    public static int JVM_BITs = getJvmBit();
+    public static int JVM_BITs = getJvmBits();
 
 }
