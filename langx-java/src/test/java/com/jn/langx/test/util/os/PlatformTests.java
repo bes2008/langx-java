@@ -11,6 +11,6 @@ public class PlatformTests {
         OsArch osArch = Platform.osArch;
         System.out.println(osArch);
         System.out.println(StringTemplates.formatWithPlaceholder("OS is {} bit",osArch.getBit()));
-        System.out.println(StringTemplates.formatWithPlaceholder("JVM is {} bit",Platform.jvmBit));
+        System.out.println(StringTemplates.formatWithPlaceholder("JVM is {} bit",Platform.JVM_BITs));
     }
 }
