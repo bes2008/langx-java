@@ -19,6 +19,7 @@ import java.util.Map;
 
 import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
+@SuppressWarnings("all")
 public class Platform {
     private static final String OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
     public static final boolean isAndroid = isAndroid0();
@@ -36,7 +37,7 @@ public class Platform {
 
     public static final String processId = getProcessId0();
     // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
-    private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
+    private static final boolean IMAGE_CODE = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
 
     private Platform() {
 
@@ -72,7 +73,7 @@ public class Platform {
      * Return whether this runtime environment lives within a native image.
      */
     public static boolean inImageCode() {
-        return imageCode;
+        return IMAGE_CODE;
     }
 
 
