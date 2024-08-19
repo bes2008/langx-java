@@ -75,19 +75,6 @@ public class ObjectSizeCalculator {
         }
     }
 
-    // Fixed object header size for arrays.
-    private final int arrayHeaderSize;
-    // Fixed object header size for non-array objects.
-    private final int objectHeaderSize;
-    // Padding for the object size - if the object size is not an exact multiple
-    // of this, it is padded to the next multiple.
-    private final int objectPadding;
-    // Size of reference (pointer) fields.
-    private final int referenceSize;
-    // Padding for the fields of superclass before fields of subclasses are
-    // added.
-    private final int superclassFieldPadding;
-
     private static final ConcurrentReferenceHashMap<Class<?>, ClassSizeInfo> classSizeInfos = new ConcurrentReferenceHashMap<Class<?>, ClassSizeInfo>(100, ReferenceType.WEAK, ReferenceType.STRONG);
             /*
             CacheBuilder.<Class<?>, ClassSizeInfo>newBuilder().loader(new AbstractCacheLoader<Class<?>, ClassSizeInfo>() {
@@ -101,6 +88,8 @@ public class ObjectSizeCalculator {
     private final Deque<Object> pending = new ArrayDeque<Object>(16 * 1024);
     private long size;
 
+    private MemoryLayoutSpecification memoryLayout;
+
     /**
      * Creates an object size calculator that can calculate object sizes for a given
      * {@code memoryLayoutSpecification}.
@@ -109,11 +98,7 @@ public class ObjectSizeCalculator {
      */
     public ObjectSizeCalculator(MemoryLayoutSpecification memoryLayoutSpecification) {
         Preconditions.checkNotNull(memoryLayoutSpecification);
-        this.arrayHeaderSize = memoryLayoutSpecification.getArrayHeaderSize();
-        this.objectHeaderSize = memoryLayoutSpecification.getObjectHeaderSize();
-        this.objectPadding = memoryLayoutSpecification.getObjectPadding();
-        this.referenceSize = memoryLayoutSpecification.getReferenceSize();
-        this.superclassFieldPadding = memoryLayoutSpecification.getSuperclassFieldPadding();
+        this.memoryLayout = memoryLayoutSpecification;
     }
 
     /**
@@ -177,7 +162,7 @@ public class ObjectSizeCalculator {
         if (componentType.isPrimitive()) {
             increaseByArraySize(length, Primitives.sizeOf(componentType));
         } else {
-            increaseByArraySize(length, referenceSize);
+            increaseByArraySize(length, memoryLayout.getReferenceSize());
             // If we didn't use an ArrayElementsVisitor, we would be enqueueing every
             // element of the array here instead. For large arrays, it would
             // tremendously enlarge the queue. In essence, we're compressing it into
@@ -200,7 +185,7 @@ public class ObjectSizeCalculator {
     }
 
     private void increaseByArraySize(int length, long elementSize) {
-        increaseSize(roundTo(arrayHeaderSize + length * elementSize, objectPadding));
+        increaseSize(roundTo(memoryLayout.getArrayHeaderSize() + length * elementSize, memoryLayout.getObjectPadding()));
     }
 
     private class ArrayElementsVisitor {
@@ -255,7 +240,7 @@ public class ObjectSizeCalculator {
                     fieldsSize += Primitives.sizeOf(type);
                 } else {
                     addReferenceFiled(ObjectSizeCalculator.class, referenceFields, f);
-                    fieldsSize += referenceSize;
+                    fieldsSize += memoryLayout.getReferenceSize();
                 }
             }
             final Class<?> superClass = clazz.getSuperclass();
@@ -267,11 +252,11 @@ public class ObjectSizeCalculator {
                         return new ClassSizeInfo(clazz);
                     }
                 });
-                fieldsSize += roundTo(superClassInfo.fieldsSize, superclassFieldPadding);
+                fieldsSize += roundTo(superClassInfo.fieldsSize, memoryLayout.getSuperclassFieldPadding());
                 referenceFields.addAll(Arrays.asList(superClassInfo.referenceFields));
             }
             this.fieldsSize = fieldsSize;
-            this.objectSize = roundTo(objectHeaderSize + fieldsSize, objectPadding);
+            this.objectSize = roundTo(memoryLayout.getObjectHeaderSize() + fieldsSize, memoryLayout.getObjectPadding());
             this.referenceFields = referenceFields.toArray(new Field[0]);
         }
 
