@@ -24,16 +24,21 @@ public class Platform {
     private static final String OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
     public static final boolean isAndroid = isAndroid0();
 
-    public static final JVMCore JVM = getJvmImpl();
     public static final int JAVA_VERSION_INT = javaVersion();
 
-    public static final boolean isWindows = isWindows0();
+    public static int JVM_BITs = getJvmBits();
+
+    public static final JVMCore JVM = getJvmImpl();
 
     public static final boolean isKaffeJVM = JVM== JVMCore.KAFFE;
-    private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
-    public static final boolean isGroovyAvailable = isGroovyAvailable0();
+
+    public static final boolean isWindows = isWindows0();
     public static final boolean isMaxOS = OS.isMaxOSX();
     public static final boolean isOSX = isOSX();
+
+    private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
+    public static final boolean isGroovyAvailable = isGroovyAvailable0();
+
 
     public static final String processId = getProcessId0();
     // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
@@ -47,7 +52,7 @@ public class Platform {
         JVMCore jvm = null;
         String vmName = System.getProperty("java.vm.name");
 
-        if (isAndroid0()) {
+        if (isAndroid) {
             if (Strings.contains(vmName, JVMCore.DALVIK.getName(), true)) {
                 jvm = JVMCore.DALVIK;
             } else {
@@ -418,6 +423,6 @@ public class Platform {
         }
     }
 
-    public static int JVM_BITs = getJvmBits();
+
 
 }
