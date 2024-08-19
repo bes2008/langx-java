@@ -23,12 +23,12 @@ public class Platform {
     private static final String OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
     public static final boolean isAndroid = isAndroid0();
 
-    public static final JVMImpl JVM = getJvmImpl();
+    public static final JVMCore JVM = getJvmImpl();
     public static final int JAVA_VERSION_INT = javaVersion();
 
     public static final boolean isWindows = isWindows0();
 
-    public static final boolean isKaffeJVM = JVM==JVMImpl.KAFFE;
+    public static final boolean isKaffeJVM = JVM== JVMCore.KAFFE;
     private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
     public static final boolean isGroovyAvailable = isGroovyAvailable0();
     public static final boolean isMaxOS = OS.isMaxOSX();
@@ -42,29 +42,27 @@ public class Platform {
 
     }
 
-    private static JVMImpl getJvmImpl() {
-        JVMImpl jvm = null;
+    private static JVMCore getJvmImpl() {
+        JVMCore jvm = null;
         String vmName = System.getProperty("java.vm.name");
 
         if (isAndroid0()) {
-            if (Strings.contains(vmName, JVMImpl.DALVIK.getName(), true)) {
-                jvm = JVMImpl.DALVIK;
+            if (Strings.contains(vmName, JVMCore.DALVIK.getName(), true)) {
+                jvm = JVMCore.DALVIK;
             } else {
-                jvm = JVMImpl.ART;
+                jvm = JVMCore.ART;
             }
         } else {
-            if (Strings.contains(vmName, JVMImpl.HOTSPOT.getName(), true)) {
-                jvm = JVMImpl.HOTSPOT;
-            } else if (Strings.contains(vmName, JVMImpl.OPEN_J9.getName(), true) || Strings.contains(vmName, "IBM", true)) {
-                jvm = JVMImpl.OPEN_J9;
-            } else if (Strings.contains(vmName, JVMImpl.ZING_VM.getName(), true)) {
-                jvm = JVMImpl.ZING_VM;
-            } else if (Strings.contains(vmName, JVMImpl.JROCKIT.getName(), true)) {
-                jvm = JVMImpl.JROCKIT;
-            } else if (Strings.contains(vmName, JVMImpl.KAFFE.getName(), true) || isKaffeJVM()) {
-                jvm = JVMImpl.KAFFE;
+            if (Strings.contains(vmName, JVMCore.HOTSPOT.getName(), true) || Strings.contains(vmName, "zing", true)) {
+                jvm = JVMCore.HOTSPOT;
+            } else if (Strings.contains(vmName, JVMCore.OPEN_J9.getName(), true) || Strings.contains(vmName, "IBM", true)) {
+                jvm = JVMCore.OPEN_J9;
+            } else if (Strings.contains(vmName, JVMCore.JROCKIT.getName(), true)) {
+                jvm = JVMCore.JROCKIT;
+            } else if (Strings.contains(vmName, JVMCore.KAFFE.getName(), true) || isKaffeJVM()) {
+                jvm = JVMCore.KAFFE;
             } else {
-                jvm = JVMImpl.HOTSPOT;
+                jvm = JVMCore.HOTSPOT;
             }
         }
         return jvm;

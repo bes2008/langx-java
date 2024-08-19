@@ -305,10 +305,11 @@ public class ObjectSizeCalculator {
             throw new UnsupportedOperationException("Unrecognized value '" + Platform.jvmBit + "' of sun.arch.data.model system property");
         }
 
-        boolean isCompressedOops = false;
+        // 内存压缩技术
+        boolean isCompressedOops = true;
         switch (Platform.JVM) {
             case OPEN_J9: {
-                isCompressedOops = System.getProperty("java.vm.info").contains("Compressed Ref");
+                isCompressedOops = Strings.contains( System.getProperty("java.vm.info"),"Compressed Ref");
                 break;
             }
             case HOTSPOT: {
@@ -326,10 +327,8 @@ public class ObjectSizeCalculator {
                 }
                 break;
             }
-            default: {
-                boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
-                Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
-                isCompressedOops = guess;
+            default:{
+                isCompressedOops = true;
                 break;
             }
         }
