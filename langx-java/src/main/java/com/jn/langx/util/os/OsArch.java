@@ -9,6 +9,31 @@ import com.jn.langx.util.function.Predicate;
 
 import java.util.EnumSet;
 
+/**
+ *
+ *
+ *
+ *
+ * <pre>
+ *     在民用领域得到广泛应用的国产CPU主要包括以下几个品牌：
+ *
+ * 龙芯 (Loongson)
+ *     架构: 最初基于 MIPS 架构，后转向自主研发的 LoongArch 架构。
+ *     应用: 龙芯CPU已经应用于桌面电脑、服务器等多个民用领域。例如，方正数码发布了基于龙芯3A3000 CPU的台式机与笔记本电脑。
+ * 飞腾 (Phytium)
+ *     架构: 基于 ARM 架构。
+ *     应用: 飞腾CPU除了在服务器和工作站领域有广泛应用外，也开始进入桌面和移动计算市场。
+ * 华为鲲鹏 (Kunpeng)
+ *     架构: 基于 ARM 架构。
+ *     应用: 华为鲲鹏系列处理器主要用于服务器和工作站，但也有部分产品进入了民用市场。
+ * 兆芯 (Zhaoxin)
+ *     架构: 基于 x86 架构。
+ *     应用: 兆芯CPU主要应用于桌面级电脑，满足日常办公和家用需求。
+ * 海光 (Hygon)
+ *     架构: 基于 x86 架构。
+ *     应用: 海光CPU虽然主要面向服务器市场，但其技术也可能间接影响到民用领域的计算机系统
+ * </pre>
+ */
 public enum OsArch implements CommonEnum {
     IA64(1001, "ia64", "64 位 Intel Itanium 处理器", OsArchSeries.IA, 64),
     X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64),
