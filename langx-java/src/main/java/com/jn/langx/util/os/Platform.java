@@ -1,6 +1,7 @@
 package com.jn.langx.util.os;
 
 import com.jn.langx.util.JvmConstants;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.io.file.Files;
@@ -417,13 +418,15 @@ public class Platform {
 
     private static int getJvmBits(){
         String dataModel = System.getProperty("sun.arch.data.model");
-        try {
-            return Integer.parseInt(dataModel);
-        }catch (Throwable e){
+        if(Objs.isEmpty(dataModel) || Strings.equals("unknown", dataModel)) {
             return osArch.getBit();
+        }else{
+            try {
+                return Integer.parseInt(dataModel);
+            } catch (Throwable e) {
+                return osArch.getBit();
+            }
         }
     }
-
-
 
 }
