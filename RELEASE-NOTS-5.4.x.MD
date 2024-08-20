@@ -1,3 +1,6 @@
+## 5.4.4
+* OsArch 支持RISCV64
+
 ## 5.4.3
 * 支持 JVMCore
 * 增强 Platform
