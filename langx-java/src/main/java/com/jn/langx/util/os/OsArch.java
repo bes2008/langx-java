@@ -37,7 +37,7 @@ import java.util.EnumSet;
 public enum OsArch implements CommonEnum {
     IA64(1001, "ia64", "64 位 Intel Itanium 处理器", OsArchSeries.IA, 64),
     X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64, "x86-64","x64"),
-    X86(2002, "x86_32", "32 位 x86 架构", OsArchSeries.X86, 32, "x86-32","x32","x86"),
+    X86(2002, "x86", "32 位 x86 架构", OsArchSeries.X86, 32, "x86-32","x86_32","x32"),
     I386(2005, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
     AMD64(2006, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
     ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64),
