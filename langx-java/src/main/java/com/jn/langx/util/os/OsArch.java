@@ -36,10 +36,8 @@ import java.util.EnumSet;
  */
 public enum OsArch implements CommonEnum {
     IA64(1001, "ia64", "64 位 Intel Itanium 处理器", OsArchSeries.IA, 64),
-    X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64),
-    X64(2002, "x64", "64 位 x86 架构", OsArchSeries.X86, 64),
-    X86(2003, "x86", "32 位 x86 架构", OsArchSeries.X86, 32),
-    X32(2004, "x32", "32 位 x86 架构", OsArchSeries.X86, 32),
+    X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64, "x86-64","x64"),
+    X86(2002, "x86_32", "32 位 x86 架构", OsArchSeries.X86, 32, "x86-32","x32","x86"),
     I386(2005, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
     AMD64(2006, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
     ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64),
@@ -59,6 +57,7 @@ public enum OsArch implements CommonEnum {
     LOONGARCH64(10001, "loongarch64", "64 位龙芯架构", OsArchSeries.LOONGARCH, 64),
     LOONGARCH(10002, "loongarch", "32 位龙芯架构", OsArchSeries.LOONGARCH, 32),
 
+    RISC_V_64(11001, "riscv64", "64 位RISC-V架构",OsArchSeries.RISC_V,64),
 
     VAX(98001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32),
     SH(99001, "sh", "SuperH 架构", OsArchSeries.SH, 64),
