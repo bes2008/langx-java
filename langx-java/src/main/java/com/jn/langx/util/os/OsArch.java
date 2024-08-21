@@ -1,6 +1,5 @@
 package com.jn.langx.util.os;
 
-import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.enums.base.CommonEnum;
@@ -89,15 +88,12 @@ public enum OsArch implements CommonEnum {
                 .findFirst(new Predicate<OsArch>() {
                     @Override
                     public boolean test(OsArch arch) {
-                        boolean c = Strings.contains(theName, arch.getName(), true);
-                        if (!c && !Objs.isEmpty(arch.aliases)){
-                            c = Pipeline.of(arch.aliases).anyMatch(new Predicate<String>() {
-                                @Override
-                                public boolean test(String alias) {
-                                    return Strings.contains(theName, alias, true);
-                                }
-                            });
-                        }
+                        boolean c = Pipeline.of(arch.aliases).add(arch.getName()).anyMatch(new Predicate<String>() {
+                            @Override
+                            public boolean test(String alias) {
+                                return Strings.contains(theName, alias, true);
+                            }
+                        });
                         return c;
                     }
                 });
