@@ -39,9 +39,9 @@ public enum OsArch implements CommonEnum {
     X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64, "x86-64","x64"),
     X86(2002, "x86", "32 位 x86 架构", OsArchSeries.X86, 32, "x86-32","x86_32","x32"),
     I386(2005, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
-    AMD64(2006, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
-    ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64),
-    ARM(3002, "arm", "32 位 ARM 架构", OsArchSeries.ARM, 32),
+    AMD64(2006, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64, "amd-64","amd_64"),
+    ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64, "arm_64","arm-64"),
+    ARM(3002, "arm", "32 位 ARM 架构", OsArchSeries.ARM, 32, "arm32", "arm_32", "arm-32"),
     AARCH64(3003, "aarch64", "64 位 ARM 架构", OsArchSeries.ARM, 64), // ARM v8
     PPC64LE(4001, "ppc64le", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
     PPC64(4002, "ppc64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
