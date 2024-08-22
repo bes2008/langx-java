@@ -60,8 +60,10 @@ public enum OsArch implements CommonEnum {
     RISC_V_128(11002, "riscv128", "128 位RISC-V架构",OsArchSeries.RISC_V,128, "riscv-128","riscv_128","risc-v-128","risc-v_128","risc_v-128","risc_v_128"),
     RISC_V_32(11003, "riscv32", "32 位RISC-V架构",OsArchSeries.RISC_V,32, "riscv-32","riscv_32","riscv","risc-v-32","risc-v_32","risc-v","risc_v-32","risc_v_32","risc_v"),
 
+    SW64(12001, "sw64","64位神威架构",OsArchSeries.SW, 64, "sw_64","sw-64"),
+
     VAX(98001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32),
-    SH(99001, "sh", "SuperH 架构", OsArchSeries.SH, 64),
+    SH(99001, "sh", "SuperH 架构", OsArchSeries.SH, 64, "sh_64", "sh-64"),
     ;
     EnumDelegate delegate;
     private OsArchSeries series;

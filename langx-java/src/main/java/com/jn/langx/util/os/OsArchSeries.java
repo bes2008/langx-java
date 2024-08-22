@@ -12,6 +12,7 @@ package com.jn.langx.util.os;
  *      PA_RISC
  *      SuperH （SH）
  *      Alpha
+ *      SW （神威）
  *    CISC:
  *      x86
  *      Z
@@ -33,6 +34,7 @@ public enum OsArchSeries {
     PA_RISC,
     ALPHA,
     LOONGARCH,
+    SW,
     // 属于 CISC的：
     X86,
     Z,
