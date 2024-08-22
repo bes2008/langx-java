@@ -17,13 +17,13 @@ public class PlatformTests {
 
     @Test
     public void testOsArchFind(){
-        Assert.assertSame(OsArch.findByName("x86"), OsArch.X86);
-        Assert.assertSame(OsArch.findByName("x32"), OsArch.X86);
+        Assert.assertSame(OsArch.findByName("x86"), OsArch.X86_32);
+        Assert.assertSame(OsArch.findByName("x32"), OsArch.X86_32);
         Assert.assertSame(OsArch.findByName("x86_64"), OsArch.X86_64);
-        Assert.assertSame(OsArch.findByName("aarch64"), OsArch.AARCH64);
-        Assert.assertSame(OsArch.findByName("amd64"), OsArch.AMD64);
-        Assert.assertSame(OsArch.findByName("ARM32"), OsArch.ARM);
-        Assert.assertSame(OsArch.findByName("LoongArch64"), OsArch.LOONGARCH64);
-        Assert.assertSame(OsArch.findByName("RISC-V"), OsArch.RISC_V_32);
+        Assert.assertSame(OsArch.findByName("aarch64"), OsArch.AARCH_64);
+        Assert.assertSame(OsArch.findByName("amd64"), OsArch.AMD_64);
+        Assert.assertSame(OsArch.findByName("ARM32"), OsArch.ARM_32);
+        Assert.assertSame(OsArch.findByName("LoongArch64"), OsArch.LOONGARCH_64);
+        Assert.assertSame(OsArch.findByName("RISC-V"), OsArch.RISCV_32);
     }
 }
