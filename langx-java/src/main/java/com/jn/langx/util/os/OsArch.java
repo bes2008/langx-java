@@ -97,7 +97,7 @@ public enum OsArch implements CommonEnum {
                 .findFirst(new Predicate<OsArch>() {
                     @Override
                     public boolean test(OsArch arch) {
-                        boolean c = Pipeline.of(arch.aliases).add(arch.getName()).anyMatch(new Predicate<String>() {
+                        boolean c = Pipeline.<String>of().add(arch.getName()).addAll(arch.aliases).anyMatch(new Predicate<String>() {
                             @Override
                             public boolean test(String alias) {
                                 return Strings.contains(theName, alias, true);

@@ -274,6 +274,9 @@ public class Pipeline<E> {
         }
         return this;
     }
+    public Pipeline<E> addAll(@Nullable E[] array) {
+        return this.addAll(Collects.asList(array));
+    }
 
     public <C extends Collection<E>> Pipeline<E> addAll(@Nullable C collection) {
         if (collection == null) {
