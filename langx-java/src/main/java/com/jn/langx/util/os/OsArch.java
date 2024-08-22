@@ -47,7 +47,7 @@ public enum OsArch implements CommonEnum {
     PPCLE_64(4001, "ppcle_64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64, "ppcle64","ppc64le","ppcle-64"),
     PPCLE_32(4002, "ppcle_32", "64 位 PowerPC 架构", OsArchSeries.POWER, 64, "ppcle32","ppc32le","ppcle-32","ppcle"),
     PPC_64(4003, "ppc_64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64,"ppc64","ppc-64","ppc_64"),
-    POWERPC(4004, "ppc_32", "32 位 PowerPC 架构", OsArchSeries.POWER, 32, "powerpc","ppc32", "power","ppc"),
+    PPC32(4004, "ppc_32", "32 位 PowerPC 架构", OsArchSeries.POWER, 32, "powerpc","ppc32", "power","ppc"),
     S390_64(5001, "s390_64", "64 位 IBM System z 架构", OsArchSeries.Z, 64,"s390x","s390-64"),
     S390_32(5002, "s390", "32 位 IBM System z 架构", OsArchSeries.Z, 32),
     MIPSEL_64(6001, "mipsel_64", "64 位 MIPS 架构", OsArchSeries.MIPS, 64,"mipsel-64","mips64el","mipsel64"),
@@ -55,11 +55,11 @@ public enum OsArch implements CommonEnum {
     MIPSEL_32(6003, "mipsel_32", "32 位 MIPS 架构", OsArchSeries.MIPS, 32,"mipsel-32","mips32el","mipsel32","mipsel"),
     MIPS_32(6004, "mips_32", "32 位 MIPS 架构", OsArchSeries.MIPS, 32,"mips"),
     SPARC_64(7001, "sparc_64", "64 位 SPARC 架构", OsArchSeries.SPARC, 64,"sparcv9_64","sparcv9_64","sparcv9","sparc64","sparc-64"),
-    SPARC(7001, "sparc_32", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ,"sparc"),
-    PA_RISC(8001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
-    ALPHA(9001, "alpha_64", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64,"alpha64","alpha-64", "alpha"),
+    SPARC_32(7001, "sparc_32", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ,"sparc"),
+    PA_RISC_32(8001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
+    ALPHA_64(9001, "alpha_64", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64,"alpha64","alpha-64", "alpha"),
     LOONGARCH_64(10001, "loongarch_64", "64 位龙芯架构", OsArchSeries.LOONGARCH, 64, "loongarch64", "loongarch-64"),
-    LOONGARCH(10002, "loongarch_32", "32 位龙芯架构", OsArchSeries.LOONGARCH, 32),
+    LOONGARCH_32(10002, "loongarch_32", "32 位龙芯架构", OsArchSeries.LOONGARCH, 32,"loongarch"),
 
     RISCV_64(11001, "riscv_64", "64 位RISC-V架构",OsArchSeries.RISC_V,64, "riscv-64","riscv64","risc-v-64","risc-v_64","risc_v-64","risc_v_64"),
     RISCV_128(11002, "riscv_128", "128 位RISC-V架构",OsArchSeries.RISC_V,128, "riscv-128","riscv128","risc-v-128","risc-v_128","risc_v-128","risc_v_128"),
@@ -67,8 +67,8 @@ public enum OsArch implements CommonEnum {
 
     SW_64(12001, "sw_64","64位神威架构",OsArchSeries.SW, 64, "sw64","sw-64"),
 
-    VAX(98001,"vax_32","32 位 VAX 架构", OsArchSeries.VAX,32,"vax"),
-    SH(99001, "sh_64", "SuperH 架构", OsArchSeries.SH, 64,  "sh-64","sh"),
+    VAX_32(98001,"vax_32","32 位 VAX 架构", OsArchSeries.VAX,32,"vax"),
+    SH_64(99001, "sh_64", "SuperH 架构", OsArchSeries.SH, 64,  "sh-64","sh"),
     ;
     EnumDelegate delegate;
     private OsArchSeries series;
