@@ -383,8 +383,7 @@ public class Pipeline<E> {
     }
 
     public static <T> Pipeline<T> of(@Nullable Object anyObject) {
-        Collection<T> list = Collects.asCollection(Collects.<T>asIterable(anyObject, true));
-        return new Pipeline<T>(list);
+        return Pipeline.<T>of(Collects.<T>asIterable(anyObject, true));
     }
 
     public static <T> Pipeline<T> of(@Nullable Iterable<T> iterable) {
@@ -393,8 +392,11 @@ public class Pipeline<E> {
     }
 
     public static <T> Pipeline<T> of(@Nullable T... array) {
-        Collection<T> list = Collects.asCollection(Collects.<T>asIterable(array, true));
-        return new Pipeline<T>(list);
+        return Pipeline.of(Collects.<T>asIterable(array, true));
+    }
+
+    public static <T> Pipeline<T> of(@Nullable Iterator<T> iterator) {
+        return Pipeline.of(Collects.<T>asIterable(iterator, true));
     }
 
 }

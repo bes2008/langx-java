@@ -4,10 +4,10 @@ import com.jn.langx.annotation.Singleton;
 import com.jn.langx.registry.AbstractRegistry;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
@@ -47,8 +47,7 @@ public class MBeanServiceProvider extends AbstractRegistry<Class, MBeanService> 
             if (classLoader != null) {
                 Thread.currentThread().setContextClassLoader(classLoader);
             }
-            final ServiceLoader<S> loader = ServiceLoader.load(serviceClazz);
-            final Iterator<S> iter = loader.iterator();
+            final Iterator<S> iter = new CommonServiceProvider().get(serviceClazz);
             Logger logger = Loggers.getLogger(MBeanServiceProvider.class);
             while (iter.hasNext()) {
                 try {

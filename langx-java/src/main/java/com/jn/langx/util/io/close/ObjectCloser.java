@@ -7,17 +7,17 @@ import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Closer;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.io.Closeable;
 import java.util.Map;
-import java.util.ServiceLoader;
 
 public class ObjectCloser {
     private static Map<Class, Closer> closerMap = Collects.emptyHashMap(true);
     private static ForceCloser forceCloser = new ForceCloser();
 
     static {
-        Collects.forEach(ServiceLoader.load(Closer.class), new Consumer<Closer>() {
+        Collects.forEach(CommonServiceProvider.loadService(Closer.class), new Consumer<Closer>() {
             @Override
             public void accept(final Closer closer) {
                 register(closer);

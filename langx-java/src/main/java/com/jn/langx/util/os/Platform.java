@@ -1,6 +1,7 @@
 package com.jn.langx.util.os;
 
 import com.jn.langx.util.JvmConstants;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.io.file.Files;
@@ -19,30 +20,70 @@ import java.util.Map;
 
 import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
+@SuppressWarnings("all")
 public class Platform {
     private static final String OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
+    public static final boolean isAndroid = isAndroid0();
+
+    public static final int JAVA_VERSION_INT = javaVersion();
+
+    public static int JVM_BITs = getJvmBits();
+
+    public static final JVMCore JVM = getJvmImpl();
+
+    public static final boolean isKaffeJVM = JVM== JVMCore.KAFFE;
 
     public static final boolean isWindows = isWindows0();
-    public static final int JAVA_VERSION_INT = javaVersion();
-    public static final boolean isAndroid = isAndroid0();
-    public static final boolean isKaffeJVM = isKaffeJVM();
-    private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
-    public static final boolean isGroovyAvailable = isGroovyAvailable0();
     public static final boolean isMaxOS = OS.isMaxOSX();
     public static final boolean isOSX = isOSX();
+
+    private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
+    public static final boolean isGroovyAvailable = isGroovyAvailable0();
+
+
     public static final String processId = getProcessId0();
     // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
-    private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
+    private static final boolean IMAGE_CODE = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
 
     private Platform() {
 
+    }
+
+    private static JVMCore getJvmImpl() {
+        JVMCore jvm = null;
+        String vmName = System.getProperty("java.vm.name");
+
+        if (isAndroid) {
+            if (Strings.contains(vmName, JVMCore.DALVIK.getName(), true)) {
+                jvm = JVMCore.DALVIK;
+            } else {
+                jvm = JVMCore.ART;
+            }
+        } else {
+            if (Strings.contains(vmName, JVMCore.HOTSPOT.getName(), true)) {
+                jvm = JVMCore.HOTSPOT;
+            } else if (Strings.contains(vmName, JVMCore.OPEN_J9.getName(), true) || Strings.contains(vmName, "IBM", true)) {
+                // 大部分基于OpenJDK改造的JDK，并使用了 OpenJ9 vm时，通常是包含有 with OpenJ9 字样
+                jvm = JVMCore.OPEN_J9;
+            } else if (Strings.contains(vmName, JVMCore.JROCKIT.getName(), true)) {
+                jvm = JVMCore.JROCKIT;
+            } else if (Strings.contains(vmName, JVMCore.KAFFE.getName(), true) || isKaffeJVM()) {
+                jvm = JVMCore.KAFFE;
+            }
+        }
+        if(jvm==null){
+            // 大部分 jvm 都是基于OpenJDK改造，并使用 HotSpot VM
+            // 例如： zing, Corretto, Graalvm
+            jvm = JVMCore.HOTSPOT;
+        }
+        return jvm;
     }
 
     /**
      * Return whether this runtime environment lives within a native image.
      */
     public static boolean inImageCode() {
-        return imageCode;
+        return IMAGE_CODE;
     }
 
 
@@ -98,8 +139,7 @@ public class Platform {
         } else {
             majorVersion = majorVersionFromJavaSpecificationVersion();
         }
-        Logger logger = Loggers.getLogger(Platform.class);
-        logger.debug("Java version: {}", majorVersion);
+        Loggers.getLogger(Platform.class).debug("Java version: {}", majorVersion);
 
         return majorVersion;
     }
@@ -186,10 +226,25 @@ public class Platform {
     public static boolean is13VMOrGreater() {
         return JAVA_VERSION_INT >= 13;
     }
+    public static boolean is15VMOrGreater() {
+        return JAVA_VERSION_INT >= 15;
+    }
+    public static boolean is17VMOrGreater() {
+        return JAVA_VERSION_INT >= 17;
+    }
+
+    public static boolean is21VMOrGreater() {
+        return JAVA_VERSION_INT >= 21;
+    }
+
+    public static boolean isXXVMorGerater(int xx){
+        return JAVA_VERSION_INT>=xx;
+    }
 
     private static final Map<Integer, Integer> classMajorVersionToJdkVersion = new LinkedHashMap<Integer, Integer>();
 
     static {
+        // jdk 版本发布矩阵：https://www.java.com/en/releases/matrix/
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_1, 1);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_2, 2);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_3, 3);
@@ -211,6 +266,7 @@ public class Platform {
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_19, 19);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_20, 20);
         classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_21, 21);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_22, 22);
     }
 
     public static int getJavaVersion(int classMajorVersion) {
@@ -350,4 +406,27 @@ public class Platform {
             return -1L;
         }
     }
+    private static OsArch getCurrentOSArch(){
+        String osarchString = SystemPropertys.getOSArch();
+        return OsArch.findByName(osarchString);
+    }
+
+    /**
+     * 这个得到的其实是JVM的情况
+     */
+    public static final OsArch osArch = getCurrentOSArch();
+
+    private static int getJvmBits(){
+        String dataModel = System.getProperty("sun.arch.data.model");
+        if(Objs.isEmpty(dataModel) || Strings.equals("unknown", dataModel)) {
+            return osArch.getBit();
+        }else{
+            try {
+                return Integer.parseInt(dataModel);
+            } catch (Throwable e) {
+                return osArch.getBit();
+            }
+        }
+    }
+
 }

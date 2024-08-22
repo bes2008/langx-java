@@ -30,6 +30,8 @@ public class TypeSignatures {
             signature = "F";
         } else if ("double".equals(typeString)) {
             signature = "D";
+        }else if ("void".equals(typeString)){
+            signature = "V";
         } else if (typeString.endsWith("[]")) {
             String componentType = typeString.substring(0, typeString.length() - 2);
             signature = "[" + toTypeSignature(componentType);

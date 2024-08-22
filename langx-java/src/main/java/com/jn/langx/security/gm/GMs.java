@@ -6,6 +6,7 @@ import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.text.properties.PropertiesAccessor;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,7 +54,7 @@ public class GMs extends AbstractInitializable {
     @Override
     protected void doInit() throws InitializationException {
         sm2DefaultC1C3C2ModeEnabled();
-        for (GmService gmService : ServiceLoader.load(GmService.class)) {
+        for (GmService gmService : CommonServiceProvider.loadService(GmService.class)) {
             registry.register(gmService);
         }
     }

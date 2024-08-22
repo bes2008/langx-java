@@ -6,6 +6,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.util.*;
 
@@ -36,7 +37,7 @@ public class DateTimeFormatterFactoryRegistry implements Registry<Class, DateTim
     }
 
     private void init() {
-        Collects.forEach(ServiceLoader.load(DateTimeFormatterFactory.class), new Consumer<DateTimeFormatterFactory>() {
+        Collects.forEach(CommonServiceProvider.loadService(DateTimeFormatterFactory.class), new Consumer<DateTimeFormatterFactory>() {
             @Override
             public void accept(DateTimeFormatterFactory factory) {
                 register(factory);

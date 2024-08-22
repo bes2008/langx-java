@@ -122,7 +122,7 @@ public class SystemPropertys {
     }
 
     /**
-     * @return 返回系统属性：os.arch
+     * @return 返回系统属性：os.arch，但要说明 的是 os.arch的值可能是错误的，例如 在x86_64位机器上安装 了 32位的jvm，这个值会是 x86，也就是会被识别为 32位操作系统
      */
     public static String getOSArch() {
         return System.getProperty("os.arch");

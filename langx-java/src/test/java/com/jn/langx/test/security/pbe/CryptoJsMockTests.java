@@ -1,7 +1,6 @@
 package com.jn.langx.test.security.pbe;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
-import com.jn.langx.security.crypto.cipher.CipherAlgorithmMode;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
@@ -21,7 +20,6 @@ public class CryptoJsMockTests {
         String passphrase="NsFoCus$#";
         String encryptedText=CryptoJS.AES.encrypt(message,passphrase,null);
         System.out.println(encryptedText);
-
 
         String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,null);
         System.out.println(decryptedText);

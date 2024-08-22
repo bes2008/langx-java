@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.reflect.parameter.*;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -69,8 +70,7 @@ public class ParameterServiceRegistry implements Registry<String, ParameterSuppl
     }
 
     private static void loadMethodParameterSuppliers() {
-        ServiceLoader<MethodParameterSupplier> loader = ServiceLoader.load(MethodParameterSupplier.class);
-        Collects.forEach(loader, new Consumer<MethodParameterSupplier>() {
+        Collects.forEach(CommonServiceProvider.loadService(MethodParameterSupplier.class), new Consumer<MethodParameterSupplier>() {
             @Override
             public void accept(MethodParameterSupplier supplier) {
                 if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {

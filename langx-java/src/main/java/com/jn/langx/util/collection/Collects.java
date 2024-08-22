@@ -889,14 +889,14 @@ public class Collects {
         return emptyArrayList();
     }
 
-    private static <E> Collection<E> emptyCollection(@Nullable Iterable<E> iterable) {
+    private static <E> Collection<E> newEmptyCollection(@Nullable Iterable<E> iterable) {
         if (iterable == null) {
             return emptyArrayList();
         }
         if (iterable instanceof Collection) {
             return emptyCollectionByInfer((Collection) iterable);
         }
-        return asList(iterable);
+        return emptyArrayList();
     }
 
 
@@ -1018,7 +1018,7 @@ public class Collects {
      */
     public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate<E> consumePredicate, @Nullable final Predicate<E> breakPredicate) {
         Iterable<E> iterable = asIterable(anyObject);
-        final Collection<E> result = emptyCollection(iterable);
+        final Collection<E> result = newEmptyCollection(iterable);
         consumePredicate = consumePredicate == null ? Functions.<E>truePredicate() : consumePredicate;
         forEach((Collection<E>) asCollection(iterable), consumePredicate, new Consumer<E>() {
             @Override
@@ -1034,7 +1034,7 @@ public class Collects {
      */
     public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate2<Integer, E> consumePredicate, @Nullable final Predicate2<Integer, E> breakPredicate) {
         Iterable<E> iterable = asIterable(anyObject);
-        final Collection<E> result = emptyCollection(iterable);
+        final Collection<E> result = newEmptyCollection(iterable);
         consumePredicate = consumePredicate == null ? Functions.<Integer, E>truePredicate2() : consumePredicate;
         forEach((Collection<E>) asCollection(iterable), consumePredicate, new Consumer2<Integer, E>() {
             @Override
@@ -1070,7 +1070,7 @@ public class Collects {
     public static <E, R> Collection<R> map(@Nullable Object anyObject, @NonNull final Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = asIterable(anyObject);
-        final Collection result = emptyCollection(iterable);
+        final Collection result = newEmptyCollection(iterable);
         forEach(iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {

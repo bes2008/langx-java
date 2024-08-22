@@ -4,13 +4,16 @@ import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.gm.GmInitializer;
-import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import com.jn.langx.util.struct.Holder;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -27,6 +30,7 @@ public class Securitys {
     }
 
     public static void setup() {
+        unlimitJCECryptoPolicy();
         if (!providersLoaded) {
             synchronized (Securitys.class) {
                 loadProviders();
@@ -34,10 +38,24 @@ public class Securitys {
         }
     }
 
+    private static void unlimitJCECryptoPolicy(){
+        try {
+            Class<?> clazz = Class.forName("javax.crypto.JceSecurity");
+            Field isRestrictedField = clazz.getDeclaredField("isRestricted");
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            //这里是通过反射移除了isRestricted 的变量修饰符：final
+            Reflects.setFieldValue(modifiersField, isRestrictedField, isRestrictedField.getModifiers() & ~Modifier.FINAL, true, true);
+            //然后将isRestricted 赋值为false即可
+            Reflects.setFieldValue(isRestrictedField,null, java.lang.Boolean.FALSE, true, true);
+        } catch (Exception ex) {
+            // ignore it
+        }
+    }
+
     private static final SecureRandom SECURE_RANDOM;
 
     public static Provider getProvider(String name) {
-        if (Strings.isNotBlank(name)) {
+        if (Strings.isBlank(name)) {
             return null;
         }
         return Security.getProvider(name);
@@ -109,7 +127,7 @@ public class Securitys {
     }
 
     private static void loadGMSupports() {
-        for (GmInitializer initializer : ServiceLoader.load(GmInitializer.class)) {
+        for (GmInitializer initializer : CommonServiceProvider.loadService(GmInitializer.class)) {
             initializer.init();
         }
     }

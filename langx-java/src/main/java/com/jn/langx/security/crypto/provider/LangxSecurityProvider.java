@@ -9,11 +9,11 @@ import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import org.slf4j.Logger;
 
 import java.security.Provider;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.TreeMap;
 
 /**
@@ -103,7 +103,7 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
 
 
     private void load() {
-        Collects.forEach(ServiceLoader.load(LangxSecurityProviderConfigurer.class), new Consumer<LangxSecurityProviderConfigurer>() {
+        Collects.forEach(CommonServiceProvider.loadService(LangxSecurityProviderConfigurer.class), new Consumer<LangxSecurityProviderConfigurer>() {
             @Override
             public void accept(LangxSecurityProviderConfigurer configurer) {
                 configurer.configure(LangxSecurityProvider.this);

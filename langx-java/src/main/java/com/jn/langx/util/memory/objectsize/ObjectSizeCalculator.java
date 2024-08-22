@@ -1,18 +1,24 @@
 package com.jn.langx.util.memory.objectsize;
 
-import com.jn.langx.cache.AbstractCacheLoader;
-import com.jn.langx.cache.Cache;
-import com.jn.langx.cache.CacheBuilder;
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.*;
+import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.IdentityHashSet;
+import com.jn.langx.util.collection.Maps;
+import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.os.JVMCore;
+import com.jn.langx.util.os.Platform;
+import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.reflect.type.Primitives;
 
+import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryPoolMXBean;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+
 import java.util.*;
 
 /**
@@ -32,8 +38,8 @@ import java.util.*;
 public class ObjectSizeCalculator {
 
 
-    private static class CurrentLayout {
-        private static final MemoryLayoutSpecification SPEC = getEffectiveMemoryLayoutSpecification();
+    static class CurrentLayout {
+        static final MemoryLayoutSpecification SPEC = getEffectiveMemoryLayoutSpecification();
     }
 
     /**
@@ -52,34 +58,37 @@ public class ObjectSizeCalculator {
      * retains.
      * @throws UnsupportedOperationException if the current vm memory layout cannot be detected.
      */
-    public static long getObjectSize(Object obj) throws UnsupportedOperationException {
-        return obj == null ? 0 : new ObjectSizeCalculator(CurrentLayout.SPEC).calculateObjectSize(obj);
+    public static long getObjectSize(Object obj) {
+        return getObjectSize(obj,false);
+    }
+    public static long getObjectSize(Object obj, boolean estimateMode) {
+        if(obj==null){
+            return 0L;
+        }
+        try {
+            if(estimateMode){
+                return ObjectSizeEstimator.estimate(obj);
+            }
+            return new ObjectSizeCalculator(CurrentLayout.SPEC).calculateObjectSize(obj);
+        }catch (Throwable e){
+            throw Throwables.wrapAsRuntimeException(e);
+        }
     }
 
-    // Fixed object header size for arrays.
-    private final int arrayHeaderSize;
-    // Fixed object header size for non-array objects.
-    private final int objectHeaderSize;
-    // Padding for the object size - if the object size is not an exact multiple
-    // of this, it is padded to the next multiple.
-    private final int objectPadding;
-    // Size of reference (pointer) fields.
-    private final int referenceSize;
-    // Padding for the fields of superclass before fields of subclasses are
-    // added.
-    private final int superclassFieldPadding;
-
-    private final Cache<Class<?>, ClassSizeInfo> classSizeInfos =
+    private static final ConcurrentReferenceHashMap<Class<?>, ClassSizeInfo> classSizeInfos = new ConcurrentReferenceHashMap<Class<?>, ClassSizeInfo>(100, ReferenceType.WEAK, ReferenceType.STRONG);
+            /*
             CacheBuilder.<Class<?>, ClassSizeInfo>newBuilder().loader(new AbstractCacheLoader<Class<?>, ClassSizeInfo>() {
                 public ClassSizeInfo load(Class<?> clazz) {
                     return new ClassSizeInfo(clazz);
                 }
             }).build();
-
+*/
 
     private final Set<Object> alreadyVisited = new IdentityHashSet<Object>();
     private final Deque<Object> pending = new ArrayDeque<Object>(16 * 1024);
     private long size;
+
+    private MemoryLayoutSpecification memoryLayout;
 
     /**
      * Creates an object size calculator that can calculate object sizes for a given
@@ -89,11 +98,7 @@ public class ObjectSizeCalculator {
      */
     public ObjectSizeCalculator(MemoryLayoutSpecification memoryLayoutSpecification) {
         Preconditions.checkNotNull(memoryLayoutSpecification);
-        arrayHeaderSize = memoryLayoutSpecification.getArrayHeaderSize();
-        objectHeaderSize = memoryLayoutSpecification.getObjectHeaderSize();
-        objectPadding = memoryLayoutSpecification.getObjectPadding();
-        referenceSize = memoryLayoutSpecification.getReferenceSize();
-        superclassFieldPadding = memoryLayoutSpecification.getSuperclassFieldPadding();
+        this.memoryLayout = memoryLayoutSpecification;
     }
 
     /**
@@ -110,7 +115,7 @@ public class ObjectSizeCalculator {
      * @return the total allocated size of the object and all other objects it
      * retains.
      */
-    public synchronized long calculateObjectSize(Object obj) {
+    private synchronized long calculateObjectSize(Object obj) {
         // Breadth-first traversal instead of naive depth-first with recursive
         // implementation, so we don't blow the stack traversing long linked lists.
         try {
@@ -140,7 +145,13 @@ public class ObjectSizeCalculator {
             if (clazz.isArray()) {
                 visitArray(obj);
             } else {
-                classSizeInfos.get(clazz).visit(obj, this);
+                Maps.putIfAbsent(classSizeInfos, clazz, new Supplier<Class<?>, ClassSizeInfo>() {
+                    @Override
+                    public ClassSizeInfo get(Class<?> clazz) {
+                        return new ClassSizeInfo(clazz);
+                    }
+                }).visit(obj, this);
+                // classSizeInfos.get(clazz).visit(obj, this);
             }
         }
     }
@@ -149,9 +160,9 @@ public class ObjectSizeCalculator {
         final Class<?> componentType = array.getClass().getComponentType();
         final int length = Array.getLength(array);
         if (componentType.isPrimitive()) {
-            increaseByArraySize(length, getPrimitiveFieldSize(componentType));
+            increaseByArraySize(length, Primitives.sizeOf(componentType));
         } else {
-            increaseByArraySize(length, referenceSize);
+            increaseByArraySize(length, memoryLayout.getReferenceSize());
             // If we didn't use an ArrayElementsVisitor, we would be enqueueing every
             // element of the array here instead. For large arrays, it would
             // tremendously enlarge the queue. In essence, we're compressing it into
@@ -174,10 +185,10 @@ public class ObjectSizeCalculator {
     }
 
     private void increaseByArraySize(int length, long elementSize) {
-        increaseSize(roundTo(arrayHeaderSize + length * elementSize, objectPadding));
+        increaseSize(roundTo(memoryLayout.getArrayHeaderSize() + length * elementSize, memoryLayout.getObjectPadding()));
     }
 
-    private static class ArrayElementsVisitor {
+    private class ArrayElementsVisitor {
         private final Object[] array;
 
         ArrayElementsVisitor(Object[] array) {
@@ -185,12 +196,14 @@ public class ObjectSizeCalculator {
         }
 
         public void visit(ObjectSizeCalculator calc) {
+            // 这个算法是全部记录下来
             for (Object elem : array) {
                 if (elem != null) {
                     calc.visit(elem);
                 }
             }
         }
+
     }
 
     void enqueue(Object obj) {
@@ -219,26 +232,31 @@ public class ObjectSizeCalculator {
             long fieldsSize = 0;
             final List<Field> referenceFields = new LinkedList<Field>();
             for (Field f : Reflects.getAllDeclaredFields(clazz)) {
-                if (Modifier.isStatic(f.getModifiers())) {
+                if (Modifiers.isStatic(f)) {
                     continue;
                 }
                 final Class<?> type = f.getType();
                 if (type.isPrimitive()) {
-                    fieldsSize += getPrimitiveFieldSize(type);
+                    fieldsSize += Primitives.sizeOf(type);
                 } else {
-                    Reflects.makeAccessible(f);
-                    referenceFields.add(f);
-                    fieldsSize += referenceSize;
+                    addReferenceFiled(ObjectSizeCalculator.class, referenceFields, f);
+                    fieldsSize += memoryLayout.getReferenceSize();
                 }
             }
             final Class<?> superClass = clazz.getSuperclass();
             if (superClass != null) {
-                final ClassSizeInfo superClassInfo = classSizeInfos.get(superClass);
-                fieldsSize += roundTo(superClassInfo.fieldsSize, superclassFieldPadding);
+               // final ClassSizeInfo superClassInfo = classSizeInfos.get(superClass);
+                final ClassSizeInfo superClassInfo = Maps.putIfAbsent(classSizeInfos, superClass, new Supplier<Class<?>, ClassSizeInfo>() {
+                    @Override
+                    public ClassSizeInfo get(Class<?> clazz) {
+                        return new ClassSizeInfo(clazz);
+                    }
+                });
+                fieldsSize += roundTo(superClassInfo.fieldsSize, memoryLayout.getSuperclassFieldPadding());
                 referenceFields.addAll(Arrays.asList(superClassInfo.referenceFields));
             }
             this.fieldsSize = fieldsSize;
-            this.objectSize = roundTo(objectHeaderSize + fieldsSize, objectPadding);
+            this.objectSize = roundTo(memoryLayout.getObjectHeaderSize() + fieldsSize, memoryLayout.getObjectPadding());
             this.referenceFields = referenceFields.toArray(new Field[0]);
         }
 
@@ -250,8 +268,8 @@ public class ObjectSizeCalculator {
         public void enqueueReferencedObjects(Object obj, ObjectSizeCalculator calc) {
             for (Field f : referenceFields) {
                 try {
-                    calc.enqueue(f.get(obj));
-                } catch (IllegalAccessException e) {
+                    calc.enqueue(Reflects.getFieldValue(f,obj,true,true));
+                } catch (Throwable e) {
                     final AssertionError ae = new AssertionError("Unexpected denial of access to " + f);
                     throw ae;
                 }
@@ -259,27 +277,50 @@ public class ObjectSizeCalculator {
         }
     }
 
-    private static long getPrimitiveFieldSize(Class<?> type) {
-        return Primitives.sizeOf(type);
-    }
 
     static MemoryLayoutSpecification getEffectiveMemoryLayoutSpecification() {
-        final String vmName = System.getProperty("java.vm.name");
-        if (vmName == null || !(vmName.startsWith("Java HotSpot(TM) ") || vmName.startsWith("OpenJDK") || vmName.startsWith("TwitterJDK"))) {
-            throw new UnsupportedOperationException("ObjectSizeCalculator only supported on HotSpot VM");
+        if(Platform.JVM != JVMCore.OPEN_J9 && Platform.JVM != JVMCore.HOTSPOT) {
+            throw new UnsupportedOperationException(StringTemplates.formatWithPlaceholder("unsupported jvm: {}", Platform.JVM.getName()));
         }
-
-        final String dataModel = System.getProperty("sun.arch.data.model");
-        if ("32".equals(dataModel)) {
+        if (Platform.JVM_BITs==32) {
             // Running with 32-bit data model
             return new Arch32MemoryLayoutSpecification();
-        } else if (!"64".equals(dataModel)) {
-            throw new UnsupportedOperationException("Unrecognized value '" + dataModel + "' of sun.arch.data.model system property");
+        } else if (Platform.JVM_BITs!=64) {
+            throw new UnsupportedOperationException("Unrecognized value '" + Platform.JVM_BITs + "' of sun.arch.data.model system property");
         }
 
-        final String strVmVersion = System.getProperty("java.vm.version");
-        final int vmVersion = Integer.parseInt(strVmVersion.substring(0, strVmVersion.indexOf('.')));
-        if (vmVersion >= 17) {
+        // 内存压缩技术
+        boolean isCompressedOops = true;
+        switch (Platform.JVM) {
+            case OPEN_J9: {
+                isCompressedOops = Strings.contains( System.getProperty("java.vm.info"),"Compressed Ref");
+                break;
+            }
+            case HOTSPOT: {
+                try {
+                    String hotSpotMBeanName = "com.sun.management:type=HotSpotDiagnostic";
+                    MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+                    // NOTE: This should throw an exception in non-Sun JVMs
+                    Object bean = ManagementFactory.newPlatformMXBeanProxy(server, hotSpotMBeanName, ClassLoaders.loadClass("com.sun.management.HotSpotDiagnosticMXBean"));
+                    Object optionValue = Reflects.invokeDeclaredMethod(bean, "getVMOption", new Class[]{String.class}, new Object[]{"UseCompressedOops"}, true, true);
+                    isCompressedOops = Strings.contains(optionValue.toString(), "true");
+                }catch (Exception e){
+                    boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
+                    Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
+                    isCompressedOops = guess;
+                }
+                break;
+            }
+            default:{
+                boolean guess = Runtime.getRuntime().maxMemory() < (32L * 1024 * 1024 * 1024);
+                Loggers.getLogger(ObjectSizeCalculator.class).warn("Failed to check whether UseCompressedOops is set; assuming {}", guess ? "yes" : "not");
+                isCompressedOops = guess;
+                break;
+            }
+        }
+
+        /*
+        if (Platform.is17VMOrGreater()) {
             long maxMemory = 0;
             for (MemoryPoolMXBean mp : ManagementFactory.getMemoryPoolMXBeans()) {
                 maxMemory += mp.getUsage().getMax();
@@ -290,8 +331,30 @@ public class ObjectSizeCalculator {
                 return new Arch64CompressedMemoryLayoutSpecified();
             }
         }
+        */
 
         // In other cases, it's a 64-bit uncompressed OOPs object model
-        return new Arch64UncompressedMemoryLayoutSpecification();
+        return isCompressedOops ? new Arch64CompressedMemoryLayoutSpecified() : new Arch64UncompressedMemoryLayoutSpecification();
+    }
+
+    static void addReferenceFiled(Class caller, List<Field> referenceFields, Field f){
+        try {
+            Reflects.makeAccessible(f);
+            referenceFields.add(f);
+        }catch (SecurityException e) {
+            // do nothing
+            // Java 9+ can throw InaccessibleObjectException but the class is Java 9+-only
+        } catch (RuntimeException re) {
+            String fieldName = f.getName();
+            Class clazz = f.getDeclaringClass();
+            if (Objs.equals(re.getClass().getSimpleName(), "InaccessibleObjectException")) {
+                if(Platform.is9VMOrGreater()){
+                    // 需要对出错的模块加上 --add-open
+                    Loggers.getLogger(caller).error("error when analyze filed {} in class {}, error message: {}",fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+                }
+            }else {
+                Loggers.getLogger(caller).warn("analyze field {} in class {} failed, error message: {}", fieldName,Reflects.getFQNClassName(clazz),re.getMessage());
+            }
+        }
     }
 }

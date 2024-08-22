@@ -3,6 +3,7 @@ package com.jn.langx.util.id.snowflake;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -21,8 +22,7 @@ public class SnowflakeIdWorkerProviderLoader {
         if (!loaded) {
             synchronized (SnowflakeIdWorkerProviderLoader.class) {
                 if (!loaded) {
-                    ServiceLoader<SnowflakeIdWorkerProvider> loader = ServiceLoader.load(SnowflakeIdWorkerProvider.class);
-                    Collects.forEach(loader, new Consumer<SnowflakeIdWorkerProvider>() {
+                    Collects.forEach(CommonServiceProvider.loadService(SnowflakeIdWorkerProvider.class), new Consumer<SnowflakeIdWorkerProvider>() {
                         @Override
                         public void accept(SnowflakeIdWorkerProvider provider) {
                             if (provider.getProviderId().equals(SystemEnvironmentSnowflakeIdWorkerProvider.SYSTEM_ENVIRONMENT_SNOWFLAKE)) {

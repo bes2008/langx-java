@@ -8,6 +8,14 @@ import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
 public class HashTests {
+
+    @Test
+    public void test2(){
+        String text = "Java Basic Types: String, Long, Integer, Float, Double";
+        byte[] bytes = text.getBytes(Charsets.UTF_8);
+        printHash(bytes,"murmur3_32");
+    }
+
     @Test
     public void test() {
         String text = "Java Basic Types: String, Long, Integer, Float, Double";
