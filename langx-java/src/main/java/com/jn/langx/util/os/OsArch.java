@@ -57,7 +57,7 @@ public enum OsArch implements CommonEnum {
     SPARC_64(7001, "sparc_64", "64 位 SPARC 架构", OsArchSeries.SPARC, 64,"sparcv9_64","sparcv9_64","sparcv9","sparc64","sparc-64"),
     SPARC(7001, "sparc_32", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ,"sparc"),
     PA_RISC(8001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
-    ALPHA(9001, "alpha", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64,"alpha_64","alpha-64"),
+    ALPHA(9001, "alpha_64", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64,"alpha64","alpha-64", "alpha"),
     LOONGARCH_64(10001, "loongarch_64", "64 位龙芯架构", OsArchSeries.LOONGARCH, 64, "loongarch64", "loongarch-64"),
     LOONGARCH(10002, "loongarch_32", "32 位龙芯架构", OsArchSeries.LOONGARCH, 32),
 
@@ -65,10 +65,10 @@ public enum OsArch implements CommonEnum {
     RISCV_128(11002, "riscv_128", "128 位RISC-V架构",OsArchSeries.RISC_V,128, "riscv-128","riscv128","risc-v-128","risc-v_128","risc_v-128","risc_v_128"),
     RISCV_32(11003, "riscv_32", "32 位RISC-V架构",OsArchSeries.RISC_V,32, "riscv-32","riscv32","riscv","risc-v-32","risc-v_32","risc-v","risc_v-32","risc_v_32","risc_v"),
 
-    SW64(12001, "sw64","64位神威架构",OsArchSeries.SW, 64, "sw_64","sw-64"),
+    SW_64(12001, "sw_64","64位神威架构",OsArchSeries.SW, 64, "sw64","sw-64"),
 
-    VAX(98001,"vax","32 位 VAX 架构", OsArchSeries.VAX,32),
-    SH(99001, "sh", "SuperH 架构", OsArchSeries.SH, 64, "sh_64", "sh-64"),
+    VAX(98001,"vax_32","32 位 VAX 架构", OsArchSeries.VAX,32,"vax"),
+    SH(99001, "sh_64", "SuperH 架构", OsArchSeries.SH, 64,  "sh-64","sh"),
     ;
     EnumDelegate delegate;
     private OsArchSeries series;
