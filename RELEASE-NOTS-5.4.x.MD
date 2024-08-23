@@ -1,5 +1,5 @@
 ## 5.4.4
-* OsArch 支持RISCV64
+* OsArch 支持riscv, LoongArch,sw 等架构
 
 ## 5.4.3
 * 支持 JVMCore
