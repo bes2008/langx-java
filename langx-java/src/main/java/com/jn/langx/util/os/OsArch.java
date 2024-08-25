@@ -44,7 +44,7 @@ public enum OsArch implements CommonEnum {
     ARM_64(3001, "arm_64", "64 位 ARM 架构", OsArchSeries.ARM, 64, "arm64","arm_64","arm-64"),
     ARM_32(3002, "arm_32", "32 位 ARM 架构", OsArchSeries.ARM, 32, "arm32", "arm-32","arm"),
     AARCH_64(3003, "aarch_64", "64 位 ARM 架构", OsArchSeries.ARM, 64,"aarch64","aarch-64"), // ARM v8
-    PPCLE_64(4001, "ppcle_64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64, "ppcle64","ppc64le","ppcle-64"),
+    PPCLE_64(4001, "ppcle_64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64, "ppcle64","ppc64le","ppcle-64", "ppc64le", "ppc64_le", "ppc64-le"),
     PPCLE_32(4002, "ppcle_32", "64 位 PowerPC 架构", OsArchSeries.POWER, 64, "ppcle32","ppc32le","ppcle-32","ppcle"),
     PPC_64(4003, "ppc_64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64,"ppc64","ppc-64","ppc_64"),
     PPC32(4004, "ppc_32", "32 位 PowerPC 架构", OsArchSeries.POWER, 32, "powerpc","ppc32", "power","ppc"),
