@@ -1,5 +1,6 @@
 package com.jn.langx.security.gm.crypto.tongsuo;
 
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.gm.AbstractGmService;
@@ -14,12 +15,12 @@ public class TSGmService extends AbstractGmService {
 
     @Override
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
-        return new byte[0];
+        return sm2Encrypt(data, publicKey, null);
     }
 
     @Override
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey, SM2Mode mode) {
-        return new byte[0];
+        return sm2Encrypt(data, publicKey, JCAEStandardName.SM2.getName(), mode);
     }
 
     @Override
