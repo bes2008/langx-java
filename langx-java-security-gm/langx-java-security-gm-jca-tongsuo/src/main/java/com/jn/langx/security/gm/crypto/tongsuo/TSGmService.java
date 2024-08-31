@@ -1,6 +1,5 @@
 package com.jn.langx.security.gm.crypto.tongsuo;
 
-import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.gm.AbstractGmService;
@@ -14,27 +13,7 @@ public class TSGmService extends AbstractGmService {
     }
 
     @Override
-    public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
-        return sm2Encrypt(data, publicKey, null);
-    }
-
-    @Override
-    public byte[] sm2Encrypt(byte[] data, byte[] publicKey, SM2Mode mode) {
-        return sm2Encrypt(data, publicKey, JCAEStandardName.SM2.getName(), mode);
-    }
-
-    @Override
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey, String algorithm, SM2Mode mode) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey, SM2Mode mode) {
         return new byte[0];
     }
 
@@ -44,18 +23,8 @@ public class TSGmService extends AbstractGmService {
     }
 
     @Override
-    public byte[] sm2Sign(byte[] data, byte[] privateKey) {
-        return new byte[0];
-    }
-
-    @Override
     public byte[] sm2Sign(byte[] data, byte[] privateKey, byte[] userId) {
         return new byte[0];
-    }
-
-    @Override
-    public boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature) {
-        return false;
     }
 
     @Override
@@ -64,52 +33,12 @@ public class TSGmService extends AbstractGmService {
     }
 
     @Override
-    public byte[] sm3(byte[] data) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm3(byte[] data, int iterations) {
-        return new byte[0];
-    }
-
-    @Override
     public byte[] sm3(byte[] data, byte[] salt, int iterations) {
         return new byte[0];
     }
 
     @Override
-    public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
-        return new byte[0];
-    }
-
-    @Override
     public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey) {
-        return new byte[0];
-    }
-
-    @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
         return new byte[0];
     }
 
