@@ -15,6 +15,17 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <tongsuo-openjdk.version>1.0.0</tongsuo-openjdk.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.tongsuo</groupId>
+            <artifactId>tongsuo-openjdk</artifactId>
+            <version>${tongsuo-openjdk.version}</version>
+            <classifier>linux-x86_64</classifier>
+        </dependency>
+    </dependencies>
 
 </project>
