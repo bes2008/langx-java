@@ -41,6 +41,7 @@
 
     <modules>
         <module>langx-java-security-gm-jca-bouncycastle</module>
+        <module>langx-java-security-gm-jca-tongsuo</module>
         <module>langx-java-security-gm-jca-tests</module>
     </modules>
 
