@@ -34,13 +34,13 @@ import java.util.EnumSet;
  * </pre>
  */
 public enum OsArch implements CommonEnum {
-    X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64, "x8664","x86-64","x64","ia32e","em64t"),
-    X86_32(2002, "x86_32", "32 位 x86 架构", OsArchSeries.X86, 32, "x86-32","x86_32","x32","x86"),
-    I686(2005, "i686", "32 位 x86 架构", OsArchSeries.X86, 32),
-    I386(2005, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
-    AMD_64(2006, "amd_64", "64 位 x86 架构", OsArchSeries.X86, 64, "amd-64","amd64"),
-    IA_64(1001, "itanium_64", "64 位 Intel Itanium 处理器", OsArchSeries.IA, 64, "ia64","ia-64","ia_64", "itanium64", "itanium-64", "itanium_64"),
-    IA_32(1001, "itanium_32", "32 位 Intel Itanium 处理器", OsArchSeries.IA, 32, "itanium32", "itanium-32", "itanium_32", "itanium","ia64n"),
+    X86_64(1001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64, "x8664","x86-64","x64","ia32e","em64t"),
+    X86_32(1002, "x86_32", "32 位 x86 架构", OsArchSeries.X86, 32, "x86-32","x86_32","x32","x86"),
+    I686(1003, "i686", "32 位 x86 架构", OsArchSeries.X86, 32),
+    I386(1004, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
+    AMD_64(1005, "amd_64", "64 位 x86 架构", OsArchSeries.X86, 64, "amd-64","amd64"),
+    IA_64(2001, "itanium_64", "64 位 Intel Itanium 处理器", OsArchSeries.IA, 64, "ia64w","ia64a","ia-64","ia_64", "itanium64", "itanium-64", "itanium_64"),
+    IA_32(2002, "itanium_32", "32 位 Intel Itanium 处理器", OsArchSeries.IA, 32, "itanium32", "itanium-32", "itanium_32", "itanium","ia64n"),
     ARM_64(3001, "arm_64", "64 位 ARM 架构", OsArchSeries.ARM, 64, "arm64","arm_64","arm-64"),
     ARM_32(3002, "arm_32", "32 位 ARM 架构", OsArchSeries.ARM, 32, "arm32", "arm-32","arm"),
     AARCH_64(3003, "aarch_64", "64 位 ARM 架构", OsArchSeries.ARM, 64,"aarch64","aarch-64"), // ARM v8
@@ -55,7 +55,7 @@ public enum OsArch implements CommonEnum {
     MIPSEL_32(6003, "mipsel_32", "32 位 MIPS 架构", OsArchSeries.MIPS, 32,"mipsel-32","mips32el","mipsel32","mipsel"),
     MIPS_32(6004, "mips_32", "32 位 MIPS 架构", OsArchSeries.MIPS, 32,"mips"),
     SPARC_64(7001, "sparc_64", "64 位 SPARC 架构", OsArchSeries.SPARC, 64,"sparcv9_64","sparcv9_64","sparcv9","sparc64","sparc-64"),
-    SPARC_32(7001, "sparc_32", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ,"sparc"),
+    SPARC_32(7002, "sparc_32", "32 位 SPARC 架构", OsArchSeries.SPARC, 32 ,"sparc"),
     PA_RISC_32(8001, "pa_risc", "32 位 PA-RISC 架构", OsArchSeries.PA_RISC, 32, "pa-risc","pa"),
     ALPHA_64(9001, "alpha_64", "64 位 Alpha 架构", OsArchSeries.ALPHA, 64,"alpha64","alpha-64", "alpha"),
     LOONGARCH_64(10001, "loongarch_64", "64 位龙芯架构", OsArchSeries.LOONGARCH, 64, "loongarch64", "loongarch-64"),
