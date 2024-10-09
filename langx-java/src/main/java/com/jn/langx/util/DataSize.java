@@ -7,8 +7,9 @@ import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
+import com.jn.langx.util.unit.DataUnit;
 
-import static com.jn.langx.util.DataUnit.*;
+import static com.jn.langx.util.unit.DataUnit.*;
 
 
 public final class DataSize {

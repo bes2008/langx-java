@@ -11,8 +11,6 @@ import java.util.Map;
 /**
  * 莫尔斯电码的编码和解码实现<br>
  * 参考：https://github.com/TakWolf-Deprecated/Java-MorseCoder
- *
- * @author looly, TakWolf
  * @since 4.4.1
  */
 public class Morse {
