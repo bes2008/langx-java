@@ -43,6 +43,8 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      */
     void addAll(K key, Collection<? extends V> values);
 
+    void addAll(K key, V[] values);
+
     /**
      * Add all the values of the given {@code MultiValueMap} to the current values.
      *

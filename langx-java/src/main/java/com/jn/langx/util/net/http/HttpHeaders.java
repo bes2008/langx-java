@@ -1311,6 +1311,11 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     }
 
     @Override
+    public void addAll(String key, String[] values) {
+        this.addAll(key, Collects.asList(values));
+    }
+
+    @Override
     public void addAll(String key, Collection<? extends String> values) {
         this.headers.addAll(key, values);
     }
