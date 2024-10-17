@@ -119,4 +119,12 @@ public class ClusterAddressParserTests {
         System.out.println(addresses);
     }
 
+    @Test
+    public void zkClusterAddressTests(){
+        System.out.println(Regexps.match("^(\\w+)(-\\w+)*(\\.\\w+(-\\w+)*)*(:\\d{1,5})?","comp-zookeeper-0-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181"));
+        String str="comp-zookeeper-0-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181,comp-zookeeper-1-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181,comp-zookeeper-2-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181";
+        String serverLists = new ClusterAddressParser(2181).normalize(str);
+        System.out.println(serverLists);
+    }
+
 }
