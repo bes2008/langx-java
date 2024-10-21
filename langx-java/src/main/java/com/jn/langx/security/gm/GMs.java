@@ -16,7 +16,7 @@ import java.util.ServiceLoader;
 public class GMs extends AbstractInitializable {
     private GenericRegistry<GmService> registry = new GenericRegistry<GmService>(new LinkedHashMap<String, GmService>());
 
-    private volatile static GMs INSTANCE;
+    private static GMs INSTANCE;
 
     private GMs() {
         init();
