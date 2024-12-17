@@ -75,6 +75,7 @@ public class Dates8 {
         if (temporal instanceof LocalDate || temporal instanceof LocalDateTime || temporal instanceof OffsetDateTime) {
             boolean formatZone = Strings.containsAny(pattern, 'Z', 'z', 'O', 'X', 'x');
             if (formatZone) {
+                // 转换成有时区的 日期时间
                 if (temporal instanceof LocalDate) {
                     temporal = ZonedDateTime.of((LocalDate) temporal, ZERO_TIME, zoneId == null ? localZoneId() : zoneId);
                 } else if (temporal instanceof LocalDateTime) {
@@ -88,10 +89,12 @@ public class Dates8 {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
-        String ret = formatter.format(temporal);
-        return ret;
+        if (temporal instanceof Instant){
+            formatter.withZone(ZoneId.systemDefault());
+        }
+
+        return formatter.format(temporal);
     }
 
     public static <T> T parse(String dt, String pattern, Class<T> tClass) {
