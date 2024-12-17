@@ -90,8 +90,12 @@ public class Dates8 {
             locale = Locale.getDefault();
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
-        if (temporal instanceof Instant){
-            formatter.withZone(ZoneId.systemDefault());
+        if(zoneId!=null){
+            formatter = formatter.withZone(zoneId);
+        }else {
+            if (temporal instanceof Instant) {
+                formatter = formatter.withZone(ZoneId.systemDefault());
+            }
         }
 
         return formatter.format(temporal);
