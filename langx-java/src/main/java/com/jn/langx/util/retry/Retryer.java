@@ -3,13 +3,10 @@ package com.jn.langx.util.retry;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.function.*;
-import com.jn.langx.util.logging.Loggers;
-import org.slf4j.Logger;
 
 import java.util.concurrent.Callable;
 
 public class Retryer<R> {
-    private static final Logger LOGGER = Loggers.getLogger(Retryer.class);
     @NonNull
     private RetryConfig config;
 
@@ -90,7 +87,11 @@ public class Retryer<R> {
                         throw new RuntimeException(e);
                     }
                 }
-                throw new RuntimeException(retryInfo.getError());
+                if(retryInfo.hasError()) {
+                    throw new RuntimeException(retryInfo.getError());
+                }else{
+                    throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", retryInfo.getBackoff()));
+                }
             }else {
                 return retryInfo.getResult();
             }
