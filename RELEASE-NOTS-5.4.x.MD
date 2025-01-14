@@ -1,3 +1,13 @@
+## 5.4.6
+* 添加 MatchExp
+* 对 instant 转换时，要自动设置时区
+* MapBasedStringFormatter 支持 -
+* retry 支持 fallback
+* PatternResourceLoader完全委托给其它框架来进行实现
+
+## 5.4.5
+* ClusterAddressParser 支持多label格式的域名
+
 ## 5.4.4
 * OsArch 支持riscv, LoongArch,sw 等架构
 
