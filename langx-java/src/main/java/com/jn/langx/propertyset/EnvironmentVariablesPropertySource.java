@@ -5,16 +5,10 @@ package com.jn.langx.propertyset;
  */
 public class EnvironmentVariablesPropertySource extends MapPropertySet {
     public EnvironmentVariablesPropertySource() {
-        super("envVars");
+        this("envVars");
     }
 
     public EnvironmentVariablesPropertySource(String name) {
         super(name, System.getenv());
-    }
-
-
-    @Override
-    public boolean containsProperty(String key) {
-        return System.getenv().containsKey(key);
     }
 }
