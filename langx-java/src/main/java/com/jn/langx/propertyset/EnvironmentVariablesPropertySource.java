@@ -12,4 +12,9 @@ public class EnvironmentVariablesPropertySource extends MapPropertySet {
         super(name, System.getenv());
     }
 
+
+    @Override
+    public boolean containsProperty(String key) {
+        return System.getenv().containsKey(key);
+    }
 }
