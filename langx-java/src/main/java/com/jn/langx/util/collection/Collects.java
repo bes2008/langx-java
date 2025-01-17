@@ -2105,6 +2105,12 @@ public class Collects {
         addAll(dest, Collects.<E>asIterable(iterator));
     }
 
+    public static <E, C extends Collection<E>> void addIf(Collection<E> collection, E e, Predicate2<Collection<E>,E> predicate){
+        if(predicate.test(collection, e)){
+            collection.add(e);
+        }
+    }
+
     public static <E, C extends Collection<E>> void addTo(@NonNull C srcCollection, @Nullable C targetCollection) {
         addAll(targetCollection, srcCollection);
     }
