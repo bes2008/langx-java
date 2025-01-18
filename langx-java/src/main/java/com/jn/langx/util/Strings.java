@@ -916,6 +916,16 @@ public class Strings {
         return containsAny(cs, toCharArray(searchChars));
     }
 
+    public static boolean containsAny(final CharSequence str, final String[] substrs){
+        return Pipeline.of(substrs)
+                .anyMatch(new Predicate<String>() {
+                    @Override
+                    public boolean test(String substr) {
+                        return Strings.contains(str, substr);
+                    }
+                });
+    }
+
     /**
      * <p>Checks that the CharSequence does not contain certain characters.</p>
      *
@@ -1071,12 +1081,12 @@ public class Strings {
         return containsOnly(cs, validChars.toCharArray());
     }
 
-    public static boolean contains(final CharSequence cs, final CharSequence searchChars) {
-        return contains(cs, searchChars, false);
+    public static boolean contains(final CharSequence cs, final CharSequence substring) {
+        return contains(cs, substring, false);
     }
 
-    public static boolean contains(final CharSequence cs, final CharSequence searchChars, boolean ignoreCase) {
-        return indexOf(cs, searchChars, ignoreCase) != -1;
+    public static boolean contains(final CharSequence cs, final CharSequence substring, boolean ignoreCase) {
+        return indexOf(cs, substring, ignoreCase) != -1;
     }
 
     /**
