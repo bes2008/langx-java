@@ -1798,7 +1798,7 @@ public class Collects {
     }
 
     public static <E> E[] skip(@Nullable E[] array, int n) {
-        return (E[]) toArray(skip(asList(array), n));
+        return (E[]) toArray(skip(asList(array), n), (Class<E[]>) array.getClass());
     }
 
     /**
