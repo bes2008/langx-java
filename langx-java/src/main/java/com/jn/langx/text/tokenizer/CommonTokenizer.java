@@ -94,8 +94,7 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
     }
 
     /**
-     * 如果接下来是 delimiter，就返回，如果不是范围null
-     *
+     * 如果接下来是 delimiter就返回；如果不是则返回null
      */
     protected abstract String getIfDelimiterStart(long position, char c);
 
