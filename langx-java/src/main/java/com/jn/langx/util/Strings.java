@@ -916,14 +916,18 @@ public class Strings {
         return containsAny(cs, toCharArray(searchChars));
     }
 
-    public static boolean containsAny(final CharSequence str, final String[] substrs){
+    public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs){
         return Pipeline.of(substrs)
                 .anyMatch(new Predicate<String>() {
                     @Override
                     public boolean test(String substr) {
-                        return Strings.contains(str, substr);
+                        return Strings.contains(str, substr, ignoreCase);
                     }
                 });
+    }
+
+    public static boolean containsAny(final CharSequence str, final String[] substrs){
+        return containsAny(str, false, substrs);
     }
 
     /**
