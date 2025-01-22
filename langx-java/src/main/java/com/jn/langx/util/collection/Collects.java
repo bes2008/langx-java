@@ -2731,6 +2731,9 @@ public class Collects {
         return lastIndexOf(list, e, 0);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(List<E> list, Predicate<E> predicate) {
         return lastIndexOf(list, predicate, 0);
     }
@@ -2738,6 +2741,9 @@ public class Collects {
     public static <E> int lastIndexOf(List<E> list, E e, int startIndex) {
         return lastIndexOf(list, e, startIndex, Emptys.isEmpty(list) ? 0 : list.size());
     }
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(List<E> list, Predicate<E> predicate, int startIndex) {
         return lastIndexOf(list, predicate, startIndex, Emptys.isEmpty(list) ? 0 : list.size());
     }
@@ -2760,6 +2766,9 @@ public class Collects {
         }, startIndex, endIndex);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(List<E> list, Predicate<E> predicate, int startIndex, int endIndex) {
         if (list == null || list.isEmpty()) {
             return -1;
@@ -2802,14 +2811,24 @@ public class Collects {
     public static <E> int lastIndexOf(E[] list, E e) {
         return lastIndexOf(asList(list), e);
     }
+
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(E[] list, Predicate<E> predicate) {
         return lastIndexOf(asList(list), predicate);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(E[] list, E e, int startIndex) {
         return lastIndexOf(asList(list), e, startIndex);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(E[] list, Predicate<E> predicate, int startIndex) {
         return lastIndexOf(asList(list), predicate, startIndex);
     }
@@ -2818,6 +2837,9 @@ public class Collects {
         return lastIndexOf(asList(list), e, startIndex, endIndex);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> int lastIndexOf(E[] list, Predicate<E> predicate, int startIndex, int endIndex) {
         return lastIndexOf(asList(list), predicate, startIndex, endIndex);
     }

@@ -916,6 +916,15 @@ public class Strings {
         return containsAny(cs, toCharArray(searchChars));
     }
 
+    /**
+     *
+     * @param str
+     * @param ignoreCase
+     * @param substrs
+     * @return
+     *
+     * @since 5.4.6
+     */
     public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs){
         return Pipeline.of(substrs)
                 .anyMatch(new Predicate<String>() {
