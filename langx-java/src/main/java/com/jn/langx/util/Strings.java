@@ -926,6 +926,9 @@ public class Strings {
      * @since 5.4.6
      */
     public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs){
+        if(Objs.isEmpty(substrs)){
+            return false;
+        }
         return Pipeline.of(substrs)
                 .anyMatch(new Predicate<String>() {
                     @Override
