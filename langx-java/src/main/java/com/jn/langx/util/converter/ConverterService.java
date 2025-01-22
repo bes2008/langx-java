@@ -122,7 +122,7 @@ public class ConverterService {
     }
 
     /**
-     * 从 target-source-registry 中找
+     * 先从 target-source-registry 中找，再从 target-registry中找
      *
      */
     public <S, T> Converter<S, T> findConverter(@NonNull Class<S> sourceClass, @NonNull final Class<T> targetClass) {
@@ -144,6 +144,12 @@ public class ConverterService {
             if (entry != null) {
                 return entry.getValue();
             }
+        }
+
+        // @since 5.4.6
+        Converter converter = this.target_registry.get(targetClass);
+        if(converter!=null && converter.isConvertible(sourceClass, targetClass)){
+            return converter;
         }
         return null;
     }
