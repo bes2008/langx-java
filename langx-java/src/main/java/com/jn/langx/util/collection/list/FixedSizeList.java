@@ -49,6 +49,11 @@ public class FixedSizeList<E>
         implements BoundedCollection<E> {
 
     /**
+     * @since 5.4.6
+     */
+    private boolean addable = false;
+
+    /**
      * Serialization version
      */
     private static final long serialVersionUID = -2218010673611160319L;
@@ -62,7 +67,11 @@ public class FixedSizeList<E>
      * @throws NullPointerException if list is null
      */
     public static <E> FixedSizeList<E> fixedSizeList(final List<E> list) {
-        return new FixedSizeList<E>(list);
+        return new FixedSizeList<E>(list, false);
+    }
+
+    public static <E> FixedSizeList<E> fixedSizeList(final List<E> list, boolean addable) {
+        return new FixedSizeList<E>(list, addable);
     }
 
     //-----------------------------------------------------------------------
@@ -73,13 +82,17 @@ public class FixedSizeList<E>
      * @param list the list to decorate, must not be null
      * @throws NullPointerException if list is null
      */
-    protected FixedSizeList(final List<E> list) {
+    protected FixedSizeList(final List<E> list, boolean addable) {
         super(list);
+        this.addable = addable;
     }
 
     //-----------------------------------------------------------------------
     @Override
     public boolean add(final E object) {
+        if(!addable){
+            throw unsupportedOperationException();
+        }
         if(isEmpty()){
             return false;
         }
@@ -90,6 +103,9 @@ public class FixedSizeList<E>
 
     @Override
     public void add(final int index, final E object) {
+        if(!addable){
+            throw unsupportedOperationException();
+        }
         if(isEmpty()){
             return;
         }
@@ -183,7 +199,7 @@ public class FixedSizeList<E>
     @Override
     public List<E> subList(final int fromIndex, final int toIndex) {
         final List<E> sub = decorated().subList(fromIndex, toIndex);
-        return new FixedSizeList<E>(sub);
+        return new FixedSizeList<E>(sub, this.addable);
     }
 
     /**
