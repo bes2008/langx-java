@@ -230,11 +230,11 @@ public class Strings {
         return join(separator, prefix, suffix, objects, null, filterNull ? Functions.<Integer, String>nonNullPredicate2() : Functions.<Integer, String>truePredicate2());
     }
 
-    public static String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator objects, Function<Object, String> mapper, Predicate2<Integer, String> predicate) {
+    public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
         if (Emptys.isNull(objects)) {
             return "";
         }
-        mapper = mapper == null ? Functions.toStringFunction() : mapper;
+        mapper = mapper == null ? Functions.<E>toStringFunction() : mapper;
         List<String> strings = Pipeline.of(objects)
                 .map(mapper)
                 .asList();
