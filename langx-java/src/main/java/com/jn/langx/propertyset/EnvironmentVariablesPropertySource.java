@@ -5,7 +5,7 @@ package com.jn.langx.propertyset;
  */
 public class EnvironmentVariablesPropertySource extends MapPropertySet {
     public EnvironmentVariablesPropertySource() {
-        this("envVars");
+        this(PropertySet.ENV_VARS);
     }
 
     public EnvironmentVariablesPropertySource(String name) {

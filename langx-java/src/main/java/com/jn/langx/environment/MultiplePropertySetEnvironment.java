@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @since 5.3.8
  */
-public class MultiplePropertySetEnvironment implements Environment {
+public class MultiplePropertySetEnvironment implements CompoundEnvironment {
     private MultiplePropertySet propertySet;
 
     public MultiplePropertySetEnvironment(String name, List<PropertySet> propertySets) {
@@ -30,5 +30,13 @@ public class MultiplePropertySetEnvironment implements Environment {
         Object value = this.propertySet.getProperty(key);
         value = Objs.useValueIfNull(value, valueIfAbsent);
         return Objs.toStringOrNull(value);
+    }
+
+    /**
+     * @since 5.4.6
+     */
+    @Override
+    public PropertySet getPropertySet(String name) {
+        return this.propertySet.getPropertySet(name);
     }
 }

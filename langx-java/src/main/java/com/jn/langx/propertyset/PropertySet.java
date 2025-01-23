@@ -6,6 +6,17 @@ import com.jn.langx.Nameable;
  * @since 5.3.8
  */
 public interface PropertySet<SRC> extends Nameable {
+
+    /**
+     * @since 5.4.6
+     */
+    String ENV_VARS = "envVars";
+
+    /**
+     * @since 5.4.6
+     */
+    String SYSTEM_PROPS = "systemProperties";
+
     SRC getSource();
 
     /**

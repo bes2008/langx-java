@@ -7,7 +7,7 @@ import com.jn.langx.util.collection.Collects;
  */
 public class SystemPropertiesPropertySource extends MapPropertySet {
     public SystemPropertiesPropertySource() {
-        this("systemProperties");
+        this(PropertySet.SYSTEM_PROPS);
     }
     public SystemPropertiesPropertySource(String name) {
         super(name, Collects.propertiesToStringMap(System.getProperties()));

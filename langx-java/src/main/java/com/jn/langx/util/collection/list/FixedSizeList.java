@@ -67,9 +67,12 @@ public class FixedSizeList<E>
      * @throws NullPointerException if list is null
      */
     public static <E> FixedSizeList<E> fixedSizeList(final List<E> list) {
-        return new FixedSizeList<E>(list, false);
+        return fixedSizeList(list, false);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> FixedSizeList<E> fixedSizeList(final List<E> list, boolean addable) {
         return new FixedSizeList<E>(list, addable);
     }

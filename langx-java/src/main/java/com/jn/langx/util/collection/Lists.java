@@ -26,6 +26,9 @@ public class Lists {
         return Collects.newArrayListWithCapacity(initialArraySize);
     }
 
+    /**
+     * @since 5.4.6
+     */
     public static <E> ArrayList<E> newArrayListWithFill(int initialArraySize, E initFillElement) {
         ArrayList<E> list = Collects.newArrayListWithCapacity(initialArraySize);
         for (int i =0; i< initialArraySize;i++){
@@ -45,6 +48,10 @@ public class Lists {
     public static <E> LinkedList<E> newLinkedList(Iterable<E> elements) {
        return Collects.newLinkedList(elements);
     }
+
+    /**
+     * @since 5.4.6
+     */
     public static <E> LinkedList<E> newLinkedListWithFill(int initialArraySize, E initFillElement) {
         LinkedList<E> list = Collects.newLinkedList();
         for (int i =0; i< initialArraySize;i++){
