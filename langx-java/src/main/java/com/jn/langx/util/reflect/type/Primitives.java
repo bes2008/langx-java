@@ -1,10 +1,12 @@
 package com.jn.langx.util.reflect.type;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Lists;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Primitives {
@@ -189,5 +191,16 @@ public class Primitives {
 
     public static Class get(String name){
         return primClasses.get(name);
+    }
+
+    /**
+     * @since 5.4.6
+     */
+    public List<Class<?>> getTypes(boolean onlyPrimitive){
+        List<Class<?>> result = Lists.newArrayList(PRIMITIVE_TO_WRAPPER_TYPE.keySet());
+        if(!onlyPrimitive){
+            result.addAll(WRAPPER_TO_PRIMITIVE_TYPE.keySet());
+        }
+        return result;
     }
 }
