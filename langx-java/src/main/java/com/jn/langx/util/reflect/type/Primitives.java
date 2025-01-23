@@ -196,7 +196,7 @@ public class Primitives {
     /**
      * @since 5.4.6
      */
-    public List<Class<?>> getTypes(boolean onlyPrimitive){
+    public static List<Class<?>> getTypes(boolean onlyPrimitive){
         List<Class<?>> result = Lists.newArrayList(PRIMITIVE_TO_WRAPPER_TYPE.keySet());
         if(!onlyPrimitive){
             result.addAll(WRAPPER_TO_PRIMITIVE_TYPE.keySet());
