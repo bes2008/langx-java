@@ -10,6 +10,9 @@ public class CharacterConverter implements Converter<Object, Character> {
 
     @Override
     public boolean isConvertible(Class sourceClass, @SuppressWarnings("rawtypes") Class targetClass) {
+        if(!Primitives.isChar(targetClass)){
+            return false;
+        }
         return Character.TYPE == sourceClass || Character.class == sourceClass || String.class == sourceClass || Integer.class == sourceClass;
     }
 
