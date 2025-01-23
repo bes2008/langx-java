@@ -80,22 +80,43 @@ public class FixedSizeList<E>
     //-----------------------------------------------------------------------
     @Override
     public boolean add(final E object) {
-        throw unsupportedOperationException();
+        if(isEmpty()){
+            return false;
+        }
+        this.decorated().remove(0);
+        this.decorated().add(object);
+        return true;
     }
 
     @Override
     public void add(final int index, final E object) {
-        throw unsupportedOperationException();
+        if(isEmpty()){
+            return;
+        }
+        this.decorated().add(index, object);
+        this.decorated().remove(size()-1);
     }
 
     @Override
     public boolean addAll(final Collection<? extends E> coll) {
-        throw unsupportedOperationException();
+        if(isEmpty()){
+            return false;
+        }
+        for(E o : coll){
+            add(o);
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(final int index, final Collection<? extends E> coll) {
-        throw unsupportedOperationException();
+        if(isEmpty()){
+            return false;
+        }
+        for(E o : coll){
+            add(index, o);
+        }
+        return true;
     }
 
     @Override
