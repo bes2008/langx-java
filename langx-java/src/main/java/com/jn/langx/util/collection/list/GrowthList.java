@@ -58,7 +58,7 @@ import java.util.List;
  * @see LazyList
  * @since 4.7.6
  */
-public class GrowthList<E> extends AbstractSerializableListDecorator<E> {
+public class GrowthList<E> extends AbstractListDecorator<E> {
 
     /**
      * Serialization version

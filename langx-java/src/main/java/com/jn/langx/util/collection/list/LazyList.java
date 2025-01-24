@@ -64,7 +64,7 @@ import java.util.List;
  * @see GrowthList
  * @since 4.7.6
  */
-public class LazyList<E> extends AbstractSerializableListDecorator<E> {
+public class LazyList<E> extends AbstractListDecorator<E> {
 
     /** Serialization version */
     private static final long serialVersionUID = -3677737457567429713L;
