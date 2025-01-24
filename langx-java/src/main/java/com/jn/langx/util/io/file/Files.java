@@ -1855,6 +1855,10 @@ public class Files {
         }
     }
 
+    public static void truncate(File file) throws IOException{
+        write("", Charsets.UTF_8, file, false);
+    }
+
     public static void appendLine(File file, String line) throws IOException {
         write(line + LineDelimiter.DEFAULT.getValue(), Charsets.UTF_8, file, true);
     }
