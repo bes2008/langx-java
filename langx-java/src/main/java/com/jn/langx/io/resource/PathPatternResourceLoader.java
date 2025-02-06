@@ -224,7 +224,7 @@ public class PathPatternResourceLoader implements PatternResourceLoader {
     }
 
     @Override
-    public boolean isSupportedPatttern(String locationPattern) {
+    public boolean isSupportedPattern(String locationPattern) {
         return firstSupportedLoader(locationPattern)!=null;
     }
 
@@ -232,7 +232,7 @@ public class PathPatternResourceLoader implements PatternResourceLoader {
         return Pipeline.of(loaderServiceRegistry).findFirst(new Predicate<PatternResourceLoader>() {
             @Override
             public boolean test(PatternResourceLoader loader) {
-                return loader.isSupportedPatttern(locationPattern);
+                return loader.isSupportedPattern(locationPattern);
             }
         });
     }
