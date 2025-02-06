@@ -90,5 +90,10 @@ public class ResourceClassFile extends ClassFile implements Delegatable<Resource
     public void setDelegate(Resource delegate) {
         this.delegate = delegate;
     }
+
+    @Override
+    public String getClassName() {
+        return null;
+    }
 }
 
