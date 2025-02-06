@@ -1,25 +1,24 @@
-/*
- * Copyright 2019 the original author or authors.
- *
- * Licensed under the LGPL, Version 3.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at  http://www.gnu.org/licenses/lgpl-3.0.html
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jn.langx.configuration;
 
 /**
- * the configuration,
- * if use it, you must override the equals method, the hashcode method
+ * Interface for configuration management
+ * This interface is used to define the basic operations of configuration, mainly including obtaining and setting configuration identifiers
+ * When using this interface, it is recommended to override the equals and hashCode methods to ensure the correctness and efficiency of configuration comparison and storage
  */
 public interface Configuration {
+    /**
+     * Gets the unique identifier of the configuration
+     * This method is used to uniquely identify a configuration, which is the basis for configuration comparison and storage
+     *
+     * @return the unique identifier of the configuration
+     */
     String getId();
 
+    /**
+     * Sets the unique identifier of the configuration
+     * This method is used to set the unique identifier of a configuration, which is the basis for configuration comparison and storage
+     *
+     * @param id the unique identifier of the configuration
+     */
     void setId(String id);
 }

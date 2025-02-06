@@ -1,22 +1,27 @@
-/*
- * Copyright 2019 the original author or authors.
- *
- * Licensed under the LGPL, Version 3.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at  http://www.gnu.org/licenses/lgpl-3.0.html
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jn.langx.configuration;
 
 import java.util.Map;
 
+/**
+ * 配置加载器接口，用于加载配置信息
+ * 该接口是一个泛型接口，允许加载的配置类型在实现时指定
+ *
+ * @param <T> 配置类型，必须是Configuration的子类
+ */
 public interface ConfigurationLoader<T extends Configuration> {
+
+    /**
+     * 加载特定id的配置信息
+     *
+     * @param id 配置的唯一标识符
+     * @return 返回加载的配置对象，如果找不到则返回null
+     */
     T load(String id);
+
+    /**
+     * 加载所有的配置信息
+     *
+     * @return 返回一个包含所有配置的映射，键为配置的id，值为配置对象
+     */
     Map<String, T> loadAll();
 }
