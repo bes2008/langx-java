@@ -20,10 +20,21 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Interface for runnable with timeout value
+ * This interface extends Runnable and adds the concept of timeout, allowing the Runnable task to specify its timeout value and time unit.
  */
 public interface TimeoutRunnable extends Runnable {
 
+    /**
+     * Gets the timeout value of the task
+     *
+     * @return The timeout value in the specified time unit
+     */
     long getTimeout();
 
+    /**
+     * Gets the time unit of the timeout value
+     *
+     * @return The time unit of the timeout value
+     */
     TimeUnit getTimeUnit();
 }
