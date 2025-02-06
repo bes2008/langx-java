@@ -1,6 +1,9 @@
 package com.jn.langx.security.crypto.pbe.pswdenc;
 
 /**
+ * Interface for password encryption and verification.
+ * This interface defines methods for password encryption and verification.
+ *
  * @since 5.3.9
  */
 public interface PasswordEncryptor {
@@ -11,7 +14,6 @@ public interface PasswordEncryptor {
      * @return the resulting digest.
      */
     String encrypt(String password);
-
 
     /**
      * Checks an unencrypted (plain) password against an encrypted one
