@@ -31,9 +31,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import static com.jn.langx.util.Preconditions.checkNotNull;
-import static com.jn.langx.util.function.Functions.emptyHashSetSupplier0;
-import static com.jn.langx.util.function.Functions.emptyTreeSetSupplier0;
+
 
 /**
  * Collection utilities
@@ -78,12 +76,8 @@ public class Collects {
         }
         return Collections.unmodifiableList(asList(list));
     }
-    public static <E> List<E> immutableList(List<E> list) {
-        if (list == null) {
-            return Collections.emptyList();
-        }
-        return Collections.unmodifiableList(list);
-    }
+
+
     public static <E> List<E> immutableArrayList(List<E> list) {
         return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
     }
@@ -706,7 +700,7 @@ public class Collects {
         return treeMap;
     }
     public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Class<K> type) {
-        return new EnumMap<K, V>(checkNotNull(type));
+        return new EnumMap<K, V>(Preconditions.checkNotNull(type));
     }
 
     public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Map<K, V> map) {
@@ -2382,7 +2376,7 @@ public class Collects {
         return new Collector<E, TreeSet<E>>() {
             @Override
             public Supplier0<TreeSet<E>> supplier() {
-                return emptyTreeSetSupplier0(comparator);
+                return Functions.emptyTreeSetSupplier0(comparator);
             }
 
             @Override
@@ -2401,7 +2395,7 @@ public class Collects {
         return new Collector<E, HashSet<E>>() {
             @Override
             public Supplier0<HashSet<E>> supplier() {
-                return emptyHashSetSupplier0();
+                return Functions.emptyHashSetSupplier0();
             }
 
             @Override

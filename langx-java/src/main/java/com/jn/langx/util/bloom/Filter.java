@@ -168,7 +168,7 @@ public abstract class Filter implements Writable {
 
     @Override
     public void readFields(DataInput in) throws IOException {
-        int ver = in.readInt();
+        in.readInt();
         this.nbHash = in.readInt();
         this.hasherName = in.readUTF();
         this.vectorSize = in.readInt();
