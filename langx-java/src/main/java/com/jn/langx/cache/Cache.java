@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public interface Cache<K, V> {
     /**
-     * set a key-value to cache, with out expire time never
+     * set a key-value to cache, without expire time never
      * @param key the key
      * @param value the value
      */
