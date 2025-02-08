@@ -7,8 +7,12 @@ import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.io.stream.UnicodeInputStream;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringJoiner;
+import com.jn.langx.text.StringSplitter;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
+import com.jn.langx.text.split.AbstractStringSplitter;
+import com.jn.langx.text.split.RegexpStringSplitter;
+import com.jn.langx.text.split.SimpleStringSplitter;
 import com.jn.langx.text.transform.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
@@ -464,37 +468,12 @@ public class Strings {
         if (Emptys.isEmpty(string)) {
             return new String[0];
         }
-        Pipeline<String> pipeline = null;
-        if (separatorIsRegexp) {
-            pipeline = Pipeline.of(string.split(separator));
-        } else {
-            // 使用 JDK 的 StringTokenizer分割后会有Bug
-            // 例如，第三段被分割后，少了个 0
-            // string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
-            // Strings.split(string, "0@*v*@0");
-            StrTokenizer tokenizer = new StrTokenizer(string, separator);
-            List<String> list = tokenizer.tokenize();
-            pipeline = Pipeline.of(list);
-        }
-        return pipeline.map(new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                if (doTrim) {
-                    return Strings.trim(input);
-                } else {
-                    return input;
-                }
-            }
-        }).filter(new Predicate<String>() {
-            @Override
-            public boolean test(String value) {
-                if (ignoreEmptyTokens) {
-                    return Strings.isNotBlank(value);
-                } else {
-                    return true;
-                }
-            }
-        }).toArray(String[].class);
+
+        AbstractStringSplitter splitter = separatorIsRegexp ? new RegexpStringSplitter(separator) : new SimpleStringSplitter(false, separator);
+        splitter.setTrimToken(doTrim);
+        splitter.setIgnoreEmptyToken(ignoreEmptyTokens);
+        List<String> tokens = splitter.split(string);
+        return Collects.toArray(tokens, String[].class);
     }
 
     public static String[] slice(String str, int substringLength){
