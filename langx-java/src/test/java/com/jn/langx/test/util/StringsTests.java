@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static com.jn.langx.util.Strings.isBlank;
 import static com.jn.langx.util.Strings.isEmpty;
+import static org.junit.Assert.assertEquals;
 
 public class StringsTests {
     @Test
@@ -54,7 +55,7 @@ public class StringsTests {
         string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
         segments = Strings.split(string, "0@*v*@0");
         // 分割后会有Bug
-        Assert.assertEquals(segments[2], "i632d4c-tomcat-0");
+        assertEquals(segments[2], "i632d4c-tomcat-0");
 
         string = "[addresses][0][a]";
         segments = Strings.split(string, "]");
@@ -109,4 +110,19 @@ public class StringsTests {
     }
 
 
+    @Test
+    public void toPascalCaseTest() {
+        assertEquals("", Strings.toPascalCase(""));
+        assertEquals("Word", Strings.toPascalCase("word"));
+        assertEquals("WordOne", Strings.toPascalCase("word one"));
+        assertEquals("WordOne", Strings.toPascalCase("word-one", "-"));
+        assertEquals("WordOne", Strings.toPascalCase("Word One"));
+        assertEquals("WordOne", Strings.toPascalCase("Word-One", "-"));
+        assertEquals("WordOne", Strings.toPascalCase("word!one", "!"));
+        assertEquals("WordOneWord", Strings.toPascalCase("word_one-word", "_", "-"));
+        assertEquals("WordOneWord", Strings.toPascalCase("word one-word", " ", "-"));
+        assertEquals("", Strings.toPascalCase(" -_ ", "-", "_"));
+        assertEquals("WordOneTwo", Strings.toPascalCase("word ONE two"));
+        assertEquals("WordOne", Strings.toPascalCase("word one", " "));
+    }
 }

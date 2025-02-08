@@ -3893,6 +3893,7 @@ public class Strings {
         transformer.setDelimiters(new String[]{separator});
         return transformer.transform(string);
     }
+
     /**
      * 将字符串转换为帕斯卡命名法（Pascal Case）。
      * 帕斯卡命名法是指每个单词的首字母都大写，不使用空格或下划线等分隔符。
@@ -3910,12 +3911,12 @@ public class Strings {
      * 驼峰命名法是指除第一个单词外，其他单词的首字母大写，不使用空格或下划线等分隔符。
      *
      * @param string 待转换的字符串
-     * @param firstLetterToLower 指定第一个单词的首字母是否转为小写
+     * @param firstLetterUpperCase 指定第一个单词的首字母是否转为大写
      * @param delimiters 可变参数，定义了单词间的分隔符
      * @return 转换后的驼峰命名法字符串
      */
-    public static String toCamelCase(String string, boolean firstLetterToLower, String... delimiters){
-        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer(firstLetterToLower);
+    public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters){
+        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer(firstLetterUpperCase);
         transformer.setDelimiters(delimiters);
         return transformer.transform(string);
     }
