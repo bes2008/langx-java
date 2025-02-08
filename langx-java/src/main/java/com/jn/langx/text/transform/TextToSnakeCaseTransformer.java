@@ -3,13 +3,21 @@ package com.jn.langx.text.transform;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 
 import java.util.List;
 
-public class TextToSnakeCaseTransformer implements TextCaseTransformer {
+public class TextToSnakeCaseTransformer extends AbstractTextCaseTransformer {
     private String[] delimiters = default_delimiters;
+
+    private boolean tokenFirstLetterUpperCase;
+
+    public TextToSnakeCaseTransformer(){
+        this(false);
+    }
+    public TextToSnakeCaseTransformer(boolean tokenFirstLetterUpperCase){
+        this.tokenFirstLetterUpperCase = tokenFirstLetterUpperCase;
+    }
 
     public void setDelimiters(String[] delimiters) {
         if(Objs.isNotEmpty(delimiters)) {
@@ -18,27 +26,17 @@ public class TextToSnakeCaseTransformer implements TextCaseTransformer {
     }
 
     @Override
-    public String transform(final String text) {
-        // 前置处理
-        StringBuilder newText = new StringBuilder();
-        int count = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if ((Character.isDigit(c)&& count>0) || Character.isLetter(c) || Collects.contains(default_delimiters,c+"")) {
-                newText.append(c);
-                count++;
-            }
-        }
-
-        // 转换
-
-
-        StrTokenizer tokenizer = new StrTokenizer(newText.toString(),false, delimiters);
+    protected String transformInternal(String text) {
+        StrTokenizer tokenizer = new StrTokenizer(text,false, delimiters);
         List<String> tokens = tokenizer.tokenize();
         String result = Strings.join("_", null, null, tokens, new Function<String, String>() {
             @Override
             public String apply(String token) {
-                return Strings.lowerCase(token);
+                token = Strings.lowerCase(token);
+                if(tokenFirstLetterUpperCase){
+                    token= Strings.upperCaseFirstChar(token);
+                }
+                return token;
             }
         }, null);
         return result;

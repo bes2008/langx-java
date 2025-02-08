@@ -11,6 +11,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.text.transform.TextToCamelCaseTransformer;
 import com.jn.langx.text.transform.TextToHyphenCaseTransformer;
+import com.jn.langx.text.transform.TextToPascalCaseTransformer;
 import com.jn.langx.text.transform.TextToSnakeCaseTransformer;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
@@ -3903,7 +3904,9 @@ public class Strings {
      * @return 转换后的帕斯卡命名法字符串
      */
     public static String toPascalCase(String string,  String... delimiters){
-        return toCamelCase(string, true, delimiters);
+        TextToPascalCaseTransformer transformer = new TextToPascalCaseTransformer();
+        transformer.setDelimiters(delimiters);
+        return transformer.transform(string);
     }
 
     /**
