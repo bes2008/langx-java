@@ -1,9 +1,12 @@
 package com.jn.langx.text.transform;
 
 import com.jn.langx.text.split.SimpleStringSplitter;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 
 public class TokenCaseStringSplitter extends SimpleStringSplitter {
+    // 默认的分隔符数组，用于分割字符串
+    static final String[] default_delimiters = new String[]{" ", "-", "_"};
     private boolean cleanInvalidChars;
     public TokenCaseStringSplitter( String... delimiters){
         this(true, false, delimiters);
@@ -13,7 +16,7 @@ public class TokenCaseStringSplitter extends SimpleStringSplitter {
     }
 
     public TokenCaseStringSplitter(boolean cleanInvalidChars,boolean returnDelimiter, String... delimiters){
-        super(returnDelimiter, delimiters);
+        super(returnDelimiter, Objs.isEmpty(delimiters)?default_delimiters:delimiters);
         this.cleanInvalidChars=cleanInvalidChars;
     }
 

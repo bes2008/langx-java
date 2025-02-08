@@ -14,11 +14,7 @@ import java.util.List;
  */
 public abstract class AbstractTokenTextCaseTransformer implements Transformer<String, String> {
 
-    // 默认的分隔符数组，用于分割字符串
-    static final String[] default_delimiters = new String[]{" ", "-", "_"};
-
     private StringSplitter splitter;
-
 
     // 令牌（单词）的大小写格式
     private LetterCase tokenCase;
@@ -45,7 +41,7 @@ public abstract class AbstractTokenTextCaseTransformer implements Transformer<St
         this.tokenCase = Objs.useValueIfNull(tokenCase, LetterCase.NOOP);
         this.tokenFirstLetterCase = Objs.useValueIfNull(tokenFirstLetterCase, LetterCase.NOOP);
         this.firstLetterCase = Objs.useValueIfNull(firstLetterCase, LetterCase.NOOP);
-        this.splitter = new TokenCaseStringSplitter(false, default_delimiters);
+        this.splitter = new TokenCaseStringSplitter(false);
     }
 
     public void setSplitter(StringSplitter splitter) {
