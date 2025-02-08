@@ -1352,7 +1352,6 @@ public class Reflects {
      * 找到 public 的, 非 static 的 Getter
      */
     public static Method getGetter(Class clazz, String field) {
-        String simple = "get" + field;
         String simpleIsGet = "is" + field;
         String isGet = getIsGetter(field);
         String getter = getGetter(field);
