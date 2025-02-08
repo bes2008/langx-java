@@ -9,6 +9,9 @@ import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
+import com.jn.langx.text.transform.TextToCamelCaseTransformer;
+import com.jn.langx.text.transform.TextToHyphenCaseTransformer;
+import com.jn.langx.text.transform.TextToSnakeCaseTransformer;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
@@ -228,6 +231,10 @@ public class Strings {
 
     public static String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, final boolean filterNull, @Nullable final Iterator objects) {
         return join(separator, prefix, suffix, objects, null, filterNull ? Functions.<Integer, String>nonNullPredicate2() : Functions.<Integer, String>truePredicate2());
+    }
+
+    public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterable<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
+        return join(separator,prefix,suffix, objects.iterator(), mapper, predicate);
     }
 
     public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
@@ -3863,34 +3870,96 @@ public class Strings {
         return Pipeline.of(strings).toArray(String[].class);
     }
 
+    /**
+     * 将下划线转为驼峰方式
+     * @param string
+     * @param firstLetterToLower
+     * @return
+     */
     public static String underlineToCamel(String string, boolean firstLetterToLower) {
         return separatorToCamel(string, "_", firstLetterToLower);
     }
 
     /**
-     * 将字符串分割后，转为驼峰
+     * 将字符串按照指定的分隔符separator分割后，转为驼峰方式拼接
      *
      * @param string
      * @param separator
      * @param firstLetterToLower
      */
+    @Deprecated
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
-        final StringBuilder builder = new StringBuilder();
-        Pipeline.<String>of(Strings.split(string, separator)).map(new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                return input.toLowerCase();
-            }
-        }).forEach(new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                builder.append(Strings.upperCase(s, 0, 1));
-            }
-        });
-        if (firstLetterToLower) {
-            return Strings.lowerCase(builder.toString(), 0, 1);
-        }
-        return builder.toString();
+        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer(firstLetterToLower);
+        transformer.setDelimiters(new String[]{separator});
+        return transformer.transform(string);
+    }
+    /**
+     * 将字符串转换为帕斯卡命名法（Pascal Case）。
+     * 帕斯卡命名法是指每个单词的首字母都大写，不使用空格或下划线等分隔符。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的帕斯卡命名法字符串
+     */
+    public static String toPascalCase(String string,  String... delimiters){
+        return toCamelCase(string, true, delimiters);
+    }
+
+    /**
+     * 将字符串转换为驼峰命名法（Camel Case）。
+     * 驼峰命名法是指除第一个单词外，其他单词的首字母大写，不使用空格或下划线等分隔符。
+     *
+     * @param string 待转换的字符串
+     * @param firstLetterToLower 指定第一个单词的首字母是否转为小写
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的驼峰命名法字符串
+     */
+    public static String toCamelCase(String string, boolean firstLetterToLower, String... delimiters){
+        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer(firstLetterToLower);
+        transformer.setDelimiters(delimiters);
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为蛇形命名法（Snake Case）。
+     * 蛇形命名法是指所有单词小写，单词间以下划线连接。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的蛇形命名法字符串  （使用_连接，每个token小写）
+     */
+    public static String toSnakeCase(String string, String... delimiters){
+        TextToSnakeCaseTransformer transformer = new TextToSnakeCaseTransformer();
+        transformer.setDelimiters(delimiters);
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为短横线命名法（Hyphen Case）。
+     * 短横线命名法是指所有单词小写，单词间以短横线连接。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的短横线命名法字符串 （使用-连接，每个token保持原样）
+     */
+    public static String toHyphenCase(String string, String... delimiters){
+        TextToHyphenCaseTransformer transformer = new TextToHyphenCaseTransformer();
+        transformer.setDelimiters(delimiters);
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为 kebab 命名法。
+     * kebab 命名法是指所有单词小写，单词间以短横线连接，与短横线命名法相似，但强调第一个和最后一个字符不能是短横线。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的 kebab 命名法字符串 （使用-连接，每个token小写）
+     */
+    public static String toKebabCase(String string, String... delimiters){
+        TextToHyphenCaseTransformer transformer = new TextToHyphenCaseTransformer(true);
+        transformer.setDelimiters(delimiters);
+        return transformer.transform(string);
     }
 
     public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {
