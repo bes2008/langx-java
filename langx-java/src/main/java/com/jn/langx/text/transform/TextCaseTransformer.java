@@ -7,6 +7,9 @@ import com.jn.langx.Transformer;
  * 它定义了一个转换字符串的方法，允许实现者提供自定义的字符串转换逻辑
  */
 public interface TextCaseTransformer extends Transformer<String, String> {
+
+    static final String[] default_delimiters = new String[]{"\t"," ","\r","\n","-","_"};
+
     /**
      * 转换输入的字符串
      *

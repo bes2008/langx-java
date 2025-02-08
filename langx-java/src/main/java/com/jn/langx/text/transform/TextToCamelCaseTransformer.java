@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TextToCamelCaseTransformer implements TextCaseTransformer {
 
-    private static final String[] default_delimiters = new String[]{"\t"," ","\r","\n","-","_"};
+
     private boolean firstLetterUpperCase;
     private String[] delimiters = default_delimiters;
     public TextToCamelCaseTransformer(){
@@ -34,7 +34,7 @@ public class TextToCamelCaseTransformer implements TextCaseTransformer {
         int count = 0;
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            if ((Character.isDigit(c)&& count>0) || Character.isLetter(c) || Collects.contains(delimiters,c+"")) {
+            if ((Character.isDigit(c)&& count>0) || Character.isLetter(c) || Collects.contains(default_delimiters,c+"")) {
                 newText.append(c);
                 count++;
             }
