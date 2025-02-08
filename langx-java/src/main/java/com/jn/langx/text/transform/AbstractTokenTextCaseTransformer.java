@@ -10,24 +10,39 @@ import com.jn.langx.util.function.Function;
 import java.util.List;
 
 /**
- * TextCaseTransformer接口继承自Transformer接口，专门用于字符串到字符串的转换操作
- * 它定义了一个转换字符串的方法，允许实现者提供自定义的字符串转换逻辑
+ * 抽象的令牌文本大小写转换器类，用于转换字符串的大小写格式
+ * 该类实现了Transformer接口，专门用于处理字符串类型的输入和输出
  */
 public abstract class AbstractTokenTextCaseTransformer implements Transformer<String, String> {
 
+    // 默认的分隔符数组，用于分割字符串
     static final String[] default_delimiters = new String[]{" ", "-", "_"};
+    // 可以被设置的分隔符，默认使用default_delimiters
     private String[] delimiters = default_delimiters;
 
+    // 是否清理无效字符，默认为true
     private boolean cleanInvalidChars = true;
 
+    // 令牌（单词）的大小写格式
     private LetterCase tokenCase;
 
+    // 令牌（单词）首字母的大小写格式
     private LetterCase tokenFirstLetterCase;
 
+    // 整个字符串首字母的大小写格式
     private LetterCase firstLetterCase;
 
+    // 用于连接处理后的令牌（单词）的分隔符
     private String joinSeparator;
 
+    /**
+     * 构造方法，初始化配置
+     *
+     * @param joinSeparator 用于连接处理后的令牌的分隔符
+     * @param tokenCase 令牌的大小写格式
+     * @param tokenFirstLetterCase 令牌首字母的大小写格式
+     * @param firstLetterCase 整个字符串首字母的大小写格式
+     */
     protected AbstractTokenTextCaseTransformer(String joinSeparator, LetterCase tokenCase, LetterCase tokenFirstLetterCase, LetterCase firstLetterCase) {
         this.joinSeparator = joinSeparator;
         this.tokenCase = Objs.useValueIfNull(tokenCase, LetterCase.NOOP);
@@ -35,6 +50,11 @@ public abstract class AbstractTokenTextCaseTransformer implements Transformer<St
         this.firstLetterCase = Objs.useValueIfNull(firstLetterCase, LetterCase.NOOP);
     }
 
+    /**
+     * 设置分隔符
+     *
+     * @param delimiters 新的分隔符数组
+     */
     public void setDelimiters(String[] delimiters) {
         if (Objs.isNotEmpty(delimiters)) {
             this.delimiters = delimiters;
@@ -68,6 +88,12 @@ public abstract class AbstractTokenTextCaseTransformer implements Transformer<St
         return transformInternal(newText.toString());
     }
 
+    /**
+     * 内部转换方法，处理字符串的大小写和分隔符
+     *
+     * @param text 预处理后的字符串
+     * @return 最终转换后的字符串
+     */
     protected String transformInternal(String text) {
         StrTokenizer tokenizer = new StrTokenizer(text, false, delimiters);
         List<String> tokens = tokenizer.tokenize();
@@ -91,3 +117,4 @@ public abstract class AbstractTokenTextCaseTransformer implements Transformer<St
         return result;
     }
 }
+
