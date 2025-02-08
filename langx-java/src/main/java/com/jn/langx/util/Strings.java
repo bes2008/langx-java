@@ -3888,7 +3888,7 @@ public class Strings {
     @Deprecated
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
         TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer();
-        transformer.setDelimiters(new String[]{separator});
+        transformer.setSplitter(new TokenCaseStringSplitter(separator));
         return transformer.transform(string);
     }
 
@@ -3902,7 +3902,7 @@ public class Strings {
      */
     public static String toPascalCase(String string, String... delimiters){
         TextToPascalCaseTransformer transformer = new TextToPascalCaseTransformer();
-        transformer.setDelimiters(delimiters);
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
@@ -3917,7 +3917,7 @@ public class Strings {
      */
     public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters){
         AbstractTokenTextCaseTransformer transformer = firstLetterUpperCase ? new TextToPascalCaseTransformer(): new TextToCamelCaseTransformer();
-        transformer.setDelimiters(delimiters);
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
@@ -3931,7 +3931,7 @@ public class Strings {
      */
     public static String toSnakeCase(String string, String... delimiters){
         TextToSnakeCaseTransformer transformer = new TextToSnakeCaseTransformer();
-        transformer.setDelimiters(delimiters);
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
@@ -3945,7 +3945,7 @@ public class Strings {
      */
     public static String toHyphenCase(String string, String... delimiters){
         TextToHyphenCaseTransformer transformer = new TextToHyphenCaseTransformer();
-        transformer.setDelimiters(delimiters);
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
@@ -3959,14 +3959,14 @@ public class Strings {
      */
     public static String toKebabCase(String string, String... delimiters){
         TextToKebabCaseTransformer transformer = new TextToKebabCaseTransformer();
-        transformer.setDelimiters(delimiters);
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
 
     public static String toTrainCase(String string, String... delimiters){
         TextToTrainCaseTransformer transformer = new TextToTrainCaseTransformer();
-        transformer.setDelimiters(delimiters);
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
