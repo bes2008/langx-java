@@ -3900,7 +3900,7 @@ public class Strings {
      * @param delimiters 可变参数，定义了单词间的分隔符
      * @return 转换后的帕斯卡命名法字符串
      */
-    public static String toPascalCase(String string,  String... delimiters){
+    public static String toPascalCase(String string, String... delimiters){
         TextToPascalCaseTransformer transformer = new TextToPascalCaseTransformer();
         transformer.setDelimiters(delimiters);
         return transformer.transform(string);
