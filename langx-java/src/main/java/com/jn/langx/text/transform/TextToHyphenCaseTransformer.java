@@ -41,7 +41,7 @@ public class TextToHyphenCaseTransformer implements TextCaseTransformer {
         }
 
         // 转换
-        StrTokenizer tokenizer = new StrTokenizer(text,false, delimiters);
+        StrTokenizer tokenizer = new StrTokenizer(newText.toString(),false, delimiters);
         List<String> tokens = tokenizer.tokenize();
         String result = Strings.join("-", null, null, tokens, new Function<String, String>() {
             @Override
