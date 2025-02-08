@@ -1,8 +1,7 @@
 package com.jn.langx.text.transform;
 
 import com.jn.langx.Transformer;
-import com.jn.langx.text.StringSplitter;
-import com.jn.langx.text.split.SimpleStringSplitter;
+import com.jn.langx.text.split.StringSplitter;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.function.Function;

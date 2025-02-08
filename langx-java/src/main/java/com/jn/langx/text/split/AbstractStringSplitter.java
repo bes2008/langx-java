@@ -1,6 +1,5 @@
 package com.jn.langx.text.split;
 
-import com.jn.langx.text.StringSplitter;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;

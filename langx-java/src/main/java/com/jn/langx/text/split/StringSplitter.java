@@ -1,4 +1,4 @@
-package com.jn.langx.text;
+package com.jn.langx.text.split;
 
 import java.util.List;
 
