@@ -9,7 +9,7 @@ import com.jn.langx.util.function.Function;
 import java.util.List;
 
 public class TextToHyphenCaseTransformer implements TextCaseTransformer {
-    private String[] delimiters = new String[]{"\t"," ","\r","\n"};
+    private String[] delimiters = default_delimiters;
 
     private boolean lowerCase;
 

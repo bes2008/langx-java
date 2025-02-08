@@ -9,7 +9,7 @@ import com.jn.langx.util.function.Function;
 import java.util.List;
 
 public class TextToSnakeCaseTransformer implements TextCaseTransformer {
-    private String[] delimiters = new String[]{"\t"," ","\r","\n"};
+    private String[] delimiters = default_delimiters;
 
     public void setDelimiters(String[] delimiters) {
         if(Objs.isNotEmpty(delimiters)) {
