@@ -40,24 +40,23 @@ public abstract class AbstractStringSplitter implements StringSplitter {
     protected abstract List<String> doSplit(String str);
 
     protected List<String> afterSplit(List<String> tokens){
-        return Pipeline.of(tokens).map(new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                if (trimToken) {
+        Pipeline<String> pipeline = Pipeline.of(tokens);
+        if(trimToken){
+            pipeline = pipeline.map(new Function<String, String>() {
+                @Override
+                public String apply(String input) {
                     return Strings.trim(input);
-                } else {
-                    return input;
                 }
-            }
-        }).filter(new Predicate<String>() {
-            @Override
-            public boolean test(String value) {
-                if (ignoreEmptyToken) {
+            });
+        }
+        if(ignoreEmptyToken){
+            pipeline = pipeline.filter(new Predicate<String>() {
+                @Override
+                public boolean test(String value) {
                     return Strings.isNotBlank(value);
-                } else {
-                    return true;
                 }
-            }
-        }).asList();
+            });
+        }
+        return pipeline.asList();
     }
 }
