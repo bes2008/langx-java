@@ -9,10 +9,7 @@ import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
-import com.jn.langx.text.transform.TextToCamelCaseTransformer;
-import com.jn.langx.text.transform.TextToHyphenCaseTransformer;
-import com.jn.langx.text.transform.TextToPascalCaseTransformer;
-import com.jn.langx.text.transform.TextToSnakeCaseTransformer;
+import com.jn.langx.text.transform.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
@@ -3890,7 +3887,7 @@ public class Strings {
      */
     @Deprecated
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
-        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer(firstLetterToLower);
+        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer();
         transformer.setDelimiters(new String[]{separator});
         return transformer.transform(string);
     }
@@ -3919,7 +3916,7 @@ public class Strings {
      * @return 转换后的驼峰命名法字符串
      */
     public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters){
-        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer(firstLetterUpperCase);
+        AbstractTokenTextCaseTransformer transformer = firstLetterUpperCase ? new TextToPascalCaseTransformer(): new TextToCamelCaseTransformer();
         transformer.setDelimiters(delimiters);
         return transformer.transform(string);
     }
@@ -3961,7 +3958,14 @@ public class Strings {
      * @return 转换后的 kebab 命名法字符串 （使用-连接，每个token小写）
      */
     public static String toKebabCase(String string, String... delimiters){
-        TextToHyphenCaseTransformer transformer = new TextToHyphenCaseTransformer(true);
+        TextToKebabCaseTransformer transformer = new TextToKebabCaseTransformer();
+        transformer.setDelimiters(delimiters);
+        return transformer.transform(string);
+    }
+
+
+    public static String toTrainCase(String string, String... delimiters){
+        TextToTrainCaseTransformer transformer = new TextToTrainCaseTransformer();
         transformer.setDelimiters(delimiters);
         return transformer.transform(string);
     }

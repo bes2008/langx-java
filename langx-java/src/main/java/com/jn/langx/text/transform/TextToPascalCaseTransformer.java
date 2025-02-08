@@ -1,7 +1,7 @@
 package com.jn.langx.text.transform;
 
-public class TextToPascalCaseTransformer extends TextToCamelCaseTransformer{
+public class TextToPascalCaseTransformer extends AbstractTokenTextCaseTransformer {
     public TextToPascalCaseTransformer() {
-        super(true);
+        super("",LetterCase.LOWER, LetterCase.UPPER, LetterCase.NOOP);
     }
 }

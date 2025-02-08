@@ -1,52 +1,17 @@
 package com.jn.langx.text.transform;
 
-import com.jn.langx.text.StrTokenizer;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.function.Function;
-import com.jn.langx.util.struct.Holder;
 
-import java.util.List;
-
-public class TextToCamelCaseTransformer extends AbstractTextCaseTransformer {
-
-
-    private boolean firstLetterUpperCase;
-    private String[] delimiters = default_delimiters;
+/**
+ * 将文本转换为驼峰命名法的转换器类
+ * 继承自AbstractTextCaseTransformer，并根据驼峰命名法的规则调整文本.
+ *
+ */
+public class TextToCamelCaseTransformer extends AbstractTokenTextCaseTransformer {
+    /**
+     * 构造函数
+     * 初始化父类AbstractTextCaseTransformer时，设置单词首字母大写、其余字母小写，以及不使用下划线连接单词
+     */
     public TextToCamelCaseTransformer(){
-        this(false);
-    }
-    public TextToCamelCaseTransformer(boolean firstLetterUpperCase){
-        this.firstLetterUpperCase = firstLetterUpperCase;
-    }
-
-    public void setDelimiters(String[] delimiters) {
-        if(Objs.isNotEmpty(delimiters)) {
-            this.delimiters = delimiters;
-        }
-    }
-
-    @Override
-    protected String transformInternal(String text) {
-        // 转为驼峰
-        StrTokenizer tokenizer = new StrTokenizer(text,false, delimiters);
-        List<String> tokens = tokenizer.tokenize();
-        final Holder<Integer> indexHolder = new Holder<Integer>(0);
-        String result = Strings.join("", null, null, tokens, new Function<String, String>() {
-            @Override
-            public String apply(String token) {
-                token = Strings.lowerCase(token);
-                if (indexHolder.get() == 0) {
-                    if (firstLetterUpperCase) {
-                        return Strings.upperCaseFirstChar(token);
-                    } else {
-                        return token;
-                    }
-                } else {
-                    return Strings.upperCaseFirstChar(token);
-                }
-            }
-        }, null);
-        return result;
+        super("",LetterCase.LOWER, LetterCase.UPPER, LetterCase.LOWER);
     }
 }

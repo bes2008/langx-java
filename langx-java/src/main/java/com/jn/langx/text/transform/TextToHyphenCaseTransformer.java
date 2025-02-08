@@ -1,41 +1,20 @@
 package com.jn.langx.text.transform;
 
-import com.jn.langx.text.StrTokenizer;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.function.Function;
 
-import java.util.List;
+/**
+ * 将文本转换为连字符案例的转换器类
+ * 该类继承自AbstractTextCaseTransformer，用于将输入的文本转换为连字符分隔的格式
+ * 连字符案例是指单词之间使用连字符进行连接的一种命名风格
+ */
+public class TextToHyphenCaseTransformer extends AbstractTokenTextCaseTransformer {
 
-public class TextToHyphenCaseTransformer extends AbstractTextCaseTransformer {
-    private String[] delimiters = default_delimiters;
-
-    private boolean lowerCase;
-
+    /**
+     * 构造函数
+     * 初始化父类AbstractTextCaseTransformer的属性
+     * 设置分隔符为连字符("-")，并设置文本转换的标志为默认值（均为false）
+     */
     public TextToHyphenCaseTransformer(){
-        this(false);
+        super("-",LetterCase.NOOP, LetterCase.NOOP, LetterCase.NOOP);
     }
 
-    public TextToHyphenCaseTransformer(boolean lowerCase){
-        this.lowerCase = lowerCase;
-    }
-
-    public void setDelimiters(String[] delimiters) {
-        if(Objs.isNotEmpty(delimiters)) {
-            this.delimiters = delimiters;
-        }
-    }
-
-    @Override
-    protected String transformInternal(String text) {
-        StrTokenizer tokenizer = new StrTokenizer(text,false, delimiters);
-        List<String> tokens = tokenizer.tokenize();
-        String result = Strings.join("-", null, null, tokens, new Function<String, String>() {
-            @Override
-            public String apply(String token) {
-                return lowerCase ? Strings.lowerCase(token) :token ;
-            }
-        }, null);
-        return result;
-    }
 }
