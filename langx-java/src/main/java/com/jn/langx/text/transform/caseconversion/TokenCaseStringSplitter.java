@@ -1,4 +1,4 @@
-package com.jn.langx.text.transform;
+package com.jn.langx.text.transform.caseconversion;
 
 import com.jn.langx.text.split.SimpleStringSplitter;
 import com.jn.langx.util.Objs;

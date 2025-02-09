@@ -1,7 +1,8 @@
-package com.jn.langx.text.transform;
+package com.jn.langx.text.transform.caseconversion;
 
 import com.jn.langx.Transformer;
 import com.jn.langx.text.split.StringSplitter;
+import com.jn.langx.text.transform.LetterCase;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.function.Function;
@@ -12,7 +13,7 @@ import java.util.List;
  * 抽象的令牌文本大小写转换器类，用于转换字符串的大小写格式
  * 该类实现了Transformer接口，专门用于处理字符串类型的输入和输出
  */
-public abstract class AbstractTokenTextCaseTransformer implements Transformer<String, String> {
+public abstract class AbstractTokenCaseTransformer implements Transformer<String, String> {
 
     private StringSplitter splitter;
 
@@ -36,7 +37,7 @@ public abstract class AbstractTokenTextCaseTransformer implements Transformer<St
      * @param tokenFirstLetterCase 令牌首字母的大小写格式
      * @param firstLetterCase 整个字符串首字母的大小写格式
      */
-    protected AbstractTokenTextCaseTransformer(String joinSeparator, LetterCase tokenCase, LetterCase tokenFirstLetterCase, LetterCase firstLetterCase) {
+    protected AbstractTokenCaseTransformer(String joinSeparator, LetterCase tokenCase, LetterCase tokenFirstLetterCase, LetterCase firstLetterCase) {
         this.joinSeparator = joinSeparator;
         this.tokenCase = Objs.useValueIfNull(tokenCase, LetterCase.NOOP);
         this.tokenFirstLetterCase = Objs.useValueIfNull(tokenFirstLetterCase, LetterCase.NOOP);

@@ -12,7 +12,7 @@ import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.text.split.AbstractStringSplitter;
 import com.jn.langx.text.split.RegexpStringSplitter;
 import com.jn.langx.text.split.SimpleStringSplitter;
-import com.jn.langx.text.transform.*;
+import com.jn.langx.text.transform.caseconversion.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
@@ -3865,7 +3865,7 @@ public class Strings {
      */
     @Deprecated
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
-        TextToCamelCaseTransformer transformer = new TextToCamelCaseTransformer();
+        CamelCaseTransformer transformer = new CamelCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(separator));
         return transformer.transform(string);
     }
@@ -3879,7 +3879,7 @@ public class Strings {
      * @return 转换后的帕斯卡命名法字符串
      */
     public static String toPascalCase(String string, String... delimiters){
-        TextToPascalCaseTransformer transformer = new TextToPascalCaseTransformer();
+        PascalCaseTransformer transformer = new PascalCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
@@ -3894,7 +3894,7 @@ public class Strings {
      * @return 转换后的驼峰命名法字符串
      */
     public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters){
-        AbstractTokenTextCaseTransformer transformer = firstLetterUpperCase ? new TextToPascalCaseTransformer(): new TextToCamelCaseTransformer();
+        AbstractTokenCaseTransformer transformer = firstLetterUpperCase ? new PascalCaseTransformer(): new CamelCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
@@ -3908,7 +3908,7 @@ public class Strings {
      * @return 转换后的蛇形命名法字符串  （使用_连接，每个token小写）
      */
     public static String toSnakeCase(String string, String... delimiters){
-        TextToSnakeCaseTransformer transformer = new TextToSnakeCaseTransformer();
+        SnakeCaseTransformer transformer = new SnakeCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
@@ -3922,7 +3922,7 @@ public class Strings {
      * @return 转换后的短横线命名法字符串 （使用-连接，每个token保持原样）
      */
     public static String toHyphenCase(String string, String... delimiters){
-        TextToHyphenCaseTransformer transformer = new TextToHyphenCaseTransformer();
+        HyphenCaseTransformer transformer = new HyphenCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
@@ -3936,14 +3936,14 @@ public class Strings {
      * @return 转换后的 kebab 命名法字符串 （使用-连接，每个token小写）
      */
     public static String toKebabCase(String string, String... delimiters){
-        TextToKebabCaseTransformer transformer = new TextToKebabCaseTransformer();
+        KebabCaseTransformer transformer = new KebabCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
 
     public static String toTrainCase(String string, String... delimiters){
-        TextToTrainCaseTransformer transformer = new TextToTrainCaseTransformer();
+        TrainCaseTransformer transformer = new TrainCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }

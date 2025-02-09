@@ -1,5 +1,7 @@
-package com.jn.langx.text.transform;
+package com.jn.langx.text.transform.caseconversion;
 
+
+import com.jn.langx.text.transform.LetterCase;
 
 /**
  * 将文本转换为Train Case格式的类
@@ -7,13 +9,13 @@ package com.jn.langx.text.transform;
  * 例如：convertThisTextToTrainCase 会被转换为 Convert-This-Text-To-Train-Case
  * 继承自TextToSnakeCaseTransformer类，利用其文本转换能力，但改为输出Train Case格式
  */
-public class TextToTrainCaseTransformer extends AbstractTokenTextCaseTransformer {
+public class TrainCaseTransformer extends AbstractTokenCaseTransformer {
     /**
      * 构造函数
      * 初始化TextToSnakeCaseTransformer的实例，设置其参数为true，以确保转换时保留空格
      * 重写构造函数以适应Train Case转换的特定需求
      */
-    public TextToTrainCaseTransformer() {
-        super("-",LetterCase.LOWER, LetterCase.UPPER, LetterCase.NOOP);
+    public TrainCaseTransformer() {
+        super("-", LetterCase.LOWER, LetterCase.UPPER, LetterCase.NOOP);
     }
 }
