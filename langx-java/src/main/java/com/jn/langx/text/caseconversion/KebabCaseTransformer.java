@@ -1,4 +1,4 @@
-package com.jn.langx.text.transform.caseconversion;
+package com.jn.langx.text.caseconversion;
 
 /**
  * 将文本转换为KebabCase（短横线连接）的转换器类

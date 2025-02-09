@@ -2,7 +2,7 @@ package com.jn.langx.test.text;
 
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
-import com.jn.langx.text.transform.translate.StringEscapes;
+import com.jn.langx.text.translate.StringEscapes;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;

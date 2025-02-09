@@ -1,4 +1,4 @@
-package com.jn.langx.text.transform.translate;
+package com.jn.langx.text.translate;
 
 import com.jn.langx.Transformer;
 import com.jn.langx.codec.hex.Hex;

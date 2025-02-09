@@ -1,4 +1,4 @@
-package com.jn.langx.text.transform.caseconversion;
+package com.jn.langx.text.caseconversion;
 
 public class PascalCaseTransformer extends AbstractTokenCaseTransformer {
     public PascalCaseTransformer() {
