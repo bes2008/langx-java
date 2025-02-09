@@ -1,8 +1,6 @@
 package com.jn.langx.text.transform.caseconversion;
 
 
-import com.jn.langx.text.transform.LetterCase;
-
 /**
  * 将文本转换为连字符案例的转换器类
  * 该类继承自AbstractTextCaseTransformer，用于将输入的文本转换为连字符分隔的格式

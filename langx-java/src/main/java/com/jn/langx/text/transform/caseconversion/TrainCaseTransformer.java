@@ -1,8 +1,6 @@
 package com.jn.langx.text.transform.caseconversion;
 
 
-import com.jn.langx.text.transform.LetterCase;
-
 /**
  * 将文本转换为Train Case格式的类
  * Train Case是一种字符串格式，其中每个单词的首字母大写，且单词之间使用短划线连接

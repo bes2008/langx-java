@@ -1,8 +1,6 @@
 package com.jn.langx.text.transform.caseconversion;
 
 
-import com.jn.langx.text.transform.LetterCase;
-
 /**
  * 将文本转换为驼峰命名法的转换器类
  * 继承自AbstractTextCaseTransformer，并根据驼峰命名法的规则调整文本.
