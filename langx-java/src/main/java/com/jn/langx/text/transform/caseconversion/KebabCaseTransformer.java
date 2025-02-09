@@ -13,7 +13,7 @@ public class KebabCaseTransformer extends AbstractTokenCaseTransformer {
      * 这里设置为：true - 转换为小写
      */
     public KebabCaseTransformer() {
-        super("-", LetterCase.LOWER, LetterCase.LOWER, LetterCase.NOOP);
+        super("-", LetterCase.LOWER, LetterCase.NOOP, LetterCase.NOOP);
     }
 }
 

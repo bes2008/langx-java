@@ -9,7 +9,7 @@ import com.jn.langx.util.function.Function;
 import java.util.List;
 
 /**
- * 抽象的令牌文本大小写转换器类，用于转换字符串的大小写格式
+ * 提供基于token的处理方式
  * 该类实现了Transformer接口，专门用于处理字符串类型的输入和输出
  */
 public abstract class AbstractTokenCaseTransformer implements Transformer<String, String> {
@@ -25,15 +25,15 @@ public abstract class AbstractTokenCaseTransformer implements Transformer<String
     // 整个字符串首字母的大小写格式
     private LetterCase firstLetterCase;
 
-    // 用于连接处理后的令牌（单词）的分隔符
+    // 连接符
     private String joinSeparator;
 
     /**
      * 构造方法，初始化配置
      *
-     * @param joinSeparator 用于连接处理后的令牌的分隔符
-     * @param tokenCase 令牌的大小写格式
-     * @param tokenFirstLetterCase 令牌首字母的大小写格式
+     * @param joinSeparator 用于连接处理时连接符
+     * @param tokenCase token的大小写格式
+     * @param tokenFirstLetterCase token首字母的大小写格式
      * @param firstLetterCase 整个字符串首字母的大小写格式
      */
     protected AbstractTokenCaseTransformer(String joinSeparator, LetterCase tokenCase, LetterCase tokenFirstLetterCase, LetterCase firstLetterCase) {
