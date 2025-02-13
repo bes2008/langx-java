@@ -116,7 +116,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                     // IP v4，但没有端口
                     ret.add(new NetworkAddress(ip, port, NetworkAddress.AddrMode.V4));
                 }
-                else if (!hasBrace && Regexps.match("\\w+(-\\w+)?(\\.\\w+(-\\w+)?)*(:\\d{1,5})?", ip)) {
+                else if (!hasBrace && Regexps.match("^(\\w+)(-\\w+)*(\\.\\w+(-\\w+)*)*(:\\d{1,5})?", ip) ) {
                     // host:port, ipv4:port
                     Map<String, String> string2Map = Regexps.findNamedGroup(IPv4_PORT_SEGMENT_PATTERN, segment);
                     if (string2Map != null) {

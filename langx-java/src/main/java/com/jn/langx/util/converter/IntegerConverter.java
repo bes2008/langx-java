@@ -18,6 +18,9 @@ public class IntegerConverter implements Converter<Object, Integer> {
             if (Primitives.isPrimitiveOrPrimitiveWrapperType(sourceClass)) {
                 return true;
             }
+            if(String.class==sourceClass){
+                return true;
+            }
             if (sourceClass.isEnum() || Reflects.isSubClassOrEquals(CommonEnum.class, sourceClass)) {
                 return true;
             }

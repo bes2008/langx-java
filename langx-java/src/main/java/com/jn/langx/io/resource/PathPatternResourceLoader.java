@@ -4,7 +4,12 @@ package com.jn.langx.io.resource;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Lists;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.comparator.OrderedComparator;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.spi.CommonServiceProvider;
 import org.slf4j.Logger;
 
 import java.net.URLClassLoader;
@@ -129,31 +134,49 @@ import java.util.*;
  * @since 4.8.1
  * @see ClassLoader#getResources(String)
  */
-class PathPatternResourceLoader implements PatternResourceLoader {
+public class PathPatternResourceLoader implements PatternResourceLoader {
 
     private static final Logger logger = Loggers.getLogger(PathPatternResourceLoader.class);
 
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE;
+    }
 
+    private static List<PatternResourceLoader> loaderServiceRegistry;
+    static {
+        final List<PatternResourceLoader> tempList=Lists.newArrayList();
+        Pipeline.of(CommonServiceProvider.loadService(PatternResourceLoader.class))
+                .forEach(new Consumer<PatternResourceLoader>() {
+                    @Override
+                    public void accept(PatternResourceLoader loader) {
+                        tempList.add(loader);
+                    }
+                });
+        loaderServiceRegistry = Lists.immutableList(Pipeline.of(tempList).sorted(new OrderedComparator<PatternResourceLoader>()).asList());
+    }
     private PathMatcher pathMatcher;
-    private ClassLoader classLoader = PathPatternResourceLoader.class.getClassLoader();
+
+    @Nullable
+    private PatternResourceLoader delegate;
+
+    private ClassLoader classLoader;
+    public PathPatternResourceLoader() {
+        this(null, PathPatternResourceLoader.class.getClassLoader());
+    }
+
+    public PathPatternResourceLoader(ClassLoader classLoader) {
+        this(null, classLoader);
+    }
 
     /**
      * Create a new PathMatchingResourcePatternResolver with a DefaultResourceLoader.
      * <p>ClassLoader access will happen via the thread context class loader.
      */
-    public PathPatternResourceLoader() {
-    }
-
-    /**
-     * Create a new PathMatchingResourcePatternResolver with a DefaultResourceLoader.
-     * @param classLoader the ClassLoader to load classpath resources with,
-     * or {@code null} for using the thread context class loader
-     * at the time of actual resource access
-     */
-    public PathPatternResourceLoader(@Nullable ClassLoader classLoader) {
+    public PathPatternResourceLoader(PatternResourceLoader delegate, ClassLoader classLoader) {
+        this.delegate = delegate;
         this.classLoader = classLoader;
     }
-
 
     @Nullable
     public ClassLoader getClassLoader() {
@@ -177,12 +200,40 @@ class PathPatternResourceLoader implements PatternResourceLoader {
     }
 
     @Override
-    public <V extends Resource> V loadResource(String location) {
-        return Resources.loadResource(location, this.classLoader);
+    public final <V extends Resource> V loadResource(String location) {
+        PatternResourceLoader loader = getDelegate(location);
+        if(loader==null){
+            throw new IllegalArgumentException("unsupported location pattern: " + location);
+        }
+        return loader.loadResource(location);
     }
 
-    public List<Resource> getResources(String locationPattern) {
-        return Lists.newArrayList();
+    public final List<Resource> getResources(String locationPattern) {
+        PatternResourceLoader loader = getDelegate(locationPattern);
+        if(loader==null){
+            throw new IllegalArgumentException("unsupported location pattern: " + locationPattern);
+        }
+        return loader.getResources(locationPattern);
     }
 
+    private PatternResourceLoader getDelegate(final String locationPattern){
+        if(this.delegate != null){
+            return this.delegate;
+        }
+        return firstSupportedLoader(locationPattern);
+    }
+
+    @Override
+    public boolean isSupportedPattern(String locationPattern) {
+        return firstSupportedLoader(locationPattern)!=null;
+    }
+
+    private PatternResourceLoader firstSupportedLoader(final String locationPattern){
+        return Pipeline.of(loaderServiceRegistry).findFirst(new Predicate<PatternResourceLoader>() {
+            @Override
+            public boolean test(PatternResourceLoader loader) {
+                return loader.isSupportedPattern(locationPattern);
+            }
+        });
+    }
 }

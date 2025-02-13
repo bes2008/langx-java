@@ -1,6 +1,6 @@
 package com.jn.langx.lifecycle;
 
-import com.jn.langx.Named;
+import com.jn.langx.Nameable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public abstract class AbstractLifecycle extends AbstractInitializable implements Lifecycle, Named, Initializable {
+public abstract class AbstractLifecycle extends AbstractInitializable implements Lifecycle, Nameable, Initializable {
     private Logger logger = Loggers.getLogger(getClass());
     private volatile boolean running;
     private String name;

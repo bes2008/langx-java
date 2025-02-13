@@ -5,6 +5,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Listable;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
 
 import java.util.Collection;
@@ -130,4 +131,16 @@ public class MultiplePropertySet extends AbstractPropertySet implements Listable
         return isEmpty();
     }
 
+
+    /**
+     * @since 5.4.6
+     */
+    public PropertySet getPropertySet(final String name){
+        return Pipeline.of(this.propertySets).findFirst(new Predicate<PropertySet>() {
+            @Override
+            public boolean test(PropertySet ps) {
+                return Strings.equals(ps.getName(), name);
+            }
+        });
+    }
 }

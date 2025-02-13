@@ -6,8 +6,6 @@ import com.jn.langx.util.Preconditions;
 /**
  * 凯撒密码实现<br>
  * 算法来自：https://github.com/zhaorenjie110/SymmetricEncryptionAndDecryption
- *
- * @author looly
  */
 public class Caesar {
 

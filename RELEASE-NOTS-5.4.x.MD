@@ -1,3 +1,23 @@
+## 5.4.6
+* 添加 MatchExp
+* 对 instant 转换时，要自动设置时区
+* MapBasedStringFormatter 支持 -
+* retry 支持 fallback
+* PatternResourceLoader完全委托给其它框架来进行实现
+* 完善EnvironmentVariablesPropertySource
+* Collects, Pipeline 增强 addIf、skip、lastIndexOf
+* Strings 添加 containsAny、
+* 优化converter service、各种 converter
+* 增强 fixedSizeList
+* 增强多PropertySet
+* 增强Primitives
+* 添加 MappingConverter
+* 添加BoundedQueue
+* 增强 Files,支持文件清空
+
+## 5.4.5
+* ClusterAddressParser 支持多label格式的域名
+
 ## 5.4.4
 * OsArch 支持riscv, LoongArch,sw 等架构
 

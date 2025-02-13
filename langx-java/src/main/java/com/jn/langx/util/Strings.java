@@ -8,7 +8,11 @@ import com.jn.langx.io.stream.UnicodeInputStream;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.caseconversion.*;
 import com.jn.langx.text.placeholder.PlaceholderParser;
+import com.jn.langx.text.split.AbstractStringSplitter;
+import com.jn.langx.text.split.RegexpStringSplitter;
+import com.jn.langx.text.split.SimpleStringSplitter;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
@@ -230,11 +234,15 @@ public class Strings {
         return join(separator, prefix, suffix, objects, null, filterNull ? Functions.<Integer, String>nonNullPredicate2() : Functions.<Integer, String>truePredicate2());
     }
 
-    public static String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator objects, Function<Object, String> mapper, Predicate2<Integer, String> predicate) {
+    public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterable<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
+        return join(separator,prefix,suffix, objects.iterator(), mapper, predicate);
+    }
+
+    public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
         if (Emptys.isNull(objects)) {
             return "";
         }
-        mapper = mapper == null ? Functions.toStringFunction() : mapper;
+        mapper = mapper == null ? Functions.<E>toStringFunction() : mapper;
         List<String> strings = Pipeline.of(objects)
                 .map(mapper)
                 .asList();
@@ -459,37 +467,12 @@ public class Strings {
         if (Emptys.isEmpty(string)) {
             return new String[0];
         }
-        Pipeline<String> pipeline = null;
-        if (separatorIsRegexp) {
-            pipeline = Pipeline.of(string.split(separator));
-        } else {
-            // 使用 JDK 的 StringTokenizer分割后会有Bug
-            // 例如，第三段被分割后，少了个 0
-            // string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
-            // Strings.split(string, "0@*v*@0");
-            StrTokenizer tokenizer = new StrTokenizer(string, separator);
-            List<String> list = tokenizer.tokenize();
-            pipeline = Pipeline.of(list);
-        }
-        return pipeline.map(new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                if (doTrim) {
-                    return Strings.trim(input);
-                } else {
-                    return input;
-                }
-            }
-        }).filter(new Predicate<String>() {
-            @Override
-            public boolean test(String value) {
-                if (ignoreEmptyTokens) {
-                    return Strings.isNotBlank(value);
-                } else {
-                    return true;
-                }
-            }
-        }).toArray(String[].class);
+
+        AbstractStringSplitter splitter = separatorIsRegexp ? new RegexpStringSplitter(separator) : new SimpleStringSplitter(false, separator);
+        splitter.setTrimToken(doTrim);
+        splitter.setIgnoreEmptyToken(ignoreEmptyTokens);
+        List<String> tokens = splitter.split(string);
+        return Collects.toArray(tokens, String[].class);
     }
 
     public static String[] slice(String str, int substringLength){
@@ -917,6 +900,32 @@ public class Strings {
     }
 
     /**
+     *
+     * @param str
+     * @param ignoreCase
+     * @param substrs
+     * @return
+     *
+     * @since 5.4.6
+     */
+    public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs){
+        if(Objs.isEmpty(substrs)){
+            return false;
+        }
+        return Pipeline.of(substrs)
+                .anyMatch(new Predicate<String>() {
+                    @Override
+                    public boolean test(String substr) {
+                        return Strings.contains(str, substr, ignoreCase);
+                    }
+                });
+    }
+
+    public static boolean containsAny(final CharSequence str, final String[] substrs){
+        return containsAny(str, false, substrs);
+    }
+
+    /**
      * <p>Checks that the CharSequence does not contain certain characters.</p>
      *
      * <p>A {@code null} CharSequence will return {@code true}.
@@ -1071,12 +1080,12 @@ public class Strings {
         return containsOnly(cs, validChars.toCharArray());
     }
 
-    public static boolean contains(final CharSequence cs, final CharSequence searchChars) {
-        return contains(cs, searchChars, false);
+    public static boolean contains(final CharSequence cs, final CharSequence substring) {
+        return contains(cs, substring, false);
     }
 
-    public static boolean contains(final CharSequence cs, final CharSequence searchChars, boolean ignoreCase) {
-        return indexOf(cs, searchChars, ignoreCase) != -1;
+    public static boolean contains(final CharSequence cs, final CharSequence substring, boolean ignoreCase) {
+        return indexOf(cs, substring, ignoreCase) != -1;
     }
 
     /**
@@ -3837,34 +3846,106 @@ public class Strings {
         return Pipeline.of(strings).toArray(String[].class);
     }
 
+    /**
+     * 将下划线转为驼峰方式
+     * @param string
+     * @param firstLetterToLower
+     * @return
+     */
     public static String underlineToCamel(String string, boolean firstLetterToLower) {
         return separatorToCamel(string, "_", firstLetterToLower);
     }
 
     /**
-     * 将字符串分割后，转为驼峰
+     * 将字符串按照指定的分隔符separator分割后，转为驼峰方式拼接
      *
      * @param string
      * @param separator
      * @param firstLetterToLower
      */
+    @Deprecated
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
-        final StringBuilder builder = new StringBuilder();
-        Pipeline.<String>of(Strings.split(string, separator)).map(new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                return input.toLowerCase();
-            }
-        }).forEach(new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                builder.append(Strings.upperCase(s, 0, 1));
-            }
-        });
-        if (firstLetterToLower) {
-            return Strings.lowerCase(builder.toString(), 0, 1);
-        }
-        return builder.toString();
+        CamelCaseTransformer transformer = new CamelCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(separator));
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为帕斯卡命名法（Pascal Case）。
+     * 帕斯卡命名法是指每个单词的首字母都大写，不使用空格或下划线等分隔符。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的帕斯卡命名法字符串
+     */
+    public static String toPascalCase(String string, String... delimiters){
+        PascalCaseTransformer transformer = new PascalCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为驼峰命名法（Camel Case）。
+     * 驼峰命名法是指除第一个单词外，其他单词的首字母大写，不使用空格或下划线等分隔符。
+     *
+     * @param string 待转换的字符串
+     * @param firstLetterUpperCase 指定第一个单词的首字母是否转为大写
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的驼峰命名法字符串
+     */
+    public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters){
+        AbstractTokenCaseTransformer transformer = firstLetterUpperCase ? new PascalCaseTransformer(): new CamelCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为蛇形命名法（Snake Case）。
+     * 蛇形命名法是指所有单词小写，单词间以下划线连接。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的蛇形命名法字符串  （使用_连接，每个token小写）
+     */
+    public static String toSnakeCase(String string, String... delimiters){
+        SnakeCaseTransformer transformer = new SnakeCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为短横线命名法（Hyphen Case）。
+     * 短横线命名法是指所有单词小写，单词间以短横线连接。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的短横线命名法字符串 （使用-连接，每个token保持原样）
+     */
+    public static String toHyphenCase(String string, String... delimiters){
+        HyphenCaseTransformer transformer = new HyphenCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
+        return transformer.transform(string);
+    }
+
+    /**
+     * 将字符串转换为 kebab 命名法。
+     * kebab 命名法是指所有单词小写，单词间以短横线连接，与短横线命名法相似，但强调第一个和最后一个字符不能是短横线。
+     *
+     * @param string 待转换的字符串
+     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @return 转换后的 kebab 命名法字符串 （使用-连接，每个token小写）
+     */
+    public static String toKebabCase(String string, String... delimiters){
+        KebabCaseTransformer transformer = new KebabCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
+        return transformer.transform(string);
+    }
+
+
+    public static String toTrainCase(String string, String... delimiters){
+        TrainCaseTransformer transformer = new TrainCaseTransformer();
+        transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
+        return transformer.transform(string);
     }
 
     public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {

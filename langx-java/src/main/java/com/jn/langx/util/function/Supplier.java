@@ -7,5 +7,12 @@ package com.jn.langx.util.function;
  * @param <O> the result
  */
 public interface Supplier<I, O> {
+    /**
+     * Gets the result.
+     *
+     * @param input the input argument
+     * @return the result
+     */
     O get(I input);
 }
+

@@ -26,6 +26,17 @@ public class Lists {
         return Collects.newArrayListWithCapacity(initialArraySize);
     }
 
+    /**
+     * @since 5.4.6
+     */
+    public static <E> ArrayList<E> newArrayListWithFill(int initialArraySize, E initFillElement) {
+        ArrayList<E> list = Collects.newArrayListWithCapacity(initialArraySize);
+        for (int i =0; i< initialArraySize;i++){
+            list.add(initFillElement);
+        }
+        return list;
+    }
+
     public static <E> ArrayList<E> newArrayListWithExpectedSize(int estimatedSize) {
         return Collects.newArrayListWithExpectedSize(estimatedSize);
     }
@@ -36,6 +47,17 @@ public class Lists {
 
     public static <E> LinkedList<E> newLinkedList(Iterable<E> elements) {
        return Collects.newLinkedList(elements);
+    }
+
+    /**
+     * @since 5.4.6
+     */
+    public static <E> LinkedList<E> newLinkedListWithFill(int initialArraySize, E initFillElement) {
+        LinkedList<E> list = Collects.newLinkedList();
+        for (int i =0; i< initialArraySize;i++){
+            list.add(initFillElement);
+        }
+        return list;
     }
 
     public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {

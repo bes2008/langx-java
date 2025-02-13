@@ -341,7 +341,7 @@ public class StringEscapes {
      * object allows the XSI unescaping functionality to be used
      * as the foundation for a custom translator.
      */
-    public static final CharSequenceTranslator UNESCAPE_XSI = new StringEscapes.XsiUnescaper();
+    public static final CharSequenceTranslator UNESCAPE_XSI = new XsiUnescaper();
 
     /**
      * Translator object for unescaping backslash escaped entries.
@@ -400,7 +400,7 @@ public class StringEscapes {
     }
 
     /**
-     * <p>Convenience wrapper for {@link java.lang.StringBuilder} providing escape methods.</p>
+     * <p>Convenience wrapper for {@link StringBuilder} providing escape methods.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -707,7 +707,7 @@ public class StringEscapes {
      *
      * @param input the {@code String} to escape, may be null
      * @return a new escaped {@code String}, {@code null} if null string input
-     * @see #unescapeXml(java.lang.String)
+     * @see #unescapeXml(String)
      */
     static String escapeXml10(final String input) {
         return ESCAPE_XML10.transform(input);
@@ -736,7 +736,7 @@ public class StringEscapes {
      *
      * @param input the {@code String} to escape, may be null
      * @return a new escaped {@code String}, {@code null} if null string input
-     * @see #unescapeXml(java.lang.String)
+     * @see #unescapeXml(String)
      */
     static String escapeXml11(final String input) {
         return ESCAPE_XML11.transform(input);
@@ -775,7 +775,7 @@ public class StringEscapes {
      * <p>Escapes the characters in a {@code String} using XSI rules.</p>
      *
      * <p><b>Beware!</b> In most cases you don't want to escape shell commands but use multi-argument
-     * methods provided by {@link java.lang.ProcessBuilder} or {@link java.lang.Runtime#exec(String[])}
+     * methods provided by {@link ProcessBuilder} or {@link Runtime#exec(String[])}
      * instead.</p>
      *
      * <p>Example:</p>

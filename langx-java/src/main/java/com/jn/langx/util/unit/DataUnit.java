@@ -1,4 +1,4 @@
-package com.jn.langx.util;
+package com.jn.langx.util.unit;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -15,8 +15,8 @@ public enum DataUnit {
     KB(1024 * B.bytes, "kb", "k"),
     MB(1024 * KB.bytes, "mb", "m"),
     GB(1024 * MB.bytes, "gb", "g"),
-    TB(1024 * MB.bytes, "tb", "t"),
-    PB(1024 * MB.bytes, "pb", "p");
+    TB(1024 * GB.bytes, "tb", "t"),
+    PB(1024 * TB.bytes, "pb", "p");
 
     private List<String> symbols;
     private long bytes;

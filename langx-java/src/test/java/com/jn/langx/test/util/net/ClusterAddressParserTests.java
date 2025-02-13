@@ -119,4 +119,14 @@ public class ClusterAddressParserTests {
         System.out.println(addresses);
     }
 
+    @Test
+    public void zkClusterAddressTests(){
+        String str="comp-zookeeper-0-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181,comp-zookeeper-1-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181,comp-zookeeper-2-0.comp-zookeeper-headless.besinsight.svc.cluster.local:2181";
+        ClusterAddressParser parser = new ClusterAddressParser(2181);
+        List<NetworkAddress> addresses = parser.parse(str);
+        System.out.println(addresses);
+        String serverLists = parser.normalize(str);
+        System.out.println(serverLists);
+    }
+
 }

@@ -3,13 +3,10 @@ package com.jn.langx.util.retry;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.function.*;
-import com.jn.langx.util.logging.Loggers;
-import org.slf4j.Logger;
 
 import java.util.concurrent.Callable;
 
 public class Retryer<R> {
-    private static final Logger LOGGER = Loggers.getLogger(Retryer.class);
     @NonNull
     private RetryConfig config;
 
@@ -46,18 +43,25 @@ public class Retryer<R> {
     }
 
     public static <R> R execute(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig retryConfig, Consumer<RetryInfo<R>> attemptsListener, Callable<R> task) throws Exception {
+        return Retryer.execute(errorRetryPredicate, resultRetryPredicate, retryConfig, attemptsListener, task, null);
+    }
+
+    public static <R> R execute(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig retryConfig, Consumer<RetryInfo<R>> attemptsListener, Callable<R> task, Callable<R> fallback) throws Exception {
         Retryer<R> retryer = new Retryer<R>(errorRetryPredicate, resultRetryPredicate, retryConfig, attemptsListener);
-        return retryer.executeWithRetry(null, task);
+        return retryer.executeWithRetry(null, task, fallback);
     }
 
     public R execute(Callable<R> task) {
-        return executeWithRetry(null, task);
+        return this.execute(task, null);
+    }
+    public R execute(Callable<R> task,Callable<R> fallback) {
+        return executeWithRetry(null, task, fallback);
     }
 
     /**
      * 递归调用 retry
      */
-    private R executeWithRetry(RetryInfo<R> retryInfo, final Callable<R> task) {
+    private R executeWithRetry(RetryInfo<R> retryInfo, final Callable<R> task, Callable<R> fallback) {
         if (retryInfo == null || retryInfo.getAttempts() < 1) {
             retryInfo = new RetryInfo<R>(1, this.config.getMaxAttempts(), System.currentTimeMillis(), this.config.getTimeUnit().toMillis(this.config.getTimeout()));
         }
@@ -74,13 +78,26 @@ public class Retryer<R> {
         }
 
         if (!judgeRetryAndWait(retryInfo)) {
-            if(retryInfo.hasError()){
-                throw new RuntimeException(retryInfo.getError());
+            // 因为有错或者因为没有backoff时，都要执行 fallback
+            if(retryInfo.hasError() || retryInfo.getBackoff()<0){
+                if(fallback!=null){
+                    try {
+                        return fallback.call();
+                    }catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+                }
+                if(retryInfo.hasError()) {
+                    throw new RuntimeException(retryInfo.getError());
+                }else{
+                    throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", retryInfo.getBackoff()));
+                }
+            }else {
+                return retryInfo.getResult();
             }
-            return retryInfo.getResult();
         }
         else{
-           return executeWithRetry(retryInfo.nextAttempts(),task);
+           return executeWithRetry(retryInfo.nextAttempts(),task, fallback);
         }
     }
 
@@ -94,10 +111,10 @@ public class Retryer<R> {
 
         if (needRetry) {
             long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, retryInfo.getAttempts());
-            if (backoffMillis < 0) {
-                throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", backoffMillis));
-            }
             retryInfo.setBackoff(backoffMillis);
+            if (backoffMillis < 0) {
+                return false;
+            }
         }
 
         attemptsListener.accept(retryInfo);

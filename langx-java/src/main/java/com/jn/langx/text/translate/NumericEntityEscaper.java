@@ -1,9 +1,9 @@
 package com.jn.langx.text.translate;
 
+import com.jn.langx.util.ranges.IntRange;
+
 import java.io.IOException;
 import java.io.Writer;
-
-import com.jn.langx.util.ranges.IntRange;
 
 /**
  * Translates codepoints to their XML numeric entity escaped value.

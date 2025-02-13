@@ -88,6 +88,11 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     }
 
     @Override
+    public void addAll(K key, V[] values) {
+        addAll(key, Collects.asList(values));
+    }
+
+    @Override
     public void addAll(MultiValueMap<K, V> map) {
         if (map == null || map.isEmpty()) {
             return;

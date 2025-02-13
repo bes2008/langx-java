@@ -1,20 +1,19 @@
-/*
- * Copyright 2019 the original author or authors.
- *
- * Licensed under the LGPL, Version 3.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at  http://www.gnu.org/licenses/lgpl-3.0.html
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jn.langx.configuration;
 
+/**
+ * StringConfigurationParser接口定义了一个通用的字符串配置解析器
+ * 它继承自ConfigurationParser接口，专门用于解析字符串形式的配置数据
+ * 这个接口的实现类能够将字符串数据解析成具体的配置对象
+ *
+ * @param <T> 表示配置对象的类型，它必须是Configuration类的子类
+ */
 public interface StringConfigurationParser<T extends Configuration> extends ConfigurationParser<String, T> {
+    /**
+     * 解析字符串形式的配置数据
+     *
+     * @param string 待解析的字符串数据
+     * @return 解析后的配置对象，具体类型由调用者指定
+     */
     @Override
-    T parse(String string);
+    T parse(String string) ;
 }

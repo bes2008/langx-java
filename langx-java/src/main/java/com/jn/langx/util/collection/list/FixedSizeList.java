@@ -17,11 +17,10 @@
 package com.jn.langx.util.collection.list;
 
 import com.jn.langx.util.collection.BoundedCollection;
+import com.jn.langx.util.collection.forwarding.ForwardingList;
 import com.jn.langx.util.collection.iter.AbstractListIteratorDecorator;
-import com.jn.langx.util.collection.iter.WrappedIterator;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -44,9 +43,12 @@ import java.util.ListIterator;
  * @param <E> the type of elements in this collection
  * @since 4.7.6
  */
-public class FixedSizeList<E>
-        extends AbstractSerializableListDecorator<E>
-        implements BoundedCollection<E> {
+public class FixedSizeList<E> extends ForwardingList<E> implements BoundedCollection<E> {
+
+    /**
+     * @since 5.4.6
+     */
+    private boolean addable = false;
 
     /**
      * Serialization version
@@ -62,7 +64,14 @@ public class FixedSizeList<E>
      * @throws NullPointerException if list is null
      */
     public static <E> FixedSizeList<E> fixedSizeList(final List<E> list) {
-        return new FixedSizeList<E>(list);
+        return fixedSizeList(list, false);
+    }
+
+    /**
+     * @since 5.4.6
+     */
+    public static <E> FixedSizeList<E> fixedSizeList(final List<E> list, boolean addable) {
+        return new FixedSizeList<E>(list, addable);
     }
 
     //-----------------------------------------------------------------------
@@ -73,29 +82,57 @@ public class FixedSizeList<E>
      * @param list the list to decorate, must not be null
      * @throws NullPointerException if list is null
      */
-    protected FixedSizeList(final List<E> list) {
-        super(list);
+    protected FixedSizeList(final List<E> list, boolean addable) {
+        setDelegate(list);
+        this.addable = addable;
     }
 
     //-----------------------------------------------------------------------
     @Override
     public boolean add(final E object) {
-        throw unsupportedOperationException();
+        if(!addable){
+            throw unsupportedOperationException();
+        }
+        if(isEmpty()){
+            return false;
+        }
+        getDelegate().remove(0);
+        getDelegate().add(object);
+        return true;
     }
 
     @Override
     public void add(final int index, final E object) {
-        throw unsupportedOperationException();
+        if(!addable){
+            throw unsupportedOperationException();
+        }
+        if(isEmpty()){
+            return;
+        }
+        getDelegate().add(index, object);
+        getDelegate().remove(size()-1);
     }
 
     @Override
     public boolean addAll(final Collection<? extends E> coll) {
-        throw unsupportedOperationException();
+        if(isEmpty()){
+            return false;
+        }
+        for(E o : coll){
+            add(o);
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(final int index, final Collection<? extends E> coll) {
-        throw unsupportedOperationException();
+        if(isEmpty()){
+            return false;
+        }
+        for(E o : coll){
+            add(index, o);
+        }
+        return true;
     }
 
     @Override
@@ -104,33 +141,8 @@ public class FixedSizeList<E>
     }
 
     @Override
-    public E get(final int index) {
-        return decorated().get(index);
-    }
-
-    @Override
-    public int indexOf(final Object object) {
-        return decorated().indexOf(object);
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return new WrappedIterator<E>(decorated().iterator(), false);
-    }
-
-    @Override
-    public int lastIndexOf(final Object object) {
-        return decorated().lastIndexOf(object);
-    }
-
-    @Override
-    public ListIterator<E> listIterator() {
-        return new FixedSizeListIterator(decorated().listIterator(0));
-    }
-
-    @Override
     public ListIterator<E> listIterator(final int index) {
-        return new FixedSizeListIterator(decorated().listIterator(index));
+        return new FixedSizeListIterator(getDelegate().listIterator(index));
     }
 
     @Override
@@ -155,14 +167,9 @@ public class FixedSizeList<E>
     }
 
     @Override
-    public E set(final int index, final E object) {
-        return decorated().set(index, object);
-    }
-
-    @Override
     public List<E> subList(final int fromIndex, final int toIndex) {
-        final List<E> sub = decorated().subList(fromIndex, toIndex);
-        return new FixedSizeList<E>(sub);
+        final List<E> sub = getDelegate().subList(fromIndex, toIndex);
+        return new FixedSizeList<E>(sub, this.addable);
     }
 
     /**

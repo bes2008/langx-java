@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.4.4</version>
+    <version>5.4.7</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -27,7 +27,7 @@
         <!-- dependency versions -->
         <aspectj.version>1.6.0</aspectj.version>
         <asm.version>5.0</asm.version>
-        <slf4j.version>1.7.0</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
         <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <jmh.version>1.23</jmh.version>
@@ -304,7 +304,10 @@
         <profile>
             <id>envHome</id>
             <properties>
+                <gpg.executable>D:/Program Files (x86)/GNU/GnuPG/gpg2.exe</gpg.executable>
+                <!--
                 <gpg.executable>D:/Program Files (x86)/GnuPG/bin/gpg</gpg.executable>
+                -->
                 <gpg.homedir>C:/Users/Administrator/AppData/Roaming/gnupg</gpg.homedir>
                 <!--
                 <gpg.passphrase>YOUR GPG PASSPHRASE</gpg.passphrase>
@@ -322,7 +325,7 @@
                 <gpg.passphrase>YOUR GPG PASSPHRASE</gpg.passphrase>
                 可以这样配置在pom.xml文件中，也可以在执行mvn 命令时，加上-Dgpg.passphrase=YOUR_GPG_PASSPHRASE
 
-                gpg 下载地址：https://www.gnupg.org/download/ 在windows环境下，选择 gnupg-win32cli-${pgg.version}.exe 下载即可。
+                gpg 下载地址：https://files.gpg4win.org/ 在windows环境下，选择 2.3.4版本 下载即可。
                 下载后使用 gpg2来创建 gpg 密钥对
                 -->
             </properties>

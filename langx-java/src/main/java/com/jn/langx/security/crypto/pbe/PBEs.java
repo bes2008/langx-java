@@ -150,7 +150,7 @@ public class PBEs {
                 IvParameterSpec ivObj=(IvParameterSpec)derivedKey;
                 if(ivObj.getIV().length==0){
                     // 如果派生算法没有生成iv，则使用自定义的iv
-                    ivObj=new IvParameterSpec(ivHolder.get());
+                    ivObj=Ciphers.createIvParameterSpec(ivHolder.get());
                 }else{
                     // 反之则反馈生成的iv
                     ivHolder.set(ivObj.getIV());

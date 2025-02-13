@@ -268,6 +268,11 @@ public class Pipeline<E> {
         });
     }
 
+    public Pipeline<E> addIf(E e, Predicate2<Collection<E>, E> predicate){
+        Collects.addIf(this.collection, e, predicate);
+        return this;
+    }
+
     public Pipeline<E> add(E e) {
         if (e != null) {
             this.collection.add(e);

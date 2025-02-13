@@ -86,15 +86,6 @@ public class BcGmService extends AbstractGmService {
         return NAME;
     }
 
-    public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
-        return sm2Encrypt(data, publicKey, null);
-    }
-
-    @Override
-    public byte[] sm2Encrypt(byte[] data, byte[] publicKey, SM2Mode mode) {
-        return sm2Encrypt(data, publicKey, JCAEStandardName.SM2.getName(), mode);
-    }
-
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey, String algorithm, SM2Mode mode) {
         boolean globalScopeC1c3c2ModeEnabled = GMs.sm2DefaultC1C3C2ModeEnabled();
         SM2Mode defaultMode = globalScopeC1c3c2ModeEnabled ? SM2Mode.C1C3C2 : SM2Mode.C1C2C3;
@@ -117,16 +108,6 @@ public class BcGmService extends AbstractGmService {
                 throw Throwables.wrapAsRuntimeException(e);
             }
         }
-    }
-
-    @Override
-    public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey) {
-        return sm2Decrypt(encryptedBytes, privateKey, null);
-    }
-
-    @Override
-    public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey, SM2Mode mode) {
-        return sm2Decrypt(encryptedBytes, privateKey, JCAEStandardName.SM2.getName(), mode);
     }
 
     @Override
@@ -154,20 +135,9 @@ public class BcGmService extends AbstractGmService {
         }
     }
 
-
-    @Override
-    public byte[] sm2Sign(byte[] data, byte[] privateKey) {
-        return sm2Sign(data, privateKey, null);
-    }
-
     @Override
     public byte[] sm2Sign(byte[] data, byte[] privateKey, byte[] userId) {
         return Signatures.sign(data, privateKey, "SM3WithSM2", PROVIDER_NAME, null, new SM2SignParameterSpec(userId));
-    }
-
-    @Override
-    public boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature) {
-        return sm2Verify(data, publicKey, signature, null);
     }
 
     @Override
@@ -177,54 +147,16 @@ public class BcGmService extends AbstractGmService {
     }
 
     @Override
-    public byte[] sm3(byte[] data) {
-        return sm3(data, 1);
-    }
-
-    @Override
-    public byte[] sm3(byte[] data, int iterations) {
-        return sm3(data, null, iterations);
-    }
-
-    @Override
     public byte[] sm3(byte[] data, byte[] salt, int iterations) {
         return MessageDigests.digest("SM3", data, salt, iterations);
     }
 
-    @Override
-    public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
-        return sm4Encrypt(data, null, secretKey);
-    }
-
-    @Override
-    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey) {
-        return sm4Encrypt(data, mode, secretKey, GmService.SM4_IV_DEFAULT);
-    }
-
-    @Override
-    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
-        return sm4Encrypt(data, mode, null, secretKey, iv);
-    }
 
     @Override
     public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
         return sm4EncryptOrDecrypt(true, data, mode, padding, secretKey, iv);
     }
 
-
-    @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
-        return sm4Decrypt(encryptedBytes, null, secretKey);
-    }
-
-    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey) {
-        return sm4Decrypt(encryptedBytes, mode, secretKey, GmService.SM4_IV_DEFAULT);
-    }
-
-    @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
-        return sm4Decrypt(encryptedBytes, mode, null, secretKey, iv);
-    }
 
     public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
         return sm4EncryptOrDecrypt(false, encryptedBytes, mode, padding, secretKey, iv);

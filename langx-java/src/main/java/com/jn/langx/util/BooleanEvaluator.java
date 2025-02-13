@@ -94,6 +94,12 @@ public class BooleanEvaluator {
         if (falseFactors.contains(object)) {
             return false;
         }
+        if(object instanceof String) {
+            if(Strings.equalsIgnoreCase((String)object, "true")){
+                return true;
+            }
+        }
+
         return !nullValue;
     }
 
@@ -107,6 +113,11 @@ public class BooleanEvaluator {
         if (falseFactors.contains(object)) {
             return true;
         }
+        if(object instanceof String) {
+            if(Strings.equalsIgnoreCase((String)object, "false")){
+                return true;
+            }
+        }
         if (trueFactors.contains(object)) {
             return false;
         }
@@ -114,7 +125,7 @@ public class BooleanEvaluator {
     }
 
     public static BooleanEvaluator createTrueEvaluator(Object... truthArray) {
-        return new BooleanEvaluator(false, true, truthArray, null);
+        return new BooleanEvaluator(false, true, truthArray, new Object[]{"false",false});
     }
 
     public static BooleanEvaluator createTrueEvaluator(boolean nullValue, boolean stringIgnoreCase, Object[] truthArray) {

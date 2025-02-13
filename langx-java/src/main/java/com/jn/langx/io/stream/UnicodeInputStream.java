@@ -11,7 +11,7 @@ import java.io.PushbackInputStream;
 public class UnicodeInputStream extends InputStream {
     private static final int BOM_MAX_SIZE = 4;
 
-    protected volatile PushbackInputStream pushbackInputStream;
+    protected PushbackInputStream pushbackInputStream;
     private InputStream in;
 
     private BOM bom;

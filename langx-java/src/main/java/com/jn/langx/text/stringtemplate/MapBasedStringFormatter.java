@@ -13,7 +13,7 @@ import java.util.Map;
 public class MapBasedStringFormatter extends CustomPatternStringFormatter {
     public enum PatternStyle {
         $(Regexps.compile("\\$\\{\\w+(\\.\\w+)*}")),
-        PLACE_HOLDER(Regexps.compile("\\{\\w+(\\.\\w+)*}"));
+        PLACE_HOLDER(Regexps.compile("\\{\\w+([.-]\\w+)*}"));
 
         private Regexp pattern;
 
@@ -33,7 +33,6 @@ public class MapBasedStringFormatter extends CustomPatternStringFormatter {
     public MapBasedStringFormatter(@Nullable PatternStyle patternStyle) {
         super((patternStyle == null ? PatternStyle.$ : patternStyle).getPattern(), new MapValueGetter(patternStyle));
     }
-
 
     private static class MapValueGetter implements Function2<String, Object[], String> {
         private PatternStyle style;
