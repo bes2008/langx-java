@@ -25,7 +25,7 @@
         <Automatic-Module-Name>com.jn.langx</Automatic-Module-Name>
 
         <!-- dependency versions -->
-        <aspectj.version>1.6.0</aspectj.version>
+        <aspectj.version>1.9.22.1</aspectj.version>
         <asm.version>5.0</asm.version>
         <slf4j.version>1.7.36</slf4j.version>
         <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
