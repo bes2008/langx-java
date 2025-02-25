@@ -1,8 +1,9 @@
 package com.jn.langx.validator;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.function.Predicate;
 
-public class PredicateRule implements Rule{
+public class PredicateRule implements Rule {
     private Predicate<String> predicate;
     private String errorMessage;
 
@@ -13,11 +14,9 @@ public class PredicateRule implements Rule{
 
     @Override
     public ValidationResult test(String value) {
-        boolean matches = predicate.test(value);
-        if (matches){
-            return ValidationResult.ofValid();
-        }else {
+        if (Strings.isEmpty(value)) {
             return ValidationResult.ofInvalid(errorMessage);
         }
+        return predicate.test(value.trim()) ? ValidationResult.ofValid() : ValidationResult.ofInvalid(errorMessage);
     }
 }

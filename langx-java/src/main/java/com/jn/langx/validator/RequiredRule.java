@@ -1,10 +1,17 @@
 package com.jn.langx.validator;
 
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.Strings;
 
-public class RequiredRule extends PredicateRule {
+public class RequiredRule implements Rule {
+    private String errorMessage;
+
     public RequiredRule(String errorMessage) {
-        super(Functions.<String>notEmptyPredicate(), Objs.useValueIfEmpty(errorMessage, "Required"));
+        this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public ValidationResult test(String value) {
+        return Strings.isNotEmpty(value) ? ValidationResult.ofValid() : ValidationResult.ofInvalid(Objs.useValueIfEmpty(errorMessage, "Required"));
     }
 }
