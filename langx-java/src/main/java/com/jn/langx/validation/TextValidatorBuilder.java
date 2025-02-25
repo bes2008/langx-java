@@ -13,6 +13,8 @@ import java.util.List;
 
 public class TextValidatorBuilder implements Builder<TextValidator> {
     private List<Rule> rules = Lists.newArrayList();
+    private ValidateMode validateMode = ValidateMode.VALIDATE_ALL;
+    private RequiredRule requiredRule;
     private TextValidatorBuilder(){
     }
 
@@ -23,7 +25,11 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
 
     public TextValidatorBuilder rule(Rule rule){
         if(rule != null) {
-            rules.add(rule);
+            if(rule instanceof RequiredRule){
+                this.requiredRule = (RequiredRule) rule;
+            }else {
+                rules.add(rule);
+            }
         }
         return this;
     }
@@ -40,11 +46,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
     }
     public TextValidatorBuilder required(String errorMessage){
         RequiredRule r = new RequiredRule(errorMessage);
-        if(this.rules.isEmpty()) {
-            rule(r);
-        }else{
-            this.rules.add(0, r);
-        }
+        this.requiredRule=r;
         return this;
     }
 
@@ -163,6 +165,8 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
 
     public TextValidator build(){
         TextValidator validator = new TextValidator();
+        validator.setValidateMode(validateMode);
+        validator.setRequiredRule(requiredRule);
         validator.setRules(rules);
         return validator;
     }

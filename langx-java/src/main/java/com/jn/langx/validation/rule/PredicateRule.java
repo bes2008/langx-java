@@ -15,7 +15,7 @@ public class PredicateRule implements Rule {
     @Override
     public ValidationResult test(String value) {
         if (Strings.isEmpty(value)) {
-            return ValidationResult.ofInvalid(errorMessage);
+            return ValidationResult.ofValid();
         }
         return predicate.test(value.trim()) ? ValidationResult.ofValid() : ValidationResult.ofInvalid(errorMessage);
     }
