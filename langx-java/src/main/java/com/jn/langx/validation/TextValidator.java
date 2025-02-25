@@ -1,6 +1,8 @@
 package com.jn.langx.validation;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.validation.rule.RequiredRule;
+import com.jn.langx.validation.rule.Rule;
 import com.jn.langx.validation.rule.ValidationResult;
 
 import java.util.List;

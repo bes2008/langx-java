@@ -2,7 +2,7 @@ package com.jn.langx.test.validation;
 
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
-import com.jn.langx.validation.CharData;
+import com.jn.langx.validation.rule.CharData;
 import com.jn.langx.validation.rule.ValidationResult;
 import com.jn.langx.validation.TextValidator;
 import com.jn.langx.validation.TextValidatorBuilder;
