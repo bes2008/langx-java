@@ -4,8 +4,8 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.validation.CharData;
 import com.jn.langx.validation.ValidationResult;
-import com.jn.langx.validation.Validator;
-import com.jn.langx.validation.ValidatorBuilder;
+import com.jn.langx.validation.TextValidator;
+import com.jn.langx.validation.TextValidatorBuilder;
 import org.junit.Test;
 
 public class ValidatorTests {
@@ -13,7 +13,7 @@ public class ValidatorTests {
     @Test
     public void test_length() {
         // 创建一个 ValidatorBuilder 实例
-        Validator validator = ValidatorBuilder.newBuilder()
+        TextValidator validator = TextValidatorBuilder.newBuilder()
                 .required()
                 .length(6)
                 .build();
@@ -34,7 +34,7 @@ public class ValidatorTests {
     @Test
     public void test_length_validChars() {
         // 创建一个 ValidatorBuilder 实例
-        Validator validator = ValidatorBuilder.newBuilder()
+        TextValidator validator = TextValidatorBuilder.newBuilder()
                 .required()
                 .length(6, 14)
                 .validChars(CharData.ALPHABET_DIGITS)
@@ -47,7 +47,7 @@ public class ValidatorTests {
 
     @Test
     public void test_email() {
-        ValidatorBuilder validatorBuilder = ValidatorBuilder.newBuilder();
+        TextValidatorBuilder validatorBuilder = TextValidatorBuilder.newBuilder();
 
         // 添加正则表达式规则（验证邮箱格式）
         Regexp emailRegexp = Regexps.compile("^[A-Za-z0-9+_.-]+@(.+)$");
@@ -58,7 +58,7 @@ public class ValidatorTests {
     }
 
     public void test_password_validate_1(){
-        Validator validator = ValidatorBuilder.newBuilder()
+        TextValidator validator = TextValidatorBuilder.newBuilder()
                 .length(8)
                 .limitCharsOccurCount(CharData.UPPER_CASE, 1)
                 .limitCharsOccurCount(CharData.LOWER_CASE, 4)
@@ -68,7 +68,7 @@ public class ValidatorTests {
     }
 
 
-    private void showTestResult(Validator validator, String input) {
+    private void showTestResult(TextValidator validator, String input) {
 
         // 使用 Validator 进行验证
         ValidationResult result = validator.validate(input);
