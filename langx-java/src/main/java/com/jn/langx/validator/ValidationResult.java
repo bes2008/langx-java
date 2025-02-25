@@ -9,19 +9,21 @@ import java.util.List;
 public class ValidationResult {
     boolean valid = false;
     private List<String> errorMessages;
-    public ValidationResult(){}
 
-    private ValidationResult(boolean valid, String errorMessage){
-        this.valid= valid;
+    private ValidationResult() {
+    }
+
+    private ValidationResult(boolean valid, String errorMessage) {
+        this.valid = valid;
         this.errorMessages = Lists.newArrayList(errorMessage);
     }
 
-    public static ValidationResult ofInvalid(String errorMessage){
+    public static ValidationResult ofInvalid(String errorMessage) {
         return new ValidationResult(false, errorMessage);
     }
 
-    public static ValidationResult ofValid(){
-        return new ValidationResult(true,null);
+    public static ValidationResult ofValid() {
+        return new ValidationResult(true, null);
     }
 
     public boolean isValid() {
@@ -36,13 +38,13 @@ public class ValidationResult {
         return Strings.join("; ", errorMessages);
     }
 
-    public ValidationResult merge(ValidationResult another){
-        if(another.isValid()){
+    public ValidationResult merge(ValidationResult another) {
+        if (another.isValid()) {
             return this;
-        }else{
-            if(this.isValid()){
+        } else {
+            if (this.isValid()) {
                 return another;
-            }else{
+            } else {
                 this.errorMessages.addAll(another.getErrorMessages());
             }
             return this;

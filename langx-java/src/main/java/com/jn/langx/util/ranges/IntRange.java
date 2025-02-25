@@ -1,6 +1,6 @@
 package com.jn.langx.util.ranges;
 
-public class IntRange extends CommonRange<Integer> {
+public class IntRange extends NumberRange<Integer> {
     public IntRange() {
         this(0, 0);
     }
@@ -13,7 +13,7 @@ public class IntRange extends CommonRange<Integer> {
         super(start, endInclusive);
     }
 
-    public String getRangeString(){
-        return "["+this.getStart()+","+ (this.getEndInclusive()==Integer.MAX_VALUE?")": (this.getEndInclusive()+"]"));
+    public IntRange(Integer start, Integer end, boolean startInclusive, boolean endInclusive){
+        super(start, end, startInclusive, endInclusive);
     }
 }

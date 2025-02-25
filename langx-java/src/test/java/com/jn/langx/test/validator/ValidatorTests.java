@@ -51,11 +51,22 @@ public class ValidatorTests {
 
         // 添加正则表达式规则（验证邮箱格式）
         Regexp emailRegexp = Regexps.compile("^[A-Za-z0-9+_.-]+@(.+)$");
-        validatorBuilder.regexp(emailRegexp, "邮箱格式不正确");
+        validatorBuilder.regexp("邮箱格式不正确",emailRegexp);
 
         showTestResult(validatorBuilder.build(), "test@example.com");
 
     }
+
+    public void test_password_validate_1(){
+        Validator validator = ValidatorBuilder.newBuilder()
+                .length(8)
+                .limitCharsOccurCount(CharData.UPPER_CASE, 1)
+                .limitCharsOccurCount(CharData.LOWER_CASE, 4)
+                .limitCharsOccurCount(CharData.DIGITS, 1)
+                .limitCharsOccurCount(CharData.SPECIAL_ASCII, 1)
+                .build();
+    }
+
 
     private void showTestResult(Validator validator, String input) {
 
@@ -69,4 +80,6 @@ public class ValidatorTests {
             System.out.println("验证失败: " + result.getErrorMessagesString());
         }
     }
+
+
 }
