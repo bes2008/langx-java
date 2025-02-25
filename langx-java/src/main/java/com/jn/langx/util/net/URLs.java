@@ -242,12 +242,22 @@ public class URLs {
     private static final List<String> SECURITY_PROTOCOLS = Collects.newArrayList(
             "file","jar"
     );
+
     public static <U extends URLConnection> U openURL(URL url) throws IOException{
+        return openURL(url, true);
+    }
+
+    public static <U extends URLConnection> U openURL(URL url, boolean security) throws IOException{
         String protocol = url.getProtocol();
-        if(SECURITY_PROTOCOLS.contains(protocol)) {
+        if(security) {
+            if (SECURITY_PROTOCOLS.contains(protocol)) {
+                return (U) url.openConnection();
+            }
+            throw new IOException(StringTemplates.formatWithPlaceholder("unsupported protocol: {}", url.toString()));
+        }
+        else{
             return (U) url.openConnection();
         }
-        throw new IOException(StringTemplates.formatWithPlaceholder("unsupported protocol: {}", url.toString()));
     }
 
     /**

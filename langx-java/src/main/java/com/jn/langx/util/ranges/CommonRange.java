@@ -1,8 +1,8 @@
 package com.jn.langx.util.ranges;
 
 public class CommonRange<T extends Comparable<T>> extends Range<T> {
-    public CommonRange(T start, T end) {
-        super(start, end);
+    public CommonRange(T start, T endInclusive) {
+        super(start, endInclusive);
     }
 
     @Override

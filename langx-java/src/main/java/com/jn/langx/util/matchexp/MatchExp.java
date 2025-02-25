@@ -14,6 +14,10 @@ import com.jn.langx.util.regexp.Regexps;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 用于模拟 某些编程语言中的  match 表达式，找到第一个匹配的表达式，并执行对应的 action
+ * @param <V>
+ */
 public class MatchExp<V> {
     private List<Predicate<V>> predicates = new ArrayList<Predicate<V>>();
     private List<Runnable> actions = new ArrayList<Runnable>();
