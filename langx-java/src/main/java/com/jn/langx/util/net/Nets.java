@@ -812,7 +812,7 @@ public class Nets {
     private static boolean isValidIpV4Address(String ip, int from, int toExcluded) {
         int len = toExcluded - from;
         if(len <= 15 && len >= 7){
-            String[] words =Strings.split(ip,":");
+            String[] words = Strings.split(ip,".");
             if(words.length!=4){
                 return false;
             }

@@ -176,12 +176,12 @@ public class ValidatorTests {
     @Test
     public void test_macAddressRule() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .macAddress("无效MAC地址")
+                .macAddress(null,"无效MAC地址")
                 .build();
 
         showTestResult(validator, "00:1A:C2:7B:00:47");  // 通过
         showTestResult(validator, "00-1A-C2-7B-00-47");  // 通过（带-分隔）
-        showTestResult(validator, "001AC27B0047");       // 失败（无分隔）
+        showTestResult(validator, "001AC27B0047");
     }
 
     @Test

@@ -97,8 +97,8 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new IPv6Rule(errorMessage));
     }
 
-    public TextValidatorBuilder macAddress(String errorMessage){
-        return rule(new MacAddressRule(errorMessage));
+    public TextValidatorBuilder macAddress(String separator, String errorMessage){
+        return rule(new MacAddressRule(separator, errorMessage));
     }
 
     public TextValidatorBuilder rfc1123Hostname(String errorMessage){
