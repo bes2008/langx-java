@@ -2,6 +2,7 @@ package com.jn.langx.validation.rule;
 
 import com.jn.langx.Builder;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
 
 import java.util.List;
@@ -13,21 +14,29 @@ public class SegmentsPredicateBuilder implements Builder<SegmentsPredicate> {
     public SegmentsPredicateBuilder(){
     }
 
-    public SegmentsPredicateBuilder addSegment(String name, boolean required, String regexp, Rule... rules){
+    public SegmentsPredicateBuilder addSegment(String prefix, String name, boolean required, String regexp, Rule... rules){
         SegmentMetadata segmentMetadata = new SegmentMetadata(required, regexp, rules);
         Preconditions.checkNotEmpty(name);
         segmentMetadata.setName(name);
-        return this.addSegment(segmentMetadata);
+        return this.addSegment(prefix, segmentMetadata);
     }
 
-    public SegmentsPredicateBuilder addSegment(SegmentMetadata segmentMetadata){
+    public SegmentsPredicateBuilder addSegment(String prefix, SegmentMetadata segmentMetadata){
         segments.add(segmentMetadata);
+
+        if(Strings.isNotEmpty(prefix) && !segmentMetadata.isRequired()){
+            patternBuilder.append("(");
+            patternBuilder.append(prefix);
+        }
         patternBuilder.append("(<");
         patternBuilder.append(segmentMetadata.getName());
         patternBuilder.append(">");
         patternBuilder.append(segmentMetadata.getRegexp());
         patternBuilder.append(")");
         if(!segmentMetadata.isRequired()){
+            if(Strings.isNotEmpty(prefix)){
+                patternBuilder.append(")");
+            }
             patternBuilder.append("?");
         }
         return this;
