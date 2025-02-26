@@ -1,9 +1,8 @@
 package com.jn.langx.validation;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
-import com.jn.langx.validation.ValidateMode;
-import com.jn.langx.validation.Validator;
 import com.jn.langx.validation.rule.RequiredRule;
 import com.jn.langx.validation.rule.Rule;
 import com.jn.langx.validation.rule.ValidationResult;
@@ -43,11 +42,10 @@ public class TextValidator implements Validator<String> {
     }
 
     public ValidationResult validate(@NonNull String value) {
-        ValidationResult result = requiredRule == null ? ValidationResult.ofValid() : requiredRule.test(value);
-        if (!result.isValid()) {
-            return result;
+        if(Strings.isEmpty(value)){
+            return requiredRule == null ? ValidationResult.ofValid() : requiredRule.test(value);
         }
-
+        ValidationResult result =  ValidationResult.ofValid();
         for (Rule rule : this.rules) {
             ValidationResult r2 = rule.test(value);
             result = result.merge(r2);

@@ -7,7 +7,7 @@ import com.jn.langx.util.struct.CharData;
  * CharOccurCountRule类用于检查字符串中特定字符集的出现次数是否在指定范围内
  * 它实现了Rule接口，用于对字符串进行有效性校验
  */
-public class CharOccurCountRule implements Rule {
+public class CharOccurCountRule extends AbstractRule {
     // validChars存储了有效的字符集
     private CharData validChars;
     // countRange定义了有效字符出现次数的范围
@@ -33,6 +33,7 @@ public class CharOccurCountRule implements Rule {
      * @param max 字符出现的最大次数
      */
     public CharOccurCountRule(CharData validChars, int min, int max){
+        super(null);
         this.validChars = validChars;
         this.countRange = new IntRange(min,max);
     }
@@ -57,7 +58,7 @@ public class CharOccurCountRule implements Rule {
      * @return 如果字符串符合规则，则返回true；否则返回false
      */
     @Override
-    public ValidationResult test(String value) {
+    public ValidationResult doTest(String value) {
         // 初始化计数器，用于统计有效字符的出现次数
         int count = 0;
         // 遍历字符串中的每个字符

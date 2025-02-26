@@ -6,7 +6,7 @@ import com.jn.langx.util.struct.CharData;
 /**
  * 用于检查字符串是否全是有效字符
  */
-public class CharRule implements Rule{
+public class CharRule extends AbstractRule {
     // 保存有效的字符数据
     private CharData validCharData;
 
@@ -15,6 +15,7 @@ public class CharRule implements Rule{
      * @param charData 包含有效字符的CharData对象
      */
     public CharRule(CharData charData){
+        super(null);
         this.validCharData=charData;
     }
 
@@ -34,7 +35,7 @@ public class CharRule implements Rule{
      * @return 如果字符串只包含有效字符，则返回true；否则返回false
      */
     @Override
-    public ValidationResult test(String value) {
+    public ValidationResult doTest(String value) {
         // 遍历输入字符串的每一个字符
         for (char c : value.toCharArray()){
             // 如果字符不在有效字符列表中，则返回false

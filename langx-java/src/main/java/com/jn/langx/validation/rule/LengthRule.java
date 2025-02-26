@@ -6,7 +6,7 @@ import com.jn.langx.util.ranges.IntRange;
  * 长度规则类，用于检查输入字符串是否符合指定长度范围
  * 该规则用于验证字符串的长度是否在给定的最小值和最大值范围内
  */
-public class LengthRule implements Rule{
+public class LengthRule extends AbstractRule {
     // 定义一个整数范围对象，用于存储长度的最小值和最大值
     private IntRange range;
 
@@ -27,6 +27,7 @@ public class LengthRule implements Rule{
      * @param max 最大长度
      */
     public LengthRule(int min, int max) {
+        super(null);
         // 初始化长度范围
         this.range = new IntRange(min, max);
     }
@@ -38,7 +39,7 @@ public class LengthRule implements Rule{
      * @return 如果字符串长度在指定范围内，则返回true，否则返回false
      */
     @Override
-    public ValidationResult test(String value) {
+    public ValidationResult doTest(String value) {
         // 检测字符串长度是否在范围内
         boolean isValid = range.contains(value.length());
         if(isValid){

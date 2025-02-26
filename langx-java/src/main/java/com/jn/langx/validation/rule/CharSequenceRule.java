@@ -15,20 +15,21 @@ import com.jn.langx.util.struct.CharSequenceData;
  *
  * @author jinuo.fang
  */
-public class CharSequenceRule implements Rule{
+public class CharSequenceRule extends AbstractRule {
 
     private CharSequenceData charSequences;
 
     private int maxSequenceLength;
 
     public CharSequenceRule(CharSequenceData charSequences, int maxSequenceLength){
+        super(null);
         this.charSequences = charSequences;
         Preconditions.checkArgument(maxSequenceLength>=1);
         this.maxSequenceLength = maxSequenceLength;
     }
 
     @Override
-    public ValidationResult test(String value) {
+    public ValidationResult doTest(String value) {
         int maxSequenceLength = 1;
         int sequenceLength = 1;
         // 上一次匹配到的序列
