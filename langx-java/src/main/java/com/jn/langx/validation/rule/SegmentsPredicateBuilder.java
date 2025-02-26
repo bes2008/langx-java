@@ -4,6 +4,7 @@ import com.jn.langx.Builder;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.List;
 
@@ -49,6 +50,6 @@ public class SegmentsPredicateBuilder implements Builder<SegmentsPredicate> {
 
     @Override
     public SegmentsPredicate build() {
-        return null;
+        return new SegmentsPredicate(Regexps.createRegexp(patternBuilder.toString()), segments);
     }
 }

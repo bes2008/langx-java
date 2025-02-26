@@ -37,7 +37,8 @@ public class SegmentsPredicate implements Predicate<String> {
                     }
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }
