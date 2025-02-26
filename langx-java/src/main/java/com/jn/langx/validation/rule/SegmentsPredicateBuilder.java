@@ -1,10 +1,13 @@
 package com.jn.langx.validation.rule;
 
 import com.jn.langx.Builder;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.regexp.Regexps;
+import com.jn.langx.util.struct.CharData;
+import com.jn.langx.validation.TextValidatorBuilder;
 
 import java.util.List;
 
@@ -24,6 +27,12 @@ public class SegmentsPredicateBuilder implements Builder<SegmentsPredicate> {
 
     public SegmentsPredicateBuilder addSegment(String prefix, SegmentMetadata segmentMetadata){
         segments.add(segmentMetadata);
+
+        String name = segmentMetadata.getName();
+        // 只能是大小写字母或者数字
+        if(!TextValidatorBuilder.newBuilder().required().validChars(CharData.ALPHABET_DIGITS).build().validate(name).isValid()) {
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("name must be only any letter in [0-9a-zA-Z], your name is: {}", name));
+        }
 
         if(Strings.isNotEmpty(prefix) && !segmentMetadata.isRequired()){
             patternBuilder.append("(");
