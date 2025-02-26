@@ -4,14 +4,14 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 
 public class UrlRule extends RegexpRule {
-    public UrlRule(String errorMessage, String... schemas) {
-        super(Objs.useValueIfEmpty(errorMessage, "url is invalid"), getPattern(schemas));
+    public UrlRule(String errorMessage, String... schemes) {
+        super(Objs.useValueIfEmpty(errorMessage, "url is invalid"), getPattern(schemes));
     }
 
-    public static String getPattern(String... schemas) {
+    public static String getPattern(String... schemes) {
         String schemaPattern = "[a-z][0-9a-z]+";
-        if (Objs.isNotEmpty(schemas)) {
-            schemaPattern = Strings.join("|", schemas);
+        if (Objs.isNotEmpty(schemes)) {
+            schemaPattern = Strings.join("|", schemes);
         }
         String regex = "^("+schemaPattern+")://"    // 协议部分
                 + "([a-zA-Z0-9-]+\\.)+"             // 主域名（含子域名）
