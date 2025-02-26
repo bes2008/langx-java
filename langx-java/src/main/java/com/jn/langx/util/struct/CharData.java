@@ -1,4 +1,4 @@
-package com.jn.langx.validation.rule;
+package com.jn.langx.util.struct;
 
 public class CharData {
     private String chars;

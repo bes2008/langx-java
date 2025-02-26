@@ -1,6 +1,7 @@
 package com.jn.langx.validation.rule;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.ranges.IntRange;
+import com.jn.langx.util.struct.CharData;
 
 /**
  * CharOccurCountRule类用于检查字符串中特定字符集的出现次数是否在指定范围内

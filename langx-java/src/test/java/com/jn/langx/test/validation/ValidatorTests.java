@@ -5,11 +5,11 @@ import com.jn.langx.util.ranges.DoubleRange;
 import com.jn.langx.util.ranges.IntRange;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
-import com.jn.langx.validation.rule.CharData;
+import com.jn.langx.util.struct.CharData;
 import com.jn.langx.validation.rule.LengthRule;
 import com.jn.langx.validation.rule.ValidationResult;
-import com.jn.langx.validation.TextValidator;
-import com.jn.langx.validation.TextValidatorBuilder;
+import com.jn.langx.validation.text.TextValidator;
+import com.jn.langx.validation.text.TextValidatorBuilder;
 import org.junit.Test;
 
 public class ValidatorTests {
@@ -220,6 +220,40 @@ public class ValidatorTests {
         showTestResult(portRange, "2048");   // 通过
         showTestResult(portRange, "80");     // 失败
     }
+
+    @Test
+    public void test_urlRules() {
+        // 基础URL格式验证
+        TextValidator urlFormatValidator = TextValidatorBuilder.newBuilder()
+                .url("URL格式不正确")
+                .build();
+        showTestResult(urlFormatValidator, "http://example.com/path?query=1");  // 通过
+        showTestResult(urlFormatValidator, "ftp://invalid.url");                // 通过（合法协议）
+        showTestResult(urlFormatValidator, "example.com");                      // 失败
+
+        // 强制HTTPS协议验证
+        TextValidator httpsValidator = TextValidatorBuilder.newBuilder()
+                .url("必须使用HTTPS协议", "https")
+                .build();
+        showTestResult(httpsValidator, "https://secure.com");     // 通过
+        showTestResult(httpsValidator, "http://insecure.com");    // 失败
+
+        // 带端口和路径的复杂URL验证
+        TextValidator complexUrlValidator = TextValidatorBuilder.newBuilder()
+                .url("复杂URL验证失败")
+                .build();
+        showTestResult(complexUrlValidator, "http://localhost:8080/api/v1");  // 通过
+        showTestResult(complexUrlValidator, "http://[2001:db8::1]:8080");     // 通过（IPv6地址）
+        showTestResult(complexUrlValidator, "ssh://invalid.com");             // 通过
+
+        // 自定义协议白名单验证
+        TextValidator protocolWhitelistValidator = TextValidatorBuilder.newBuilder()
+                .url("只允许http/https", "http", "https")
+                .build();
+        showTestResult(protocolWhitelistValidator, "http://valid.com");       // 通过
+        showTestResult(protocolWhitelistValidator, "ssh://invalid.com");      // 失败
+    }
+
 
     @Test
     public void test_numberRangeRules() {

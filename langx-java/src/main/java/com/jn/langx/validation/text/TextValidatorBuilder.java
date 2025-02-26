@@ -1,4 +1,4 @@
-package com.jn.langx.validation;
+package com.jn.langx.validation.text;
 
 import com.jn.langx.Builder;
 import com.jn.langx.util.collection.Lists;
@@ -7,6 +7,9 @@ import com.jn.langx.util.ranges.DoubleRange;
 import com.jn.langx.util.ranges.IntRange;
 import com.jn.langx.util.ranges.LongRange;
 import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.struct.CharData;
+import com.jn.langx.util.struct.CharSequenceData;
+import com.jn.langx.validation.ValidateMode;
 import com.jn.langx.validation.rule.*;
 
 import java.util.List;
@@ -145,7 +148,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
      * 身份证号
      */
     public TextValidatorBuilder idCard(String errorMessage){
-        return rule(new IdCardRule(errorMessage));
+        return rule(new ChineseIdCardRule(errorMessage));
     }
 
     /**

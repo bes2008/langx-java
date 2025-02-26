@@ -8,6 +8,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.struct.CharSequenceData;
 
 /**
  * 检测字符串中是否存在连续的序列，当连续的序列超出指定的最大长度，就认为是不合法的。

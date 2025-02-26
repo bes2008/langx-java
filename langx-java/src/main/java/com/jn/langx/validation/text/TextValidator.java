@@ -1,7 +1,9 @@
-package com.jn.langx.validation;
+package com.jn.langx.validation.text;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Lists;
+import com.jn.langx.validation.ValidateMode;
+import com.jn.langx.validation.Validator;
 import com.jn.langx.validation.rule.RequiredRule;
 import com.jn.langx.validation.rule.Rule;
 import com.jn.langx.validation.rule.ValidationResult;
