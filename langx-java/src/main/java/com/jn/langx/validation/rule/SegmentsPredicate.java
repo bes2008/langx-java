@@ -21,24 +21,26 @@ public class SegmentsPredicate implements Predicate<String> {
 
     @Override
     public boolean test(String text) {
-        if(Regexps.match(regexp, text)){
-            Map<String,String> groups = Regexps.findNamedGroup(regexp, text);
-            for (SegmentMetadata segmentMetadata : segmentMetadatas) {
-                String segmentValue = groups.get(segmentMetadata.getName());
-                if(Strings.isEmpty(segmentValue)){
-                    if(segmentMetadata.isRequired()){
+        if(!Regexps.match(regexp, text)) {
+            return false;
+        }
+        Map<String,String> groups = Regexps.findNamedGroup(regexp, text);
+        for (SegmentMetadata segmentMetadata : segmentMetadatas) {
+            String segmentValue = groups.get(segmentMetadata.getName());
+            if(Strings.isEmpty(segmentValue)){
+                if(segmentMetadata.isRequired()){
+                    return false;
+                }
+            }else{
+                for (Rule rule : segmentMetadata.getRules()) {
+                    if(!rule.test(segmentValue).isValid()){
                         return false;
-                    }
-                }else{
-                    for (Rule rule : segmentMetadata.getRules()) {
-                        if(!rule.test(segmentValue).isValid()){
-                            return false;
-                        }
                     }
                 }
             }
-            return true;
         }
-        return false;
+
+        return true;
+
     }
 }

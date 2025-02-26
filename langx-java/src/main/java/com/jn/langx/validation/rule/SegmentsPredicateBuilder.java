@@ -29,7 +29,7 @@ public class SegmentsPredicateBuilder implements Builder<SegmentsPredicate> {
             patternBuilder.append("(");
             patternBuilder.append(prefix);
         }
-        patternBuilder.append("(<");
+        patternBuilder.append("(?<");
         patternBuilder.append(segmentMetadata.getName());
         patternBuilder.append(">");
         patternBuilder.append(segmentMetadata.getRegexp());

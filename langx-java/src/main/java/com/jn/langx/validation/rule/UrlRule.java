@@ -12,9 +12,9 @@ public class UrlRule extends PredicateRule {
         return new SegmentsPredicateBuilder()
                 .addSegment(null, schemesMetadata)
                 .addString("://")
-                .addSegment(null,"host",true, "[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+")
+                .addSegment(null,"host",true, "\\[.*\\]|[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*", new HostnameRule(null))
                 .addSegment(":","port",false, "\\d{1,5}", new PortRangeRule())
-                .addSegment("/","path_query_fragment",false, "[\\w-./?%&=]*")
+                .addSegment("/","others",false, "[\\w-./?%&=]*")
                 .build();
     }
     public UrlRule(String errorMessage, String... schemes) {

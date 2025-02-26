@@ -230,14 +230,14 @@ public class ValidatorTests {
         showTestResult(urlFormatValidator, "http://example.com/path?query=1");  // 通过
         showTestResult(urlFormatValidator, "ftp://invalid.url");                // 通过（合法协议）
         showTestResult(urlFormatValidator, "example.com");                      // 失败
-
+        System.out.println("====");
         // 强制HTTPS协议验证
         TextValidator httpsValidator = TextValidatorBuilder.newBuilder()
                 .url("必须使用HTTPS协议", "https")
                 .build();
         showTestResult(httpsValidator, "https://secure.com");     // 通过
         showTestResult(httpsValidator, "http://insecure.com");    // 失败
-
+        System.out.println("====");
         // 带端口和路径的复杂URL验证
         TextValidator complexUrlValidator = TextValidatorBuilder.newBuilder()
                 .url("复杂URL验证失败")
@@ -245,7 +245,7 @@ public class ValidatorTests {
         showTestResult(complexUrlValidator, "http://localhost:8080/api/v1");  // 通过
         showTestResult(complexUrlValidator, "http://[2001:db8::1]:8080");     // 通过（IPv6地址）
         showTestResult(complexUrlValidator, "ssh://invalid.com");             // 通过
-
+        System.out.println("====");
         // 自定义协议白名单验证
         TextValidator protocolWhitelistValidator = TextValidatorBuilder.newBuilder()
                 .url("只允许http/https", "http", "https")
