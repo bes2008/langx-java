@@ -8,8 +8,8 @@ import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.CharData;
 import com.jn.langx.validation.rule.LengthRule;
 import com.jn.langx.validation.rule.ValidationResult;
-import com.jn.langx.validation.text.TextValidator;
-import com.jn.langx.validation.text.TextValidatorBuilder;
+import com.jn.langx.validation.TextValidator;
+import com.jn.langx.validation.TextValidatorBuilder;
 import org.junit.Test;
 
 public class ValidatorTests {

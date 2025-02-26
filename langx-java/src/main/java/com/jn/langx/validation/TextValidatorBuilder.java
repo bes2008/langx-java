@@ -1,4 +1,4 @@
-package com.jn.langx.validation.text;
+package com.jn.langx.validation;
 
 import com.jn.langx.Builder;
 import com.jn.langx.util.collection.Lists;
@@ -9,7 +9,6 @@ import com.jn.langx.util.ranges.LongRange;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.struct.CharData;
 import com.jn.langx.util.struct.CharSequenceData;
-import com.jn.langx.validation.ValidateMode;
 import com.jn.langx.validation.rule.*;
 
 import java.util.List;

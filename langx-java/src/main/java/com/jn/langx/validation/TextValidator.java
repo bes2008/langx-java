@@ -1,4 +1,4 @@
-package com.jn.langx.validation.text;
+package com.jn.langx.validation;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Lists;
