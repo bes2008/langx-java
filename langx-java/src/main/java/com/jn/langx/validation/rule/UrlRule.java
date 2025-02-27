@@ -11,7 +11,7 @@ public class UrlRule extends PredicateRule {
         return new SegmentsPredicateBuilder()
                 .addSegment(null, schemesMetadata)
                 .addString("://")
-                .addSegment(null,"host",true, "\\[.*\\]|[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*", new HostnameRule(null))
+                .addSegment(null,"host",true, "\\[[0-9a-fA-F:]*\\]|[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*", new HostnameRule(null))
                 .addSegment(":","port",false, "\\d{1,5}", new PortRangeRule())
                 .addSegment("/","others",false, "[\\w-./?%&=]*")
                 .build();
