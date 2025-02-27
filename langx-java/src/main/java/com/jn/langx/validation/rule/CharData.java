@@ -19,6 +19,7 @@ public class CharData {
     public static CharData ALPHABET_DIGITS = new CharData(ALPHABETICAL.getChars() + DIGITS.getChars());
 
     public static CharData SPECIAL_ASCII = new CharData(" `~@#$%^&*()-_=+[]{};:'\",<.>/?");
-
+    public static CharData HTTP_HEADER_NAME = new CharData(ALPHABET_DIGITS + "-");
+    public static CharData HTTP_HEADER_NAME_UNDERLINE = new CharData(HTTP_HEADER_NAME + "_");
 
 }
