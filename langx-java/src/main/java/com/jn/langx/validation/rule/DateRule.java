@@ -6,8 +6,8 @@ import com.jn.langx.util.function.Predicate;
 
 import java.util.Date;
 
-public class DateStringRule extends PredicateRule{
-    public DateStringRule(final String pattern, String errorMessage) {
+public class DateRule extends PredicateRule{
+    public DateRule(final String pattern, String errorMessage) {
         super(new Predicate<String>() {
             @Override
             public boolean test(String value) {

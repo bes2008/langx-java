@@ -183,7 +183,7 @@ public class ValidatorTests {
     @Test
     public void test_dateStringRule() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .dateString("yyyy-MM-dd", "日期格式错误")
+                .date("yyyy-MM-dd", "日期格式错误")
                 .build();
 
         showTestResult(validator, "2023-12-31");  // 通过

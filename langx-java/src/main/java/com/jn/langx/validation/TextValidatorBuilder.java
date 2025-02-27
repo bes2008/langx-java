@@ -162,8 +162,8 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new PlateNumberRule(errorMessage));
     }
 
-    public TextValidatorBuilder dateString(String pattern, String errorMessage) {
-        return rule(new DateStringRule(pattern, errorMessage));
+    public TextValidatorBuilder date(String pattern, String errorMessage) {
+        return rule(new DateRule(pattern, errorMessage));
     }
 
     public TextValidatorBuilder url(String errorMessage, String... schemas) {
