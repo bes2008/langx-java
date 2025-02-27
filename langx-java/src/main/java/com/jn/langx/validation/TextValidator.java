@@ -11,7 +11,11 @@ import java.util.List;
 
 public class TextValidator implements Validator<String> {
     private List<Rule> rules = Lists.newArrayList();
-    private RequiredRule requiredRule;
+    /**
+     *
+     * 必要的验证规则，如果为null，则代表是 optional
+     */
+    private RequiredRule requiredRule = new RequiredRule("required");
     private ValidateMode validateMode = ValidateMode.VALIDATE_ALL;
 
     public TextValidator() {
@@ -42,8 +46,12 @@ public class TextValidator implements Validator<String> {
     }
 
     public ValidationResult validate(@NonNull String value) {
+        boolean optional = requiredRule == null;
         if(Strings.isEmpty(value)){
-            return requiredRule == null ? ValidationResult.ofValid() : requiredRule.test(value);
+            if(optional){
+                return ValidationResult.ofValid();
+            }
+            return requiredRule.test(value);
         }
         ValidationResult result =  ValidationResult.ofValid();
         for (Rule rule : this.rules) {

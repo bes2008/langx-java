@@ -30,7 +30,7 @@ public class SegmentsPredicateBuilder implements Builder<SegmentsPredicate> {
 
         String name = segmentMetadata.getName();
         // 只能是大小写字母或者数字
-        if(!TextValidatorBuilder.newBuilder().required().validChars(CharData.ALPHABET_DIGITS).build().validate(name).isValid()) {
+        if(!new CharRule(CharData.ALPHABET_DIGITS).test(name).isValid()) {
             throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("name must be only any letter in [0-9a-zA-Z], your name is: {}", name));
         }
 

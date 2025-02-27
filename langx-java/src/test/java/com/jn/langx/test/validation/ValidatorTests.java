@@ -17,28 +17,24 @@ public class ValidatorTests {
     @Test
     public void test_length() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .required()
+                .optional()
                 .length(6)
                 .build();
 
-        String input = "test1";
-        showTestResult(validator, input);
+        showTestResult(validator, "test1");
 
-        input = "test12";
-        showTestResult(validator, input);
+        showTestResult(validator, "test12");
 
-        input = "";
-        showTestResult(validator, input);
+        showTestResult(validator, "");
 
-        input = null;
-        showTestResult(validator, input);
+        showTestResult(validator, null);
     }
 
     @Test
     public void test_length_validChars() {
         // 创建一个 ValidatorBuilder 实例
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .required()
+                .optional()
                 .length(6, 14)
                 .validChars(CharData.ALPHABET_DIGITS)
                 .build();

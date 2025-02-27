@@ -16,156 +16,161 @@ import java.util.List;
 public class TextValidatorBuilder implements Builder<TextValidator> {
     private List<Rule> rules = Lists.newArrayList();
     private ValidateMode validateMode = ValidateMode.VALIDATE_ALL;
-    private RequiredRule requiredRule;
-    private TextValidatorBuilder(){
+    private RequiredRule requiredRule = new RequiredRule("Required");
+
+    private TextValidatorBuilder() {
     }
 
-    public static TextValidatorBuilder newBuilder(){
+    public static TextValidatorBuilder newBuilder() {
         return new TextValidatorBuilder();
     }
 
 
-    public TextValidatorBuilder rule(Rule rule){
-        if(rule != null) {
-            if(rule instanceof RequiredRule){
+    public TextValidatorBuilder rule(Rule rule) {
+        if (rule != null) {
+            if (rule instanceof RequiredRule) {
                 this.requiredRule = (RequiredRule) rule;
-            }else {
+            } else {
                 rules.add(rule);
             }
         }
         return this;
     }
 
-    public TextValidatorBuilder not(Rule rule, String errorMessage){
+    public TextValidatorBuilder not(Rule rule, String errorMessage) {
         return rule(new NotRule(rule, errorMessage));
     }
 
-    public TextValidatorBuilder predicate(Predicate<String> predicate, String errorMessage){
+    public TextValidatorBuilder predicate(Predicate<String> predicate, String errorMessage) {
         return rule(new PredicateRule(predicate, errorMessage));
     }
-    public TextValidatorBuilder required(){
-        return required(null);
-    }
-    public TextValidatorBuilder required(String errorMessage){
-        RequiredRule r = new RequiredRule(errorMessage);
-        this.requiredRule=r;
+
+    public TextValidatorBuilder optional() {
+        this.requiredRule = null;
         return this;
     }
 
-    public TextValidatorBuilder length(int min){
+    public TextValidatorBuilder required(String errorMessage) {
+        RequiredRule r = new RequiredRule(errorMessage);
+        this.requiredRule = r;
+        return this;
+    }
+
+    public TextValidatorBuilder length(int min) {
         return rule(new LengthRule(min));
     }
 
-    public TextValidatorBuilder length(int min, int max){
+    public TextValidatorBuilder length(int min, int max) {
         return rule(new LengthRule(min, max));
     }
 
-    public TextValidatorBuilder validChars(String charData){
+    public TextValidatorBuilder validChars(String charData) {
         return rule(new CharRule(charData));
     }
 
-    public TextValidatorBuilder validChars(CharData charData){
+    public TextValidatorBuilder validChars(CharData charData) {
         return rule(new CharRule(charData));
     }
 
-    public TextValidatorBuilder limitCharsOccurCount(CharData validChars, int min){
+    public TextValidatorBuilder limitCharsOccurCount(CharData validChars, int min) {
         return rule(new CharOccurCountRule(validChars, min));
     }
 
-    public TextValidatorBuilder limitCharSequenceMaxLength(CharSequenceData sequenceData, int maxLength){
+    public TextValidatorBuilder limitCharSequenceMaxLength(CharSequenceData sequenceData, int maxLength) {
         return rule(new CharSequenceRule(sequenceData, maxLength));
     }
-    public TextValidatorBuilder regexp(String errorMessage, String... regexp){
+
+    public TextValidatorBuilder regexp(String errorMessage, String... regexp) {
         return rule(new RegexpRule(errorMessage, regexp));
     }
 
-    public TextValidatorBuilder regexp(String errorMessage, Regexp... regexp){
+    public TextValidatorBuilder regexp(String errorMessage, Regexp... regexp) {
         return rule(new RegexpRule(errorMessage, regexp));
     }
 
-    public TextValidatorBuilder sensitiveWords(String errorMessage, String... sensitiveWords){
+    public TextValidatorBuilder sensitiveWords(String errorMessage, String... sensitiveWords) {
         return rule(new SensitiveWordsRule(errorMessage, sensitiveWords));
     }
 
-    public TextValidatorBuilder historyRecords(String errorMessage, String... historyRecords){
+    public TextValidatorBuilder historyRecords(String errorMessage, String... historyRecords) {
         return rule(new HistoryRecordsRule(errorMessage, historyRecords));
     }
 
-    public TextValidatorBuilder ipv4Address(String errorMessage){
+    public TextValidatorBuilder ipv4Address(String errorMessage) {
         return rule(new IPv4Rule(errorMessage));
     }
 
-    public TextValidatorBuilder ipv6Address(String errorMessage){
+    public TextValidatorBuilder ipv6Address(String errorMessage) {
         return rule(new IPv6Rule(errorMessage));
     }
 
-    public TextValidatorBuilder macAddress(String separator, String errorMessage){
+    public TextValidatorBuilder macAddress(String separator, String errorMessage) {
         return rule(new MacAddressRule(separator, errorMessage));
     }
 
-    public TextValidatorBuilder rfc1123Hostname(String errorMessage){
+    public TextValidatorBuilder rfc1123Hostname(String errorMessage) {
         return rule(new Rfc1123HostnameRule(errorMessage));
     }
 
-    public TextValidatorBuilder port(String errorMessage){
+    public TextValidatorBuilder port(String errorMessage) {
         return rule(new PortRule(errorMessage));
     }
 
-    public TextValidatorBuilder portRange(IntRange intRange, String errorMessage){
+    public TextValidatorBuilder portRange(IntRange intRange, String errorMessage) {
         return rule(new PortRangeRule(intRange, errorMessage));
     }
 
-    public TextValidatorBuilder intRange(IntRange range, String errorMessage){
+    public TextValidatorBuilder intRange(IntRange range, String errorMessage) {
         return rule(new IntRangeRule(range, errorMessage));
     }
 
-    public TextValidatorBuilder intType(String errorMessage){
+    public TextValidatorBuilder intType(String errorMessage) {
         return rule(new IntRule(errorMessage));
     }
 
-    public TextValidatorBuilder doubleRange(DoubleRange range, String errorMessage){
+    public TextValidatorBuilder doubleRange(DoubleRange range, String errorMessage) {
         return rule(new DoubleRangeRule(range, errorMessage));
     }
 
-    public TextValidatorBuilder doubleType(String errorMessage){
+    public TextValidatorBuilder doubleType(String errorMessage) {
         return rule(new DoubleRule(errorMessage));
     }
 
-    public TextValidatorBuilder longRange(LongRange range, String errorMessage){
+    public TextValidatorBuilder longRange(LongRange range, String errorMessage) {
         return rule(new LongRangeRule(range, errorMessage));
     }
 
-    public TextValidatorBuilder longType(String errorMessage){
+    public TextValidatorBuilder longType(String errorMessage) {
         return rule(new LongRule(errorMessage));
     }
 
-    public TextValidatorBuilder booleanType(String errorMessage){
+    public TextValidatorBuilder booleanType(String errorMessage) {
         return rule(new BooleanRule(errorMessage));
     }
 
     /**
      * 身份证号
      */
-    public TextValidatorBuilder idCard(String errorMessage){
+    public TextValidatorBuilder idCard(String errorMessage) {
         return rule(new ChineseIdCardRule(errorMessage));
     }
 
     /**
      * 车牌号
      */
-    public TextValidatorBuilder plateNumber(String errorMessage){
+    public TextValidatorBuilder plateNumber(String errorMessage) {
         return rule(new PlateNumberRule(errorMessage));
     }
 
-    public TextValidatorBuilder dateString(String pattern, String errorMessage){
+    public TextValidatorBuilder dateString(String pattern, String errorMessage) {
         return rule(new DateStringRule(pattern, errorMessage));
     }
 
-    public TextValidatorBuilder url(String errorMessage, String... schemas){
+    public TextValidatorBuilder url(String errorMessage, String... schemas) {
         return rule(new UrlRule(errorMessage, schemas));
     }
 
-    public TextValidator build(){
+    public TextValidator build() {
         TextValidator validator = new TextValidator();
         validator.setValidateMode(validateMode);
         validator.setRequiredRule(requiredRule);
