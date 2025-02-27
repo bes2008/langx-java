@@ -6,8 +6,6 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.regexp.Regexps;
-import com.jn.langx.util.struct.CharData;
-import com.jn.langx.validation.TextValidatorBuilder;
 
 import java.util.List;
 

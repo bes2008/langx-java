@@ -1,7 +1,6 @@
 package com.jn.langx.validation.rule;
 
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.struct.CharData;
 
 /**
  * 用于检查字符串是否全是有效字符

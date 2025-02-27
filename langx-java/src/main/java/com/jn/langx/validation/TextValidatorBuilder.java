@@ -7,8 +7,8 @@ import com.jn.langx.util.ranges.DoubleRange;
 import com.jn.langx.util.ranges.IntRange;
 import com.jn.langx.util.ranges.LongRange;
 import com.jn.langx.util.regexp.Regexp;
-import com.jn.langx.util.struct.CharData;
-import com.jn.langx.util.struct.CharSequenceData;
+import com.jn.langx.validation.rule.CharData;
+import com.jn.langx.validation.rule.CharSequenceData;
 import com.jn.langx.validation.rule.*;
 
 import java.util.List;

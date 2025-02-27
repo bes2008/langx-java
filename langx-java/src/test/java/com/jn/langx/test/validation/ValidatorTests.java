@@ -5,7 +5,7 @@ import com.jn.langx.util.ranges.DoubleRange;
 import com.jn.langx.util.ranges.IntRange;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
-import com.jn.langx.util.struct.CharData;
+import com.jn.langx.validation.rule.CharData;
 import com.jn.langx.validation.rule.LengthRule;
 import com.jn.langx.validation.rule.ValidationResult;
 import com.jn.langx.validation.TextValidator;
