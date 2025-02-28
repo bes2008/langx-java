@@ -8,6 +8,6 @@ public class HostnameRule extends ForwardingRule {
                 new AnyMatchRule(errorMessage)
                         .addRule(new IPv4Rule())
                         .addRule(new IPv6Rule())
-                        .addRule(new Rfc1123HostnameRule()));
+                        .addRule(new Rfc1123DomainNameRule()));
     }
 }

@@ -18,7 +18,7 @@ public class EmailRule extends ForwardingRule {
                                         new LengthRangeRule(1, 64))
                                 .addString("@")
                                 .addSegment(null, "domain", true, "[a-z0-9-]+(\\.[a-z0-9-]+)+",
-                                        new LengthRangeRule(4, 254), new Rfc1123HostnameRule(), new PredicateRule(new Predicate<String>() {
+                                        new LengthRangeRule(4, 254), new Rfc1123DomainNameRule(), new PredicateRule(new Predicate<String>() {
                                             @Override
                                             public boolean test(String domain) {
                                                 if (Objs.isNotEmpty(validDomains)) {

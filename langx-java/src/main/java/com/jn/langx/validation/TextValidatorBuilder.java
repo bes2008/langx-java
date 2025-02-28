@@ -145,12 +145,12 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new MacAddressRule(separator, errorMessage));
     }
 
-    public TextValidatorBuilder rfc1123Hostname(String errorMessage) {
-        return rule(new Rfc1123HostnameRule(errorMessage));
+    public TextValidatorBuilder rfc1123DomainName(String errorMessage) {
+        return rule(new Rfc1123DomainNameRule(errorMessage));
     }
 
-    public TextValidatorBuilder port(String errorMessage) {
-        return rule(new PortRule(errorMessage));
+    public TextValidatorBuilder portRange(String errorMessage) {
+        return rule(new PortRangeRule(errorMessage));
     }
 
     public TextValidatorBuilder portRange(String errorMessage, IntRange intRange ) {

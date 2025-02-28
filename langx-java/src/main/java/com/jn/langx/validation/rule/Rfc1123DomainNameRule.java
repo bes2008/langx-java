@@ -4,13 +4,13 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Validations;
 import com.jn.langx.util.function.Predicate;
 
-public class Rfc1123HostnameRule extends PredicateRule {
+public class Rfc1123DomainNameRule extends PredicateRule {
 
-    public Rfc1123HostnameRule() {
+    public Rfc1123DomainNameRule() {
         this(null);
     }
 
-    public Rfc1123HostnameRule(String errorMessage) {
+    public Rfc1123DomainNameRule(String errorMessage) {
         super(Objs.useValueIfNull(errorMessage, "Invalid RFC1123 hostname"),
                 new Predicate<String>() {
                     @Override
