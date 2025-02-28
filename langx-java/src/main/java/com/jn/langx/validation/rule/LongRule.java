@@ -5,7 +5,7 @@ import com.jn.langx.util.function.Predicate;
 
 public class LongRule extends PredicateRule{
     public LongRule(String errorMessage) {
-        super(new Predicate<String>() {
+        super(errorMessage, new Predicate<String>() {
             @Override
             public boolean test(String value) {
                 if(!Numbers.isNumber(value)){
@@ -13,6 +13,6 @@ public class LongRule extends PredicateRule{
                 }
                 return Numbers.isLong(Numbers.createNumber(value));
             }
-        }, errorMessage);
+        });
     }
 }

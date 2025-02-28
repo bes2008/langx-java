@@ -211,7 +211,7 @@ public class ValidatorTests {
 
         // 端口范围
         TextValidator portRange = TextValidatorBuilder.newBuilder()
-                .portRange(new IntRange(1024, 65535), "端口超出范围")
+                .portRange("端口超出范围",new IntRange(1024, 65535))
                 .build();
         showTestResult(portRange, "2048");   // 通过
         showTestResult(portRange, "80");     // 失败
@@ -317,14 +317,14 @@ public class ValidatorTests {
     public void test_numberRangeRules() {
         // Int范围
         TextValidator intRange = TextValidatorBuilder.newBuilder()
-                .intRange(new IntRange(18, 60), "年龄必须在18-60岁")
+                .intRange("年龄必须在18-60岁", new IntRange(18, 60))
                 .build();
         showTestResult(intRange, "25");      // 通过
         showTestResult(intRange, "17");      // 失败
 
         // Double范围
         TextValidator doubleRange = TextValidatorBuilder.newBuilder()
-                .doubleRange(new DoubleRange(0.0, 100.0), "分数必须在0-100")
+                .doubleRange("分数必须在0-100", new DoubleRange(0.0, 100.0))
                 .build();
         showTestResult(doubleRange, "89.5");  // 通过
         showTestResult(doubleRange, "101");   // 失败

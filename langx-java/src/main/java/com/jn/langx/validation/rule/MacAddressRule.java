@@ -20,7 +20,7 @@ public class MacAddressRule extends RegexpRule {
         MAC_REGEX_MAP.put("", Regexps.compile("^[0-9A-Fa-f]{12}$"));
     }
 
-    public MacAddressRule(String separator, String errorMessage) {
+    public MacAddressRule(String errorMessage, String separator) {
         super(Objs.useValueIfEmpty(errorMessage, "Invalid MAC address"), findRegexps(separator));
     }
 

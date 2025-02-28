@@ -10,7 +10,8 @@ public class EmailRule extends ForwardingRule {
     }
 
     public EmailRule(String errorMessage, final String... validDomains) {
-        super(new AllMatchRule()
+        super(Objs.useValueIfEmpty(errorMessage, "invalid email address"),
+                new AllMatchRule()
                         .addRule(new LengthRangeRule(6, 254))
                         .addRule(new SegmentsPredicateBuilder()
                                 .addSegment(null, "local", true, "(\"[a-zA-Z0-9]+[a-zA-Z0-9 ]+\")|([a-zA-Z0-9_]+(\\.[a-zA-Z0-9_]+)*)",
@@ -25,9 +26,9 @@ public class EmailRule extends ForwardingRule {
                                                 }
                                                 return true;
                                             }
-                                        }, null)
+                                        })
                                 ).build()
                         )
-                , Objs.useValueIfEmpty(errorMessage, "invalid email address"));
+                );
     }
 }

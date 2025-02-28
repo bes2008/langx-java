@@ -4,7 +4,12 @@ import com.jn.langx.util.Strings;
 
 public class ForwardingRule extends AbstractRule{
     private Rule rule;
-    public ForwardingRule(Rule rule, String errorMessage) {
+
+    public ForwardingRule(Rule rule) {
+        this(null, rule);
+    }
+
+    public ForwardingRule(String errorMessage, Rule rule) {
         super(errorMessage);
         this.rule = rule;
     }

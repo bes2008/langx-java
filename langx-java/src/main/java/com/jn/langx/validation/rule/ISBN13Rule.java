@@ -9,7 +9,8 @@ public class ISBN13Rule extends ForwardingRule {
     }
 
     public ISBN13Rule(String errorMessage) {
-        super(new AllMatchRule(errorMessage)
+        super(Objs.useValueIfEmpty(errorMessage, "invalid ISBN 13"),
+                new AllMatchRule(errorMessage)
                         .addRule(
                                 new AnyMatchRule()
                                         .addRule(new LengthRule(13))     // 不带连接符时，长度为10
@@ -29,6 +30,6 @@ public class ISBN13Rule extends ForwardingRule {
                                 return sum % 10 == 0;
                             }
                         })
-                , Objs.useValueIfEmpty(errorMessage, "invalid ISBN 13"));
+        );
     }
 }

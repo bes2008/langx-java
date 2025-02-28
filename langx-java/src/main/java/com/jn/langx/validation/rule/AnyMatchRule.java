@@ -23,7 +23,7 @@ public final class AnyMatchRule extends AbstractRule {
     }
 
     public AnyMatchRule addRule(Predicate<String> predicate){
-        return addRule(new PredicateRule(predicate, null));
+        return addRule(new PredicateRule(predicate));
     }
 
 

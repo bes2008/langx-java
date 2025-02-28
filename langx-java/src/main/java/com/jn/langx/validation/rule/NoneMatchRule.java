@@ -22,7 +22,7 @@ public final class NoneMatchRule extends AbstractRule {
     }
 
     public NoneMatchRule addRule(Predicate<String> predicate){
-        return addRule(new PredicateRule(predicate, null));
+        return addRule(new PredicateRule(predicate));
     }
 
     @Override

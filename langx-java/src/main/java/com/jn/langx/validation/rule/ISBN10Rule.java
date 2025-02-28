@@ -9,7 +9,7 @@ public class ISBN10Rule extends ForwardingRule {
     }
 
     public ISBN10Rule(String errorMessage) {
-        super(new AllMatchRule(errorMessage)
+        super(Objs.useValueIfEmpty(errorMessage, "invalid ISBN 10"), new AllMatchRule(errorMessage)
                 .addRule(
                         new AnyMatchRule()
                                 .addRule(new LengthRule(10))     // 不带连接符时，长度为10
@@ -28,6 +28,6 @@ public class ISBN10Rule extends ForwardingRule {
                         }
                         return (sum + (isbn.charAt(9) == 'X' ? 10 : isbn.charAt(9) - '0')) % 11 == 0;
                     }
-                }), Objs.useValueIfEmpty(errorMessage, "invalid ISBN 10"));
+                }));
     }
 }

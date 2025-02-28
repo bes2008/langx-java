@@ -42,7 +42,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
     }
 
     public TextValidatorBuilder predicate(String errorMessage, Predicate<String> predicate) {
-        return rule(new PredicateRule(predicate, errorMessage));
+        return rule(new PredicateRule(errorMessage, predicate));
     }
 
     public TextValidatorBuilder forwarding(Rule rule) {
@@ -50,7 +50,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
     }
 
     public TextValidatorBuilder forwarding(String errorMessage, Rule rule) {
-        return rule(new ForwardingRule(rule, errorMessage));
+        return rule(new ForwardingRule(errorMessage, rule));
     }
 
     public TextValidatorBuilder allMatch(String errorMessage, Predicate<String>... predicates) {
@@ -153,31 +153,31 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new PortRule(errorMessage));
     }
 
-    public TextValidatorBuilder portRange(IntRange intRange, String errorMessage) {
-        return rule(new PortRangeRule(intRange, errorMessage));
+    public TextValidatorBuilder portRange(String errorMessage, IntRange intRange ) {
+        return rule(new PortRangeRule(errorMessage, intRange));
     }
 
     public TextValidatorBuilder hostname(String errorMessage) {
         return rule(new HostnameRule(errorMessage));
     }
-    public TextValidatorBuilder intRange(IntRange range, String errorMessage) {
-        return rule(new IntRangeRule(range, errorMessage));
+    public TextValidatorBuilder intRange(String errorMessage, IntRange range) {
+        return rule(new IntRangeRule(errorMessage, range));
     }
 
     public TextValidatorBuilder intType(String errorMessage) {
         return rule(new IntRule(errorMessage));
     }
 
-    public TextValidatorBuilder doubleRange(DoubleRange range, String errorMessage) {
-        return rule(new DoubleRangeRule(range, errorMessage));
+    public TextValidatorBuilder doubleRange(String errorMessage, DoubleRange range) {
+        return rule(new DoubleRangeRule(errorMessage, range));
     }
 
     public TextValidatorBuilder doubleType(String errorMessage) {
         return rule(new DoubleRule(errorMessage));
     }
 
-    public TextValidatorBuilder longRange(LongRange range, String errorMessage) {
-        return rule(new LongRangeRule(range, errorMessage));
+    public TextValidatorBuilder longRange(String errorMessage, LongRange range) {
+        return rule(new LongRangeRule(errorMessage, range));
     }
 
     public TextValidatorBuilder longType(String errorMessage) {

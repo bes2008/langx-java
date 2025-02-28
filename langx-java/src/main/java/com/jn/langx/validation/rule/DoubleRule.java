@@ -5,7 +5,7 @@ import com.jn.langx.util.function.Predicate;
 
 public class DoubleRule extends PredicateRule{
     public DoubleRule(String errorMessage) {
-        super(new Predicate<String>() {
+        super(errorMessage, new Predicate<String>() {
             @Override
             public boolean test(String value) {
                 if(!Numbers.isNumber(value)){
@@ -13,6 +13,6 @@ public class DoubleRule extends PredicateRule{
                 }
                 return Numbers.isDouble(Numbers.createInteger(value));
             }
-        }, errorMessage);
+        });
     }
 }

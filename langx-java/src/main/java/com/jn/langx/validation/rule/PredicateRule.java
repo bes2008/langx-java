@@ -5,8 +5,10 @@ import com.jn.langx.util.function.Predicate;
 
 public class PredicateRule extends AbstractRule {
     private Predicate<String> predicate;
-
-    public PredicateRule(Predicate<String> predicate, String errorMessage) {
+    public PredicateRule(Predicate<String> predicate) {
+        this(null, predicate);
+    }
+    public PredicateRule(String errorMessage, Predicate<String> predicate) {
         super(errorMessage);
         this.predicate = predicate;
     }

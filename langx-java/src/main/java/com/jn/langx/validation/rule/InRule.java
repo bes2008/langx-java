@@ -4,10 +4,10 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 
-public class InRule extends PredicateRule{
+public class InRule extends PredicateRule {
 
     public InRule(String errorMessage, final String... candidates) {
-        super(new Predicate<String>() {
+        super(errorMessage, new Predicate<String>() {
             @Override
             public boolean test(String value) {
                 if (Objs.isEmpty(candidates)) {
@@ -15,6 +15,6 @@ public class InRule extends PredicateRule{
                 }
                 return Collects.contains(candidates, value);
             }
-        }, errorMessage);
+        });
     }
 }

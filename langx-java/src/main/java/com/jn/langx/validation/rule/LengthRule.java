@@ -8,11 +8,11 @@ public class LengthRule extends PredicateRule {
         this(null,length);
     }
     public LengthRule(String errorMessage, final int length) {
-        super(new Predicate<String>() {
+        super(Objs.useValueIfEmpty(errorMessage, "length is not " + length), new Predicate<String>() {
             @Override
             public boolean test(String value) {
                 return value.length() == length;
             }
-        }, Objs.useValueIfEmpty(errorMessage, "length is not " + length));
+        });
     }
 }
