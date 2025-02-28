@@ -257,10 +257,11 @@ public class ValidatorTests {
         TextValidator emailFormatValidator = TextValidatorBuilder.newBuilder()
                 .email("邮箱格式不正确")
                 .build();
-        showTestResult(emailFormatValidator, "user@example.com");      // 通过
+        showTestResult(emailFormatValidator, "user@example.com");       // 通过
         showTestResult(emailFormatValidator, "user.111111111111.bbbb_bbbbbbbbbbbbb@example.com");      // 通过
-        showTestResult(emailFormatValidator, "name+tag@domain.cn");    // 通过
-        showTestResult(emailFormatValidator, "invalid_email");         // 失败
+        showTestResult(emailFormatValidator, "name+tag@domain.cn");     // 失败
+        showTestResult(emailFormatValidator, "\"name tag\"@domain.cn"); // 通过
+        showTestResult(emailFormatValidator, "invalid_email");          // 失败
         System.out.println("====");
 
         // 强制公司域名验证
