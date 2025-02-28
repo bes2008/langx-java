@@ -18,7 +18,7 @@ public class ValidatorTests {
     public void test_length() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
                 .optional()
-                .length(6)
+                .lengthRange(6)
                 .build();
 
         showTestResult(validator, "test1");
@@ -35,7 +35,7 @@ public class ValidatorTests {
         // 创建一个 ValidatorBuilder 实例
         TextValidator validator = TextValidatorBuilder.newBuilder()
                 .optional()
-                .length(6, 14)
+                .lengthRange(6, 14)
                 .validChars(CharData.ALPHABET_DIGITS)
                 .build();
         String input = "testexample#123";
@@ -59,7 +59,7 @@ public class ValidatorTests {
     @Test
     public void test_password_validate_1() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .length(8)
+                .lengthRange(8)
                 .limitCharsOccurCount(CharData.UPPER_CASE, 1)
                 .limitCharsOccurCount(CharData.LOWER_CASE, 4)
                 .limitCharsOccurCount(CharData.DIGITS, 1)
