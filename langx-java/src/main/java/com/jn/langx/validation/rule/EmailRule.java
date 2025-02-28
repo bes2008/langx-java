@@ -14,7 +14,7 @@ public class EmailRule extends ForwardingRule {
                 new AllMatchRule()
                         .addRule(new LengthRangeRule(6, 254))
                         .addRule(new SegmentsPredicateBuilder()
-                                .addSegment(null, "local", true, "(\"[a-zA-Z0-9]+[a-zA-Z0-9 ]+\")|([a-zA-Z0-9_]+(\\.[a-zA-Z0-9_]+)*)",
+                                .addSegment(null, "local", true, "(\"[^\"]*\")|([a-zA-Z0-9_]+(\\.[a-zA-Z0-9_]+)*)",
                                         new LengthRangeRule(1, 64))
                                 .addString("@")
                                 .addSegment(null, "domain", true, "[a-z0-9-]+(\\.[a-z0-9-]+)+",
