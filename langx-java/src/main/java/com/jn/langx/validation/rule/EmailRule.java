@@ -29,6 +29,6 @@ public class EmailRule extends ForwardingRule {
                                         })
                                 ).build()
                         )
-                );
+        );
     }
 }
