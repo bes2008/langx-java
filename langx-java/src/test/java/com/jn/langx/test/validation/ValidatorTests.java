@@ -110,7 +110,7 @@ public class ValidatorTests {
     @Test
     public void test_predicateRule() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .predicate("必须以ID-开头",new Predicate<String>() {
+                .predicate("必须以ID-开头", new Predicate<String>() {
                     @Override
                     public boolean test(String s) {
                         return s.startsWith("ID-");
@@ -172,7 +172,7 @@ public class ValidatorTests {
     @Test
     public void test_macAddressRule() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .macAddress(null,"无效MAC地址")
+                .macAddress(null, "无效MAC地址")
                 .build();
 
         showTestResult(validator, "00:1A:C2:7B:00:47");  // 通过
@@ -249,6 +249,66 @@ public class ValidatorTests {
                 .build();
         showTestResult(protocolWhitelistValidator, "http://valid.com");       // 通过
         showTestResult(protocolWhitelistValidator, "ssh://invalid.com");      // 失败
+    }
+
+    @Test
+    public void test_emailRules() {
+        // 基础邮箱格式验证
+        TextValidator emailFormatValidator = TextValidatorBuilder.newBuilder()
+                .email("邮箱格式不正确")
+                .build();
+        showTestResult(emailFormatValidator, "user@example.com");      // 通过
+        showTestResult(emailFormatValidator, "user.111111111111.bbbb_bbbbbbbbbbbbb@example.com");      // 通过
+        showTestResult(emailFormatValidator, "name+tag@domain.cn");    // 通过
+        showTestResult(emailFormatValidator, "invalid_email");         // 失败
+        System.out.println("====");
+
+        // 强制公司域名验证
+        TextValidator companyDomainValidator = TextValidatorBuilder.newBuilder()
+                .email("必须使用公司邮箱", "company.com")
+                .build();
+        showTestResult(companyDomainValidator, "emp@company.com");     // 通过
+        showTestResult(companyDomainValidator, "user@gmail.com");      // 失败
+        System.out.println("====");
+
+        // 多域名白名单验证
+        TextValidator domainWhitelistValidator = TextValidatorBuilder.newBuilder()
+                .email("只允许教育邮箱", "edu.cn", "school.com")
+                .build();
+        showTestResult(domainWhitelistValidator, "stu@edu.cn");        // 通过
+        showTestResult(domainWhitelistValidator, "teacher@school.com");// 通过
+        showTestResult(domainWhitelistValidator, "other@mail.com");    // 失败
+    }
+
+    @Test
+    public void test_isbnRules() {
+        // ISBN-10格式验证
+        TextValidator isbn10Validator = TextValidatorBuilder.newBuilder()
+                .isbn("ISBN-10格式错误")
+                .build();
+        showTestResult(isbn10Validator, "0-306-40615-2");          // 通过
+        showTestResult(isbn10Validator, "0306406152");             // 通过（无分隔符）
+        showTestResult(isbn10Validator, "123456789X");             // 通过（含校验码X）
+        showTestResult(isbn10Validator, "0-306-40615-5");          // 失败（校验位错误）
+        System.out.println("====");
+
+        // ISBN-13格式验证
+        TextValidator isbn13Validator = TextValidatorBuilder.newBuilder()
+                .isbn("ISBN-13格式错误")
+                .build();
+        showTestResult(isbn13Validator, "978-3-16-148410-0");      // 通过
+        showTestResult(isbn13Validator, "9783161484100");          // 通过（无分隔符）
+        showTestResult(isbn13Validator, "978-0-262-13472-9");      // 通过
+        showTestResult(isbn13Validator, "978-3-16-148410-5");      // 失败（校验位错误）
+        System.out.println("====");
+
+        // 混合格式验证
+        TextValidator anyIsbnValidator = TextValidatorBuilder.newBuilder()
+                .isbn("ISBN格式错误")
+                .build();
+        showTestResult(anyIsbnValidator, "978-0-262-13472-9");     // 通过（ISBN-13）
+        showTestResult(anyIsbnValidator, "0-306-40615-2");         // 通过（ISBN-10）
+        showTestResult(anyIsbnValidator, "invalid_isbn");          // 失败
     }
 
 

@@ -13,7 +13,9 @@ public final class NoneMatchRule extends AbstractRule {
         super(errorMessage);
     }
 
-
+    public NoneMatchRule(){
+        this(null);
+    }
     public NoneMatchRule addRule(Rule rule) {
         rules.add(rule);
         return this;

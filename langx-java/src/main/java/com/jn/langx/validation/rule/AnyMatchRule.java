@@ -9,6 +9,10 @@ import java.util.List;
 public final class AnyMatchRule extends AbstractRule {
     private final List<Rule> rules = Lists.newArrayList();
 
+    public AnyMatchRule() {
+        this(null);
+    }
+
     public AnyMatchRule(String errorMessage) {
         super(errorMessage);
     }

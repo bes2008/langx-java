@@ -210,6 +210,18 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new UrlRule(errorMessage, schemas));
     }
 
+    public TextValidatorBuilder email(){
+        return rule(new EmailRule());
+    }
+
+    public TextValidatorBuilder email(String errorMessage) {
+        return rule(new EmailRule(errorMessage));
+    }
+
+    public TextValidatorBuilder email(String errorMessage, String... validDomains) {
+        return rule(new EmailRule(errorMessage, validDomains));
+    }
+
     public TextValidatorBuilder isbn(String errorMessage) {
         return rule(new ISBNRule(errorMessage));
     }

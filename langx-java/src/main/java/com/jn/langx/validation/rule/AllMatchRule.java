@@ -13,6 +13,9 @@ public final class AllMatchRule extends AbstractRule {
         super(errorMessage);
     }
 
+    public AllMatchRule(){
+        this(null);
+    }
 
     public AllMatchRule addRule(Rule rule) {
         rules.add(rule);

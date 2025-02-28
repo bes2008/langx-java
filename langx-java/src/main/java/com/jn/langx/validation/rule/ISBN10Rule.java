@@ -7,11 +7,21 @@ public class ISBN10Rule extends ForwardingRule {
     public ISBN10Rule() {
         this(null);
     }
+
     public ISBN10Rule(String errorMessage) {
         super(new AllMatchRule(errorMessage)
-                .addRule(new LengthRule(10)).addRule(new Predicate<String>() {
+                .addRule(
+                        new AnyMatchRule()
+                                .addRule(new LengthRule(10))     // 不带连接符时，长度为10
+                                .addRule(new LengthRule(10 + 3)) // 带连接符时，长度为 13，有3个是连接符
+                )
+                .addRule(new RegexpRule("invalid ISBN 10", "^[0-9]+([-]?[0-9]+){2}([-]?[0-9]*[0-9X])$"))
+                .addRule(new Predicate<String>() {
                     @Override
                     public boolean test(String isbn) {
+                        if (isbn.length() != 10) {
+                            isbn = isbn.replace("-", "");
+                        }
                         int sum = 0;
                         for (int i = 0; i < isbn.length() - 1; i++) {
                             sum += (isbn.charAt(i) - '0') * (10 - i);
