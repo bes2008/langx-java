@@ -56,12 +56,12 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return this;
     }
 
-    public TextValidatorBuilder length(int min) {
-        return rule(new LengthRule(min));
+    public TextValidatorBuilder lengthRange(int min) {
+        return rule(new LengthRangeRule(min));
     }
 
-    public TextValidatorBuilder length(int min, int max) {
-        return rule(new LengthRule(min, max));
+    public TextValidatorBuilder lengthRange(int min, int max) {
+        return rule(new LengthRangeRule(min, max));
     }
 
     public TextValidatorBuilder validChars(String charData) {
