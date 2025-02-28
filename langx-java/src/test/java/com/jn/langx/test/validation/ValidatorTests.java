@@ -204,7 +204,7 @@ public class ValidatorTests {
     public void test_portRules() {
         // 单端口
         TextValidator singlePort = TextValidatorBuilder.newBuilder()
-                .port("端口必须为8080")
+                .port("端口必须为8080", 8080)
                 .build();
         showTestResult(singlePort, "8080");  // 通过
         showTestResult(singlePort, "8090");  // 失败

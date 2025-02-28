@@ -148,6 +148,13 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
     public TextValidatorBuilder rfc1123DomainName(String errorMessage) {
         return rule(new Rfc1123DomainNameRule(errorMessage));
     }
+    public TextValidatorBuilder port(int port){
+        return rule(new PortRule(null, port));
+    }
+
+    public TextValidatorBuilder port(String errorMessage, int port){
+        return rule(new PortRule(errorMessage, port));
+    }
 
     public TextValidatorBuilder portRange(String errorMessage) {
         return rule(new PortRangeRule(errorMessage));
