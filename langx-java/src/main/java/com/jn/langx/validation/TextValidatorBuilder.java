@@ -41,9 +41,42 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new NotRule(rule, errorMessage));
     }
 
-    public TextValidatorBuilder predicate(Predicate<String> predicate, String errorMessage) {
+    public TextValidatorBuilder predicate(String errorMessage, Predicate<String> predicate) {
         return rule(new PredicateRule(predicate, errorMessage));
     }
+
+    public TextValidatorBuilder forwarding(Rule rule) {
+        return forwarding(null, rule);
+    }
+
+    public TextValidatorBuilder forwarding(String errorMessage, Rule rule) {
+        return rule(new ForwardingRule(rule, errorMessage));
+    }
+
+    public TextValidatorBuilder allMatch(String errorMessage, Predicate<String>... predicates) {
+        AllMatchRule rule = new AllMatchRule(errorMessage);
+        for (Predicate<String> predicate : predicates) {
+            rule.addRule(predicate);
+        }
+        return rule(rule);
+    }
+
+    public TextValidatorBuilder anyMatch(String errorMessage, Predicate<String>... predicates) {
+        AnyMatchRule rule = new AnyMatchRule(errorMessage);
+        for (Predicate<String> predicate : predicates) {
+            rule.addRule(predicate);
+        }
+        return rule(rule);
+    }
+
+    public TextValidatorBuilder noneMatch(String errorMessage, Predicate<String>... predicates) {
+        NoneMatchRule rule = new NoneMatchRule(errorMessage);
+        for (Predicate<String> predicate : predicates) {
+            rule.addRule(predicate);
+        }
+        return rule(rule);
+    }
+
 
     public TextValidatorBuilder optional() {
         this.requiredRule = null;
@@ -62,6 +95,10 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
 
     public TextValidatorBuilder lengthRange(int min, int max) {
         return rule(new LengthRangeRule(min, max));
+    }
+
+    public TextValidatorBuilder length(int fixedLength) {
+        return rule(new LengthRule(fixedLength));
     }
 
     public TextValidatorBuilder validChars(String charData) {
@@ -96,11 +133,11 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new HistoryRecordsRule(errorMessage, historyRecords));
     }
 
-    public TextValidatorBuilder ipv4Address(String errorMessage) {
+    public TextValidatorBuilder ipv4(String errorMessage) {
         return rule(new IPv4Rule(errorMessage));
     }
 
-    public TextValidatorBuilder ipv6Address(String errorMessage) {
+    public TextValidatorBuilder ipv6(String errorMessage) {
         return rule(new IPv6Rule(errorMessage));
     }
 
@@ -120,6 +157,9 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new PortRangeRule(intRange, errorMessage));
     }
 
+    public TextValidatorBuilder hostname(String errorMessage) {
+        return rule(new HostnameRule(errorMessage));
+    }
     public TextValidatorBuilder intRange(IntRange range, String errorMessage) {
         return rule(new IntRangeRule(range, errorMessage));
     }
@@ -168,6 +208,18 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
 
     public TextValidatorBuilder url(String errorMessage, String... schemas) {
         return rule(new UrlRule(errorMessage, schemas));
+    }
+
+    public TextValidatorBuilder isbn(String errorMessage) {
+        return rule(new ISBNRule(errorMessage));
+    }
+
+    public TextValidatorBuilder isbn10(String errorMessage) {
+        return rule(new ISBN10Rule(errorMessage));
+    }
+
+    public TextValidatorBuilder isbn13(String errorMessage) {
+        return rule(new ISBN13Rule(errorMessage));
     }
 
     public TextValidator build() {

@@ -5,6 +5,10 @@ import com.jn.langx.util.Validations;
 import com.jn.langx.util.function.Predicate;
 
 public class Rfc1123HostnameRule extends PredicateRule{
+
+    public Rfc1123HostnameRule() {
+        this(null);
+    }
     public Rfc1123HostnameRule(String errorMessage) {
         super(new Predicate<String>() {
             @Override
