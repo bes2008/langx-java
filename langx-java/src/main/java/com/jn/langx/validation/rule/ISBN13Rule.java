@@ -23,6 +23,9 @@ public class ISBN13Rule extends ForwardingRule {
                                 if (isbn.length() != 13) {
                                     isbn = isbn.replace("-", "");
                                 }
+                                if(isbn.length() != 13){
+                                    return false;
+                                }
                                 int sum = 0;
                                 for (int i = 0; i < isbn.length(); i++) {
                                     sum += (isbn.charAt(i) - '0') * (i % 2 == 0 ? 1 : 3);

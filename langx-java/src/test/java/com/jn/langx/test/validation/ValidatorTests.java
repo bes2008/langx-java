@@ -240,7 +240,7 @@ public class ValidatorTests {
                 .build();
         showTestResult(complexUrlValidator, "http://localhost:8080/api/v1");  // 通过
         showTestResult(complexUrlValidator, "http://[2001:db8::1]:8080");     // 通过（IPv6地址）
-        showTestResult(complexUrlValidator, "http://[2001:dk8::1]:8080");     // 通过（IPv6地址）
+        showTestResult(complexUrlValidator, "http://[2001:dk8::1]:8080");     // 失败（IPv6地址）
         showTestResult(complexUrlValidator, "ssh://invalid.com");             // 通过
         System.out.println("====");
         // 自定义协议白名单验证
