@@ -37,7 +37,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return this;
     }
 
-    public TextValidatorBuilder not(Rule rule, String errorMessage) {
+    public TextValidatorBuilder not(String errorMessage, Rule rule) {
         return rule(new NotRule(rule, errorMessage));
     }
 
@@ -141,8 +141,8 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new IPv6Rule(errorMessage));
     }
 
-    public TextValidatorBuilder macAddress(String separator, String errorMessage) {
-        return rule(new MacAddressRule(separator, errorMessage));
+    public TextValidatorBuilder macAddress(String errorMessage, String separator) {
+        return rule(new MacAddressRule(errorMessage, separator));
     }
 
     public TextValidatorBuilder rfc1123DomainName(String errorMessage) {
@@ -209,8 +209,8 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new PlateNumberRule(errorMessage));
     }
 
-    public TextValidatorBuilder date(String pattern, String errorMessage) {
-        return rule(new DateRule(pattern, errorMessage));
+    public TextValidatorBuilder date(String errorMessage, String pattern) {
+        return rule(new DateRule(errorMessage, pattern));
     }
 
     public TextValidatorBuilder url(String errorMessage, String... schemas) {
