@@ -6,7 +6,7 @@ import com.jn.langx.util.ranges.IntRange;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.validation.rule.CharData;
-import com.jn.langx.validation.rule.LengthRule;
+import com.jn.langx.validation.rule.LengthRangeRule;
 import com.jn.langx.validation.rule.ValidationResult;
 import com.jn.langx.validation.TextValidator;
 import com.jn.langx.validation.TextValidatorBuilder;
@@ -100,7 +100,7 @@ public class ValidatorTests {
     @Test
     public void test_notRule() {
         TextValidator validator = TextValidatorBuilder.newBuilder()
-                .not(new LengthRule(5), "长度不能等于5")
+                .not(new LengthRangeRule(5), "长度不能等于5")
                 .build();
 
         showTestResult(validator, "1234");    // 通过（长度≠5）
