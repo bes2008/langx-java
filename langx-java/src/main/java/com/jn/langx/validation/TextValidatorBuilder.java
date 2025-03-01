@@ -77,6 +77,13 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(rule);
     }
 
+    public TextValidatorBuilder in(String errorMessage, String... candidates) {
+        return rule(new InRule(errorMessage, candidates));
+    }
+
+    public TextValidatorBuilder notIn(String errorMessage, String... candidates) {
+        return not(errorMessage, new InRule(null, candidates));
+    }
 
     public TextValidatorBuilder optional() {
         this.requiredRule = null;
