@@ -38,7 +38,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
     }
 
     public TextValidatorBuilder not(String errorMessage, Rule rule) {
-        return rule(new NotRule(rule, errorMessage));
+        return rule(new NotRule(errorMessage, rule));
     }
 
     public TextValidatorBuilder predicate(String errorMessage, Predicate<String> predicate) {

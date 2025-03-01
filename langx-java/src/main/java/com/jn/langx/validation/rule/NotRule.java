@@ -4,7 +4,7 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.function.Predicate;
 
 public class NotRule extends PredicateRule {
-    public NotRule(final Rule rule, String errorMessage) {
+    public NotRule(String errorMessage, final Rule rule) {
         super(Objs.useValueIfEmpty(errorMessage, "the value is not valid"),
                 new Predicate<String>() {
             @Override
