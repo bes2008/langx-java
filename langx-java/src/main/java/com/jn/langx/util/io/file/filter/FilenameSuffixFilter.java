@@ -1,5 +1,6 @@
 package com.jn.langx.util.io.file.filter;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Predicate2;
@@ -57,5 +58,33 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
     protected boolean doTest(String name) {
         String suffix = Filenames.getSuffix(name);
         return super.doTest(suffix);
+    }
+
+    public static FilenameSuffixFilter ofIn(final boolean ignore, String... suffixes) {
+        return new FilenameSuffixFilter(new Predicate2<String, String[]>() {
+            @Override
+            public boolean test(final String suffix, String[] suffixes) {
+                return Collects.contains(suffixes, suffix, new Predicate<String>() {
+                    @Override
+                    public boolean test(String value) {
+                        return Strings.equals(suffix, value, ignore);
+                    }
+                });
+            }
+        }, suffixes);
+    }
+
+    public static FilenameSuffixFilter ofNotIn(final boolean ignore, String... suffixes) {
+        return new FilenameSuffixFilter(new Predicate2<String, String[]>() {
+            @Override
+            public boolean test(final String suffix, String[] suffixes) {
+                return !Collects.contains(suffixes, suffix, new Predicate<String>() {
+                    @Override
+                    public boolean test(String value) {
+                        return Strings.equals(suffix, value, ignore);
+                    }
+                });
+            }
+        }, suffixes);
     }
 }
