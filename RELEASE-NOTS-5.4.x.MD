@@ -1,3 +1,8 @@
+## 5.4.7
++ 提供validator
++ 增强FilenameSuffixFilter
++ 完善Urls
+
 ## 5.4.6
 * 添加 MatchExp
 * 对 instant 转换时，要自动设置时区
