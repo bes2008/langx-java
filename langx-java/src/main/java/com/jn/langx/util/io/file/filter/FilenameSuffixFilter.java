@@ -18,6 +18,15 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
         super(new StringEndsWithPredicate(ignoreCase, suffix));
     }
 
+    public FilenameSuffixFilter(final boolean ignoreCase, String... suffixes) {
+        this(new Predicate2<String, String[]>() {
+            @Override
+            public boolean test(String suffix, String[] suffixes) {
+                return new StringEndsWithPredicate(ignoreCase, suffixes).test(suffix);
+            }
+        });
+    }
+
     public FilenameSuffixFilter(final Predicate2<String, String[]> predicate, final String... suffixes) {
         super(new Predicate<String>() {
             @Override
