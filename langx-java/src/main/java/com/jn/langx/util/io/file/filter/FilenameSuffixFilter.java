@@ -1,6 +1,8 @@
 package com.jn.langx.util.io.file.filter;
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.function.predicate.StringEndsWithPredicate;
 import com.jn.langx.util.io.file.Filenames;
 
@@ -15,6 +17,16 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
     public FilenameSuffixFilter(String suffix, boolean ignoreCase) {
         super(new StringEndsWithPredicate(ignoreCase, suffix));
     }
+
+    public FilenameSuffixFilter(final Predicate2<String, String[]> predicate, final String... suffixes) {
+        super(new Predicate<String>() {
+            @Override
+            public boolean test(String suffix) {
+                return predicate.test(suffix, suffixes);
+            }
+        });
+    }
+
 
     public FilenameSuffixFilter(String[] suffixes) {
         this(suffixes, true);
@@ -34,7 +46,7 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
 
     @Override
     protected boolean doTest(String name) {
-        String suffix =Filenames.getSuffix(name);
+        String suffix = Filenames.getSuffix(name);
         return super.doTest(suffix);
     }
 }
