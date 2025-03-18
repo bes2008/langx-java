@@ -24,7 +24,7 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
             public boolean test(String suffix, String[] suffixes) {
                 return new StringEndsWithPredicate(ignoreCase, suffixes).test(suffix);
             }
-        });
+        }, suffixes);
     }
 
     public FilenameSuffixFilter(final Predicate2<String, String[]> predicate, final String... suffixes) {
