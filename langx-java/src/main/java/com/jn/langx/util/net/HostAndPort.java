@@ -19,8 +19,7 @@ public class HostAndPort extends IntegerNameValuePair {
         return Validations.isValidPort(getValue());
     }
 
-    @Override
-    public String toString() {
+    public String toHostString(){
         String hostname = getKey();
         String port = getValue() > 0 ? (":" + getValue()) : "";
         return hostname + port;
