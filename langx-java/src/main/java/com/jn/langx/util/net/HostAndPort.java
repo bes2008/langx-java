@@ -19,7 +19,7 @@ public class HostAndPort extends IntegerNameValuePair {
         return Validations.isValidPort(getValue());
     }
 
-    public String toHostString(){
+    public String toHostString() {
         String hostname = getKey();
         String port = getValue() > 0 ? (":" + getValue()) : "";
         return hostname + port;
@@ -34,9 +34,9 @@ public class HostAndPort extends IntegerNameValuePair {
         int hostnamePortSeparatorIndex = -1;
         if (ipv6EndIndex > 0) {
             // IPv6地址（如 [::1]:8080）
-            hostnamePortSeparatorIndex = host.lastIndexOf(':', ipv6EndIndex);
+            hostnamePortSeparatorIndex = Strings.indexOf(host, ':', ipv6EndIndex);
         } else {
-            hostnamePortSeparatorIndex = host.lastIndexOf(':');
+            hostnamePortSeparatorIndex = Strings.lastIndexOf(host, ":");
         }
         String hostname = null;
         int port = -1;
@@ -45,7 +45,9 @@ public class HostAndPort extends IntegerNameValuePair {
         } else {
             hostname = host.substring(0, hostnamePortSeparatorIndex);
             String portPart = host.substring(hostnamePortSeparatorIndex + 1);
-            port = Integer.parseInt(portPart);
+            if (Strings.isNotBlank(portPart)) {
+                port = Integer.parseInt(portPart.trim());
+            }
         }
         return new HostAndPort(hostname, port);
     }
