@@ -5,15 +5,16 @@ import com.jn.langx.util.random.Randoms;
 
 public class RandomStringSaltGenerator implements StringSaltGenerator {
     private String alphabet = Nanoids.DEFAULT_ALPHABET;
-    public RandomStringSaltGenerator(){
+
+    public RandomStringSaltGenerator() {
     }
 
-    public RandomStringSaltGenerator(String alphabet){
-        this.alphabet=alphabet;
+    public RandomStringSaltGenerator(String alphabet) {
+        this.alphabet = alphabet;
     }
 
     @Override
     public String get(Integer charsLength) {
-        return Randoms.randomString(alphabet,charsLength);
+        return Randoms.randomString(alphabet, charsLength);
     }
 }
