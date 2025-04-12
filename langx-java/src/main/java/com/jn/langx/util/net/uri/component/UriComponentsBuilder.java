@@ -597,7 +597,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
      * Create a builder that is initialized from the given {@code URI}.
      * <p><strong>Note:</strong> the components in the resulting builder will be
      * in fully encoded (raw) form and further changes must also supply values
-     * that are fully encoded, for example via methods in {@link com.jn.langx.util.net.uri.URIs}.
+     * that are fully encoded, for example via methods in {@link UriComponentUtils}.
      * In addition please use {@link #build(boolean)} with a value of "true" to
      * build the {@link UriComponents} instance in order to indicate that the
      * components are encoded.

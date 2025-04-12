@@ -35,7 +35,7 @@ final class FullPathComponent implements PathComponent {
     }
 
     @Override
-    public PathComponent encode(Function2<String, UriComponentType, String> encoder) {
+    public PathComponent encode(UriComponentEncoder encoder) {
         String encodedPath = encoder.apply(getPath(), UriComponentType.PATH);
         return new FullPathComponent(encodedPath);
     }
@@ -46,7 +46,7 @@ final class FullPathComponent implements PathComponent {
     }
 
     @Override
-    public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
+    public PathComponent replaceVariables(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
         String expandedPath = replaceUriComponent(getPath(), uriVariables, encoder);
         return new FullPathComponent(expandedPath);
     }

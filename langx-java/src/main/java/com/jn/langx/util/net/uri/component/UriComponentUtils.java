@@ -1,4 +1,4 @@
-package com.jn.langx.util.net.uri;
+package com.jn.langx.util.net.uri.component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.net.uri.component.UriComponentType;
 
 /**
  * Utility methods for URI encoding and decoding based on RFC 3986.
@@ -39,7 +38,7 @@ import com.jn.langx.util.net.uri.component.UriComponentType;
  * @see <a href="https://www.ietf.org/rfc/rfc3986.txt">RFC 3986</a>
  * @since 5.4.7
  */
-public abstract class URIs {
+public abstract class UriComponentUtils {
 
     /**
      * Encode the given URI scheme with the given encoding.

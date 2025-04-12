@@ -1,5 +1,6 @@
 package com.jn.langx.util.net.uri;
 
+import com.jn.langx.util.net.uri.component.UriComponentUtils;
 import com.jn.langx.util.net.uri.component.UriComponents;
 import com.jn.langx.util.net.uri.component.UriComponentsBuilder;
 
@@ -40,11 +41,11 @@ public enum EncodingMode {
 
     /**
      * Does not encode the URI template and instead applies strict encoding
-     * to URI variables via {@link URIs#encodeUriVariables} prior to
+     * to URI variables via {@link UriComponentUtils#encodeUriVariables} prior to
      * expanding them into the template.
      *
-     * @see URIs#encodeUriVariables(Object...)
-     * @see URIs#encodeUriVariables(Map)
+     * @see UriComponentUtils#encodeUriVariables(Object...)
+     * @see UriComponentUtils#encodeUriVariables(Map)
      */
     VALUES_ONLY,
 

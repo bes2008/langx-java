@@ -1,11 +1,8 @@
 package com.jn.langx.util.net.uri.component;
 
-import com.jn.langx.util.function.Function2;
-import com.jn.langx.util.net.uri.URIs;
-
 import java.nio.charset.Charset;
 
-class UriTemplateEncoder implements Function2<String, UriComponentType, String> {
+class DefaultUriTemplateEncoder implements UriComponentEncoder {
 
     private final Charset charset;
 
@@ -17,7 +14,7 @@ class UriTemplateEncoder implements Function2<String, UriComponentType, String> 
 
     private boolean variableWithNameAndRegex;
 
-    UriTemplateEncoder(Charset charset) {
+    DefaultUriTemplateEncoder(Charset charset) {
         this.charset = charset;
     }
 
@@ -29,7 +26,7 @@ class UriTemplateEncoder implements Function2<String, UriComponentType, String> 
         }
         // Literal template only?
         if (source.indexOf('{') == -1) {
-            return URIs.encodeUriComponent(source, this.charset, type);
+            return UriComponentUtils.encodeUriComponent(source, this.charset, type);
         }
         int level = 0;
         clear(this.currentLiteral);
@@ -94,7 +91,7 @@ class UriTemplateEncoder implements Function2<String, UriComponentType, String> 
     }
 
     private void append(StringBuilder sb, boolean encode, UriComponentType type) {
-        this.output.append(encode ? URIs.encodeUriComponent(sb.toString(), this.charset, type) : sb);
+        this.output.append(encode ? UriComponentUtils.encodeUriComponent(sb.toString(), this.charset, type) : sb);
         clear(sb);
         this.variableWithNameAndRegex = false;
     }

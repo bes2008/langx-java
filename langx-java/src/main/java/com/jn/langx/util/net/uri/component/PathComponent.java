@@ -3,7 +3,6 @@ package com.jn.langx.util.net.uri.component;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
@@ -21,11 +20,11 @@ interface PathComponent extends Serializable {
 
     List<String> getPathSegments();
 
-    PathComponent encode(Function2<String, UriComponentType, String> encoder);
+    PathComponent encode(UriComponentEncoder encoder);
 
     void verify();
 
-    PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder);
+    PathComponent replaceVariables(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder);
 
     void copyToUriComponentsBuilder(UriComponentsBuilder builder);
 
@@ -44,7 +43,7 @@ interface PathComponent extends Serializable {
             return Collects.emptyArrayList();
         }
 
-        public PathComponent encode(Function2<String, UriComponentType, String> encoder) {
+        public PathComponent encode(UriComponentEncoder encoder) {
             return this;
         }
 
@@ -53,7 +52,7 @@ interface PathComponent extends Serializable {
         }
 
         @Override
-        public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
+        public PathComponent replaceVariables(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
             return this;
         }
 

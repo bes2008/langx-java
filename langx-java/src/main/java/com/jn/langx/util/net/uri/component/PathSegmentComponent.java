@@ -40,7 +40,7 @@ final class PathSegmentComponent implements PathComponent {
     }
 
     @Override
-    public PathComponent encode(Function2<String, UriComponentType, String> encoder) {
+    public PathComponent encode(UriComponentEncoder encoder) {
         List<String> pathSegments = getPathSegments();
         List<String> encodedPathSegments = new ArrayList<String>(pathSegments.size());
         for (String pathSegment : pathSegments) {
@@ -58,7 +58,7 @@ final class PathSegmentComponent implements PathComponent {
     }
 
     @Override
-    public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
+    public PathComponent replaceVariables(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
         List<String> pathSegments = getPathSegments();
         List<String> expandedPathSegments = new ArrayList<String>(pathSegments.size());
         for (String pathSegment : pathSegments) {

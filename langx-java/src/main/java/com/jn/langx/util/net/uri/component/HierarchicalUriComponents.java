@@ -20,7 +20,6 @@ import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.QueryUriTemplateVariableResolver;
-import com.jn.langx.util.net.uri.URIs;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 /**
@@ -205,10 +204,10 @@ final class HierarchicalUriComponents extends UriComponents {
         this.variableEncoder = new Operator<String>() {
             @Override
             public String apply(String value) {
-                return URIs.encodeUriComponent(value, charset, UriComponentType.URI);
+                return UriComponentUtils.encodeUriComponent(value, charset, UriComponentType.URI);
             }
         };
-        UriTemplateEncoder encoder = new UriTemplateEncoder(charset);
+        DefaultUriTemplateEncoder encoder = new DefaultUriTemplateEncoder(charset);
         String schemeTo = (getScheme() != null ? encoder.apply(getScheme(), UriComponentType.SCHEME) : null);
         String fragmentTo = (getFragment() != null ? encoder.apply(getFragment(), UriComponentType.FRAGMENT) : null);
         String userInfoTo = (getUserInfo() != null ? encoder.apply(getUserInfo(), UriComponentType.USER_INFO) : null);
@@ -227,14 +226,14 @@ final class HierarchicalUriComponents extends UriComponents {
         }
         String scheme = getScheme();
         String fragment = getFragment();
-        String schemeTo = (scheme != null ? URIs.encodeUriComponent(scheme, charset, UriComponentType.SCHEME) : null);
-        String fragmentTo = (fragment != null ? URIs.encodeUriComponent(fragment, charset, UriComponentType.FRAGMENT) : null);
-        String userInfoTo = (this.userInfo != null ? URIs.encodeUriComponent(this.userInfo, charset, UriComponentType.USER_INFO) : null);
-        String hostTo = (this.host != null ? URIs.encodeUriComponent(this.host, charset, getHostType()) : null);
-        Function2<String, UriComponentType, String> encoder = new Function2<String, UriComponentType, String>() {
+        String schemeTo = (scheme != null ? UriComponentUtils.encodeUriComponent(scheme, charset, UriComponentType.SCHEME) : null);
+        String fragmentTo = (fragment != null ? UriComponentUtils.encodeUriComponent(fragment, charset, UriComponentType.FRAGMENT) : null);
+        String userInfoTo = (this.userInfo != null ? UriComponentUtils.encodeUriComponent(this.userInfo, charset, UriComponentType.USER_INFO) : null);
+        String hostTo = (this.host != null ? UriComponentUtils.encodeUriComponent(this.host, charset, getHostType()) : null);
+        UriComponentEncoder encoder = new UriComponentEncoder() {
             @Override
             public String apply(String s, UriComponentType type) {
-                return URIs.encodeUriComponent(s, charset, type);
+                return UriComponentUtils.encodeUriComponent(s, charset, type);
             }
         };
         PathComponent pathTo = this.path.encode(encoder);
@@ -333,7 +332,7 @@ final class HierarchicalUriComponents extends UriComponents {
         String userInfoTo = replaceUriComponent(this.userInfo, uriVariables, this.variableEncoder);
         String hostTo = replaceUriComponent(this.host, uriVariables, this.variableEncoder);
         String portTo = replaceUriComponent(this.port, uriVariables, this.variableEncoder);
-        PathComponent pathTo = this.path.expand(uriVariables, this.variableEncoder);
+        PathComponent pathTo = this.path.replaceVariables(uriVariables, this.variableEncoder);
         MultiValueMap<String, String> queryParamsTo = expandQueryParams(uriVariables);
         String fragmentTo = replaceUriComponent(getFragment(), uriVariables, this.variableEncoder);
 

@@ -4,6 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
+import com.jn.langx.util.net.uri.component.UriComponentUtils;
 import com.jn.langx.util.net.uri.component.UriComponents;
 import com.jn.langx.util.net.uri.component.UriComponentsBuilder;
 import com.jn.langx.util.struct.Holder;
@@ -200,7 +201,7 @@ public class DefaultUriBuilder implements UriBuilder {
             uriVars = map;
         }
         if (encodingMode.equals(EncodingMode.VALUES_ONLY)) {
-            uriVars = URIs.encodeUriVariables(uriVars);
+            uriVars = UriComponentUtils.encodeUriVariables(uriVars);
         }
         UriComponents uric = this.uriComponentsBuilder.build().replaceVariables(uriVars);
         return createUri(uric);
@@ -212,7 +213,7 @@ public class DefaultUriBuilder implements UriBuilder {
             return build(Collections.emptyMap());
         }
         if (encodingMode.equals(EncodingMode.VALUES_ONLY)) {
-            uriVars = URIs.encodeUriVariables(uriVars);
+            uriVars = UriComponentUtils.encodeUriVariables(uriVars);
         }
         UriComponents uric = this.uriComponentsBuilder.build().replaceVariables(uriVars);
         return createUri(uric);

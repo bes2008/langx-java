@@ -2,7 +2,6 @@ package com.jn.langx.util.net.uri.component;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
@@ -40,7 +39,7 @@ final class PathComponentComposite implements PathComponent {
     }
 
     @Override
-    public PathComponent encode(Function2<String, UriComponentType, String> encoder) {
+    public PathComponent encode(UriComponentEncoder encoder) {
         List<PathComponent> encodedComponents = new ArrayList<PathComponent>(this.pathComponents.size());
         for (PathComponent pathComponent : this.pathComponents) {
             encodedComponents.add(pathComponent.encode(encoder));
@@ -56,10 +55,10 @@ final class PathComponentComposite implements PathComponent {
     }
 
     @Override
-    public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
+    public PathComponent replaceVariables(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
         List<PathComponent> expandedComponents = new ArrayList<PathComponent>(this.pathComponents.size());
         for (PathComponent pathComponent : this.pathComponents) {
-            expandedComponents.add(pathComponent.expand(uriVariables, encoder));
+            expandedComponents.add(pathComponent.replaceVariables(uriVariables, encoder));
         }
         return new PathComponentComposite(expandedComponents);
     }
