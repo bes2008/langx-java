@@ -20,9 +20,6 @@ import java.util.Optional;
  * {@link UriComponents} and also leaving common concerns such as encoding
  * preferences, a base URI, and others as implementation concerns.
  *
- * <p>Typically obtained via UriBuilderFactory which serves as a central
- * component configured once and used to create many URLs.
- *
  * @see UriComponentsBuilder
  * @since 5.4.7
  */

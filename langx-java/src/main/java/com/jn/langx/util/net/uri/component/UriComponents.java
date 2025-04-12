@@ -27,12 +27,8 @@ import java.util.regex.Matcher;
  * to {@link java.net.URI}, but with more powerful encoding options and support for
  * URI template variables.
  *
- * @author Arjen Poutsma
- * @author Juergen Hoeller
- * @author Rossen Stoyanchev
  * @see UriComponentsBuilder
  */
-@SuppressWarnings("serial")
 public abstract class UriComponents implements Serializable {
 
     /**

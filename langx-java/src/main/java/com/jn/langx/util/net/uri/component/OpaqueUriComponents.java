@@ -16,8 +16,6 @@ import java.util.List;
 /**
  * Extension of {@link UriComponents} for opaque URIs.
  *
- * @author Arjen Poutsma
- * @author Phillip Webb
  * @see <a href="https://tools.ietf.org/html/rfc3986#section-1.2.3">Hierarchical vs Opaque URIs</a>
  */
 final class OpaqueUriComponents extends UriComponents {

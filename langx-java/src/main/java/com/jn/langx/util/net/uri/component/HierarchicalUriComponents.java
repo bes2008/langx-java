@@ -26,11 +26,6 @@ import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 /**
  * Extension of {@link UriComponents} for hierarchical URIs.
  *
- * @author Arjen Poutsma
- * @author Juergen Hoeller
- * @author Rossen Stoyanchev
- * @author Phillip Webb
- * @author Sam Brannen
  * @see <a href="https://tools.ietf.org/html/rfc3986#section-1.2.3">Hierarchical URIs</a>
  */
 final class HierarchicalUriComponents extends UriComponents {
