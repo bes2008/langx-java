@@ -10,7 +10,7 @@ import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 import java.util.List;
 
-import static com.jn.langx.util.net.uri.component.UriComponents.expandUriComponent;
+import static com.jn.langx.util.net.uri.component.UriComponents.replaceUriComponent;
 
 /**
  * Represents a path backed by a String.
@@ -47,7 +47,7 @@ final class FullPathComponent implements PathComponent {
 
     @Override
     public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
-        String expandedPath = expandUriComponent(getPath(), uriVariables, encoder);
+        String expandedPath = replaceUriComponent(getPath(), uriVariables, encoder);
         return new FullPathComponent(expandedPath);
     }
 

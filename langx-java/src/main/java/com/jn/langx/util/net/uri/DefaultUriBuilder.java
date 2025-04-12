@@ -14,6 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @since 5.4.7
+ */
 public class DefaultUriBuilder implements UriBuilder {
     private boolean parsePath;
     private EncodingMode encodingMode;

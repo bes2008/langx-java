@@ -62,7 +62,7 @@ final class PathSegmentComponent implements PathComponent {
         List<String> pathSegments = getPathSegments();
         List<String> expandedPathSegments = new ArrayList<String>(pathSegments.size());
         for (String pathSegment : pathSegments) {
-            String expandedPathSegment = UriComponents.expandUriComponent(pathSegment, uriVariables, encoder);
+            String expandedPathSegment = UriComponents.replaceUriComponent(pathSegment, uriVariables, encoder);
             expandedPathSegments.add(expandedPathSegment);
         }
         return new PathSegmentComponent(expandedPathSegments);

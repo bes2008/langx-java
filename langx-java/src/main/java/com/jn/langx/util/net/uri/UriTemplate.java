@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.net.uri.component.UriComponents;
 import com.jn.langx.util.net.uri.component.UriComponentsBuilder;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 
 /**
  * Representation of a URI template that can be expanded with URI variables via
@@ -32,7 +33,6 @@ import com.jn.langx.util.net.uri.component.UriComponentsBuilder;
  *
  * @since 5.4.7
  */
-@SuppressWarnings("serial")
 public class UriTemplate implements Serializable {
 
     private final String uriTemplate;
@@ -41,7 +41,7 @@ public class UriTemplate implements Serializable {
 
     private final List<String> variableNames;
 
-    private final Pattern matchPattern;
+    private final Regexp matchPattern;
 
 
     /**
@@ -56,7 +56,7 @@ public class UriTemplate implements Serializable {
 
         TemplateInfo info = TemplateInfo.parse(uriTemplate);
         this.variableNames = Collections.unmodifiableList(info.getVariableNames());
-        this.matchPattern = info.getMatchPattern();
+        this.matchPattern = info.getMatchRegexp();
     }
 
 
@@ -109,7 +109,7 @@ public class UriTemplate implements Serializable {
      *                                  or if it does not contain sufficient variables
      */
     public URI expand(Object... uriVariableValues) {
-        UriComponents expandedComponents = this.uriComponents.expand(uriVariableValues);
+        UriComponents expandedComponents = this.uriComponents.replaceVariables(uriVariableValues);
         UriComponents encodedComponents = expandedComponents.encode();
         return encodedComponents.toUri();
     }
@@ -124,7 +124,7 @@ public class UriTemplate implements Serializable {
         if (uri == null) {
             return false;
         }
-        Matcher matcher = this.matchPattern.matcher(uri);
+        RegexpMatcher matcher = this.matchPattern.matcher(uri);
         return matcher.matches();
     }
 
@@ -144,7 +144,7 @@ public class UriTemplate implements Serializable {
     public Map<String, String> match(String uri) {
         Preconditions.checkNotNull(uri, "'uri' must not be null");
         Map<String, String> result = Maps.newLinkedHashMapWithExpectedSize(this.variableNames.size());
-        Matcher matcher = this.matchPattern.matcher(uri);
+        RegexpMatcher matcher = this.matchPattern.matcher(uri);
         if (matcher.find()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 String name = this.variableNames.get(i - 1);
@@ -168,19 +168,19 @@ public class UriTemplate implements Serializable {
 
         private final List<String> variableNames;
 
-        private final Pattern pattern;
+        private final Regexp regexp;
 
-        private TemplateInfo(List<String> vars, Pattern pattern) {
+        private TemplateInfo(List<String> vars, Regexp pattern) {
             this.variableNames = vars;
-            this.pattern = pattern;
+            this.regexp = pattern;
         }
 
         public List<String> getVariableNames() {
             return this.variableNames;
         }
 
-        public Pattern getMatchPattern() {
-            return this.pattern;
+        public Regexp getMatchRegexp() {
+            return this.regexp;
         }
 
         public static TemplateInfo parse(String uriTemplate) {
@@ -227,11 +227,11 @@ public class UriTemplate implements Serializable {
             if (builder.length() > 0) {
                 pattern.append(quote(builder));
             }
-            return new TemplateInfo(variableNames, Pattern.compile(pattern.toString()));
+            return new TemplateInfo(variableNames, Regexps.compile(pattern.toString()));
         }
 
         private static String quote(StringBuilder builder) {
-            return (builder.length() > 0 ? Pattern.quote(builder.toString()) : "");
+            return (builder.length() > 0 ? Regexps.quote(builder.toString()) : "");
         }
     }
 

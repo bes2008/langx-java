@@ -232,13 +232,13 @@ public abstract class UriComponents implements Serializable {
     // Static expansion helpers
 
     @Nullable
-    public static String expandUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables) {
-        return expandUriComponent(source, uriVariables, null);
+    public static String replaceUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables) {
+        return replaceUriComponent(source, uriVariables, null);
     }
 
     @Nullable
-    public static String expandUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables,
-                                            @Nullable Operator<String> encoder) {
+    public static String replaceUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables,
+                                             @Nullable Operator<String> encoder) {
 
         if (source == null) {
             return null;
