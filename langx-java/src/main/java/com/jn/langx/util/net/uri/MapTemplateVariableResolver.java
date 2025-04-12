@@ -7,11 +7,11 @@ import java.util.Map;
 /**
  * URI template variables backed by a map.
  */
-public class MapTemplateVariables implements UriTemplateVariables {
+public class MapTemplateVariableResolver implements UriTemplateVariableResolver {
 
     private final Map<String, ?> uriVariables;
 
-    public MapTemplateVariables(Map<String, ?> uriVariables) {
+    public MapTemplateVariableResolver(Map<String, ?> uriVariables) {
         this.uriVariables = uriVariables;
     }
 

@@ -6,9 +6,9 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.net.uri.MapTemplateVariables;
-import com.jn.langx.util.net.uri.UriTemplateVariables;
-import com.jn.langx.util.net.uri.VarArgsTemplateVariables;
+import com.jn.langx.util.net.uri.MapTemplateVariableResolver;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
+import com.jn.langx.util.net.uri.VarArgsTemplateVariableResolver;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
@@ -19,7 +19,6 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -152,7 +151,7 @@ public abstract class UriComponents implements Serializable {
      */
     public final UriComponents expand(Map<String, ?> uriVariables) {
         Preconditions.checkNotNull(uriVariables, "'uriVariables' must not be null");
-        return expandInternal(new MapTemplateVariables(uriVariables));
+        return expandInternal(new MapTemplateVariableResolver(uriVariables));
     }
 
     /**
@@ -164,29 +163,29 @@ public abstract class UriComponents implements Serializable {
      */
     public final UriComponents expand(Object... uriVariableValues) {
         Preconditions.checkNotNull(uriVariableValues, "'uriVariableValues' must not be null");
-        return expandInternal(new VarArgsTemplateVariables(uriVariableValues));
+        return expandInternal(new VarArgsTemplateVariableResolver(uriVariableValues));
     }
 
     /**
      * Replace all URI template variables with the values from the given
-     * {@link UriTemplateVariables}.
+     * {@link UriTemplateVariableResolver}.
      *
      * @param uriVariables the URI template values
      * @return the expanded URI components
      */
-    public final UriComponents expand(UriTemplateVariables uriVariables) {
+    public final UriComponents expand(UriTemplateVariableResolver uriVariables) {
         Preconditions.checkNotNull(uriVariables, "'uriVariables' must not be null");
         return expandInternal(uriVariables);
     }
 
     /**
      * Replace all URI template variables with the values from the given {@link
-     * UriTemplateVariables}.
+     * UriTemplateVariableResolver}.
      *
      * @param uriVariables the URI template values
      * @return the expanded URI components
      */
-    abstract UriComponents expandInternal(UriTemplateVariables uriVariables);
+    abstract UriComponents expandInternal(UriTemplateVariableResolver uriVariables);
 
     /**
      * Normalize the path removing sequences like "path/..". Note that
@@ -233,12 +232,12 @@ public abstract class UriComponents implements Serializable {
     // Static expansion helpers
 
     @Nullable
-    public static String expandUriComponent(@Nullable String source, UriTemplateVariables uriVariables) {
+    public static String expandUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables) {
         return expandUriComponent(source, uriVariables, null);
     }
 
     @Nullable
-    public static String expandUriComponent(@Nullable String source, UriTemplateVariables uriVariables,
+    public static String expandUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables,
                                             @Nullable Operator<String> encoder) {
 
         if (source == null) {
@@ -256,7 +255,7 @@ public abstract class UriComponents implements Serializable {
             String match = matcher.group(1);
             String varName = getVariableName(match);
             Object varValue = uriVariables.getValue(varName);
-            if (UriTemplateVariables.SKIP_VALUE.equals(varValue)) {
+            if (UriTemplateVariableResolver.SKIP_VALUE.equals(varValue)) {
                 continue;
             }
             String formatted = getVariableValueAsString(varValue);

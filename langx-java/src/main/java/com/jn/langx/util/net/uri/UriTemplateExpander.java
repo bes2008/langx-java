@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @since 5.4.7
  */
-public interface UriTemplateHandler {
+public interface UriTemplateExpander {
 
     /**
      * Expand the given URI template with a map of URI variables.

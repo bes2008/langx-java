@@ -4,7 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
-import com.jn.langx.util.net.uri.UriTemplateVariables;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ final class PathComponentComposite implements PathComponent {
     }
 
     @Override
-    public PathComponent expand(UriTemplateVariables uriVariables, @Nullable Operator<String> encoder) {
+    public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
         List<PathComponent> expandedComponents = new ArrayList<PathComponent>(this.pathComponents.size());
         for (PathComponent pathComponent : this.pathComponents) {
             expandedComponents.add(pathComponent.expand(uriVariables, encoder));

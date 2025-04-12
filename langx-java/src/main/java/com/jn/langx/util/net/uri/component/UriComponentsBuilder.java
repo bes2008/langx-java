@@ -5,8 +5,6 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
@@ -17,7 +15,7 @@ import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.net.http.HttpHeaders;
 import com.jn.langx.util.net.uri.UriBuilder;
-import com.jn.langx.util.net.uri.UriTemplateVariables;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
@@ -395,13 +393,13 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
             result = (hint == EncodingHint.ENCODE_TEMPLATE ? uric.encodeTemplate(this.charset) : uric);
         }
         if (!this.uriVariables.isEmpty()) {
-            result = result.expand(new UriTemplateVariables() {
+            result = result.expand(new UriTemplateVariableResolver() {
                 @Override
                 public Object getValue(String name) {
                     if (UriComponentsBuilder.this.uriVariables.containsKey(name)) {
                         return UriComponentsBuilder.this.uriVariables.get(name);
                     }
-                    return UriTemplateVariables.SKIP_VALUE;
+                    return UriTemplateVariableResolver.SKIP_VALUE;
                 }
             });
 

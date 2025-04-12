@@ -6,7 +6,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
-import com.jn.langx.util.net.uri.UriTemplateVariables;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ final class FullPathComponent implements PathComponent {
     }
 
     @Override
-    public PathComponent expand(UriTemplateVariables uriVariables, @Nullable Operator<String> encoder) {
+    public PathComponent expand(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
         String expandedPath = expandUriComponent(getPath(), uriVariables, encoder);
         return new FullPathComponent(expandedPath);
     }

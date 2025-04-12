@@ -8,14 +8,14 @@ import com.jn.langx.annotation.Nullable;
  *
  * @since 5.4.7
  */
-public interface UriTemplateVariables {
+public interface UriTemplateVariableResolver {
 
     /**
      * Constant for a value that indicates a URI variable name should be
      * ignored and left as is. This is useful for partial expanding of some
      * but not all URI variables.
      */
-    Object SKIP_VALUE = UriTemplateVariables.class;
+    Object SKIP_VALUE = UriTemplateVariableResolver.class;
 
     /**
      * Get the value for the given URI variable name.

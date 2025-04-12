@@ -9,7 +9,7 @@ package com.jn.langx.util.net.uri;
  * @see DefaultUriBuilderFactory
  * @since 5.4.7
  */
-public interface UriBuilderFactory extends UriTemplateHandler {
+public interface UriBuilderFactory extends UriTemplateExpander {
 
     /**
      * Initialize a builder with the given URI template.

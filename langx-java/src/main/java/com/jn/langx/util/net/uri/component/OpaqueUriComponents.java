@@ -4,7 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
-import com.jn.langx.util.net.uri.UriTemplateVariables;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -85,7 +85,7 @@ final class OpaqueUriComponents extends UriComponents {
     }
 
     @Override
-    protected UriComponents expandInternal(UriTemplateVariables uriVariables) {
+    protected UriComponents expandInternal(UriTemplateVariableResolver uriVariables) {
         String expandedScheme = expandUriComponent(getScheme(), uriVariables);
         String expandedSsp = expandUriComponent(getSchemeSpecificPart(), uriVariables);
         String expandedFragment = expandUriComponent(getFragment(), uriVariables);

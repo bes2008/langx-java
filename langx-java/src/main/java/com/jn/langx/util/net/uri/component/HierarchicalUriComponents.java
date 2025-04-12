@@ -19,9 +19,9 @@ import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
-import com.jn.langx.util.net.uri.QueryUriTemplateVariables;
+import com.jn.langx.util.net.uri.QueryUriTemplateVariableResolver;
 import com.jn.langx.util.net.uri.URIs;
-import com.jn.langx.util.net.uri.UriTemplateVariables;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 /**
  * Extension of {@link UriComponents} for hierarchical URIs.
@@ -329,7 +329,7 @@ final class HierarchicalUriComponents extends UriComponents {
     // Expanding
 
     @Override
-    protected HierarchicalUriComponents expandInternal(UriTemplateVariables uriVariables) {
+    protected HierarchicalUriComponents expandInternal(UriTemplateVariableResolver uriVariables) {
         Preconditions.checkState(!this.encodeState.equals(EncodeState.FULLY_ENCODED),
                 "URI components already encoded, and could not possibly contain '{' or '}'.");
 
@@ -346,10 +346,10 @@ final class HierarchicalUriComponents extends UriComponents {
                 hostTo, portTo, pathTo, queryParamsTo, this.encodeState, this.variableEncoder);
     }
 
-    private MultiValueMap<String, String> expandQueryParams(UriTemplateVariables variables) {
+    private MultiValueMap<String, String> expandQueryParams(UriTemplateVariableResolver variables) {
         int size = this.queryParams.size();
         final MultiValueMap<String, String> result = new LinkedMultiValueMap<String, String>(size);
-        final UriTemplateVariables queryVariables = new QueryUriTemplateVariables(variables);
+        final UriTemplateVariableResolver queryVariables = new QueryUriTemplateVariableResolver(variables);
         Collects.forEach(this.queryParams, new Consumer2<String, Collection<String>>() {
             @Override
             public void accept(String key, Collection<String> values) {

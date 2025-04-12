@@ -10,11 +10,11 @@ import java.util.Iterator;
  *
  * @since 5.4.7
  */
-public class VarArgsTemplateVariables implements UriTemplateVariables {
+public class VarArgsTemplateVariableResolver implements UriTemplateVariableResolver {
 
     private final Iterator<Object> valueIterator;
 
-    public VarArgsTemplateVariables(Object... uriVariableValues) {
+    public VarArgsTemplateVariableResolver(Object... uriVariableValues) {
         this.valueIterator = Arrays.asList(uriVariableValues).iterator();
     }
 

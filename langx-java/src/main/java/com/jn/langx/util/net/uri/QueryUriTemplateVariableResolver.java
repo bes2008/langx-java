@@ -4,11 +4,11 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 
-public class QueryUriTemplateVariables implements UriTemplateVariables {
+public class QueryUriTemplateVariableResolver implements UriTemplateVariableResolver {
 
-    private final UriTemplateVariables delegate;
+    private final UriTemplateVariableResolver delegate;
 
-    public QueryUriTemplateVariables(UriTemplateVariables delegate) {
+    public QueryUriTemplateVariableResolver(UriTemplateVariableResolver delegate) {
         this.delegate = delegate;
     }
 
