@@ -15,8 +15,6 @@ import java.util.Map;
  * <li>{@link #URI_COMPONENT}
  * <li>{@link #NONE}
  * </ul>
- *
- * @see #setEncodingMode
  */
 public enum EncodingMode {
 

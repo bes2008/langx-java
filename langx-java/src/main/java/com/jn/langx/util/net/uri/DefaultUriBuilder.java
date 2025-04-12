@@ -202,7 +202,7 @@ public class DefaultUriBuilder implements UriBuilder {
         if (encodingMode.equals(EncodingMode.VALUES_ONLY)) {
             uriVars = URIs.encodeUriVariables(uriVars);
         }
-        UriComponents uric = this.uriComponentsBuilder.build().expand(uriVars);
+        UriComponents uric = this.uriComponentsBuilder.build().replaceVariables(uriVars);
         return createUri(uric);
     }
 
@@ -214,7 +214,7 @@ public class DefaultUriBuilder implements UriBuilder {
         if (encodingMode.equals(EncodingMode.VALUES_ONLY)) {
             uriVars = URIs.encodeUriVariables(uriVars);
         }
-        UriComponents uric = this.uriComponentsBuilder.build().expand(uriVars);
+        UriComponents uric = this.uriComponentsBuilder.build().replaceVariables(uriVars);
         return createUri(uric);
     }
 

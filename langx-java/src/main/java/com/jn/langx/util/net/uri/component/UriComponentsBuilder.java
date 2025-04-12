@@ -35,14 +35,6 @@ import com.jn.langx.util.struct.Holder;
  * <li>Build the {@link UriComponents} instance with the {@link #build()} method.</li>
  * </ol>
  *
- * @author Arjen Poutsma
- * @author Rossen Stoyanchev
- * @author Phillip Webb
- * @author Oliver Gierke
- * @author Brian Clozel
- * @author Sebastien Deleuze
- * @author Sam Brannen
- * @see #newInstance()
  * @see #fromPath(String)
  * @see #fromUri(URI)
  */
@@ -115,7 +107,6 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
     /**
      * Default constructor. Protected to prevent direct instantiation.
      *
-     * @see #newInstance()
      * @see #fromPath(String)
      * @see #fromUri(URI)
      */
@@ -140,180 +131,6 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         this.fragment = other.fragment;
         this.encodeTemplate = other.encodeTemplate;
         this.charset = other.charset;
-    }
-
-
-    // Factory methods
-
-    /**
-     * Create a new, empty builder.
-     *
-     * @return the new {@code UriComponentsBuilder}
-     */
-    public static UriComponentsBuilder newInstance() {
-        return new UriComponentsBuilder();
-    }
-
-    /**
-     * Create a builder that is initialized with the given path.
-     *
-     * @param path the path to initialize with
-     * @return the new {@code UriComponentsBuilder}
-     */
-    public static UriComponentsBuilder fromPath(String path) {
-        UriComponentsBuilder builder = new UriComponentsBuilder();
-        builder.path(path);
-        return builder;
-    }
-
-    /**
-     * Create a builder that is initialized from the given {@code URI}.
-     * <p><strong>Note:</strong> the components in the resulting builder will be
-     * in fully encoded (raw) form and further changes must also supply values
-     * that are fully encoded, for example via methods in {@link com.jn.langx.util.net.uri.URIs}.
-     * In addition please use {@link #build(boolean)} with a value of "true" to
-     * build the {@link UriComponents} instance in order to indicate that the
-     * components are encoded.
-     *
-     * @param uri the URI to initialize with
-     * @return the new {@code UriComponentsBuilder}
-     */
-    public static UriComponentsBuilder fromUri(URI uri) {
-        UriComponentsBuilder builder = new UriComponentsBuilder();
-        builder.uri(uri);
-        return builder;
-    }
-
-    /**
-     * Create a builder that is initialized with the given URI string.
-     * <p><strong>Note:</strong> The presence of reserved characters can prevent
-     * correct parsing of the URI string. For example if a query parameter
-     * contains {@code '='} or {@code '&'} characters, the query string cannot
-     * be parsed unambiguously. Such values should be substituted for URI
-     * variables to enable correct parsing:
-     * <pre class="code">
-     * String uriString = &quot;/hotels/42?filter={value}&quot;;
-     * UriComponentsBuilder.fromUriString(uriString).buildAndExpand(&quot;hot&amp;cold&quot;);
-     * </pre>
-     *
-     * @param uri the URI string to initialize with
-     * @return the new {@code UriComponentsBuilder}
-     */
-    public static UriComponentsBuilder fromUriString(String uri) {
-        Preconditions.checkNotNull(uri, "URI must not be null");
-        RegexpMatcher matcher = URI_PATTERN.matcher(uri);
-        if (matcher.matches()) {
-            UriComponentsBuilder builder = new UriComponentsBuilder();
-            String scheme = matcher.group(2);
-            String userInfo = matcher.group(5);
-            String host = matcher.group(6);
-            String port = matcher.group(8);
-            String path = matcher.group(9);
-            String query = matcher.group(11);
-            String fragment = matcher.group(13);
-            boolean opaque = false;
-            if (Strings.isNotEmpty(scheme)) {
-                String rest = uri.substring(scheme.length());
-                if (!rest.startsWith(":/")) {
-                    opaque = true;
-                }
-            }
-            builder.scheme(scheme);
-            if (opaque) {
-                String ssp = uri.substring(scheme.length() + 1);
-                if (Strings.isNotEmpty(fragment)) {
-                    ssp = ssp.substring(0, ssp.length() - (fragment.length() + 1));
-                }
-                builder.schemeSpecificPart(ssp);
-            } else {
-                if (Strings.isNotEmpty(scheme) && scheme.startsWith("http") && !Strings.isNotEmpty(host)) {
-                    throw new IllegalArgumentException("[" + uri + "] is not a valid HTTP URL");
-                }
-                builder.userInfo(userInfo);
-                builder.host(host);
-                if (Strings.isNotEmpty(port)) {
-                    builder.port(port);
-                }
-                builder.path(path);
-                builder.query(query);
-            }
-            if (Strings.isNotBlank(fragment)) {
-                builder.fragment(fragment);
-            }
-            return builder;
-        } else {
-            throw new IllegalArgumentException("[" + uri + "] is not a valid URI");
-        }
-    }
-
-    /**
-     * Create a URI components builder from the given HTTP URL String.
-     * <p><strong>Note:</strong> The presence of reserved characters can prevent
-     * correct parsing of the URI string. For example if a query parameter
-     * contains {@code '='} or {@code '&'} characters, the query string cannot
-     * be parsed unambiguously. Such values should be substituted for URI
-     * variables to enable correct parsing:
-     * <pre class="code">
-     * String urlString = &quot;https://example.com/hotels/42?filter={value}&quot;;
-     * UriComponentsBuilder.fromHttpUrl(urlString).buildAndExpand(&quot;hot&amp;cold&quot;);
-     * </pre>
-     *
-     * @param httpUrl the source URI
-     * @return the URI components of the URI
-     */
-    public static UriComponentsBuilder fromHttpUrl(String httpUrl) {
-        Preconditions.checkNotNull(httpUrl, "HTTP URL must not be null");
-        RegexpMatcher matcher = HTTP_URL_PATTERN.matcher(httpUrl);
-        if (matcher.matches()) {
-            UriComponentsBuilder builder = new UriComponentsBuilder();
-            String scheme = matcher.group(1);
-            builder.scheme(scheme != null ? scheme.toLowerCase() : null);
-            builder.userInfo(matcher.group(4));
-            String host = matcher.group(5);
-            if (Strings.isNotEmpty(scheme) && Strings.isEmpty(host)) {
-                throw new IllegalArgumentException("[" + httpUrl + "] is not a valid HTTP URL");
-            }
-            builder.host(host);
-            String port = matcher.group(7);
-            if (Strings.isNotEmpty(port)) {
-                builder.port(port);
-            }
-            builder.path(matcher.group(8));
-            builder.query(matcher.group(10));
-            String fragment = matcher.group(12);
-            if (Strings.isNotBlank(fragment)) {
-                builder.fragment(fragment);
-            }
-            return builder;
-        } else {
-            throw new IllegalArgumentException("[" + httpUrl + "] is not a valid HTTP URL");
-        }
-    }
-
-
-    /**
-     * Create an instance by parsing the "Origin" header of an HTTP request.
-     *
-     * @see <a href="https://tools.ietf.org/html/rfc6454">RFC 6454</a>
-     */
-    public static UriComponentsBuilder fromOriginHeader(String origin) {
-        RegexpMatcher matcher = URI_PATTERN.matcher(origin);
-        if (matcher.matches()) {
-            UriComponentsBuilder builder = new UriComponentsBuilder();
-            String scheme = matcher.group(2);
-            String host = matcher.group(6);
-            String port = matcher.group(8);
-            if (Strings.isNotEmpty(scheme)) {
-                builder.scheme(scheme);
-            }
-            builder.host(host);
-            if (Strings.isNotEmpty(port)) {
-                builder.port(port);
-            }
-            return builder;
-        } else {
-            throw new IllegalArgumentException("[" + origin + "] is not a valid \"Origin\" header value");
-        }
     }
 
 
@@ -456,8 +273,9 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
      * @see UriComponents#toUriString()
      */
     public String toUriString() {
-        return (this.uriVariables.isEmpty() ? build().encode().toUriString() :
-                buildInternal(EncodingHint.ENCODE_TEMPLATE).toUriString());
+        return this.uriVariables.isEmpty()
+                ? build().encode().toUriString()
+                : buildInternal(EncodingHint.ENCODE_TEMPLATE).toUriString();
     }
 
 
@@ -761,5 +579,168 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
 
 
     private enum EncodingHint {ENCODE_TEMPLATE, FULLY_ENCODED, NONE}
+
+
+    /**
+     * Create a builder that is initialized with the given path.
+     *
+     * @param path the path to initialize with
+     * @return the new {@code UriComponentsBuilder}
+     */
+    public static UriComponentsBuilder fromPath(String path) {
+        UriComponentsBuilder builder = new UriComponentsBuilder();
+        builder.path(path);
+        return builder;
+    }
+
+    /**
+     * Create a builder that is initialized from the given {@code URI}.
+     * <p><strong>Note:</strong> the components in the resulting builder will be
+     * in fully encoded (raw) form and further changes must also supply values
+     * that are fully encoded, for example via methods in {@link com.jn.langx.util.net.uri.URIs}.
+     * In addition please use {@link #build(boolean)} with a value of "true" to
+     * build the {@link UriComponents} instance in order to indicate that the
+     * components are encoded.
+     *
+     * @param uri the URI to initialize with
+     * @return the new {@code UriComponentsBuilder}
+     */
+    public static UriComponentsBuilder fromUri(URI uri) {
+        UriComponentsBuilder builder = new UriComponentsBuilder();
+        builder.uri(uri);
+        return builder;
+    }
+
+    /**
+     * Create a builder that is initialized with the given URI string.
+     * <p><strong>Note:</strong> The presence of reserved characters can prevent
+     * correct parsing of the URI string. For example if a query parameter
+     * contains {@code '='} or {@code '&'} characters, the query string cannot
+     * be parsed unambiguously. Such values should be substituted for URI
+     * variables to enable correct parsing:
+     * <pre class="code">
+     * String uriString = &quot;/hotels/42?filter={value}&quot;;
+     * UriComponentsBuilder.fromUriString(uriString).buildAndExpand(&quot;hot&amp;cold&quot;);
+     * </pre>
+     *
+     * @param uri the URI string to initialize with
+     * @return the new {@code UriComponentsBuilder}
+     */
+    public static UriComponentsBuilder fromUriString(String uri) {
+        Preconditions.checkNotNull(uri, "URI must not be null");
+        RegexpMatcher matcher = URI_PATTERN.matcher(uri);
+        if (matcher.matches()) {
+            UriComponentsBuilder builder = new UriComponentsBuilder();
+            String scheme = matcher.group(2);
+            String userInfo = matcher.group(5);
+            String host = matcher.group(6);
+            String port = matcher.group(8);
+            String path = matcher.group(9);
+            String query = matcher.group(11);
+            String fragment = matcher.group(13);
+            boolean opaque = false;
+            if (Strings.isNotEmpty(scheme)) {
+                String rest = uri.substring(scheme.length());
+                if (!rest.startsWith(":/")) {
+                    opaque = true;
+                }
+            }
+            builder.scheme(scheme);
+            if (opaque) {
+                String ssp = uri.substring(scheme.length() + 1);
+                if (Strings.isNotEmpty(fragment)) {
+                    ssp = ssp.substring(0, ssp.length() - (fragment.length() + 1));
+                }
+                builder.schemeSpecificPart(ssp);
+            } else {
+                if (Strings.isNotEmpty(scheme) && scheme.startsWith("http") && !Strings.isNotEmpty(host)) {
+                    throw new IllegalArgumentException("[" + uri + "] is not a valid HTTP URL");
+                }
+                builder.userInfo(userInfo);
+                builder.host(host);
+                if (Strings.isNotEmpty(port)) {
+                    builder.port(port);
+                }
+                builder.path(path);
+                builder.query(query);
+            }
+            if (Strings.isNotBlank(fragment)) {
+                builder.fragment(fragment);
+            }
+            return builder;
+        } else {
+            throw new IllegalArgumentException("[" + uri + "] is not a valid URI");
+        }
+    }
+
+    /**
+     * Create a URI components builder from the given HTTP URL String.
+     * <p><strong>Note:</strong> The presence of reserved characters can prevent
+     * correct parsing of the URI string. For example if a query parameter
+     * contains {@code '='} or {@code '&'} characters, the query string cannot
+     * be parsed unambiguously. Such values should be substituted for URI
+     * variables to enable correct parsing:
+     * <pre class="code">
+     * String urlString = &quot;https://example.com/hotels/42?filter={value}&quot;;
+     * UriComponentsBuilder.fromHttpUrl(urlString).buildAndExpand(&quot;hot&amp;cold&quot;);
+     * </pre>
+     *
+     * @param httpUrl the source URI
+     * @return the URI components of the URI
+     */
+    public static UriComponentsBuilder fromHttpUrl(String httpUrl) {
+        Preconditions.checkNotNull(httpUrl, "HTTP URL must not be null");
+        RegexpMatcher matcher = HTTP_URL_PATTERN.matcher(httpUrl);
+        if (matcher.matches()) {
+            UriComponentsBuilder builder = new UriComponentsBuilder();
+            String scheme = matcher.group(1);
+            builder.scheme(scheme != null ? scheme.toLowerCase() : null);
+            builder.userInfo(matcher.group(4));
+            String host = matcher.group(5);
+            if (Strings.isNotEmpty(scheme) && Strings.isEmpty(host)) {
+                throw new IllegalArgumentException("[" + httpUrl + "] is not a valid HTTP URL");
+            }
+            builder.host(host);
+            String port = matcher.group(7);
+            if (Strings.isNotEmpty(port)) {
+                builder.port(port);
+            }
+            builder.path(matcher.group(8));
+            builder.query(matcher.group(10));
+            String fragment = matcher.group(12);
+            if (Strings.isNotBlank(fragment)) {
+                builder.fragment(fragment);
+            }
+            return builder;
+        } else {
+            throw new IllegalArgumentException("[" + httpUrl + "] is not a valid HTTP URL");
+        }
+    }
+
+
+    /**
+     * Create an instance by parsing the "Origin" header of an HTTP request.
+     *
+     * @see <a href="https://tools.ietf.org/html/rfc6454">RFC 6454</a>
+     */
+    public static UriComponentsBuilder fromOriginHeader(String origin) {
+        RegexpMatcher matcher = URI_PATTERN.matcher(origin);
+        if (matcher.matches()) {
+            UriComponentsBuilder builder = new UriComponentsBuilder();
+            String scheme = matcher.group(2);
+            String host = matcher.group(6);
+            String port = matcher.group(8);
+            if (Strings.isNotEmpty(scheme)) {
+                builder.scheme(scheme);
+            }
+            builder.host(host);
+            if (Strings.isNotEmpty(port)) {
+                builder.port(port);
+            }
+            return builder;
+        } else {
+            throw new IllegalArgumentException("[" + origin + "] is not a valid \"Origin\" header value");
+        }
+    }
 
 }
