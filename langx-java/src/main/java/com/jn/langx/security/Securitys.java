@@ -154,6 +154,9 @@ public class Securitys {
         return (bitLength + 7) / 8;
     }
 
+    public static byte[] randomBytesWithLength(int bytesLength){
+        return randomBytes(null,bytesLength * 8);
+    }
 
     public static byte[] randomBytes(int bitLength){
         return randomBytes(null,bitLength);
