@@ -8,5 +8,7 @@ package com.jn.langx.util.function;
  * @param <V> 表示操作的输入和输出类型
  */
 public interface Operator<V> extends Function<V, V> {
+    @Override
+    V apply(V input);
 }
 

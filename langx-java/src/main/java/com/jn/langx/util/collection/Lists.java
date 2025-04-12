@@ -5,7 +5,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Lists {
-    private Lists(){}
+    private Lists() {
+    }
+
     public static <E> ArrayList<E> newArrayList() {
         return Collects.newArrayList();
     }
@@ -15,7 +17,7 @@ public class Lists {
     }
 
     public static <E> ArrayList<E> newArrayList(Iterable<E> elements) {
-      return Collects.newArrayList(elements);
+        return Collects.newArrayList(elements);
     }
 
     public static <E> ArrayList<E> newArrayList(Iterator<E> elements) {
@@ -31,7 +33,7 @@ public class Lists {
      */
     public static <E> ArrayList<E> newArrayListWithFill(int initialArraySize, E initFillElement) {
         ArrayList<E> list = Collects.newArrayListWithCapacity(initialArraySize);
-        for (int i =0; i< initialArraySize;i++){
+        for (int i = 0; i < initialArraySize; i++) {
             list.add(initFillElement);
         }
         return list;
@@ -46,7 +48,7 @@ public class Lists {
     }
 
     public static <E> LinkedList<E> newLinkedList(Iterable<E> elements) {
-       return Collects.newLinkedList(elements);
+        return Collects.newLinkedList(elements);
     }
 
     /**
@@ -54,7 +56,7 @@ public class Lists {
      */
     public static <E> LinkedList<E> newLinkedListWithFill(int initialArraySize, E initFillElement) {
         LinkedList<E> list = Collects.newLinkedList();
-        for (int i =0; i< initialArraySize;i++){
+        for (int i = 0; i < initialArraySize; i++) {
             list.add(initFillElement);
         }
         return list;
@@ -68,36 +70,27 @@ public class Lists {
         return Collects.newCopyOnWriteArrayList(elements);
     }
 
-    public static <E> List<E> asList( E first, E[] rest) {
+    public static <E> List<E> asList(E... elements) {
         List<E> list = new ArrayList<E>();
-        list.add(first);
-        Collects.addAll(list, rest);
+        Collects.addAll(list, elements);
         return list;
     }
 
-    public static <E> List<E> asList(E first,  E second, E[] rest) {
-        List<E> list = new ArrayList<E>();
-        list.add(first);
-        list.add(second);
-        Collects.addAll(list, rest);
-        return list;
-    }
-
-    public static <E> List<E> immutableList(){
+    public static <E> List<E> immutableList() {
         return Collects.immutableList();
     }
 
     /**
      * @since 5.2.4
      */
-    public static <E> List<E> immutableList(Collection<E> elements){
+    public static <E> List<E> immutableList(Collection<E> elements) {
         return Collects.immutableList(elements);
     }
 
     /**
      * @since 5.2.4
      */
-    public static <E> List<E> immutableList(E... elements){
+    public static <E> List<E> immutableList(E... elements) {
         return Collects.immutableList(elements);
     }
 }

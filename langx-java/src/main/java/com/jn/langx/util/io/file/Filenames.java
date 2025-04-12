@@ -47,8 +47,8 @@ public class Filenames {
         return normalize(path);
     }
 
-    public static String cleanAsUnixPath(String path){
-        String cleaned=cleanPath(path);
+    public static String cleanAsUnixPath(String path) {
+        String cleaned = cleanPath(path);
         return asUnixFilePath(cleaned);
     }
 
@@ -502,7 +502,7 @@ public class Filenames {
      * <p>
      * The output will be the same irrespective of the machine that the code is running on.
      *
-     * @param filename  the filename to query, null returns null
+     * @param filename the filename to query, null returns null
      * @return the path of the file, an empty string if none exists, null if invalid
      */
     public static String getFullDirectory(final String filename) {
@@ -532,7 +532,7 @@ public class Filenames {
      * <p>
      * The output will be the same irrespective of the machine that the code is running on.
      *
-     * @param filename  the filename to query, null returns null
+     * @param filename the filename to query, null returns null
      * @return the path of the file, an empty string if none exists, null if invalid
      */
     public static String getFullPathNoEndSeparator(final String filename) {
@@ -542,8 +542,8 @@ public class Filenames {
     /**
      * Does the work of getting the path.
      *
-     * @param filename  the filename
-     * @param includeSeparator  true to include the end separator
+     * @param filename         the filename
+     * @param includeSeparator true to include the end separator
      * @return the path
      */
     private static String doGetFullPath(final String filename, final boolean includeSeparator) {
@@ -565,7 +565,7 @@ public class Filenames {
         if (index < 0) {
             return filename.substring(0, prefix);
         }
-        int end = index + (includeSeparator ?  1 : 0);
+        int end = index + (includeSeparator ? 1 : 0);
         if (end == 0) {
             end++;
         }
@@ -580,7 +580,7 @@ public class Filenames {
      * <p>
      * The output will be the same irrespective of the machine that the code is running on.
      *
-     * @param filename  the filename to find the last path separator in, null returns -1
+     * @param filename the filename to find the last path separator in, null returns -1
      * @return the index of the last separator character, or -1 if there
      * is no such character
      */
@@ -608,7 +608,7 @@ public class Filenames {
      * <p>
      * The output will be the same irrespective of the machine that the code is running on.
      *
-     * @param filename  the filename to query, null returns null
+     * @param filename the filename to query, null returns null
      * @return the name of the file without the path, or an empty string if none exists.
      * Null bytes inside string will be removed
      */
@@ -623,8 +623,9 @@ public class Filenames {
 
     /**
      * Check the input for null bytes, a sign of unsanitized data being passed to to file level functions.
-     *
+     * <p>
      * This may be used for poison byte attacks.
+     *
      * @param path the path to check
      */
     private static void failIfNullBytePresent(final String path) {

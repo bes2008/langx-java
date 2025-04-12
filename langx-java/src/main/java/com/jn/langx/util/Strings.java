@@ -21,6 +21,7 @@ import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.io.unicode.BOM;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -4002,6 +4003,22 @@ public class Strings {
             ret[i] = sub.charAt(i);
         }
         return ret;
+    }
+
+    /**
+     * Normalize the path by suppressing sequences like "path/.." and
+     * inner simple dots.
+     * <p>The result is convenient for path comparison. For other uses,
+     * notice that Windows separators ("\") are replaced by simple slashes.
+     * <p><strong>NOTE</strong> that {@code cleanPath} should not be depended
+     * upon in a security context. Other mechanisms should be used to prevent
+     * path-traversal issues.
+     *
+     * @param path the original path
+     * @return the normalized path
+     */
+    public static String cleanPath(String path) {
+        return Filenames.cleanAsUnixPath(path);
     }
 
 }
