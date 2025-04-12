@@ -92,7 +92,7 @@ public interface UriBuilder {
      * encoded depends on the configured encoding mode. For more details, see
      * {@link UriComponentsBuilder#encode()}, or otherwise if building URIs
      * indirectly via {@code WebClient} or {@code RestTemplate}, see its
-     * {@link DefaultUriBuilderFactory#setEncodingMode encodingMode}.
+     * {@link EncodingMode encodingMode}.
      * Also see the <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#web-uri-encoding">
      * URI Encoding</a> section of the reference docs.
      *
