@@ -1,7 +1,10 @@
 ## 5.4.7
-+ 提供validator
-+ 增强FilenameSuffixFilter
-+ 完善Urls
++ 提供 Validator
++ 增强 FilenameSuffixFilter
++ 完善 Urls
++ 支持 glibc crypt
++ 支持 UriBuilder
++ 提供 HostAndPort
 
 ## 5.4.6
 * 添加 MatchExp
