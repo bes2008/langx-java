@@ -151,7 +151,7 @@ public abstract class UriComponents implements Serializable {
      */
     public final UriComponents expand(Map<String, ?> uriVariables) {
         Preconditions.checkNotNull(uriVariables, "'uriVariables' must not be null");
-        return expandInternal(new MapTemplateVariableResolver(uriVariables));
+        return replaceVariablesInternal(new MapTemplateVariableResolver(uriVariables));
     }
 
     /**
@@ -161,9 +161,9 @@ public abstract class UriComponents implements Serializable {
      * @param uriVariableValues the URI variable values
      * @return the expanded URI components
      */
-    public final UriComponents expand(Object... uriVariableValues) {
+    public final UriComponents replaceVariables(Object... uriVariableValues) {
         Preconditions.checkNotNull(uriVariableValues, "'uriVariableValues' must not be null");
-        return expandInternal(new VarArgsTemplateVariableResolver(uriVariableValues));
+        return replaceVariablesInternal(new VarArgsTemplateVariableResolver(uriVariableValues));
     }
 
     /**
@@ -173,9 +173,9 @@ public abstract class UriComponents implements Serializable {
      * @param uriVariables the URI template values
      * @return the expanded URI components
      */
-    public final UriComponents expand(UriTemplateVariableResolver uriVariables) {
+    public final UriComponents replaceVariables(UriTemplateVariableResolver uriVariables) {
         Preconditions.checkNotNull(uriVariables, "'uriVariables' must not be null");
-        return expandInternal(uriVariables);
+        return replaceVariablesInternal(uriVariables);
     }
 
     /**
@@ -185,7 +185,7 @@ public abstract class UriComponents implements Serializable {
      * @param uriVariables the URI template values
      * @return the expanded URI components
      */
-    abstract UriComponents expandInternal(UriTemplateVariableResolver uriVariables);
+    abstract UriComponents replaceVariablesInternal(UriTemplateVariableResolver uriVariables);
 
     /**
      * Normalize the path removing sequences like "path/..". Note that

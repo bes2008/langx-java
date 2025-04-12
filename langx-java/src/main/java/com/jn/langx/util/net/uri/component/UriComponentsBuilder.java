@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jn.langx.Builder;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
@@ -14,7 +15,6 @@ import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.net.http.HttpHeaders;
-import com.jn.langx.util.net.uri.UriBuilder;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -46,7 +46,7 @@ import com.jn.langx.util.struct.Holder;
  * @see #fromPath(String)
  * @see #fromUri(URI)
  */
-public class UriComponentsBuilder implements UriBuilder, Cloneable {
+public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
 
     private static final Regexp QUERY_PARAM_PATTERN = Regexps.compile("([^&=]+)(=?)([^&]+)?");
 
@@ -393,7 +393,7 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
             result = (hint == EncodingHint.ENCODE_TEMPLATE ? uric.encodeTemplate(this.charset) : uric);
         }
         if (!this.uriVariables.isEmpty()) {
-            result = result.expand(new UriTemplateVariableResolver() {
+            result = result.replaceVariables(new UriTemplateVariableResolver() {
                 @Override
                 public Object getValue(String name) {
                     if (UriComponentsBuilder.this.uriVariables.containsKey(name)) {
@@ -415,30 +415,28 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
      * @param uriVariables the map of URI variables
      * @return the URI components with expanded values
      */
-    public UriComponents buildAndExpand(Map<String, ?> uriVariables) {
+    public UriComponents buildAndReplaceVariables(Map<String, ?> uriVariables) {
         return build().expand(uriVariables);
     }
 
     /**
      * Build a {@code UriComponents} instance and replaces URI template variables
      * with the values from an array. This is a shortcut method which combines
-     * calls to {@link #build()} and then {@link UriComponents#expand(Object...)}.
+     * calls to {@link #build()} and then {@link UriComponents#replaceVariables(Object...)}.
      *
      * @param uriVariableValues the URI variable values
      * @return the URI components with expanded values
      */
-    public UriComponents buildAndExpand(Object... uriVariableValues) {
-        return build().expand(uriVariableValues);
+    public UriComponents buildAndReplaceVariables(Object... uriVariableValues) {
+        return build().replaceVariables(uriVariableValues);
     }
 
-    @Override
     public URI build(Object... uriVariables) {
-        return buildInternal(EncodingHint.ENCODE_TEMPLATE).expand(uriVariables).toUri();
+        return buildInternal(EncodingHint.ENCODE_TEMPLATE).replaceVariables(uriVariables).toUri();
     }
 
-    @Override
     public URI build(Map<String, ?> uriVariables) {
-        return buildInternal(EncodingHint.ENCODE_TEMPLATE).expand(uriVariables).toUri();
+        return buildInternal(EncodingHint.ENCODE_TEMPLATE).replaceVariables(uriVariables).toUri();
     }
 
     /**
@@ -519,7 +517,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder scheme(@Nullable String scheme) {
         this.scheme = scheme;
         return this;
@@ -540,14 +537,12 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder userInfo(@Nullable String userInfo) {
         this.userInfo = userInfo;
         resetSchemeSpecificPart();
         return this;
     }
 
-    @Override
     public UriComponentsBuilder host(@Nullable String host) {
         this.host = host;
         if (host != null) {
@@ -556,7 +551,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder port(int port) {
         Preconditions.checkTrue(port >= -1, "Port must be >= -1");
         this.port = String.valueOf(port);
@@ -566,7 +560,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder port(@Nullable String port) {
         this.port = port;
         if (port != null) {
@@ -575,21 +568,18 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder path(String path) {
         this.pathBuilder.addPath(path);
         resetSchemeSpecificPart();
         return this;
     }
 
-    @Override
     public UriComponentsBuilder pathSegment(String... pathSegments) throws IllegalArgumentException {
         this.pathBuilder.addPathSegments(pathSegments);
         resetSchemeSpecificPart();
         return this;
     }
 
-    @Override
     public UriComponentsBuilder replacePath(@Nullable String path) {
         this.pathBuilder = new CompositePathComponentBuilder();
         if (path != null) {
@@ -599,7 +589,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder query(@Nullable String query) {
         if (query != null) {
             RegexpMatcher matcher = QUERY_PARAM_PATTERN.matcher(query);
@@ -616,7 +605,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder replaceQuery(@Nullable String query) {
         this.queryParams.clear();
         if (query != null) {
@@ -626,7 +614,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder queryParam(String name, Object... values) {
         Preconditions.checkNotNull(name, "Name must not be null");
         if (!Objs.isEmpty(values)) {
@@ -652,12 +639,10 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return null;
     }
 
-    @Override
     public UriComponentsBuilder queryParam(String name, @Nullable Collection<?> values) {
         return queryParam(name, (Objs.isEmpty(values) ? EMPTY_VALUES : values.toArray()));
     }
 
-    @Override
     public UriComponentsBuilder queryParamIfPresent(String name, Holder<?> valueHolder) {
         if (!valueHolder.isNull()) {
             Object v = valueHolder.get();
@@ -674,7 +659,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
     /**
      * {@inheritDoc}
      */
-    @Override
     public UriComponentsBuilder queryParams(@Nullable MultiValueMap<String, String> params) {
         if (params != null) {
             this.queryParams.addAll(params);
@@ -683,7 +667,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder replaceQueryParam(String name, Object... values) {
         Preconditions.checkNotNull(name, "Name must not be null");
         this.queryParams.remove(name);
@@ -694,7 +677,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder replaceQueryParam(String name, @Nullable Collection<?> values) {
         return replaceQueryParam(name, (Objs.isEmpty(values) ? EMPTY_VALUES : values.toArray()));
     }
@@ -702,7 +684,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
     /**
      * {@inheritDoc}
      */
-    @Override
     public UriComponentsBuilder replaceQueryParams(@Nullable MultiValueMap<String, String> params) {
         this.queryParams.clear();
         if (params != null) {
@@ -711,7 +692,6 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
         return this;
     }
 
-    @Override
     public UriComponentsBuilder fragment(@Nullable String fragment) {
         if (fragment != null) {
             Preconditions.checkNotEmpty(fragment, "Fragment must not be empty");
@@ -728,7 +708,7 @@ public class UriComponentsBuilder implements UriBuilder, Cloneable {
      * time, the available ones are expanded, while unresolved URI placeholders
      * are left in place and can still be expanded later.
      * <p>In contrast to {@link UriComponents#expand(Map)} or
-     * {@link #buildAndExpand(Map)}, this method is useful when you need to
+     * {@link #buildAndReplaceVariables(Map)}, this method is useful when you need to
      * supply URI variables without building the {@link UriComponents} instance
      * just yet, or perhaps pre-expand some shared default values such as host
      * and port.
