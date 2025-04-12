@@ -110,7 +110,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
      * @see #fromPath(String)
      * @see #fromUri(URI)
      */
-    protected UriComponentsBuilder() {
+    public UriComponentsBuilder() {
         this.pathBuilder = new CompositePathComponentBuilder();
     }
 

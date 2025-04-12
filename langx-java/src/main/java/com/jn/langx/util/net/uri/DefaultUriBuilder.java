@@ -17,8 +17,6 @@ import java.util.Map;
 public class DefaultUriBuilder implements UriBuilder {
     private boolean parsePath;
     private EncodingMode encodingMode;
-    @Nullable
-    private UriComponentsBuilder baseUri;
     private final Map<String, ?> defaultUriVariables;
 
     private final UriComponentsBuilder uriComponentsBuilder;
@@ -27,33 +25,32 @@ public class DefaultUriBuilder implements UriBuilder {
         this(null, uriTemplate, null, true, null);
     }
 
-    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUri, String uriTemplate) {
-        this(baseUri, uriTemplate, null, true, null);
+    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUriBuilder, String uriTemplate) {
+        this(baseUriBuilder, uriTemplate, null, true, null);
     }
 
-    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUri, String uriTemplate, EncodingMode encodingMode) {
-        this(baseUri, uriTemplate, encodingMode, true, null);
+    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUriBuilder, String uriTemplate, EncodingMode encodingMode) {
+        this(baseUriBuilder, uriTemplate, encodingMode, true, null);
     }
 
-    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUri, String uriTemplate, EncodingMode encodingMode, boolean parsePath) {
-        this(baseUri, uriTemplate, encodingMode, parsePath, null);
+    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUriBuilder, String uriTemplate, EncodingMode encodingMode, boolean parsePath) {
+        this(baseUriBuilder, uriTemplate, encodingMode, parsePath, null);
     }
 
-    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUri, String uriTemplate, EncodingMode encodingMode, boolean parsePath, Map<String, ?> defaultUriVariables) {
-        this.baseUri = baseUri;
+    public DefaultUriBuilder(@Nullable UriComponentsBuilder baseUriBuilder, String uriTemplate, EncodingMode encodingMode, boolean parsePath, Map<String, ?> defaultUriVariables) {
         this.encodingMode = encodingMode == null ? EncodingMode.TEMPLATE_AND_VALUES : encodingMode;
         this.parsePath = parsePath;
         if (defaultUriVariables == null) {
             defaultUriVariables = new HashMap<String, Object>();
         }
         this.defaultUriVariables = defaultUriVariables;
-        this.uriComponentsBuilder = initUriComponentsBuilder(uriTemplate);
+        this.uriComponentsBuilder = initUriComponentsBuilder(baseUriBuilder, uriTemplate);
     }
 
-    private UriComponentsBuilder initUriComponentsBuilder(String uriTemplate) {
+    private UriComponentsBuilder initUriComponentsBuilder(UriComponentsBuilder baseUri, String uriTemplate) {
         UriComponentsBuilder result;
         if (Strings.isEmpty(uriTemplate)) {
-            result = (baseUri != null ? baseUri.cloneBuilder() : UriComponentsBuilder.newInstance());
+            result = (baseUri != null ? baseUri.cloneBuilder() : new UriComponentsBuilder());
         } else if (baseUri != null) {
             UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(uriTemplate);
             UriComponents uri = builder.build();
