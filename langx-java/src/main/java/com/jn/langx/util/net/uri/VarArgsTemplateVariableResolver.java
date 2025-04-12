@@ -22,7 +22,7 @@ public class VarArgsTemplateVariableResolver implements UriTemplateVariableResol
     @Nullable
     public Object getValue(@Nullable String name) {
         if (!this.valueIterator.hasNext()) {
-            throw new IllegalArgumentException("Not enough variable values available to expand '" + name + "'");
+            throw new IllegalArgumentException("Not enough variable values available to replace '" + name + "'");
         }
         return this.valueIterator.next();
     }
