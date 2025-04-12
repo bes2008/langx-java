@@ -88,7 +88,7 @@ public class UriTemplate implements Serializable {
      *                                  or if it does not contain values for all the variable names
      */
     public URI expand(Map<String, ?> uriVariables) {
-        UriComponents expandedComponents = this.uriComponents.expand(uriVariables);
+        UriComponents expandedComponents = this.uriComponents.replaceVariables(uriVariables);
         UriComponents encodedComponents = expandedComponents.encode();
         return encodedComponents.toUri();
     }

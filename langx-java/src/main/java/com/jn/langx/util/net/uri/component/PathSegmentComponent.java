@@ -5,7 +5,6 @@ import com.jn.langx.text.StringJoiner;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
-import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
@@ -62,7 +61,7 @@ final class PathSegmentComponent implements PathComponent {
         List<String> pathSegments = getPathSegments();
         List<String> expandedPathSegments = new ArrayList<String>(pathSegments.size());
         for (String pathSegment : pathSegments) {
-            String expandedPathSegment = UriComponents.replaceUriComponent(pathSegment, uriVariables, encoder);
+            String expandedPathSegment = UriComponentUtils.replaceUriComponent(pathSegment, uriVariables, encoder);
             expandedPathSegments.add(expandedPathSegment);
         }
         return new PathSegmentComponent(expandedPathSegments);

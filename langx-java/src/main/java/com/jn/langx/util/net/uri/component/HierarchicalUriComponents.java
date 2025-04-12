@@ -328,13 +328,13 @@ final class HierarchicalUriComponents extends UriComponents {
                 "URI components already encoded, and could not possibly contain '{' or '}'.");
 
         // Array-based vars rely on the order below...
-        String schemeTo = replaceUriComponent(getScheme(), uriVariables, this.variableEncoder);
-        String userInfoTo = replaceUriComponent(this.userInfo, uriVariables, this.variableEncoder);
-        String hostTo = replaceUriComponent(this.host, uriVariables, this.variableEncoder);
-        String portTo = replaceUriComponent(this.port, uriVariables, this.variableEncoder);
+        String schemeTo = UriComponentUtils.replaceUriComponent(getScheme(), uriVariables, this.variableEncoder);
+        String userInfoTo = UriComponentUtils.replaceUriComponent(this.userInfo, uriVariables, this.variableEncoder);
+        String hostTo = UriComponentUtils.replaceUriComponent(this.host, uriVariables, this.variableEncoder);
+        String portTo = UriComponentUtils.replaceUriComponent(this.port, uriVariables, this.variableEncoder);
         PathComponent pathTo = this.path.replaceVariables(uriVariables, this.variableEncoder);
         MultiValueMap<String, String> queryParamsTo = expandQueryParams(uriVariables);
-        String fragmentTo = replaceUriComponent(getFragment(), uriVariables, this.variableEncoder);
+        String fragmentTo = UriComponentUtils.replaceUriComponent(getFragment(), uriVariables, this.variableEncoder);
 
         return new HierarchicalUriComponents(schemeTo, fragmentTo, userInfoTo,
                 hostTo, portTo, pathTo, queryParamsTo, this.encodeState, this.variableEncoder);
@@ -347,10 +347,10 @@ final class HierarchicalUriComponents extends UriComponents {
         Collects.forEach(this.queryParams, new Consumer2<String, Collection<String>>() {
             @Override
             public void accept(String key, Collection<String> values) {
-                String name = replaceUriComponent(key, queryVariables, HierarchicalUriComponents.this.variableEncoder);
+                String name = UriComponentUtils.replaceUriComponent(key, queryVariables, HierarchicalUriComponents.this.variableEncoder);
                 List<String> expandedValues = new ArrayList<String>(values.size());
                 for (String value : values) {
-                    expandedValues.add(replaceUriComponent(value, queryVariables, HierarchicalUriComponents.this.variableEncoder));
+                    expandedValues.add(UriComponentUtils.replaceUriComponent(value, queryVariables, HierarchicalUriComponents.this.variableEncoder));
                 }
                 result.put(name, expandedValues);
             }

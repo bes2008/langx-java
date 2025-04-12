@@ -4,13 +4,10 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
-import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 
 import java.util.List;
-
-import static com.jn.langx.util.net.uri.component.UriComponents.replaceUriComponent;
 
 /**
  * Represents a path backed by a String.
@@ -47,7 +44,7 @@ final class FullPathComponent implements PathComponent {
 
     @Override
     public PathComponent replaceVariables(UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
-        String expandedPath = replaceUriComponent(getPath(), uriVariables, encoder);
+        String expandedPath = UriComponentUtils.replaceUriComponent(getPath(), uriVariables, encoder);
         return new FullPathComponent(expandedPath);
     }
 

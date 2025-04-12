@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
@@ -17,7 +18,12 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 
 /**
  * Utility methods for URI encoding and decoding based on RFC 3986.
@@ -502,5 +508,80 @@ public abstract class UriComponentUtils {
         }
         return null;
     }
+
+
+    @Nullable
+    public static String replaceUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables) {
+        return replaceUriComponent(source, uriVariables, null);
+    }
+
+    /**
+     * Captures URI template variable names.
+     */
+    private static final Regexp NAMES_PATTERN = Regexps.compile("\\{([^/]+?)\\}");
+
+    @Nullable
+    public static String replaceUriComponent(@Nullable String source, UriTemplateVariableResolver uriVariables, @Nullable Operator<String> encoder) {
+
+        if (source == null) {
+            return null;
+        }
+        if (source.indexOf('{') == -1) {
+            return source;
+        }
+        if (source.indexOf(':') != -1) {
+            source = sanitizeSource(source);
+        }
+        RegexpMatcher matcher = NAMES_PATTERN.matcher(source);
+        StringBuilder sb = new StringBuilder();
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            String varName = getVariableName(match);
+            Object varValue = uriVariables.getValue(varName);
+            if (UriTemplateVariableResolver.SKIP_VALUE.equals(varValue)) {
+                continue;
+            }
+            String formatted = getVariableValueAsString(varValue);
+            formatted = encoder != null ? encoder.apply(formatted) : Matcher.quoteReplacement(formatted);
+            matcher.appendReplacement(sb, formatted);
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
+    // Static expansion helpers
+
+    /**
+     * Remove nested "{}" such as in URI vars with regular expressions.
+     */
+    private static String sanitizeSource(String source) {
+        int level = 0;
+        int lastCharIndex = 0;
+        char[] chars = new char[source.length()];
+        for (int i = 0; i < source.length(); i++) {
+            char c = source.charAt(i);
+            if (c == '{') {
+                level++;
+            }
+            if (c == '}') {
+                level--;
+            }
+            if (level > 1 || (level == 1 && c == '}')) {
+                continue;
+            }
+            chars[lastCharIndex++] = c;
+        }
+        return new String(chars, 0, lastCharIndex);
+    }
+
+    private static String getVariableName(String match) {
+        int colonIdx = match.indexOf(':');
+        return (colonIdx != -1 ? match.substring(0, colonIdx) : match);
+    }
+
+    private static String getVariableValueAsString(@Nullable Object variableValue) {
+        return (variableValue != null ? variableValue.toString() : "");
+    }
+
 
 }

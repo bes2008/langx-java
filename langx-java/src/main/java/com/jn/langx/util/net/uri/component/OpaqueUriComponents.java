@@ -84,9 +84,9 @@ final class OpaqueUriComponents extends UriComponents {
 
     @Override
     protected UriComponents replaceVariablesInternal(UriTemplateVariableResolver uriVariables) {
-        String expandedScheme = replaceUriComponent(getScheme(), uriVariables);
-        String expandedSsp = replaceUriComponent(getSchemeSpecificPart(), uriVariables);
-        String expandedFragment = replaceUriComponent(getFragment(), uriVariables);
+        String expandedScheme = UriComponentUtils.replaceUriComponent(getScheme(), uriVariables);
+        String expandedSsp = UriComponentUtils.replaceUriComponent(getSchemeSpecificPart(), uriVariables);
+        String expandedFragment = UriComponentUtils.replaceUriComponent(getFragment(), uriVariables);
         return new OpaqueUriComponents(expandedScheme, expandedSsp, expandedFragment);
     }
 

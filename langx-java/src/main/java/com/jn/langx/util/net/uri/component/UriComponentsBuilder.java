@@ -224,30 +224,6 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         return result;
     }
 
-    /**
-     * Build a {@code UriComponents} instance and replaces URI template variables
-     * with the values from a map. This is a shortcut method which combines
-     * calls to {@link #build()} and then {@link UriComponents#expand(Map)}.
-     *
-     * @param uriVariables the map of URI variables
-     * @return the URI components with expanded values
-     */
-    public UriComponents buildAndReplaceVariables(Map<String, ?> uriVariables) {
-        return build().expand(uriVariables);
-    }
-
-    /**
-     * Build a {@code UriComponents} instance and replaces URI template variables
-     * with the values from an array. This is a shortcut method which combines
-     * calls to {@link #build()} and then {@link UriComponents#replaceVariables(Object...)}.
-     *
-     * @param uriVariableValues the URI variable values
-     * @return the URI components with expanded values
-     */
-    public UriComponents buildAndReplaceVariables(Object... uriVariableValues) {
-        return build().replaceVariables(uriVariableValues);
-    }
-
     public URI build(Object... uriVariables) {
         return buildInternal(EncodingHint.ENCODE_TEMPLATE).replaceVariables(uriVariables).toUri();
     }
@@ -525,8 +501,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
      * <p>The provided variables may be a subset of all required ones. At build
      * time, the available ones are expanded, while unresolved URI placeholders
      * are left in place and can still be expanded later.
-     * <p>In contrast to {@link UriComponents#expand(Map)} or
-     * {@link #buildAndReplaceVariables(Map)}, this method is useful when you need to
+     * <p>In contrast to {@link UriComponents#replaceVariables(Map)}, this method is useful when you need to
      * supply URI variables without building the {@link UriComponents} instance
      * just yet, or perhaps pre-expand some shared default values such as host
      * and port.
