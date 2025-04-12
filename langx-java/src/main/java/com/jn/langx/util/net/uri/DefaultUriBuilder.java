@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @since 5.4.7
+ * @since 5.5.0
  */
 public class DefaultUriBuilder implements UriBuilder {
     private boolean parsePath;

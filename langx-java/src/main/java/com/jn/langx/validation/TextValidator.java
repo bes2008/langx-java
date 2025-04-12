@@ -9,10 +9,12 @@ import com.jn.langx.validation.rule.ValidationResult;
 
 import java.util.List;
 
+/**
+ * @since 5.5.0
+ */
 public class TextValidator implements Validator<String> {
     private List<Rule> rules = Lists.newArrayList();
     /**
-     *
      * 必要的验证规则，如果为null，则代表是 optional
      */
     private RequiredRule requiredRule = new RequiredRule("required");
@@ -47,13 +49,13 @@ public class TextValidator implements Validator<String> {
 
     public ValidationResult validate(@NonNull String value) {
         boolean optional = requiredRule == null;
-        if(Strings.isEmpty(value)){
-            if(optional){
+        if (Strings.isEmpty(value)) {
+            if (optional) {
                 return ValidationResult.ofValid();
             }
             return requiredRule.test(value);
         }
-        ValidationResult result =  ValidationResult.ofValid();
+        ValidationResult result = ValidationResult.ofValid();
         for (Rule rule : this.rules) {
             ValidationResult r2 = rule.test(value);
             result = result.merge(r2);

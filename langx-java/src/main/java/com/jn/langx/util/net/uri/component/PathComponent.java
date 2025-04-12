@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Defines the contract for path (segments).
  *
- * @since 5.4.7
+ * @since 5.5.0
  */
 interface PathComponent extends Serializable {
 

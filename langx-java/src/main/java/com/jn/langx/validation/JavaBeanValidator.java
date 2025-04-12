@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * 只提供JavaBean中原生字段、String、Enum字段的校验
  *
+ * @since 5.5.0
  */
 public class JavaBeanValidator implements Validator<Object> {
     private Map<Field, Validator> fieldValidators = Maps.newHashMap();

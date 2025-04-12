@@ -8,7 +8,7 @@ import java.util.Iterator;
 /**
  * URI template variables backed by a variable argument array.
  *
- * @since 5.4.7
+ * @since 5.5.0
  */
 public class VarArgsTemplateVariableResolver implements UriTemplateVariableResolver {
 

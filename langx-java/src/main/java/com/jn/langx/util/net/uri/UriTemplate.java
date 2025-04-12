@@ -31,7 +31,7 @@ import com.jn.langx.util.regexp.Regexps;
  * <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-uri-building">reference docs</a>
  * for further details.
  *
- * @since 5.4.7
+ * @since 5.5.0
  */
 public class UriTemplate implements Serializable {
 

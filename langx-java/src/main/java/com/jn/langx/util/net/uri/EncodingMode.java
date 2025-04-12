@@ -17,7 +17,7 @@ import java.util.Map;
  * <li>{@link #NONE}
  * </ul>
  *
- * @since 5.4.7
+ * @since 5.5.0
  */
 public enum EncodingMode {
 

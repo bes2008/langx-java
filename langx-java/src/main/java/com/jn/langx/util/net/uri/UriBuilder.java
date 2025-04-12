@@ -21,7 +21,7 @@ import java.util.Optional;
  * preferences, a base URI, and others as implementation concerns.
  *
  * @see UriComponentsBuilder
- * @since 5.4.7
+ * @since 5.5.0
  */
 public interface UriBuilder {
 

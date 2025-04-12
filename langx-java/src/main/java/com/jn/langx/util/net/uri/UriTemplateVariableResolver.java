@@ -6,7 +6,7 @@ import com.jn.langx.annotation.Nullable;
 /**
  * Defines the contract for URI Template variables.
  *
- * @since 5.4.7
+ * @since 5.5.0
  */
 public interface UriTemplateVariableResolver {
 
