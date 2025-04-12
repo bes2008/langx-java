@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 /**
- * Enum to represent multiple URI encoding strategies. The following are
+ * Enum to represent URI encoding strategies. The following are
  * available:
  * <ul>
  * <li>{@link #TEMPLATE_AND_VALUES}
@@ -20,7 +20,7 @@ public enum EncodingMode {
 
     /**
      * Pre-encode the URI template first, then strictly encode URI variables
-     * when expanded, with the following rules:
+     * when replaced, with the following rules:
      * <ul>
      * <li>For the URI template replace <em>only</em> non-ASCII and illegal
      * (within a given URI component type) characters with escaped octets.
@@ -47,7 +47,7 @@ public enum EncodingMode {
     VALUES_ONLY,
 
     /**
-     * Expand URI variables first, and then encode the resulting URI
+     * Replace URI variables first, and then encode the resulting URI
      * component values, replacing <em>only</em> non-ASCII and illegal
      * (within a given URI component type) characters, but not characters
      * with reserved meaning.

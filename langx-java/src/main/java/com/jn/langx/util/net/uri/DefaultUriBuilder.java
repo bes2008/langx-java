@@ -65,16 +65,16 @@ public class DefaultUriBuilder implements UriBuilder {
         return result;
     }
 
-    private void parsePathIfNecessary(UriComponentsBuilder result) {
+    private void parsePathIfNecessary(UriComponentsBuilder uriComponentsBuilder) {
         if (parsePath && encodingMode.equals(EncodingMode.URI_COMPONENT)) {
-            UriComponents uric = result.build();
+            UriComponents uric = uriComponentsBuilder.build();
             String path = uric.getPath();
-            result.replacePath(null);
+            uriComponentsBuilder.replacePath(null);
             for (String segment : uric.getPathSegments()) {
-                result.pathSegment(segment);
+                uriComponentsBuilder.pathSegment(segment);
             }
             if (path != null && path.endsWith("/")) {
-                result.path("/");
+                uriComponentsBuilder.path("/");
             }
         }
     }
