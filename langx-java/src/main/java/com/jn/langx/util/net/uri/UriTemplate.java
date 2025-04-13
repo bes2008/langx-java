@@ -87,7 +87,7 @@ public class UriTemplate implements Serializable {
      * @throws IllegalArgumentException if {@code uriVariables} is {@code null};
      *                                  or if it does not contain values for all the variable names
      */
-    public URI expand(Map<String, ?> uriVariables) {
+    public URI replaceVariables(Map<String, ?> uriVariables) {
         UriComponents expandedComponents = this.uriComponents.replaceVariables(uriVariables);
         UriComponents encodedComponents = expandedComponents.encode();
         return encodedComponents.toUri();
@@ -108,7 +108,7 @@ public class UriTemplate implements Serializable {
      * @throws IllegalArgumentException if {@code uriVariables} is {@code null}
      *                                  or if it does not contain sufficient variables
      */
-    public URI expand(Object... uriVariableValues) {
+    public URI replaceVariables(Object... uriVariableValues) {
         UriComponents expandedComponents = this.uriComponents.replaceVariables(uriVariableValues);
         UriComponents encodedComponents = expandedComponents.encode();
         return encodedComponents.toUri();
