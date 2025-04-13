@@ -18,7 +18,7 @@ import com.jn.langx.util.regexp.Regexps;
 
 /**
  * Representation of a URI template that can be expanded with URI variables via
- * {@link #expand(Map)}, {@link #expand(Object[])}, or matched to a URL via
+ * {@link #replaceVariables(Map)}, {@link #replaceVariables(Object[])}, or matched to a URL via
  * {@link #match(String)}. This class is designed to be thread-safe and
  * reusable, and allows any number of expand or match calls.
  *
