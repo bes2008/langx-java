@@ -1,13 +1,6 @@
 package com.jn.langx.util.net.uri.component;
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
@@ -21,6 +14,13 @@ import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.QueryUriTemplateVariableResolver;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Extension of {@link UriComponents} for hierarchical URIs.
@@ -200,14 +200,14 @@ final class HierarchicalUriComponents extends UriComponents {
             return this;
         }
 
-        // Remember the charset to encode URI variables later..
+        // Remember the charset to encode URI variables later.
         this.variableEncoder = new Operator<String>() {
             @Override
             public String apply(String value) {
                 return UriComponentUtils.encodeUriComponent(value, charset, UriComponentType.URI);
             }
         };
-        DefaultUriTemplateEncoder encoder = new DefaultUriTemplateEncoder(charset);
+        DefaultUriComponentEncoder encoder = new DefaultUriComponentEncoder(charset);
         String schemeTo = (getScheme() != null ? encoder.apply(getScheme(), UriComponentType.SCHEME) : null);
         String fragmentTo = (getFragment() != null ? encoder.apply(getFragment(), UriComponentType.FRAGMENT) : null);
         String userInfoTo = (getUserInfo() != null ? encoder.apply(getUserInfo(), UriComponentType.USER_INFO) : null);

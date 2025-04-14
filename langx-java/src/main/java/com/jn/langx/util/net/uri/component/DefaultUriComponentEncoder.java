@@ -2,7 +2,7 @@ package com.jn.langx.util.net.uri.component;
 
 import java.nio.charset.Charset;
 
-class DefaultUriTemplateEncoder implements UriComponentEncoder {
+class DefaultUriComponentEncoder implements UriComponentEncoder {
 
     private final Charset charset;
 
@@ -14,7 +14,7 @@ class DefaultUriTemplateEncoder implements UriComponentEncoder {
 
     private boolean variableWithNameAndRegex;
 
-    DefaultUriTemplateEncoder(Charset charset) {
+    DefaultUriComponentEncoder(Charset charset) {
         this.charset = charset;
     }
 
