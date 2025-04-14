@@ -63,7 +63,7 @@ public class DefaultUriBuilder implements UriBuilder {
             result = UriComponentsBuilder.fromUriString(uriTemplate);
         }
         if (encodingMode.equals(EncodingMode.TEMPLATE_AND_VALUES)) {
-            result.encode();
+            result.enableEncode();
         }
         parsePathIfNecessary(result);
         return result;

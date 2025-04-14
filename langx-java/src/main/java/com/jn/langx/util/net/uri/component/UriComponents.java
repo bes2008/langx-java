@@ -107,13 +107,13 @@ public abstract class UriComponents implements Serializable {
     /**
      * Invoke this <em>after</em> expanding URI variables to encode the
      * resulting URI component values.
-     * <p>In comparison to {@link UriComponentsBuilder#encode()}, this method
+     * <p>In comparison to {@link UriComponentsBuilder#enableEncode()} , this method
      * <em>only</em> replaces non-ASCII and illegal (within a given URI
      * component type) characters, but not characters with reserved meaning.
-     * For most cases, {@link UriComponentsBuilder#encode()} is more likely
+     * For most cases, {@link UriComponentsBuilder#enableEncode()} is more likely
      * to give the expected result.
      *
-     * @see UriComponentsBuilder#encode()
+     * @see UriComponentsBuilder#enableEncode()
      */
     public final UriComponents encode() {
         return encode(Charsets.UTF_8);
@@ -123,7 +123,7 @@ public abstract class UriComponents implements Serializable {
      * A variant of {@link #encode()} with a charset other than "UTF-8".
      *
      * @param charset the charset to use for encoding
-     * @see UriComponentsBuilder#encode(Charset)
+     * @see UriComponentsBuilder#enableTemplateEncode(Charset)
      */
     public abstract UriComponents encode(Charset charset);
 
@@ -185,7 +185,7 @@ public abstract class UriComponents implements Serializable {
      * <p>This method amounts to simple String concatenation of the current
      * URI component values and as such the result may contain illegal URI
      * characters, for example if URI variables have not been expanded or if
-     * encoding has not been applied via {@link UriComponentsBuilder#encode()}
+     * encoding has not been applied via {@link UriComponentsBuilder#enableTemplateEncode()}
      * or {@link #encode()}.
      */
     public abstract String toUriString();

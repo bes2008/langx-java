@@ -35,7 +35,7 @@ public enum EncodingMode {
      * encoded, while {@link #URI_COMPONENT} by comparison is useful only
      * if intentionally expanding URI variables with reserved characters.
      *
-     * @see UriComponentsBuilder#encode()
+     * @see UriComponentsBuilder#enableEncode() ()
      */
     TEMPLATE_AND_VALUES,
 

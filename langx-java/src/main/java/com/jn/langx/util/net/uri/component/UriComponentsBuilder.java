@@ -1,11 +1,5 @@
 package com.jn.langx.util.net.uri.component;
 
-import java.net.URI;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.jn.langx.Builder;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
@@ -20,6 +14,12 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
+
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Builder for {@link UriComponents}.
@@ -137,12 +137,14 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
     // Encode methods
 
     /**
+     * 对模板预编码
+     * <p>
      * Request to have the URI template pre-encoded at build time, and
-     * URI variables encoded separately when expanded.
+     * URI variables encoded separately when replaced.
      * <p>In comparison to {@link UriComponents#encode()}, this method has the
      * same effect on the URI template, i.e. each URI component is encoded by
      * replacing non-ASCII and illegal (within the URI component type) characters
-     * with escaped octets. However URI variables are encoded more strictly, by
+     * with escaped octets. However, URI variables are encoded more strictly, by
      * also escaping characters with reserved meaning.
      * <p>For most cases, this method is more likely to give the expected result
      * because in treats URI variables as opaque data to be fully encoded, while
@@ -156,16 +158,16 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
      * {@link UriComponents#encode()} since that will also encode anything that
      * incidentally looks like a URI variable.
      */
-    public final UriComponentsBuilder encode() {
-        return encode(Charsets.UTF_8);
+    public final UriComponentsBuilder enableEncode() {
+        return enableEncode(Charsets.UTF_8);
     }
 
     /**
-     * A variant of {@link #encode()} with a charset other than "UTF-8".
+     * A variant of {@link #enableEncode()} with a charset other than "UTF-8".
      *
      * @param charset the charset to use for encoding
      */
-    public UriComponentsBuilder encode(Charset charset) {
+    public UriComponentsBuilder enableEncode(Charset charset) {
         this.encodeTemplate = true;
         this.charset = charset;
         return this;
@@ -203,9 +205,9 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         if (this.ssp != null) {
             result = new OpaqueUriComponents(this.scheme, this.ssp, this.fragment);
         } else {
-            MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>(this.queryParams);
+            MultiValueMap<String, String> theQueryParams = new LinkedMultiValueMap<String, String>(this.queryParams);
             HierarchicalUriComponents uric = new HierarchicalUriComponents(this.scheme, this.fragment,
-                    this.userInfo, this.host, this.port, this.pathBuilder.build(), queryParams,
+                    this.userInfo, this.host, this.port, this.pathBuilder.build(), theQueryParams,
                     hint == EncodingHint.FULLY_ENCODED);
             result = (hint == EncodingHint.ENCODE_TEMPLATE ? uric.encodeTemplate(this.charset) : uric);
         }
@@ -241,7 +243,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
      * </pre>
      * <p>However if {@link #uriVariables(Map) URI variables} have been provided
      * then the URI template is pre-encoded separately from URI variables (see
-     * {@link #encode()} for details), i.e. equivalent to:
+     * {@link #enableEncode()} for details), i.e. equivalent to:
      * <pre>
      * String uri = builder.encode().build().toUriString()
      * </pre>
