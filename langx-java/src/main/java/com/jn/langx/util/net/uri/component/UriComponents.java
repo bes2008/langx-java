@@ -123,7 +123,7 @@ public abstract class UriComponents implements Serializable {
      * A variant of {@link #encode()} with a charset other than "UTF-8".
      *
      * @param charset the charset to use for encoding
-     * @see UriComponentsBuilder#enableTemplateEncode(Charset)
+     * @see UriComponentsBuilder#enableEncode(Charset)
      */
     public abstract UriComponents encode(Charset charset);
 
@@ -185,7 +185,7 @@ public abstract class UriComponents implements Serializable {
      * <p>This method amounts to simple String concatenation of the current
      * URI component values and as such the result may contain illegal URI
      * characters, for example if URI variables have not been expanded or if
-     * encoding has not been applied via {@link UriComponentsBuilder#enableTemplateEncode()}
+     * encoding has not been applied via {@link UriComponentsBuilder#enableEncode()}
      * or {@link #encode()}.
      */
     public abstract String toUriString();
