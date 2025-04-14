@@ -19,6 +19,8 @@ import java.util.Optional;
  * shortcuts to expand directly into {@link URI} rather than
  * {@link UriComponents} and also leaving common concerns such as encoding
  * preferences, a base URI, and others as implementation concerns.
+ * <p>
+ * URI Standard: <a href="https://url.spec.whatwg.org/">URI Standard</a>
  *
  * @see UriComponentsBuilder
  * @since 5.5.0
