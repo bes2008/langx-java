@@ -8,7 +8,6 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.net.http.HttpHeaders;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -410,6 +409,13 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         return this;
     }
 
+    /**
+     * 在 uri 后面拼接 query param
+     *
+     * @param name
+     * @param values
+     * @return
+     */
     public UriComponentsBuilder queryParam(String name, Object... values) {
         Preconditions.checkNotNull(name, "Name must not be null");
         if (!Objs.isEmpty(values)) {
@@ -514,12 +520,6 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
     public UriComponentsBuilder uriVariables(Map<String, Object> uriVariables) {
         this.uriVariables.putAll(uriVariables);
         return this;
-    }
-
-
-    private boolean isForwardedSslOn(HttpHeaders headers) {
-        String forwardedSsl = headers.getFirst("X-Forwarded-Ssl");
-        return Strings.isNotBlank(forwardedSsl) && forwardedSsl.equalsIgnoreCase("on");
     }
 
 
