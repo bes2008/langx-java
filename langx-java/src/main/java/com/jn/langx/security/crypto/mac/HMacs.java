@@ -11,6 +11,7 @@ import javax.crypto.Mac;
 import javax.crypto.MacSpi;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,14 +52,26 @@ public class HMacs extends Securitys {
         return length;
     }
 
-    public static int getBlockLength(Mac mac) {
+    public static String getDigestAlgorithm(Mac mac) {
         String algorithm = mac.getAlgorithm();
         if (Strings.startsWith(algorithm, "hmac", true)) {
             algorithm = algorithm.substring(4);
         }
+        if (Strings.startsWith(algorithm, "-", true)) {
+            algorithm = algorithm.substring(1);
+        }
+        return algorithm;
+    }
+
+    public static int getBlockLength(Mac mac) {
+        String algorithm = getDigestAlgorithm(mac);
         return getBlockLength(algorithm);
     }
 
+    /**
+     * @param algorithm the hmac algorithm, e.g.: hmacmd5, hmacsha1, hmacsha256, etc.
+     * @return the mac object
+     */
     public static Mac createMac(String algorithm) {
         Mac mac;
         try {
@@ -85,17 +98,15 @@ public class HMacs extends Securitys {
         }
     }
 
-    public static Mac createMac(String algorithm, byte[] secretKey) {
-        SecretKey key;
-        if (secretKey == null) {
-            key = PKIs.createSecretKey(algorithm);
-        } else {
-            key = new SecretKeySpec(secretKey, algorithm);
-        }
-        return createMac(algorithm, key);
+    public static Mac createMac(String algorithm, byte[] hmacKey) {
+        return createMac(algorithm, new HMacKey(hmacKey));
     }
 
-    public static Mac createMac(String algorithm, SecretKey key) {
+    /**
+     * hmac 运算时，key 可以是任何类型的 key，包括：Secret Key, Public Key, Private Key, Password, IV, Salt, etc.
+     * 长度是任意的非空byte[]
+     */
+    public static Mac createMac(String algorithm, HMacKey key) {
         Mac mac = createMac(algorithm);
         try {
             mac.init(key);
@@ -105,12 +116,17 @@ public class HMacs extends Securitys {
         return mac;
     }
 
-    public static byte[] hmac(String algorithm, byte[] secretKey, byte[] data) {
-        SecretKey key = new SecretKeySpec(secretKey, algorithm);
+    public static byte[] hmac(String algorithm, SecretKey hmackey, byte[] data) {
+        HMacKey key = new HMacKey(hmackey);
         return hmac(algorithm, key, data);
     }
 
-    public static byte[] hmac(String algorithm, SecretKey key, byte[] data) {
+    public static byte[] hmac(String algorithm, byte[] hmackey, byte[] data) {
+        HMacKey key = new HMacKey(hmackey);
+        return hmac(algorithm, key, data);
+    }
+
+    public static byte[] hmac(String algorithm, HMacKey key, byte[] data) {
         Mac mac = createMac(algorithm, key);
         try {
             return mac.doFinal(data);
