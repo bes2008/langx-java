@@ -1,16 +1,15 @@
-package com.jn.langx.security.crypto.pbe.pswdenc;
+package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
 
 import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.Stringifys;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.struct.Pair;
-import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
-import org.bouncycastle.crypto.params.Argon2Parameters;
 
-public class Argon2PasswordEncryptor implements PasswordEncryptor{
+public class Argon2PasswordEncryptor implements PasswordEncryptor {
     private int saltBitLength;
     /**
      * 生成的 hash 的 长度
@@ -23,16 +22,16 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
 
     private int iterations;
 
-    public Argon2PasswordEncryptor(){
-        this(16*8, 32*8, 1, 1<<14, 2);
+    public Argon2PasswordEncryptor() {
+        this(16 * 8, 32 * 8, 1, 1 << 14, 2);
     }
 
     public Argon2PasswordEncryptor(int saltBitLength, int hashBitLength, int parallelism, int memory, int iterations) {
-        this.saltBitLength=saltBitLength;
-        this.hashBitLength=hashBitLength;
-        this.parallelism=parallelism;
-        this.memory=memory;
-        this.iterations =iterations;
+        this.saltBitLength = saltBitLength;
+        this.hashBitLength = hashBitLength;
+        this.parallelism = parallelism;
+        this.memory = memory;
+        this.iterations = iterations;
     }
 
     @Override
@@ -54,7 +53,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
         return stringifyHash(params, hash);
     }
 
-    private String stringifyHash( Argon2Parameters parameters, byte[] hash){
+    private String stringifyHash(Argon2Parameters parameters, byte[] hash) {
         StringBuilder stringBuilder = new StringBuilder();
         switch (parameters.getType()) {
             case Argon2Parameters.ARGON2_d:
@@ -78,7 +77,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
         return stringBuilder.toString();
     }
 
-    private Pair<byte[], Argon2Parameters> extract(String encodedPassword ){
+    private Pair<byte[], Argon2Parameters> extract(String encodedPassword) {
         Argon2Parameters.Builder paramsBuilder;
         String[] parts = encodedPassword.split("\\$");
         if (parts.length < 4) {
@@ -86,14 +85,14 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
         }
         int currentPart = 1;
         String type = parts[currentPart++];
-        if(Strings.equals("argon2d",type)) {
+        if (Strings.equals("argon2d", type)) {
             paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_d);
-        }else if(Strings.equals("argon2i",type)) {
+        } else if (Strings.equals("argon2i", type)) {
             paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_i);
-        }else if(Strings.equals("argon2id",type)) {
+        } else if (Strings.equals("argon2id", type)) {
             paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id);
-        }else{
-            throw new IllegalArgumentException("Invalid algorithm type" );
+        } else {
+            throw new IllegalArgumentException("Invalid algorithm type");
         }
         if (parts[currentPart].startsWith("v=")) {
             paramsBuilder.withVersion(Integer.parseInt(parts[currentPart].substring(2)));
@@ -115,11 +114,11 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
             throw new IllegalArgumentException("Invalid parallelity parameter");
         }
         paramsBuilder.withParallelism(Integer.parseInt(performanceParams[2].substring(2)));
-        String salt= parts[currentPart++];
+        String salt = parts[currentPart++];
         paramsBuilder.withSalt(Stringifys.toBytes(salt, StringifyFormat.BASE64));
 
-        String hash=parts[currentPart];
-        byte[] hashBytes= Stringifys.toBytes(hash, StringifyFormat.BASE64);
+        String hash = parts[currentPart];
+        byte[] hashBytes = Stringifys.toBytes(hash, StringifyFormat.BASE64);
         return new Pair<byte[], Argon2Parameters>(hashBytes, paramsBuilder.build());
     }
 
@@ -128,9 +127,9 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
         if (encryptedPassword == null) {
             return false;
         }
-        Pair<byte[], Argon2Parameters> p=extract(encryptedPassword);
-        byte[] actualHash=p.getKey();
-        Argon2Parameters parameters= p.getValue();
+        Pair<byte[], Argon2Parameters> p = extract(encryptedPassword);
+        byte[] actualHash = p.getKey();
+        Argon2Parameters parameters = p.getValue();
         byte[] expectedHash = new byte[actualHash.length];
 
         Argon2BytesGenerator generator = new Argon2BytesGenerator();
