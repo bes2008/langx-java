@@ -8,9 +8,8 @@ import com.jn.langx.security.crypto.pbe.pbkdf.ScryptPBKDF;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
 import com.jn.langx.util.Objs;
 
-import java.security.MessageDigest;
 
-public class ScryptPasswordEncryptor implements PasswordEncryptor{
+public class ScryptPasswordEncryptor implements PasswordEncryptor {
     private int cpuCost;
 
     private int memoryCost;
@@ -21,22 +20,22 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor{
 
     private int saltBitLength;
 
-    public ScryptPasswordEncryptor(){
-        this(65536, 8, 1, 32*8,16*6);
+    public ScryptPasswordEncryptor() {
+        this(65536, 8, 1, 32 * 8, 16 * 6);
     }
 
     public ScryptPasswordEncryptor(int cpuCost, int memoryCost, int parallelization, int keyBitLength, int saltBitLength) {
-        this.cpuCost=cpuCost;
-        this.memoryCost=memoryCost;
-        this.parallelization=parallelization;
-        this.keyBitLength= keyBitLength;
+        this.cpuCost = cpuCost;
+        this.memoryCost = memoryCost;
+        this.parallelization = parallelization;
+        this.keyBitLength = keyBitLength;
         this.saltBitLength = saltBitLength;
     }
 
     @Override
     public String encrypt(String password) {
         byte[] salt = new RandomBytesSaltGenerator().get(Securitys.getBytesLength(this.saltBitLength));
-        DerivedPBEKey pbeKey = ScryptPBKDF.generateSecretKey("scrypt", password, salt, cpuCost,memoryCost, parallelization, keyBitLength);
+        DerivedPBEKey pbeKey = ScryptPBKDF.generateSecretKey("scrypt", password, salt, cpuCost, memoryCost, parallelization, keyBitLength);
 
         String params = Long.toString(
                 ((int) (Math.log(this.cpuCost) / Math.log(2)) << 16L) | this.memoryCost << 8 | this.parallelization,
@@ -57,10 +56,10 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor{
         } else {
             long params = Long.parseLong(parts[1], 16);
             byte[] salt = Stringifys.toBytes(parts[2], StringifyFormat.BASE64);
-            byte[] secretKey = Stringifys.toBytes(parts[3],StringifyFormat.BASE64);
-            int cpuCost = (int)Math.pow(2.0, (double)(params >> 16 & 65535L));
-            int memoryCost = (int)params >> 8 & 255;
-            int parallelization = (int)params & 255;
+            byte[] secretKey = Stringifys.toBytes(parts[3], StringifyFormat.BASE64);
+            int cpuCost = (int) Math.pow(2.0, (double) (params >> 16 & 65535L));
+            int memoryCost = (int) params >> 8 & 255;
+            int parallelization = (int) params & 255;
 
             DerivedPBEKey pbeKey = ScryptPBKDF.generateSecretKey("scrypt", plainPassword, salt, cpuCost, memoryCost, parallelization, keyBitLength);
             return Objs.deepEquals(secretKey, pbeKey.getEncoded());

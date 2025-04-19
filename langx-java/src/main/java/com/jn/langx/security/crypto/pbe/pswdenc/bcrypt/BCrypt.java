@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pswdenc;
+package com.jn.langx.security.crypto.pbe.pswdenc.bcrypt;
 
 
 import java.io.UnsupportedEncodingException;
@@ -8,7 +8,7 @@ import java.security.SecureRandom;
  * BCrypt implements OpenBSD-style Blowfish password hashing using
  * the scheme described in "A Future-Adaptable Password Scheme" by
  * Niels Provos and David Mazieres.
- *
+ * <p>
  * 用户密码和随机生成的盐（salt）一起被用来生成一个Blowfish密钥，然后这个密钥被用来初始化Blowfish的密钥调度数组
  * <p>
  * This password hashing system tries to thwart off-line password
@@ -416,7 +416,7 @@ public class BCrypt {
     private static byte char64(char x) {
         if (x > index_64.length)
             return -1;
-        return index_64[ x];
+        return index_64[x];
     }
 
     /**
@@ -532,8 +532,8 @@ public class BCrypt {
      * Initialise the Blowfish key schedule
      */
     private void init_key() {
-        P =  P_orig.clone();
-        S =  S_orig.clone();
+        P = P_orig.clone();
+        S = S_orig.clone();
     }
 
     /**
@@ -716,9 +716,9 @@ public class BCrypt {
      * Generate a salt for use with the BCrypt.hashpw() method
      *
      * @param logRounds the log2 of the number of rounds of
-     *                   hashing to apply - the work factor therefore increases as
-     *                   2**log_rounds.
-     * @param random     an instance of SecureRandom to use
+     *                  hashing to apply - the work factor therefore increases as
+     *                  2**log_rounds.
+     * @param random    an instance of SecureRandom to use
      * @return an encoded salt value
      */
     public static String gensalt(int logRounds, SecureRandom random) {
@@ -744,8 +744,8 @@ public class BCrypt {
      * Generate a salt for use with the BCrypt.hashpw() method
      *
      * @param logRounds the log2 of the number of rounds of
-     *                   hashing to apply - the work factor therefore increases as
-     *                   2**log_rounds.
+     *                  hashing to apply - the work factor therefore increases as
+     *                  2**log_rounds.
      * @return an encoded salt value
      */
     public static String gensalt(int logRounds) {
