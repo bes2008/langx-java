@@ -51,6 +51,14 @@ public class HMacs extends Securitys {
         return length;
     }
 
+    public static int getBlockLength(Mac mac) {
+        String algorithm = mac.getAlgorithm();
+        if (Strings.startsWith(algorithm, "hmac", true)) {
+            algorithm = algorithm.substring(4);
+        }
+        return getBlockLength(algorithm);
+    }
+
     public static Mac createMac(String algorithm) {
         Mac mac;
         try {
@@ -58,7 +66,7 @@ public class HMacs extends Securitys {
             return mac;
         } catch (Throwable ex) {
             if (ex instanceof NoSuchAlgorithmException) {
-                if (Strings.startsWith(algorithm, "hmac", true)) {
+                if (Strings.startsWith(algorithm, "Hmac", true)) {
                     String macSpiClassName = Securitys.getLangxSecurityProvider().findAlgorithm("Mac", algorithm);
                     if (ClassLoaders.hasClass(macSpiClassName, PKIs.class.getClassLoader())) {
                         try {
