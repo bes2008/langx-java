@@ -196,6 +196,18 @@ public class PrimitiveArrays {
         });
     }
 
+    public static void clear(int[] data) {
+        if (data != null) {
+            Arrays.fill(data, 0);
+        }
+    }
+
+    public static void clear(byte[] data) {
+        if (null != data) {
+            Arrays.fill(data, (byte) 0x00);
+        }
+    }
+
     /**
      * convert a Short[] to a short[]
      *
@@ -462,7 +474,7 @@ public class PrimitiveArrays {
      * @return <tt>true</tt> if the two arrays are equal
      */
     public static boolean equals(byte[] a, byte[] a2) {
-        return Bytes.arrayEquals(a,a2);
+        return Bytes.arrayEquals(a, a2);
     }
 
     public static boolean equals(byte[] a, Byte[] a2) {
