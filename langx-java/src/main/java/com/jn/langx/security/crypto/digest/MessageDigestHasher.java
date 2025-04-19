@@ -16,12 +16,12 @@ import java.security.MessageDigest;
 public class MessageDigestHasher {
     private static final int DEFAULT_ITERATIONS = 1;
 
-    private int saltBytesLength=0;
+    private int saltBytesLength = 0;
     /**
      * 加盐值
      */
     @NonNull
-    private BytesSaltGenerator saltGenerator= new EmptySaltGenerator();
+    private BytesSaltGenerator saltGenerator = new EmptySaltGenerator();
     /**
      * hash 计算 迭代次数
      */
@@ -94,7 +94,7 @@ public class MessageDigestHasher {
         return doHash(source, salt, iterations);
     }
 
-    public String hash(byte[] source, StringifyFormat outputFormat){
+    public String hash(byte[] source, StringifyFormat outputFormat) {
         byte[] hashed = hash(source);
         return Stringifys.stringify(hashed, outputFormat);
     }
@@ -114,15 +114,17 @@ public class MessageDigestHasher {
         }
 
         byte[] bytes = data;
+        digest.update(bytes);
         if (Emptys.isNotEmpty(salt)) {
-            digest.reset();
-            bytes = digest.digest(salt);
+            digest.update(salt);
         }
+        bytes = digest.digest();
+        digest.reset();
 
         iterations = Maths.max(1, iterations);
-        for (int i = 0; i < iterations; i++) {
-            digest.reset();
+        for (int i = 1; i < iterations; i++) {
             bytes = digest.digest(bytes);
+            digest.reset();
         }
         return bytes;
     }
