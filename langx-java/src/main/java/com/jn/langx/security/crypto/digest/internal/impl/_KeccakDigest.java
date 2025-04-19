@@ -94,7 +94,7 @@ public class _KeccakDigest implements Digest {
      *
      * @return internal byte length of a block.
      */
-    public int getBufferSize() {
+    public int getByteLength() {
         return rate / 8;
     }
 

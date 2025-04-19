@@ -128,7 +128,7 @@ public abstract class GeneralDigest implements Digest, Memoable {
         Bytes.longToBigEndian(byteCount, state, 8);
     }
 
-    public int getBufferSize() {
+    public int getByteLength() {
         return BYTE_LENGTH;
     }
 

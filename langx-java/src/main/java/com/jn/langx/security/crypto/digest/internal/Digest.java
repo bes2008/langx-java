@@ -26,7 +26,7 @@ public interface Digest {
      *
      * @return byte length of the digests internal buffer.
      */
-    int getBufferSize();
+    int getByteLength();
 
     /**
      * update the message digest with a single byte.
