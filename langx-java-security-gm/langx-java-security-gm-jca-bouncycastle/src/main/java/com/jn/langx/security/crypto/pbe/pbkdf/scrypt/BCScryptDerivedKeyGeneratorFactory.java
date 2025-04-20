@@ -1,29 +1,22 @@
-package com.jn.langx.security.crypto.pbe.pbkdf;
+package com.jn.langx.security.crypto.pbe.pbkdf.scrypt;
 
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
+import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGeneratorFactory;
+import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
+import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordToPkcs5Utf8Converter;
+import com.jn.langx.security.crypto.pbe.pswdenc.scrypt.ScryptPBKDFKeySpec;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Strings;
-import org.bouncycastle.crypto.generators.SCrypt;
 
-public class ScryptPBKDF implements PBKDF {
-    public static DerivedPBEKey generateSecretKey(String pbeAlgorithm, String password, byte[] salt, int cpuCost, int memoryCost, int parallelization, int keyBitLength){
-        ScryptPBKDFKeySpec keySpec = new ScryptPBKDFKeySpec(password.toCharArray(), salt, keyBitLength, 1);
-        keySpec.setParallel(parallelization);
-        keySpec.setCpuCost(cpuCost);
-        keySpec.setMemoryCost(memoryCost);
-        DerivedPBEKey pbeKey = new ScryptPBKDF().apply(pbeAlgorithm, keySpec);
-        return pbeKey;
-    }
-
-
+public class BCScryptDerivedKeyGeneratorFactory implements DerivedKeyGeneratorFactory<DerivedKeyGenerator> {
     @Override
-    public DerivedPBEKey apply(String pbeAlgorithm, PBKDFKeySpec keySpec) {
-        ScryptPBKDFKeySpec keyGenParameters = (ScryptPBKDFKeySpec)keySpec;
+    public DerivedKeyGenerator get(PBKDFKeySpec keySpec) {
+        ScryptPBKDFKeySpec keyGenParameters = (ScryptPBKDFKeySpec) keySpec;
         char[] rawPassword = keyGenParameters.getPassword();
         byte[] salt = keyGenParameters.getSalt();
 
         int keyBytesLength = PKIs.getBytesLength(keySpec.getKeyLength());
-        int cpuCost= keyGenParameters.getCpuCost();
+        int cpuCost = keyGenParameters.getCpuCost();
         if (cpuCost <= 1) {
             throw new IllegalArgumentException("Cpu cost parameter must be > 1.");
         }
@@ -44,8 +37,11 @@ public class ScryptPBKDF implements PBKDF {
             throw new IllegalArgumentException("Key length must be >= 1 and <= " + Integer.MAX_VALUE);
         }
 
-        byte[] generatedKey = SCrypt.generate(Strings.getBytesUtf8(new String(rawPassword)), salt, cpuCost, memoryCost, parallelization, keyBytesLength);
-        DerivedPBEKey pbeKey = new DerivedPBEKey(pbeAlgorithm, keySpec, generatedKey);
-        return pbeKey;
+        BCScryptDerivedKeyGenerator keyGenerator = new BCScryptDerivedKeyGenerator();
+        keyGenerator.init(new PasswordToPkcs5Utf8Converter().apply(rawPassword), salt, keySpec.getIterationCount());
+        keyGenerator.setCpuCost(cpuCost);
+        keyGenerator.setMemoryCost(memoryCost);
+        keyGenerator.setParallelization(parallelization);
+        return keyGenerator;
     }
 }

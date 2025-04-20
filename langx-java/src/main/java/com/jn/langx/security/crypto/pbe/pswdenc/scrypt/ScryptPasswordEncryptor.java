@@ -1,12 +1,16 @@
-package com.jn.langx.security.crypto.pbe.pswdenc;
+package com.jn.langx.security.crypto.pbe.pswdenc.scrypt;
 
 import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.Stringifys;
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedPBEKey;
-import com.jn.langx.security.crypto.pbe.pbkdf.ScryptPBKDF;
+import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFEngine;
+import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFEngineBuilder;
+import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.spi.CommonServiceProvider;
 
 
 public class ScryptPasswordEncryptor implements PasswordEncryptor {
@@ -35,7 +39,7 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor {
     @Override
     public String encrypt(String password) {
         byte[] salt = new RandomBytesSaltGenerator().get(Securitys.getBytesLength(this.saltBitLength));
-        DerivedPBEKey pbeKey = ScryptPBKDF.generateSecretKey("scrypt", password, salt, cpuCost, memoryCost, parallelization, keyBitLength);
+        DerivedPBEKey pbeKey = generateSCryptKey("scrypt", password, salt, cpuCost, memoryCost, parallelization, keyBitLength);
 
         String params = Long.toString(
                 ((int) (Math.log(this.cpuCost) / Math.log(2)) << 16L) | this.memoryCost << 8 | this.parallelization,
@@ -61,9 +65,28 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor {
             int memoryCost = (int) params >> 8 & 255;
             int parallelization = (int) params & 255;
 
-            DerivedPBEKey pbeKey = ScryptPBKDF.generateSecretKey("scrypt", plainPassword, salt, cpuCost, memoryCost, parallelization, keyBitLength);
+            DerivedPBEKey pbeKey = generateSCryptKey("scrypt", plainPassword, salt, cpuCost, memoryCost, parallelization, keyBitLength);
             return Objs.deepEquals(secretKey, pbeKey.getEncoded());
         }
     }
+
+    private DerivedPBEKey generateSCryptKey(String pbeAlgorithm, String password, byte[] salt, int cpuCost, int memoryCost, int parallelization, int keyBitLength) {
+        ScryptPBKDFKeySpec keySpec = new ScryptPBKDFKeySpec(password.toCharArray(), salt, keyBitLength, 1);
+        keySpec.setParallel(parallelization);
+        keySpec.setCpuCost(cpuCost);
+        keySpec.setMemoryCost(memoryCost);
+
+
+        ScryptDerivedKeyGeneratorFactory factory = CommonServiceProvider.loadFirstService(ScryptDerivedKeyGeneratorFactory.class);
+        if (factory == null) {
+            throw new SecurityException("ScryptDerivedKeyGeneratorFactory impl not found, check the classpath for 'langx-java-security-gm-jca-bouncycastle.jar'");
+        }
+
+        PBKDFEngine engine = new PBKDFEngineBuilder().withKeyGeneratorFactory(factory).build();
+
+        DerivedPBEKey pbeKey = engine.apply(pbeAlgorithm, keySpec);
+        return pbeKey;
+    }
+
 
 }

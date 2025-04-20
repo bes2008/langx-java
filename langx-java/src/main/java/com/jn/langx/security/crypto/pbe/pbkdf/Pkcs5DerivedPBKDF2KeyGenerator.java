@@ -4,7 +4,6 @@ import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.mac.HMacKey;
 import com.jn.langx.security.crypto.mac.HMacs;
-import com.jn.langx.util.Chars;
 
 import javax.crypto.Mac;
 import java.security.MessageDigest;
@@ -17,7 +16,7 @@ import java.security.MessageDigest;
  * <a href=https://www.rsasecurity.com/rsalabs/pkcs/pkcs-5/index.html>
  * RSA's PKCS5 Page</a>
  */
-public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedPBEKeyGenerator {
+public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedKeyGenerator {
     private Mac hMac;
     private byte[] state;
 
@@ -61,7 +60,7 @@ public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedPBEKeyGenerator {
         }
     }
 
-    private byte[] generateDerivedKey(int dkLen) {
+    private byte[] generateDerivedKeyInternal(int dkLen) {
         try {
             int hLen = HMacs.getBlockLength(hMac);
             int l = (dkLen + hLen - 1) / hLen;
@@ -96,15 +95,11 @@ public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedPBEKeyGenerator {
      * @param keySize the size of the key we want (in bits)
      * @return a KeyParameter object.
      */
-    public DerivedPBEKey generateDerivedParameters(int keySize) {
+    public SimpleDerivedKey generateDerivedKey(int keySize) {
         keySize = keySize / 8;
 
-        byte[] dKey = generateDerivedKey(keySize);
-
-        PBKDFKeySpec pbkdfKeySpec = new PBKDFKeySpec(Chars.utf8BytesToChars(password), salt, keySize * 8, 0, iterationCount);
-
-        DerivedPBEKey dk = new DerivedPBEKey("PBKDF2-HMAC-" + HMacs.getDigestAlgorithm(this.hMac), pbkdfKeySpec, dKey);
-        return dk;
+        byte[] dKey = generateDerivedKeyInternal(keySize);
+        return new SimpleDerivedKey(dKey);
     }
 
     /**
@@ -116,15 +111,16 @@ public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedPBEKeyGenerator {
      * @param ivSize  the size of the iv we want (in bits)
      * @return a ParametersWithIV object.
      */
-    public DerivedPBEKey generateDerivedParameters(int keySize, int ivSize) {
+    public SimpleDerivedKey generateDerivedKeyWithIV(int keySize, int ivSize) {
         keySize = keySize / 8;
         ivSize = ivSize / 8;
 
-
-        byte[] dKey = generateDerivedKey(keySize + ivSize);
-        PBKDFKeySpec pbkdfKeySpec = new PBKDFKeySpec(Chars.utf8BytesToChars(password), salt, keySize * 8, ivSize * 8, iterationCount);
-        DerivedPBEKey dk = new DerivedPBEKey("PBKDF2-HMAC-" + HMacs.getDigestAlgorithm(this.hMac), pbkdfKeySpec, dKey);
-        return dk;
+        byte[] dKey = generateDerivedKeyInternal(keySize + ivSize);
+        byte[] key = new byte[keySize];
+        byte[] iv = new byte[ivSize];
+        System.arraycopy(dKey, 0, key, 0, keySize);
+        System.arraycopy(dKey, keySize, iv, 0, ivSize);
+        return new SimpleDerivedKey(key, iv);
     }
 
     /**
@@ -134,7 +130,7 @@ public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedPBEKeyGenerator {
      * @param keySize the size of the key we want (in bits)
      * @return a KeyParameter object.
      */
-    public DerivedPBEKey generateDerivedMacParameters(int keySize) {
-        return generateDerivedParameters(keySize);
+    public SimpleDerivedKey generateDerivedKeyUseHMac(int keySize) {
+        return generateDerivedKey(keySize);
     }
 }

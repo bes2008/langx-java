@@ -1,5 +1,7 @@
-package com.jn.langx.security.crypto.pbe.pbkdf;
+package com.jn.langx.security.crypto.pbe.pswdenc.scrypt;
 
+
+import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 
 public class ScryptPBKDFKeySpec extends PBKDFKeySpec {
     /**
@@ -8,7 +10,7 @@ public class ScryptPBKDFKeySpec extends PBKDFKeySpec {
     int cpuCost;
 
     /**
-     *  the block size, must be >= 1.
+     * the block size, must be >= 1.
      */
     int memoryCost;
 

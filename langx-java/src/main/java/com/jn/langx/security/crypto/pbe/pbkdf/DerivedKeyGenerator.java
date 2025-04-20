@@ -4,7 +4,7 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 /**
  * super class for all Password Based Encryption (PBE) parameter generator classes.
  */
-public abstract class DerivedPBEKeyGenerator {
+public abstract class DerivedKeyGenerator {
     protected byte[] password;
     protected byte[] salt;
     protected int iterationCount;
@@ -12,7 +12,7 @@ public abstract class DerivedPBEKeyGenerator {
     /**
      * base constructor.
      */
-    protected DerivedPBEKeyGenerator() {
+    protected DerivedKeyGenerator() {
     }
 
     /**
@@ -59,28 +59,28 @@ public abstract class DerivedPBEKeyGenerator {
     /**
      * generate derived parameters for a key of length keySize.
      *
-     * @param keySize the length, in bits, of the key required.
+     * @param keyBitSize the length, in bits, of the key required.
      * @return a parameters object representing a key.
      */
-    public abstract DerivedPBEKey generateDerivedParameters(int keySize);
+    public abstract SimpleDerivedKey generateDerivedKey(int keyBitSize);
 
     /**
      * generate derived parameters for a key of length keySize, and
      * an initialisation vector (IV) of length ivSize.
      *
-     * @param keySize the length, in bits, of the key required.
-     * @param ivSize  the length, in bits, of the iv required.
+     * @param keyBitSize the length, in bits, of the key required.
+     * @param ivSize     the length, in bits, of the iv required.
      * @return a parameters object representing a key and an IV.
      */
-    public abstract DerivedPBEKey generateDerivedParameters(int keySize, int ivSize);
+    public abstract SimpleDerivedKey generateDerivedKeyWithIV(int keyBitSize, int ivBitSize);
 
     /**
      * generate derived parameters for a key of length keySize, specifically
      * for use with a MAC.
      *
-     * @param keySize the length, in bits, of the key required.
+     * @param keyBitSize the length, in bits, of the key required.
      * @return a parameters object representing a key.
      */
-    public abstract DerivedPBEKey generateDerivedMacParameters(int keySize);
+    public abstract SimpleDerivedKey generateDerivedKeyUseHMac(int keyBitSize);
 
 }

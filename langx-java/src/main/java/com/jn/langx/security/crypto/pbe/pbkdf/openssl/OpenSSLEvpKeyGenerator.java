@@ -1,23 +1,33 @@
-package com.jn.langx.security.crypto.pbe.pbkdf;
+package com.jn.langx.security.crypto.pbe.pbkdf.openssl;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.key.PKIs;
-import com.jn.langx.util.collection.Arrs;
-import com.jn.langx.util.io.Charsets;
+import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
+import com.jn.langx.security.crypto.pbe.pbkdf.SimpleDerivedKey;
 
 import java.security.MessageDigest;
-import java.util.Arrays;
 
-/**
- * @since 5.3.9
- */
-class OpenSSLEvpKDF implements PBKDF {
+public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
+    private String digestAlgorithm;
+
+    public OpenSSLEvpKeyGenerator() {
+
+    }
+
+    public void setDigestAlgorithm(String digestAlgorithm) {
+        this.digestAlgorithm = digestAlgorithm;
+    }
 
     @Override
-    public DerivedPBEKey apply(String pbeAlgorithm, PBKDFKeySpec keySpec){
+    public SimpleDerivedKey generateDerivedKey(int keySize) {
+        return generateDerivedKeyWithIV(keySize, keySize);
+    }
+
+    @Override
+    public SimpleDerivedKey generateDerivedKeyWithIV(int keyBitSize, int ivBitSize) {
         try {
-            int keyBytesLength = PKIs.getBytesLength(keySpec.getKeyLength());
-            int ivBytesLength = PKIs.getBytesLength(keySpec.getIvBitSize());
+            int keyBytesLength = PKIs.getBytesLength(keyBitSize);
+            int ivBytesLength = PKIs.getBytesLength(ivBitSize);
             byte[] key = new byte[keyBytesLength];
             byte[] iv = new byte[ivBytesLength];
 
@@ -30,21 +40,17 @@ class OpenSSLEvpKDF implements PBKDF {
             int numberOfDerivedWords = 0;
             byte[] block = null;
 
-            char[] pswd = Arrs.copy(keySpec.getPassword());
-            byte[] passphraseBytes = new String(pswd).getBytes(Charsets.UTF_8);
-            // 为了安全考虑：避免从heap dump 中查看到密码
-            Arrays.fill(pswd,'\u0000');
-            MessageDigest hasher = MessageDigest.getInstance(keySpec.getHashAlgorithm());
+            MessageDigest hasher = MessageDigest.getInstance(digestAlgorithm);
             while (numberOfDerivedWords < targetKeySizeInWorld) {
                 if (block != null) {
                     hasher.update(block);
                 }
-                hasher.update(passphraseBytes);
-                block = hasher.digest(keySpec.getSalt());
+                hasher.update(password);
+                block = hasher.digest(salt);
                 hasher.reset();
 
                 // Iterations
-                for (int i = 1; i < keySpec.getIterationCount(); i++) {
+                for (int i = 1; i < iterationCount; i++) {
                     block = hasher.digest(block);
                     hasher.reset();
                 }
@@ -58,10 +64,14 @@ class OpenSSLEvpKDF implements PBKDF {
             System.arraycopy(derivedBytes, 0, key, 0, keySizeInWord * 4);
             System.arraycopy(derivedBytes, keySizeInWord * 4, iv, 0, ivSizeInWord * 4);
 
-            DerivedPBEKey derivedKey = new DerivedPBEKey(pbeAlgorithm, keySpec, key, iv);
-            return derivedKey;
-        }catch (Throwable e){
+            return new SimpleDerivedKey(key, iv);
+        } catch (Throwable e) {
             throw new SecurityException(e);
         }
+    }
+
+    @Override
+    public SimpleDerivedKey generateDerivedKeyUseHMac(int keySize) {
+        return generateDerivedKey(keySize);
     }
 }
