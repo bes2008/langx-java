@@ -15,10 +15,10 @@ import java.security.spec.KeySpec;
  * @since 5.3.9
  */
 public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
-    private PBKDF pbkdf;
+    private PBKDFEngine pbkdf;
     private String pbeAlgorithm;
 
-    public PBKDFKeyFactorySpi(String pbeAlgorithm, PBKDF pbkdf){
+    public PBKDFKeyFactorySpi(String pbeAlgorithm, PBKDFEngine pbkdf) {
         this.pbeAlgorithm = pbeAlgorithm;
         this.pbkdf = pbkdf;
     }
@@ -26,15 +26,15 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
 
     @Override
     protected SecretKey engineGenerateSecret(KeySpec keySpec) throws InvalidKeySpecException {
-        if (keySpec instanceof SecretKey){
-            return new SecretKeySpec(((SecretKeySpec)keySpec).getEncoded(), pbeAlgorithm);
+        if (keySpec instanceof SecretKey) {
+            return new SecretKeySpec(((SecretKeySpec) keySpec).getEncoded(), pbeAlgorithm);
         }
-        if(keySpec instanceof PBKDFKeySpec){
-            PBKDFKeySpec pbeKeySpec=(PBKDFKeySpec)keySpec;
+        if (keySpec instanceof PBKDFKeySpec) {
+            PBKDFKeySpec pbeKeySpec = (PBKDFKeySpec) keySpec;
             try {
                 DerivedPBEKey derivedKey = pbkdf.apply(pbeAlgorithm, pbeKeySpec);
                 return derivedKey;
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 throw new SecurityException(e);
             }
         }
@@ -50,8 +50,8 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
             throw new InvalidKeySpecException("key parameter is null");
         }
 
-        if(Reflects.isSubClassOrEquals(DerivedPBEKey.class, keySpec)){
-            DerivedPBEKey pbeKey = (DerivedPBEKey)key;
+        if (Reflects.isSubClassOrEquals(DerivedPBEKey.class, keySpec)) {
+            DerivedPBEKey pbeKey = (DerivedPBEKey) key;
             return new PBKDFKeySpec(pbeKey.getPassword(), pbeKey.getSalt(), pbeKey.getKeyBitSize(), pbeKey.getIVBitSize(), pbeKey.getIterationCount(), pbeKey.getHashAlgorithm());
         }
 
@@ -63,18 +63,18 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
 
     @Override
     protected SecretKey engineTranslateKey(SecretKey key) throws InvalidKeyException {
-        if (key == null){
+        if (key == null) {
             throw new InvalidKeyException("key parameter is null");
         }
 
-        if (!key.getAlgorithm().equalsIgnoreCase(this.pbeAlgorithm)){
+        if (!key.getAlgorithm().equalsIgnoreCase(this.pbeAlgorithm)) {
             throw new InvalidKeyException("Key not of type " + this.pbeAlgorithm + ".");
         }
 
-        if(key instanceof DerivedPBEKey){
+        if (key instanceof DerivedPBEKey) {
             try {
                 return (SecretKey) ((DerivedPBEKey) key).clone();
-            }catch (Throwable e ){
+            } catch (Throwable e) {
                 throw Throwables.wrapAsRuntimeException(e);
             }
         }
