@@ -3,6 +3,8 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 
 /**
  * super class for all Password Based Encryption (PBE) parameter generator classes.
+ *
+ * @since 5.5.0
  */
 public abstract class DerivedKeyGenerator {
     protected byte[] password;

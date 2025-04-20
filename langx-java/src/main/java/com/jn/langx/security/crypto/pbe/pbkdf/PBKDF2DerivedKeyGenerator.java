@@ -1,6 +1,7 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.mac.HMacKey;
 import com.jn.langx.security.crypto.mac.HMacs;
@@ -13,22 +14,42 @@ import java.security.MessageDigest;
  * This generator uses a SHA-1 HMac as the calculation function.
  * <p>
  * The document this implementation is based on can be found at
- * <a href=https://www.rsasecurity.com/rsalabs/pkcs/pkcs-5/index.html>
- * RSA's PKCS5 Page</a>
+ * <a href="https://www.rsasecurity.com/rsalabs/pkcs/pkcs-5/index.html">RSA's PKCS5 Page</a>,
+ * <a href="https://www.rfc-editor.org/rfc/rfc8018#section-5.2">rfc8018</a>.
+ *
+ * @see <a href="org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator">PKCS5S2ParametersGenerator</a>
+ * @since 5.5.0
  */
-public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedKeyGenerator {
+public class PBKDF2DerivedKeyGenerator extends DerivedKeyGenerator {
     private Mac hMac;
     private byte[] state;
 
     /**
      * construct a PKCS5 Scheme 2 Parameters generator.
      */
-    public Pkcs5DerivedPBKDF2KeyGenerator() {
-        this(MessageDigests.getDigest("SHA-1"));
+    public PBKDF2DerivedKeyGenerator() {
+        this("HmacSHA1");
     }
 
-    public Pkcs5DerivedPBKDF2KeyGenerator(MessageDigest digest) {
-        hMac = HMacs.createMac("Hmac" + digest.getAlgorithm());
+    public PBKDF2DerivedKeyGenerator(String hmacAlgorithm) {
+        setHmacAlgorithm(hmacAlgorithm);
+    }
+
+    @Override
+    public void init(byte[] password, byte[] salt, int iterationCount) {
+        super.init(password, salt, iterationCount);
+        if (iterationCount < 1) {
+            this.iterationCount = 1;
+        }
+
+        if (salt.length < 8) {
+            throw new IllegalArgumentException("salt length must be at least 8 bytes.");
+        }
+
+    }
+
+    public void setHmacAlgorithm(String hmacAlgorithm) {
+        hMac = HMacs.createMac(hmacAlgorithm);
         state = new byte[HMacs.getBlockLength(hMac)];
     }
 
@@ -92,14 +113,16 @@ public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedKeyGenerator {
      * Generate a key parameter derived from the password, salt, and iteration
      * count we are currently initialised with.
      *
-     * @param keySize the size of the key we want (in bits)
+     * @param keyBitSize the size of the key we want (in bits)
      * @return a KeyParameter object.
      */
-    public SimpleDerivedKey generateDerivedKey(int keySize) {
-        keySize = keySize / 8;
+    public SimpleDerivedKey generateDerivedKey(int keyBitSize) {
+        int keyBytesLength = Securitys.getBytesLength(keyBitSize);
 
-        byte[] dKey = generateDerivedKeyInternal(keySize);
-        return new SimpleDerivedKey(dKey);
+        byte[] dKey = generateDerivedKeyInternal(keyBytesLength);
+        byte[] derivedKey = new byte[keyBytesLength];
+        System.arraycopy(dKey, 0, derivedKey, 0, keyBytesLength);
+        return new SimpleDerivedKey(derivedKey);
     }
 
     /**
@@ -107,19 +130,19 @@ public class Pkcs5DerivedPBKDF2KeyGenerator extends DerivedKeyGenerator {
      * the password, salt, and iteration count we are currently initialised
      * with.
      *
-     * @param keySize the size of the key we want (in bits)
-     * @param ivSize  the size of the iv we want (in bits)
+     * @param keyBitSize the size of the key we want (in bits)
+     * @param ivBitSize  the size of the iv we want (in bits)
      * @return a ParametersWithIV object.
      */
-    public SimpleDerivedKey generateDerivedKeyWithIV(int keySize, int ivSize) {
-        keySize = keySize / 8;
-        ivSize = ivSize / 8;
+    public SimpleDerivedKey generateDerivedKeyWithIV(int keyBitSize, int ivBitSize) {
+        int keyBytesLength = Securitys.getBytesLength(keyBitSize);
+        int ivBytesLength = Securitys.getBytesLength(ivBitSize);
 
-        byte[] dKey = generateDerivedKeyInternal(keySize + ivSize);
-        byte[] key = new byte[keySize];
-        byte[] iv = new byte[ivSize];
-        System.arraycopy(dKey, 0, key, 0, keySize);
-        System.arraycopy(dKey, keySize, iv, 0, ivSize);
+        byte[] dKey = generateDerivedKeyInternal(keyBytesLength + ivBytesLength);
+        byte[] key = new byte[keyBytesLength];
+        byte[] iv = new byte[ivBytesLength];
+        System.arraycopy(dKey, 0, key, 0, keyBytesLength);
+        System.arraycopy(dKey, keyBytesLength, iv, 0, ivBytesLength);
         return new SimpleDerivedKey(key, iv);
     }
 

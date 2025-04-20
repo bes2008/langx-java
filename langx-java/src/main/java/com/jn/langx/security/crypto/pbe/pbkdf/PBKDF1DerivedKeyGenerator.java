@@ -11,6 +11,8 @@ import java.security.MessageDigest;
 
 /**
  * @see <a href="https://www.rfc-editor.org/rfc/rfc8018#section-6.2">PBKDF1</a>
+ * @see <a href="org.bouncycastle.crypto.generators.PKCS5S1ParametersGenerator">PKCS5S1ParametersGenerator</a>
+ * @since 5.5.0
  */
 public class PBKDF1DerivedKeyGenerator extends DerivedKeyGenerator {
     private String digestAlgorithm;
@@ -87,7 +89,7 @@ public class PBKDF1DerivedKeyGenerator extends DerivedKeyGenerator {
         messageDigest.update(this.salt);
         byte[] bytes = messageDigest.digest();
 
-        for (int currentIteration = 2; currentIteration <= this.iterationCount; currentIteration++) {
+        for (int currentIterationIndex = 1; currentIterationIndex < this.iterationCount; currentIterationIndex++) {
             bytes = messageDigest.digest(bytes);
         }
 
