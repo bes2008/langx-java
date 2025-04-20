@@ -71,7 +71,7 @@ public abstract class DerivedKeyGenerator {
      * an initialisation vector (IV) of length ivSize.
      *
      * @param keyBitSize the length, in bits, of the key required.
-     * @param ivSize     the length, in bits, of the iv required.
+     * @param ivBitSize  the length, in bits, of the iv required.
      * @return a parameters object representing a key and an IV.
      */
     public abstract SimpleDerivedKey generateDerivedKeyWithIV(int keyBitSize, int ivBitSize);

@@ -1,6 +1,7 @@
 package com.jn.langx.security.crypto.digest;
 
 
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.security.crypto.digest.internal.Xof;
 
@@ -24,7 +25,7 @@ public class LangxMessageDigestSpi extends MessageDigest implements DigestSizeAw
         super(digest.getAlgorithmName());
 
         this.delegate = digest;
-        this.digestSize = outputSize / 8;
+        this.digestSize = Securitys.getBytesLength(outputSize);
     }
 
     public void engineReset() {
@@ -54,6 +55,10 @@ public class LangxMessageDigestSpi extends MessageDigest implements DigestSizeAw
 
     @Override
     public int getDigestSize() {
+        return delegate.getDigestSize();
+    }
+
+    public int getByteLength() {
         return delegate.getByteLength();
     }
 }

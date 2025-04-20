@@ -1,11 +1,13 @@
 package com.jn.langx.security.crypto.digest.internal;
 
+import com.jn.langx.security.crypto.digest.DigestSizeAware;
+
 /**
  * interface that a message digest conforms to.
  * <p>
  * 这是一套自定义的 digest 规范，跟官方接口 MessageDigest 没有关系
  */
-public interface Digest {
+public interface Digest extends DigestSizeAware {
     /**
      * return the algorithm name
      *
