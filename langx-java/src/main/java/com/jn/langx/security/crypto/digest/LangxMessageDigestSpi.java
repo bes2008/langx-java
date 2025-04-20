@@ -6,7 +6,7 @@ import com.jn.langx.security.crypto.digest.internal.Xof;
 
 import java.security.MessageDigest;
 
-public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAware {
+public class LangxMessageDigestSpi extends MessageDigest implements DigestSizeAware {
     protected Digest delegate;
     /**
      * 产生的 digest 的长度，bytes
@@ -53,7 +53,7 @@ public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAw
     }
 
     @Override
-    public int getBufferSize() {
+    public int getDigestSize() {
         return delegate.getByteLength();
     }
 }
