@@ -1,12 +1,10 @@
-package com.jn.langx.security.crypto.pbe.pswdconverter;
-
-import com.jn.langx.util.Chars;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
 /**
  * converts a password to a byte array according to the scheme in
- * PKCS5 (UTF-8, no padding)
+ * PKCS5 (ascii, no padding)
  */
-public class PasswordToPkcs5Utf8Converter extends PasswordConverter {
+public class PasswordToPkcs5AsciiConverter extends PasswordConverter {
     /**
      * @param password a character array representing the password.
      * @return a byte array representing the password.
@@ -14,7 +12,13 @@ public class PasswordToPkcs5Utf8Converter extends PasswordConverter {
     @Override
     public byte[] apply(char[] password) {
         if (password != null) {
-            return Chars.toUtf8Bytes(password);
+            byte[] bytes = new byte[password.length];
+
+            for (int i = 0; i != bytes.length; i++) {
+                bytes[i] = (byte) password[i];
+            }
+
+            return bytes;
         } else {
             return new byte[0];
         }

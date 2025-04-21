@@ -1,7 +1,5 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
-import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordToPkcs5Utf8Converter;
-
 public class PBKDF2DerivedKeyGeneratorFactory implements DerivedKeyGeneratorFactory<PBKDF2DerivedKeyGenerator> {
     @Override
     public PBKDF2DerivedKeyGenerator get(PBKDFKeySpec keySpec) {

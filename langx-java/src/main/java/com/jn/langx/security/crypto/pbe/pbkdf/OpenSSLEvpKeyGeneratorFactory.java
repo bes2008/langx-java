@@ -1,7 +1,5 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
-import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordToPkcs5Utf8Converter;
-
 public class OpenSSLEvpKeyGeneratorFactory implements DerivedKeyGeneratorFactory<OpenSSLEvpKeyGenerator> {
     @Override
     public OpenSSLEvpKeyGenerator get(PBKDFKeySpec keySpec) {

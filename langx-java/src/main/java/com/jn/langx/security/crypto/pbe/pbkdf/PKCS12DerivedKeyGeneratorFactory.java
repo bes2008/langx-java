@@ -1,7 +1,5 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
-import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordToPkcs12Converter;
-
 public class PKCS12DerivedKeyGeneratorFactory implements DerivedKeyGeneratorFactory<PKCS12DerivedKeyGenerator> {
     @Override
     public PKCS12DerivedKeyGenerator get(PBKDFKeySpec keySpec) {

@@ -1,8 +1,8 @@
 package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
 
 
-import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordConverter;
-import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordToPkcs5Utf8Converter;
+import com.jn.langx.security.crypto.pbe.pbkdf.PasswordConverter;
+import com.jn.langx.security.crypto.pbe.pbkdf.PasswordToPkcs5Utf8Converter;
 import com.jn.langx.util.collection.PrimitiveArrays;
 
 public class Argon2Parameters {

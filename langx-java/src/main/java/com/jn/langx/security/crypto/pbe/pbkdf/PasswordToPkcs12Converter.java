@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pswdconverter;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
 /**
  * converts a password to a byte array according to the scheme in

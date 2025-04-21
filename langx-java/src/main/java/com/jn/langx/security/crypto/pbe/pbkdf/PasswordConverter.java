@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pswdconverter;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.Converter;
 
