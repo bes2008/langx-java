@@ -1,16 +1,13 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
+import com.jn.langx.util.Strings;
 
 public class PBKDFEngine implements PBKDF {
     private DerivedKeyGeneratorFactory keyGeneratorFactory;
-    private boolean useHMac;
-    private boolean generateIV;
 
 
-    public PBKDFEngine(DerivedKeyGeneratorFactory keyGeneratorFactory, boolean useHMac, boolean generateIV) {
+    public PBKDFEngine(DerivedKeyGeneratorFactory keyGeneratorFactory) {
         this.keyGeneratorFactory = keyGeneratorFactory;
-        this.useHMac = useHMac;
-        this.generateIV = generateIV;
     }
 
     @Override
@@ -22,6 +19,8 @@ public class PBKDFEngine implements PBKDF {
 
     protected SimpleDerivedKey generateDerivedKey(PBKDFKeySpec keySpec) {
         DerivedKeyGenerator keyGenerator = keyGeneratorFactory.get(keySpec);
+        boolean useHMac = Strings.startsWith(keySpec.getHashAlgorithm(), "Hmac", true);
+        boolean generateIV = keySpec.getIvBitSize() >= 8 * 8; // 8 byte
         SimpleDerivedKey simpleDerivedKey = null;
         if (generateIV) {
             simpleDerivedKey = keyGenerator.generateDerivedKeyWithIV(keySpec.getKeyLength(), keySpec.getIvBitSize());

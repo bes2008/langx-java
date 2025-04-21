@@ -1,9 +1,7 @@
-package com.jn.langx.security.crypto.pbe.pbkdf.openssl;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.key.PKIs;
-import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
-import com.jn.langx.security.crypto.pbe.pbkdf.SimpleDerivedKey;
 
 import java.security.MessageDigest;
 

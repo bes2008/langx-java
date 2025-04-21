@@ -15,12 +15,12 @@ import java.security.spec.KeySpec;
  * @since 5.3.9
  */
 public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
-    private PBKDFEngine pbkdf;
     private String pbeAlgorithm;
+    private PBKDFEngine derivedKeyEngine;
 
-    public PBKDFKeyFactorySpi(String pbeAlgorithm, PBKDFEngine pbkdf) {
+    public PBKDFKeyFactorySpi(String pbeAlgorithm, DerivedKeyGeneratorFactory keyGeneratorFactory) {
         this.pbeAlgorithm = pbeAlgorithm;
-        this.pbkdf = pbkdf;
+        this.derivedKeyEngine = new PBKDFEngine(keyGeneratorFactory);
     }
 
 
@@ -32,7 +32,7 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
         if (keySpec instanceof PBKDFKeySpec) {
             PBKDFKeySpec pbeKeySpec = (PBKDFKeySpec) keySpec;
             try {
-                DerivedPBEKey derivedKey = pbkdf.apply(pbeAlgorithm, pbeKeySpec);
+                DerivedPBEKey derivedKey = derivedKeyEngine.apply(pbeAlgorithm, pbeKeySpec);
                 return derivedKey;
             } catch (Throwable e) {
                 throw new SecurityException(e);

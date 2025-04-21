@@ -1,7 +1,5 @@
-package com.jn.langx.security.crypto.pbe.pbkdf.openssl;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
-import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGeneratorFactory;
-import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 import com.jn.langx.security.crypto.pbe.pswdconverter.PasswordToPkcs12Converter;
 
 public class OpenSSLEvpKeyGeneratorFactory implements DerivedKeyGeneratorFactory<OpenSSLEvpKeyGenerator> {

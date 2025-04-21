@@ -1,5 +1,7 @@
 package com.jn.langx.security.crypto.pbe;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.UnsupportedCipherAlgorithmException;
 import com.jn.langx.security.crypto.cipher.Ciphers;
@@ -7,10 +9,9 @@ import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.LangxSecretKeyFactory;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
-import com.jn.langx.security.crypto.pbe.pbkdf.DerivedPBEKey;
-import com.jn.langx.security.crypto.pbe.pbkdf.openssl.OpenSSLEvpKDFKeyFactorySpi;
-import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeyFactorySpi;
+import com.jn.langx.security.crypto.pbe.pbkdf.*;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Maps;
@@ -48,10 +49,31 @@ public class PBEs {
     static {
         Map<String, Supplier<String, PBKDFKeyFactorySpi>> map = Maps.newLinkedHashMap();
 
-        map.put("PBEWith.*And.*OPENSSL_EVP", new Supplier<String, PBKDFKeyFactorySpi>() {
+        map.put("PBEWith.*And.*", new Supplier<String, PBKDFKeyFactorySpi>() {
             @Override
             public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
-                return new OpenSSLEvpKDFKeyFactorySpi(pbeAlgorithm);
+                return new PBKDFKeyFactorySpi(pbeAlgorithm, new PKCS12DerivedKeyGeneratorFactory());
+            }
+        });
+
+        map.put("PBKDF2WithHmac.*", new Supplier<String, PBKDFKeyFactorySpi>() {
+            @Override
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
+                return new PBKDFKeyFactorySpi(pbeAlgorithm, new PBKDF2DerivedKeyGeneratorFactory());
+            }
+        });
+
+        map.put("PBKDFWithOpenSSL.*", new Supplier<String, PBKDFKeyFactorySpi>() {
+            @Override
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
+                return new PBKDFKeyFactorySpi(pbeAlgorithm, new OpenSSLEvpKeyGeneratorFactory());
+            }
+        });
+
+        map.put("PBKDFWith.*", new Supplier<String, PBKDFKeyFactorySpi>() {
+            @Override
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
+                return new PBKDFKeyFactorySpi(pbeAlgorithm, new PBKDF1DerivedKeyGeneratorFactory());
             }
         });
 
@@ -63,18 +85,20 @@ public class PBEs {
         SecretKeyFactory secretKeyFactory = null;
 
         // 从 langx pbe包下获取
-        String upperCaseAlgorithm = Strings.upperCase(pbeAlgorithm);
-        if (!Strings.startsWith(upperCaseAlgorithm, "PBEWITH")) {
+        if (!Strings.startsWith(pbeAlgorithm, "PBKDFWith", true)
+                && !Strings.startsWith(pbeAlgorithm, "PBKDF2With", true)
+                && !Strings.startsWith(pbeAlgorithm, "PBEWith", true)) {
             throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: " + pbeAlgorithm);
         }
 
+        // 优先精确匹配
         Supplier<String, PBKDFKeyFactorySpi> supplier = PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
 
         if (supplier == null) {
             Map.Entry supplierEntry = Collects.findFirst(PBE_DEFAULT_KEY_FACTORY_REGISTRY, new Predicate2<String, Supplier<String, PBKDFKeyFactorySpi>>() {
                 @Override
                 public boolean test(String key, Supplier<String, PBKDFKeyFactorySpi> supplier) {
-                    return Regexps.match(key, pbeAlgorithm);
+                    return Regexps.match(key, Option.fromJavaScriptFlags("ig").toFlags(), pbeAlgorithm);
                 }
             });
 
@@ -83,7 +107,7 @@ public class PBEs {
             }
         }
         if (supplier == null) {
-            throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: " + pbeAlgorithm);
+            throw new UnsupportedCipherAlgorithmException("unsupported PBE algorithm: " + pbeAlgorithm);
         }
 
         PBKDFKeyFactorySpi secretKeyFactorySpi = supplier.get(pbeAlgorithm);
@@ -111,7 +135,9 @@ public class PBEs {
         return secretKeyFactory;
     }
 
-    private static byte[] doEncryptOrDecrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom, Holder<byte[]> ivHolder, boolean encrypt) {
+    private static byte[] doEncryptOrDecrypt(@NonNull byte[] bytes, @NonNull String pbeAlgorithm, @NonNull PBEKeySpec keySpec, @NonNull String algorithmTransformation, @Nullable Provider provider, @Nullable SecureRandom secureRandom, @Nullable Holder<byte[]> ivHolder, boolean encrypt) {
+        Preconditions.checkNotEmpty(algorithmTransformation, "the cipher algorithm is required");
+        Preconditions.checkNotEmpty(pbeAlgorithm, "the password based key derived algorithm is required");
         try {
             boolean isLangxSecretKeyFactory = false;
             SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
@@ -133,7 +159,6 @@ public class PBEs {
                 }
                 IvParameterSpec ivObj = Ciphers.createIvParameterSpec(ivHolder.get());
                 if (mode == Symmetrics.MODE.ECB) {
-                    ivHolder.set(null);
                     ivObj = null;
                 }
                 return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj, encrypt);
@@ -150,16 +175,13 @@ public class PBEs {
                 Symmetrics.MODE mode = Ciphers.extractSymmetricMode(algorithmTransformation);
 
                 IvParameterSpec ivObj = (IvParameterSpec) derivedKey;
-                if (ivObj.getIV().length == 0) {
-                    // 如果派生算法没有生成iv，则使用自定义的iv
-                    ivObj = Ciphers.createIvParameterSpec(ivHolder.get());
-                } else {
-                    // 反之则反馈生成的iv
-                    ivHolder.set(ivObj.getIV());
-                }
                 if (mode == Symmetrics.MODE.ECB) {
-                    ivHolder.set(null);
                     ivObj = null;
+                } else {
+                    if (ivObj.getIV().length == 0) {
+                        // 如果派生算法没有生成iv，则使用自定义的iv
+                        ivObj = Ciphers.createIvParameterSpec(ivHolder.get());
+                    }
                 }
                 return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivObj, encrypt);
             }
@@ -168,11 +190,11 @@ public class PBEs {
         }
     }
 
-    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Holder<byte[]> iv, Provider provider, SecureRandom secureRandom) {
+    public static byte[] encrypt(@NonNull byte[] bytes, @NonNull String pbeAlgorithm, @NonNull PBEKeySpec keySpec, @NonNull String algorithmTransformation, @Nullable Holder<byte[]> iv, @Nullable Provider provider, @Nullable SecureRandom secureRandom) {
         return doEncryptOrDecrypt(bytes, pbeAlgorithm, keySpec, algorithmTransformation, provider, secureRandom, iv, true);
     }
 
-    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Holder<byte[]> iv, Provider provider, SecureRandom secureRandom) {
+    public static byte[] decrypt(@NonNull byte[] bytes, @NonNull String pbeAlgorithm, @NonNull PBEKeySpec keySpec, @NonNull String algorithmTransformation, @Nullable Holder<byte[]> iv, @Nullable Provider provider, @Nullable SecureRandom secureRandom) {
         return doEncryptOrDecrypt(bytes, pbeAlgorithm, keySpec, algorithmTransformation, provider, secureRandom, iv, false);
     }
 
