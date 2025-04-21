@@ -174,7 +174,7 @@ public class PBEs {
                 }
                 Symmetrics.MODE mode = Ciphers.extractSymmetricMode(algorithmTransformation);
 
-                IvParameterSpec ivObj = (IvParameterSpec) derivedKey;
+                IvParameterSpec ivObj = Ciphers.createIvParameterSpec(derivedKey.getIV());
                 if (mode == Symmetrics.MODE.ECB) {
                     ivObj = null;
                 } else {
