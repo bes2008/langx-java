@@ -6,6 +6,7 @@ import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import java.security.MessageDigest;
 
@@ -45,8 +46,7 @@ public class PBKDF1DerivedKeyGenerator extends DerivedKeyGenerator {
     public SimpleDerivedKey generateDerivedKey(int keyBitSize) {
         int dKeyBytesLength = Securitys.getBytesLength(keyBitSize);
         byte[] bytes = generateBytes(dKeyBytesLength);
-        byte[] derivedKey = new byte[dKeyBytesLength];
-        System.arraycopy(bytes, 0, derivedKey, 0, dKeyBytesLength);
+        byte[] derivedKey = Bytes.subBytes(bytes, 0, dKeyBytesLength);
         return new SimpleDerivedKey(derivedKey);
     }
 
@@ -57,10 +57,8 @@ public class PBKDF1DerivedKeyGenerator extends DerivedKeyGenerator {
         int dKeyBytesLength = Securitys.getBytesLength(keyBitSize);
         int ivBytesLength = Securitys.getBytesLength(ivBitSize);
         byte[] bytes = generateBytes(dKeyBytesLength + ivBytesLength);
-        byte[] derivedKey = new byte[dKeyBytesLength];
-        byte[] iv = new byte[ivBytesLength];
-        System.arraycopy(bytes, 0, derivedKey, 0, dKeyBytesLength);
-        System.arraycopy(bytes, dKeyBytesLength, iv, 0, ivBytesLength);
+        byte[] derivedKey = Bytes.subBytes(bytes, 0, dKeyBytesLength);
+        byte[] iv = Bytes.subBytes(bytes, dKeyBytesLength, ivBytesLength);
         return new SimpleDerivedKey(derivedKey, iv);
     }
 

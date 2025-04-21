@@ -4,6 +4,7 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.DigestSizeAware;
 import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.security.crypto.digest.internal.Digests;
+import com.jn.langx.util.io.bytes.Bytes;
 
 public class PKCS12DerivedKeyGenerator extends DerivedKeyGenerator {
     public static final int KEY_MATERIAL = 1;
@@ -56,7 +57,7 @@ public class PKCS12DerivedKeyGenerator extends DerivedKeyGenerator {
     /**
      * generation of a derived key ala PKCS12 V1.0.
      */
-    private byte[] generateDerivedKey(
+    private byte[] generateBytes(
             int idByte,
             int n) {
         byte[] D = new byte[v];
@@ -136,9 +137,8 @@ public class PKCS12DerivedKeyGenerator extends DerivedKeyGenerator {
     @Override
     public SimpleDerivedKey generateDerivedKey(int keyBitSize) {
         int keyBytesLength = Securitys.getBytesLength(keyBitSize);
-        byte[] dKey = generateDerivedKey(KEY_MATERIAL, keyBytesLength);
-        byte[] derivedKey = new byte[keyBytesLength];
-        System.arraycopy(dKey, 0, derivedKey, 0, keyBytesLength);
+        byte[] dKey = generateBytes(KEY_MATERIAL, keyBytesLength);
+        byte[] derivedKey = Bytes.subBytes(dKey, 0, keyBytesLength);
         return new SimpleDerivedKey(derivedKey);
     }
 
@@ -156,13 +156,11 @@ public class PKCS12DerivedKeyGenerator extends DerivedKeyGenerator {
     public SimpleDerivedKey generateDerivedKeyWithIV(int keyBitSize, int ivBitSize) {
         int keyBytesLength = Securitys.getBytesLength(keyBitSize);
         int ivBytesLength = Securitys.getBytesLength(ivBitSize);
-        byte[] keyBytes = generateDerivedKey(KEY_MATERIAL, keyBytesLength);
-        byte[] ivBytes = generateDerivedKey(IV_MATERIAL, ivBytesLength);
+        byte[] keyBytes = generateBytes(KEY_MATERIAL, keyBytesLength);
+        byte[] ivBytes = generateBytes(IV_MATERIAL, ivBytesLength);
 
-        byte[] derivedKey = new byte[keyBytesLength];
-        System.arraycopy(keyBytes, 0, derivedKey, 0, keyBytesLength);
-        byte[] iv = new byte[ivBytesLength];
-        System.arraycopy(ivBytes, 0, iv, 0, ivBytesLength);
+        byte[] derivedKey = Bytes.subBytes(keyBytes, 0, keyBytesLength);
+        byte[] iv = Bytes.subBytes(ivBytes, 0, ivBytesLength);
         return new SimpleDerivedKey(derivedKey, iv);
     }
 
@@ -176,9 +174,8 @@ public class PKCS12DerivedKeyGenerator extends DerivedKeyGenerator {
     @Override
     public SimpleDerivedKey generateDerivedKeyUseHMac(int keyBitSize) {
         int keyBytesLength = Securitys.getBytesLength(keyBitSize);
-        byte[] dKey = generateDerivedKey(MAC_MATERIAL, keyBytesLength);
-        byte[] derivedKey = new byte[keyBytesLength];
-        System.arraycopy(dKey, 0, derivedKey, 0, keyBytesLength);
+        byte[] dKey = generateBytes(MAC_MATERIAL, keyBytesLength);
+        byte[] derivedKey = Bytes.subBytes(dKey, 0, keyBytesLength);
         return new SimpleDerivedKey(derivedKey);
     }
 }

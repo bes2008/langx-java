@@ -2,12 +2,11 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
-import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.mac.HMacKey;
 import com.jn.langx.security.crypto.mac.HMacs;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import javax.crypto.Mac;
-import java.security.MessageDigest;
 
 /**
  * Generator for PBE derived keys and ivs as defined by PKCS 5 V2.0 Scheme 2.
@@ -81,7 +80,7 @@ public class PBKDF2DerivedKeyGenerator extends DerivedKeyGenerator {
         }
     }
 
-    private byte[] generateDerivedKeyInternal(int dkLen) {
+    private byte[] generateBytes(int dkLen) {
         try {
             int hLen = HMacs.getBlockLength(hMac);
             int l = (dkLen + hLen - 1) / hLen;
@@ -119,9 +118,8 @@ public class PBKDF2DerivedKeyGenerator extends DerivedKeyGenerator {
     public SimpleDerivedKey generateDerivedKey(int keyBitSize) {
         int keyBytesLength = Securitys.getBytesLength(keyBitSize);
 
-        byte[] dKey = generateDerivedKeyInternal(keyBytesLength);
-        byte[] derivedKey = new byte[keyBytesLength];
-        System.arraycopy(dKey, 0, derivedKey, 0, keyBytesLength);
+        byte[] dKey = generateBytes(keyBytesLength);
+        byte[] derivedKey = Bytes.subBytes(dKey, 0, keyBytesLength);
         return new SimpleDerivedKey(derivedKey);
     }
 
@@ -138,11 +136,9 @@ public class PBKDF2DerivedKeyGenerator extends DerivedKeyGenerator {
         int keyBytesLength = Securitys.getBytesLength(keyBitSize);
         int ivBytesLength = Securitys.getBytesLength(ivBitSize);
 
-        byte[] dKey = generateDerivedKeyInternal(keyBytesLength + ivBytesLength);
-        byte[] key = new byte[keyBytesLength];
-        byte[] iv = new byte[ivBytesLength];
-        System.arraycopy(dKey, 0, key, 0, keyBytesLength);
-        System.arraycopy(dKey, keyBytesLength, iv, 0, ivBytesLength);
+        byte[] bytes = generateBytes(keyBytesLength + ivBytesLength);
+        byte[] key = Bytes.subBytes(bytes, 0, keyBytesLength);
+        byte[] iv = Bytes.subBytes(bytes, keyBytesLength, ivBytesLength);
         return new SimpleDerivedKey(key, iv);
     }
 
