@@ -81,9 +81,7 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor {
             throw new SecurityException("ScryptDerivedKeyGeneratorFactory impl not found, check the classpath for 'langx-java-security-gm-jca-bouncycastle.jar'");
         }
 
-        PBKDFEngine engine = new PBKDFEngineBuilder().withKeyGeneratorFactory(factory).build();
-
-        DerivedPBEKey pbeKey = engine.apply(pbeAlgorithm, keySpec);
+        DerivedPBEKey pbeKey = new PBKDFEngine(factory).apply(pbeAlgorithm, keySpec);
         return pbeKey;
     }
 
