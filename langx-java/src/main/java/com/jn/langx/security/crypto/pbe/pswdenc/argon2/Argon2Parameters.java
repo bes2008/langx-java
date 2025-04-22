@@ -86,7 +86,7 @@ class Argon2Parameters {
 
 
         public Argon2Parameters build() {
-            return new Argon2Parameters(type, salt, secret, additional, iterations, memory, lanes, version, converter);
+            return new Argon2Parameters(type, salt, secret, additional, iterations, memory, lanes, version);
         }
 
         public void clear() {
@@ -106,7 +106,6 @@ class Argon2Parameters {
 
     private final int version;
     private final int type;
-    private final byte[] password;
 
     private Argon2Parameters(
             int type,
@@ -116,7 +115,7 @@ class Argon2Parameters {
             int iterations,
             int memory,
             int lanes,
-            int version, byte[] password) {
+            int version) {
 
         this.salt = PrimitiveArrays.clone(salt);
         this.secret = PrimitiveArrays.clone(secret);
@@ -126,7 +125,6 @@ class Argon2Parameters {
         this.lanes = lanes;
         this.version = version;
         this.type = type;
-        this.password = password;
     }
 
     public byte[] getSalt() {
