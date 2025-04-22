@@ -1,5 +1,8 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
+/**
+ * @since 5.5.0
+ */
 public class OpenSSLEvpKeyGeneratorFactory implements DerivedKeyGeneratorFactory<OpenSSLEvpKeyGenerator> {
     @Override
     public OpenSSLEvpKeyGenerator get(PBKDFKeySpec keySpec) {

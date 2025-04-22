@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 
 /**
  * 参考链接：https://docs.openssl.org/master/man3/EVP_BytesToKey/
+ *
+ * @since 5.5.0
  */
 public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
     private String digestAlgorithm;

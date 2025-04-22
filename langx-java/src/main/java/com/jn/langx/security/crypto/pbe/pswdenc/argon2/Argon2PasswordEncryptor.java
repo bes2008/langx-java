@@ -3,6 +3,7 @@ package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
 import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.Stringifys;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFEngine;
 import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
 import com.jn.langx.util.Objs;
@@ -37,7 +38,6 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
     @Override
     public String encrypt(String rawPassword) {
         byte[] salt = new RandomBytesSaltGenerator().get(Securitys.getBytesLength(this.saltBitLength));
-        byte[] hash = new byte[Securitys.getBytesLength(Securitys.getBytesLength(this.hashBitLength))];
         // @formatter:off
         Argon2Parameters params = new Argon2Parameters
                 .Builder(Argon2Parameters.ARGON2_id)
@@ -46,10 +46,9 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
                 .withMemoryAsKB(this.memory)
                 .withIterations(this.iterations)
                 .build();
-        // @formatter:on
-        Argon2BytesGenerator generator = new Argon2BytesGenerator();
-        generator.init(params);
-        generator.generateBytes(rawPassword.toCharArray(), hash);
+        Argon2KeySpec keySpec = new Argon2KeySpec(rawPassword.toCharArray(), salt, this.hashBitLength, this.iterations);
+        keySpec.setParameters(params);
+        byte[] hash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", keySpec).getEncoded();
         return stringifyHash(params, hash);
     }
 
@@ -130,11 +129,11 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         Pair<byte[], Argon2Parameters> p = extract(encryptedPassword);
         byte[] actualHash = p.getKey();
         Argon2Parameters parameters = p.getValue();
-        byte[] expectedHash = new byte[actualHash.length];
 
-        Argon2BytesGenerator generator = new Argon2BytesGenerator();
-        generator.init(parameters);
-        generator.generateBytes(rawPassword.toCharArray(), expectedHash);
+        Argon2KeySpec keySpec = new Argon2KeySpec(rawPassword.toCharArray(), parameters.getSalt(), actualHash.length * 8, this.iterations);
+        keySpec.setParameters(parameters);
+        byte[] expectedHash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", keySpec).getEncoded();
+        
         return Objs.deepEquals(expectedHash, actualHash);
     }
 }

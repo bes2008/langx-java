@@ -1,11 +1,10 @@
 package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
 
 
-import com.jn.langx.security.crypto.pbe.pbkdf.PasswordConverter;
 import com.jn.langx.security.crypto.pbe.pbkdf.PasswordToPkcs5Utf8Converter;
 import com.jn.langx.util.collection.PrimitiveArrays;
 
-public class Argon2Parameters {
+class Argon2Parameters {
     public static final int ARGON2_d = 0x00;
     public static final int ARGON2_i = 0x01;
     public static final int ARGON2_id = 0x02;
@@ -30,8 +29,6 @@ public class Argon2Parameters {
 
         private int version;
         private final int type;
-
-        private PasswordConverter converter = new PasswordToPkcs5Utf8Converter();
 
         public Builder() {
             this(DEFAULT_TYPE);
@@ -87,10 +84,6 @@ public class Argon2Parameters {
             return this;
         }
 
-        public Builder withPasswordConverter(PasswordConverter converter) {
-            this.converter = converter;
-            return this;
-        }
 
         public Argon2Parameters build() {
             return new Argon2Parameters(type, salt, secret, additional, iterations, memory, lanes, version, converter);
@@ -113,7 +106,7 @@ public class Argon2Parameters {
 
     private final int version;
     private final int type;
-    private final PasswordConverter converter;
+    private final byte[] password;
 
     private Argon2Parameters(
             int type,
@@ -123,8 +116,7 @@ public class Argon2Parameters {
             int iterations,
             int memory,
             int lanes,
-            int version,
-            PasswordConverter converter) {
+            int version, byte[] password) {
 
         this.salt = PrimitiveArrays.clone(salt);
         this.secret = PrimitiveArrays.clone(secret);
@@ -134,7 +126,7 @@ public class Argon2Parameters {
         this.lanes = lanes;
         this.version = version;
         this.type = type;
-        this.converter = converter;
+        this.password = password;
     }
 
     public byte[] getSalt() {
@@ -167,10 +159,6 @@ public class Argon2Parameters {
 
     public int getType() {
         return type;
-    }
-
-    public PasswordConverter getPasswordConverter() {
-        return converter;
     }
 
     public void clear() {

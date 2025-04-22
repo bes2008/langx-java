@@ -1,5 +1,8 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
+/**
+ * @since 5.5.0
+ */
 public class PBKDF2DerivedKeyGeneratorFactory implements DerivedKeyGeneratorFactory<PBKDF2DerivedKeyGenerator> {
     @Override
     public PBKDF2DerivedKeyGenerator get(PBKDFKeySpec keySpec) {

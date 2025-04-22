@@ -3,6 +3,8 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 /**
  * converts a password to a byte array according to the scheme in
  * PKCS5 (ascii, no padding)
+ *
+ * @since 5.5.0
  */
 public class PasswordToPkcs5AsciiConverter extends PasswordConverter {
     /**

@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * Argon2 PBKDF - Based on the results of https://password-hashing.net/ and https://www.ietf.org/archive/id/draft-irtf-cfrg-argon2-03.txt
  */
-public class Argon2BytesGenerator {
+class Argon2BytesGenerator {
     private static final int ARGON2_BLOCK_SIZE = 1024;
     private static final int ARGON2_QWORDS_IN_BLOCK = ARGON2_BLOCK_SIZE / 8;
 
@@ -65,13 +65,6 @@ public class Argon2BytesGenerator {
         doInit(parameters);
     }
 
-    public int generateBytes(char[] password, byte[] out) {
-        return generateBytes(parameters.getPasswordConverter().apply(password), out);
-    }
-
-    public int generateBytes(char[] password, byte[] out, int outOff, int outLen) {
-        return generateBytes(parameters.getPasswordConverter().apply(password), out, outOff, outLen);
-    }
 
     public int generateBytes(byte[] password, byte[] out) {
         return generateBytes(password, out, 0, out.length);

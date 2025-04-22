@@ -5,6 +5,8 @@ import com.jn.langx.util.Chars;
 /**
  * converts a password to a byte array according to the scheme in
  * PKCS5 (UTF-8, no padding)
+ *
+ * @since 5.5.0
  */
 public class PasswordToPkcs5Utf8Converter extends PasswordConverter {
     /**

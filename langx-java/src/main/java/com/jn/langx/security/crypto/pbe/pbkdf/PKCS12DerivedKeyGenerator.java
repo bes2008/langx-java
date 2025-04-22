@@ -6,6 +6,9 @@ import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.security.crypto.digest.internal.Digests;
 import com.jn.langx.util.io.bytes.Bytes;
 
+/**
+ * @since 5.5.0
+ */
 public class PKCS12DerivedKeyGenerator extends DerivedKeyGenerator {
     public static final int KEY_MATERIAL = 1;
     public static final int IV_MATERIAL = 2;

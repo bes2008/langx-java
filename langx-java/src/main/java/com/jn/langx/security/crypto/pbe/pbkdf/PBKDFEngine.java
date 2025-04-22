@@ -2,6 +2,9 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.util.Strings;
 
+/**
+ * @since 5.5.0
+ */
 public class PBKDFEngine implements PBKDF {
     private DerivedKeyGeneratorFactory keyGeneratorFactory;
 

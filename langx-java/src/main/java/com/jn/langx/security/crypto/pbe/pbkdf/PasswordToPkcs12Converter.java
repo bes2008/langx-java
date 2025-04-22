@@ -3,6 +3,8 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 /**
  * converts a password to a byte array according to the scheme in
  * PKCS12 (unicode, big endian, 2 zero pad bytes at the end).
+ *
+ * @since 5.5.0
  */
 public class PasswordToPkcs12Converter extends PasswordConverter {
 
