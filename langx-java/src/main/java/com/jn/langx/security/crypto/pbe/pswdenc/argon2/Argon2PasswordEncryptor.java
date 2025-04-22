@@ -132,7 +132,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         if (encryptedPassword == null) {
             return false;
         }
-        Pair<byte[], Argon2KeySpec> p = extract(rawPassword,encryptedPassword);
+        Pair<byte[], Argon2KeySpec> p = extract(rawPassword, encryptedPassword);
         byte[] actualHash = p.getKey();
         Argon2KeySpec keySpec = p.getValue();
 
