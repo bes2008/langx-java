@@ -10,6 +10,7 @@ import com.jn.langx.security.crypto.key.LangxSecretKeyFactory;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.security.crypto.pbe.pbkdf.*;
+import com.jn.langx.security.crypto.pbe.pswdenc.argon2.Argon2DerivedKeyGeneratorFactory;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -48,7 +49,9 @@ public class PBEs {
 
     static {
         Map<String, Supplier<String, PBKDFKeyFactorySpi>> map = Maps.newLinkedHashMap();
-
+        /**
+         * @since 5.5.0
+         */
         map.put("PBEWith.*And.*", new Supplier<String, PBKDFKeyFactorySpi>() {
             @Override
             public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
@@ -56,6 +59,9 @@ public class PBEs {
             }
         });
 
+        /**
+         * @since 5.5.0
+         */
         map.put("PBKDF2WithHmac.*", new Supplier<String, PBKDFKeyFactorySpi>() {
             @Override
             public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
@@ -63,6 +69,9 @@ public class PBEs {
             }
         });
 
+        /**
+         * @since 5.3.9
+         */
         map.put("PBKDFWithOpenSSLEvp.*", new Supplier<String, PBKDFKeyFactorySpi>() {
             @Override
             public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
@@ -70,10 +79,23 @@ public class PBEs {
             }
         });
 
+        /**
+         * @since 5.5.0
+         */
         map.put("PBKDFWith.*", new Supplier<String, PBKDFKeyFactorySpi>() {
             @Override
             public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
                 return new PBKDFKeyFactorySpi(pbeAlgorithm, new PBKDF1DerivedKeyGeneratorFactory());
+            }
+        });
+
+        /**
+         * @since 5.5.0
+         */
+        map.put("Argon2", new Supplier<String, PBKDFKeyFactorySpi>() {
+            @Override
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
+                return new PBKDFKeyFactorySpi(pbeAlgorithm, new Argon2DerivedKeyGeneratorFactory());
             }
         });
 
