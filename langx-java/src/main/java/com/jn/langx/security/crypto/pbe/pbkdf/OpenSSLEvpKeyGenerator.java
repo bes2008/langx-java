@@ -20,6 +20,17 @@ public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
         this.digestAlgorithm = digestAlgorithm;
     }
 
+    public void init(byte[] password, byte[] salt, int iterationCount) {
+        super.init(password, salt, iterationCount);
+        if (iterationCount < 1) {
+            this.iterationCount = 1;
+        }
+        // 要么是null,要么只有8个字节
+        if (this.salt != null && this.salt.length < 8) {
+            this.salt = Bytes.subBytes(this.salt, 0, 8);
+        }
+    }
+
     @Override
     public SimpleDerivedKey generateDerivedKey(int keyBitSize) {
         int keyBytesLength = Securitys.getBytesLength(keyBitSize);
@@ -45,21 +56,24 @@ public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
         byte[] dk = new byte[bytesLength];
         int offset = 0;
 
-        byte[] buffer = new byte[0];
-        while (true) {
-            if (buffer.length > 0) {
+        byte[] buffer = null;
+        while (offset < bytesLength) {
+            if (buffer != null) {
                 hasher.update(buffer);
             }
             hasher.update(password);
-            buffer = hasher.digest(salt);
-            hasher.reset();
+            if (salt != null) {
+                hasher.update(salt);
+            }
+            buffer = hasher.digest();
+
+            for (int i = 1; i < iterationCount; i++) {
+                buffer = hasher.digest(buffer);
+            }
 
             int len = (offset + buffer.length) > bytesLength ? (bytesLength - offset) : buffer.length;
             System.arraycopy(buffer, 0, dk, offset, len);
             offset = offset + len;
-            if (offset >= bytesLength) {
-                break;
-            }
         }
 
         return dk;
