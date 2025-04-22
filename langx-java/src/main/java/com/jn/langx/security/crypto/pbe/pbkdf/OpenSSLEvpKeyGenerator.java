@@ -1,7 +1,7 @@
 package com.jn.langx.security.crypto.pbe.pbkdf;
 
-import com.jn.langx.security.SecurityException;
-import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.util.io.bytes.Bytes;
 
 import java.security.MessageDigest;
@@ -18,42 +18,52 @@ public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
     }
 
     @Override
-    public SimpleDerivedKey generateDerivedKey(int keySize) {
-        return generateDerivedKeyWithIV(keySize, keySize);
+    public SimpleDerivedKey generateDerivedKey(int keyBitSize) {
+        int keyBytesLength = Securitys.getBytesLength(keyBitSize);
+        byte[] dk = generateBytes(keyBytesLength);
+        return new SimpleDerivedKey(Bytes.subBytes(dk, 0, keyBytesLength));
     }
 
     @Override
     public SimpleDerivedKey generateDerivedKeyWithIV(int keyBitSize, int ivBitSize) {
-        try {
-            int keyBytesLength = PKIs.getBytesLength(keyBitSize);
-            int ivBytesLength = PKIs.getBytesLength(ivBitSize);
+        int keyBytesLength = Securitys.getBytesLength(keyBitSize);
+        int ivBytesLength = Securitys.getBytesLength(ivBitSize);
 
-            int bytesLength = keyBytesLength + ivBytesLength;
+        int bytesLength = keyBytesLength + ivBytesLength;
+        byte[] dk = generateBytes(bytesLength);
+        byte[] key = Bytes.subBytes(dk, 0, keyBytesLength);
+        byte[] iv = Bytes.subBytes(dk, keyBytesLength, ivBytesLength);
+        return new SimpleDerivedKey(key, iv);
+    }
 
-            // 由 key ,iv进行拼接的
-            MessageDigest hasher = MessageDigest.getInstance(digestAlgorithm);
+    private byte[] generateBytes(int bytesLength) {
+        // 由 key ,iv进行拼接的
+        MessageDigest hasher = MessageDigests.getDigest(digestAlgorithm);
+        byte[] dk = new byte[bytesLength];
+        int offset = 0;
+
+        byte[] buffer = new byte[0];
+        while (true) {
+            if (buffer.length > 0) {
+                hasher.update(buffer);
+            }
             hasher.update(password);
-            byte[] block = hasher.digest(salt);
+            buffer = hasher.digest(salt);
             hasher.reset();
 
-
-            while (block.length < bytesLength) {
-                hasher.update(block);
-                hasher.update(password);
-                block = hasher.digest(salt);
-                hasher.reset();
+            int len = (offset + buffer.length) > bytesLength ? (bytesLength - offset) : buffer.length;
+            System.arraycopy(buffer, 0, dk, offset, len);
+            offset = offset + len;
+            if (offset >= bytesLength) {
+                break;
             }
-
-            byte[] key = Bytes.subBytes(block, 0, keyBytesLength);
-            byte[] iv = Bytes.subBytes(block, keyBytesLength, ivBytesLength);
-            return new SimpleDerivedKey(key, iv);
-        } catch (Throwable e) {
-            throw new SecurityException(e);
         }
+
+        return dk;
     }
 
     @Override
-    public SimpleDerivedKey generateDerivedKeyUseHMac(int keySize) {
-        return generateDerivedKey(keySize);
+    public SimpleDerivedKey generateDerivedKeyUseHMac(int keyBitSize) {
+        return generateDerivedKey(keyBitSize);
     }
 }
