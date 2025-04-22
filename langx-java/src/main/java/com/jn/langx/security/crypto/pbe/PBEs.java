@@ -63,7 +63,7 @@ public class PBEs {
             }
         });
 
-        map.put("PBKDFWithOpenSSL.*", new Supplier<String, PBKDFKeyFactorySpi>() {
+        map.put("PBKDFWithOpenSSLEvp.*", new Supplier<String, PBKDFKeyFactorySpi>() {
             @Override
             public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
                 return new PBKDFKeyFactorySpi(pbeAlgorithm, new OpenSSLEvpKeyGeneratorFactory());

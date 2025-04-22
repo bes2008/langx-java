@@ -51,6 +51,10 @@ public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
     }
 
     private byte[] generateBytes(int bytesLength) {
+        // key 长度至少 112 bit
+        if (bytesLength * 8 < 112) {
+            throw new IllegalArgumentException("the key size must be greater than or equals 112");
+        }
         // 由 key ,iv进行拼接的
         MessageDigest hasher = MessageDigests.getDigest(digestAlgorithm);
         byte[] dk = new byte[bytesLength];

@@ -87,7 +87,7 @@ public class CryptoJS {
     public static class AESConfig extends PBEConfig {
         public AESConfig() {
             // Crypto-JS中默认使用的padding是pkcs7,但因为jdk默认不支持AES/CBC/Pkcs7，且pkcs5与pkcs7兼容，所以可以先用pkcs5代替。一定要使用pkcs7，则需要使用 BouncyCastle
-            this(64, 256, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBKDFWithOpenSSLMD5AndAES-CBC", null);
+            this(64, 256, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBKDFWithOpenSSLEvpMD5AndAES-CBC", null);
         }
 
         public AESConfig(
