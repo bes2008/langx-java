@@ -96,12 +96,6 @@ public class PBEs {
     public static SecretKeyFactory getLangxPBEKeyFactory(final String pbeAlgorithm) {
         SecretKeyFactory secretKeyFactory = null;
 
-        // 从 langx pbe包下获取
-        if (!Strings.startsWith(pbeAlgorithm, "PBKDFWith", true)
-                && !Strings.startsWith(pbeAlgorithm, "PBKDF2With", true)
-                && !Strings.startsWith(pbeAlgorithm, "PBEWith", true)) {
-            throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: " + pbeAlgorithm);
-        }
 
         // 优先精确匹配
         Supplier<String, PBKDFKeyFactorySpi> supplier = PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
