@@ -1,8 +1,11 @@
-package com.jn.langx.security.crypto.pbe.pswdenc.scrypt;
+package com.jn.langx.security.crypto.pbe.pbkdf.scrypt;
 
 
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 
+/**
+ * @since 5.5.0
+ */
 public class ScryptPBKDFKeySpec extends PBKDFKeySpec {
     /**
      * CPU/Memory cost parameter. Must be larger than 1, a power of 2 and less than 2^(128 * memoryCost / 8).

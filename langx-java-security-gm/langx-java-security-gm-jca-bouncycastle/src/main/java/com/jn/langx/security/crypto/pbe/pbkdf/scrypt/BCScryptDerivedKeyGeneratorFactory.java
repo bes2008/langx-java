@@ -4,8 +4,6 @@ import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 import com.jn.langx.security.crypto.pbe.pbkdf.PasswordToPkcs5Utf8Converter;
-import com.jn.langx.security.crypto.pbe.pswdenc.scrypt.ScryptDerivedKeyGeneratorFactory;
-import com.jn.langx.security.crypto.pbe.pswdenc.scrypt.ScryptPBKDFKeySpec;
 import com.jn.langx.text.StringTemplates;
 
 public class BCScryptDerivedKeyGeneratorFactory implements ScryptDerivedKeyGeneratorFactory {
