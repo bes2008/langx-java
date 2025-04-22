@@ -4,6 +4,9 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
 import com.jn.langx.security.crypto.pbe.pbkdf.SimpleDerivedKey;
 
+/**
+ * @since 5.5.0
+ */
 public class Argon2DerivedKeyGenerator extends DerivedKeyGenerator {
 
     private Argon2Parameters parameters;

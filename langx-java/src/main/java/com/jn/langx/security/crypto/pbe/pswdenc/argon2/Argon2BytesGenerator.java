@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Argon2 PBKDF - Based on the results of https://password-hashing.net/ and https://www.ietf.org/archive/id/draft-irtf-cfrg-argon2-03.txt
+ *
+ * @since 5.5.0
  */
 class Argon2BytesGenerator {
     private static final int ARGON2_BLOCK_SIZE = 1024;
@@ -182,8 +184,8 @@ class Argon2BytesGenerator {
     }
 
     private boolean isDataIndependentAddressing(Position position) {
-        return (parameters.getType() == Argon2Parameters.ARGON2_i) ||
-                (parameters.getType() == Argon2Parameters.ARGON2_id
+        return (parameters.getType() == Argon2Constants.ARGON2_i) ||
+                (parameters.getType() == Argon2Constants.ARGON2_id
                         && (position.pass == 0)
                         && (position.slice < ARGON2_SYNC_POINTS / 2)
                 );
@@ -204,7 +206,7 @@ class Argon2BytesGenerator {
     }
 
     private boolean isWithXor(Position position) {
-        return !(position.pass == 0 || parameters.getVersion() == Argon2Parameters.ARGON2_VERSION_10);
+        return !(position.pass == 0 || parameters.getVersion() == Argon2Constants.ARGON2_VERSION_10);
     }
 
     private int getPrevOffset(int currentOffset) {

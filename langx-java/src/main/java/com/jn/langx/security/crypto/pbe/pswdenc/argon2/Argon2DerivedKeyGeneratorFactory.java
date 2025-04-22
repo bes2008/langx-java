@@ -5,6 +5,9 @@ import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 import com.jn.langx.security.crypto.pbe.pbkdf.PasswordToPkcs5Utf8Converter;
 import com.jn.langx.util.Preconditions;
 
+/**
+ * @since 5.5.0
+ */
 public class Argon2DerivedKeyGeneratorFactory implements DerivedKeyGeneratorFactory<Argon2DerivedKeyGenerator> {
     @Override
     public Argon2DerivedKeyGenerator get(PBKDFKeySpec keySpec) {

@@ -10,6 +10,9 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.struct.Pair;
 
+/**
+ * @since 5.5.0
+ */
 public class Argon2PasswordEncryptor implements PasswordEncryptor {
     private int saltBitLength;
     /**
@@ -39,29 +42,29 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
     public String encrypt(String rawPassword) {
         byte[] salt = new RandomBytesSaltGenerator().get(Securitys.getBytesLength(this.saltBitLength));
         // @formatter:off
-        Argon2Parameters params = new Argon2Parameters
-                .Builder(Argon2Parameters.ARGON2_id)
+        Argon2KeySpec params = new Argon2KeySpecBuilder(Argon2Constants.ARGON2_id)
                 .withSalt(salt)
                 .withParallelism(this.parallelism)
                 .withMemoryAsKB(this.memory)
                 .withIterations(this.iterations)
+                .withPassword(rawPassword.toCharArray())
+                .withKeyBitSize(this.hashBitLength)
                 .build();
-        Argon2KeySpec keySpec = new Argon2KeySpec(rawPassword.toCharArray(), salt, this.hashBitLength, this.iterations);
-        keySpec.setParameters(params);
-        byte[] hash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", keySpec).getEncoded();
+        byte[] hash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", params).getEncoded();
         return stringifyHash(params, hash);
     }
 
-    private String stringifyHash(Argon2Parameters parameters, byte[] hash) {
+    private String stringifyHash(Argon2KeySpec keySpec, byte[] hash) {
         StringBuilder stringBuilder = new StringBuilder();
+        Argon2Parameters parameters = keySpec.getParameters();
         switch (parameters.getType()) {
-            case Argon2Parameters.ARGON2_d:
+            case Argon2Constants.ARGON2_d:
                 stringBuilder.append("$argon2d");
                 break;
-            case Argon2Parameters.ARGON2_i:
+            case Argon2Constants.ARGON2_i:
                 stringBuilder.append("$argon2i");
                 break;
-            case Argon2Parameters.ARGON2_id:
+            case Argon2Constants.ARGON2_id:
                 stringBuilder.append("$argon2id");
                 break;
             default:
@@ -76,8 +79,8 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         return stringBuilder.toString();
     }
 
-    private Pair<byte[], Argon2Parameters> extract(String encodedPassword) {
-        Argon2Parameters.Builder paramsBuilder;
+    private Pair<byte[], Argon2KeySpec> extract(String rawPassword, String encodedPassword) {
+        Argon2KeySpecBuilder paramsBuilder;
         String[] parts = encodedPassword.split("\\$");
         if (parts.length < 4) {
             throw new IllegalArgumentException("Invalid encoded Argon2-hash");
@@ -85,11 +88,11 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         int currentPart = 1;
         String type = parts[currentPart++];
         if (Strings.equals("argon2d", type)) {
-            paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_d);
+            paramsBuilder = new Argon2KeySpecBuilder(Argon2Constants.ARGON2_d);
         } else if (Strings.equals("argon2i", type)) {
-            paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_i);
+            paramsBuilder = new Argon2KeySpecBuilder(Argon2Constants.ARGON2_i);
         } else if (Strings.equals("argon2id", type)) {
-            paramsBuilder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id);
+            paramsBuilder = new Argon2KeySpecBuilder(Argon2Constants.ARGON2_id);
         } else {
             throw new IllegalArgumentException("Invalid algorithm type");
         }
@@ -118,7 +121,10 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
 
         String hash = parts[currentPart];
         byte[] hashBytes = Stringifys.toBytes(hash, StringifyFormat.BASE64);
-        return new Pair<byte[], Argon2Parameters>(hashBytes, paramsBuilder.build());
+
+        paramsBuilder.withKeyBitSize(hashBytes.length * 8).withPassword(rawPassword.toCharArray());
+
+        return new Pair<byte[], Argon2KeySpec>(hashBytes, paramsBuilder.build());
     }
 
     @Override
@@ -126,14 +132,12 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         if (encryptedPassword == null) {
             return false;
         }
-        Pair<byte[], Argon2Parameters> p = extract(encryptedPassword);
+        Pair<byte[], Argon2KeySpec> p = extract(rawPassword,encryptedPassword);
         byte[] actualHash = p.getKey();
-        Argon2Parameters parameters = p.getValue();
+        Argon2KeySpec keySpec = p.getValue();
 
-        Argon2KeySpec keySpec = new Argon2KeySpec(rawPassword.toCharArray(), parameters.getSalt(), actualHash.length * 8, this.iterations);
-        keySpec.setParameters(parameters);
         byte[] expectedHash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", keySpec).getEncoded();
-        
+
         return Objs.deepEquals(expectedHash, actualHash);
     }
 }
