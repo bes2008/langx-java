@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
+package com.jn.langx.security.crypto.pbe.pbkdf.argon2;
 
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 
@@ -8,7 +8,7 @@ import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
 public class Argon2KeySpec extends PBKDFKeySpec {
     private Argon2Parameters parameters;
 
-    public Argon2KeySpec(char[] password, byte[] salt, int keyBitSize, int iterationCount) {
+    private Argon2KeySpec(char[] password, byte[] salt, int keyBitSize, int iterationCount) {
         super(password, salt, keyBitSize, 0, iterationCount);
     }
 
@@ -21,4 +21,20 @@ public class Argon2KeySpec extends PBKDFKeySpec {
         return parameters;
     }
 
+
+    public int getType() {
+        return parameters.getType();
+    }
+
+    public int getMemory() {
+        return parameters.getMemory();
+    }
+
+    public int getVersion() {
+        return parameters.getVersion();
+    }
+
+    public int getLanes() {
+        return parameters.getLanes();
+    }
 }

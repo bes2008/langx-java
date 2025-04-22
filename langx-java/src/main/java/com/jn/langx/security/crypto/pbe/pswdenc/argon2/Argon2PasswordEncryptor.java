@@ -4,6 +4,7 @@ import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.Stringifys;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFEngine;
+import com.jn.langx.security.crypto.pbe.pbkdf.argon2.*;
 import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
 import com.jn.langx.util.Objs;
@@ -54,9 +55,8 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         return stringifyHash(params, hash);
     }
 
-    private String stringifyHash(Argon2KeySpec keySpec, byte[] hash) {
+    private String stringifyHash(Argon2KeySpec parameters, byte[] hash) {
         StringBuilder stringBuilder = new StringBuilder();
-        Argon2Parameters parameters = keySpec.getParameters();
         switch (parameters.getType()) {
             case Argon2Constants.ARGON2_d:
                 stringBuilder.append("$argon2d");
@@ -71,7 +71,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
                 throw new IllegalArgumentException("Invalid algorithm type: " + parameters.getType());
         }
         stringBuilder.append("$v=").append(parameters.getVersion()).append("$m=").append(parameters.getMemory())
-                .append(",t=").append(parameters.getIterations()).append(",p=").append(parameters.getLanes());
+                .append(",t=").append(parameters.getIterationCount()).append(",p=").append(parameters.getLanes());
         if (parameters.getSalt() != null) {
             stringBuilder.append("$").append(Stringifys.stringify(parameters.getSalt(), StringifyFormat.BASE64));
         }

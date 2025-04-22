@@ -1,10 +1,10 @@
-package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
+package com.jn.langx.security.crypto.pbe.pbkdf.argon2;
 
 import com.jn.langx.Builder;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.PrimitiveArrays;
 
-import static com.jn.langx.security.crypto.pbe.pswdenc.argon2.Argon2Constants.*;
+import static com.jn.langx.security.crypto.pbe.pbkdf.argon2.Argon2Constants.*;
 
 /**
  * @since 5.5.0

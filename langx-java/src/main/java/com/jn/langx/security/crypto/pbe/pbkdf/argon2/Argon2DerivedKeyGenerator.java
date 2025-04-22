@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
+package com.jn.langx.security.crypto.pbe.pbkdf.argon2;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
