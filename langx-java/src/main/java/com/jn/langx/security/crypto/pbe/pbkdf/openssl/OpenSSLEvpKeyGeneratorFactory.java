@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pbkdf.opensslevp;
+package com.jn.langx.security.crypto.pbe.pbkdf.openssl;
 
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGeneratorFactory;
 import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;

@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.pbe.pbkdf.opensslevp;
+package com.jn.langx.security.crypto.pbe.pbkdf.openssl;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.MessageDigests;

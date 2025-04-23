@@ -11,7 +11,7 @@ import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.security.crypto.pbe.pbkdf.*;
 import com.jn.langx.security.crypto.pbe.pbkdf.argon2.Argon2DerivedKeyGeneratorFactory;
-import com.jn.langx.security.crypto.pbe.pbkdf.opensslevp.OpenSSLEvpKeyGeneratorFactory;
+import com.jn.langx.security.crypto.pbe.pbkdf.openssl.OpenSSLEvpKeyGeneratorFactory;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
