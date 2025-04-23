@@ -8,8 +8,10 @@ import java.security.MessageDigest;
 
 /**
  * 参考链接：https://docs.openssl.org/master/man3/EVP_BytesToKey/
+ * 默认是 1 次 iteration, md5, 如果要使用，建议调整 iterations >= 1000
  *
  * @since 5.5.0
+ *
  */
 public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
     private String digestAlgorithm;
