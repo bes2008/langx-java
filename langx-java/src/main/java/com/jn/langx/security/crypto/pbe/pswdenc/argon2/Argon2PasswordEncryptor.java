@@ -120,7 +120,7 @@ public class Argon2PasswordEncryptor extends PBKDFPasswordEncryptor {
 
         paramsBuilder.withKeyBitSize(hashBytes.length * 8).withPassword(rawPassword.toCharArray());
 
-        return new DerivedPBEKey("argon2",  paramsBuilder.build(), hashBytes);
+        return new DerivedPBEKey(this.pbkdfAlgorithm,  paramsBuilder.build(), hashBytes);
     }
 
 }

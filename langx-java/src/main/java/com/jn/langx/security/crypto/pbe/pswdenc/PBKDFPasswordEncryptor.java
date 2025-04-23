@@ -1,6 +1,7 @@
 package com.jn.langx.security.crypto.pbe.pswdenc;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
@@ -24,6 +25,7 @@ public class PBKDFPasswordEncryptor implements PasswordEncryptor {
     protected int hashBitLength;
     protected int ivBitLength = 0;
 
+    @NotEmpty
     protected String pbkdfAlgorithm;
     protected String hashAlgorithm;
     protected int iterations;
