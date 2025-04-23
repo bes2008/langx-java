@@ -28,6 +28,9 @@ public class PBKDFPasswordEncryptor implements PasswordEncryptor {
     private BytesSaltGenerator saltGenerator;
     private DerivedKeyFormatter derivedKeyFormatter;
 
+    public PBKDFPasswordEncryptor() {
+    }
+
     public PBKDFPasswordEncryptor(String pbkdfAlgorithm, String hashAlgorithm, int keyBitLength, int saltBitLength, int ivBitLength, int iterations) {
         this.pbkdfAlgorithm = pbkdfAlgorithm;
         this.hashAlgorithm = hashAlgorithm;
@@ -37,6 +40,13 @@ public class PBKDFPasswordEncryptor implements PasswordEncryptor {
         this.ivBitLength = ivBitLength;
     }
 
+    public void setSaltGenerator(BytesSaltGenerator saltGenerator) {
+        this.saltGenerator = saltGenerator;
+    }
+
+    public void setDerivedKeyFormatter(DerivedKeyFormatter derivedKeyFormatter) {
+        this.derivedKeyFormatter = derivedKeyFormatter;
+    }
 
     protected PBKDFKeySpec buildParams(char[] password) {
         byte[] salt = saltGenerator.get(Securitys.getBytesLength(this.saltBitLength));
