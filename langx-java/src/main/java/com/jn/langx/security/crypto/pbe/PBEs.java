@@ -10,6 +10,7 @@ import com.jn.langx.security.crypto.key.LangxSecretKeyFactory;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.security.crypto.pbe.pbkdf.*;
+import com.jn.langx.security.crypto.pbe.pbkdf.argon2.Argon2DerivedKeyGeneratorFactory;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
@@ -87,6 +88,15 @@ public class PBEs {
             }
         });
 
+        /**
+         * @since 5.5.0
+         */
+        map.put("argon2", new Supplier<String, PBKDFKeyFactorySpi>() {
+            @Override
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
+                return new PBKDFKeyFactorySpi(pbeAlgorithm, new Argon2DerivedKeyGeneratorFactory());
+            }
+        });
 
         PBE_DEFAULT_KEY_FACTORY_REGISTRY = map;
 
