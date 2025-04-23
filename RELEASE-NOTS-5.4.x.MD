@@ -5,6 +5,7 @@
 + 支持 glibc crypt
 + 支持 UriBuilder
 + 提供 HostAndPort
++ 支持 PBKDF1, PBKDF2, PBKDF12, PBKDF_OPENSSL_EVP
 
 ## 5.4.6
 * 添加 MatchExp
