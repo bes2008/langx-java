@@ -1,7 +1,9 @@
-package com.jn.langx.security.crypto.pbe.pbkdf;
+package com.jn.langx.security.crypto.pbe.pbkdf.openssl;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.MessageDigests;
+import com.jn.langx.security.crypto.pbe.pbkdf.DerivedKeyGenerator;
+import com.jn.langx.security.crypto.pbe.pbkdf.SimpleDerivedKey;
 import com.jn.langx.util.io.bytes.Bytes;
 
 import java.security.MessageDigest;
@@ -11,7 +13,6 @@ import java.security.MessageDigest;
  * 默认是 1 次 iteration, md5, 如果要使用，建议调整 iterations >= 1000
  *
  * @since 5.5.0
- *
  */
 public class OpenSSLEvpKeyGenerator extends DerivedKeyGenerator {
     private String digestAlgorithm;

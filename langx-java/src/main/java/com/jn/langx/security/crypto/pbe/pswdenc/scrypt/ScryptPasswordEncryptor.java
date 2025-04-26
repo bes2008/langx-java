@@ -10,7 +10,7 @@ import com.jn.langx.security.crypto.pbe.pbkdf.scrypt.ScryptDerivedKeyGeneratorFa
 import com.jn.langx.security.crypto.pbe.pbkdf.scrypt.ScryptPBKDFKeySpec;
 import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
-import com.jn.langx.util.Objs;
+import com.jn.langx.util.io.bytes.Bytes;
 import com.jn.langx.util.spi.CommonServiceProvider;
 
 
@@ -67,7 +67,7 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor {
             int parallelization = (int) params & 255;
 
             DerivedPBEKey pbeKey = generateSCryptKey("scrypt", plainPassword, salt, cpuCost, memoryCost, parallelization, keyBitLength);
-            return Objs.deepEquals(secretKey, pbeKey.getEncoded());
+            return Bytes.arrayEquals(secretKey, pbeKey.getEncoded());
         }
     }
 

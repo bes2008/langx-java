@@ -2,36 +2,31 @@ package com.jn.langx.security.crypto.pbe.pswdenc.argon2;
 
 import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.Stringifys;
-import com.jn.langx.security.Securitys;
-import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFEngine;
-import com.jn.langx.security.crypto.pbe.pbkdf.argon2.*;
-import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
-import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
-import com.jn.langx.util.Objs;
+import com.jn.langx.security.crypto.pbe.pbkdf.DerivedPBEKey;
+import com.jn.langx.security.crypto.pbe.pbkdf.PBKDFKeySpec;
+import com.jn.langx.security.crypto.pbe.pbkdf.argon2.Argon2Constants;
+import com.jn.langx.security.crypto.pbe.pbkdf.argon2.Argon2KeySpec;
+import com.jn.langx.security.crypto.pbe.pbkdf.argon2.Argon2KeySpecBuilder;
+import com.jn.langx.security.crypto.pbe.pswdenc.PBKDFPasswordEncryptor;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.struct.Pair;
 
 /**
  * @since 5.5.0
  */
-public class Argon2PasswordEncryptor implements PasswordEncryptor {
-    private int saltBitLength;
-    /**
-     * 生成的 hash 的 长度
-     */
-    private int hashBitLength;
+public class Argon2PasswordEncryptor extends PBKDFPasswordEncryptor {
 
     private int parallelism;
 
     private int memory;
 
-    private int iterations;
 
     public Argon2PasswordEncryptor() {
         this(16 * 8, 32 * 8, 1, 1 << 14, 2);
     }
 
     public Argon2PasswordEncryptor(int saltBitLength, int hashBitLength, int parallelism, int memory, int iterations) {
+        super();
+        this.pbkdfAlgorithm = "argon2";
         this.saltBitLength = saltBitLength;
         this.hashBitLength = hashBitLength;
         this.parallelism = parallelism;
@@ -39,22 +34,23 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         this.iterations = iterations;
     }
 
+
     @Override
-    public String encrypt(String rawPassword) {
-        byte[] salt = new RandomBytesSaltGenerator().get(Securitys.getBytesLength(this.saltBitLength));
+    protected PBKDFKeySpec buildParams(char[] rawPassword, byte[] salt) {
         // @formatter:off
         Argon2KeySpec params = new Argon2KeySpecBuilder(Argon2Constants.ARGON2_id)
                 .withSalt(salt)
                 .withParallelism(this.parallelism)
                 .withMemoryAsKB(this.memory)
                 .withIterations(this.iterations)
-                .withPassword(rawPassword.toCharArray())
+                .withPassword(rawPassword)
                 .withKeyBitSize(this.hashBitLength)
                 .build();
-        byte[] hash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", params).getEncoded();
-        return stringifyHash(params, hash);
+        return params;
     }
-
+    protected String stringify(DerivedPBEKey derivedPBEKey) {
+        return stringifyHash((Argon2KeySpec) derivedPBEKey.getKeySpec(), derivedPBEKey.getEncoded());
+    }
     private String stringifyHash(Argon2KeySpec parameters, byte[] hash) {
         StringBuilder stringBuilder = new StringBuilder();
         switch (parameters.getType()) {
@@ -79,7 +75,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
         return stringBuilder.toString();
     }
 
-    private Pair<byte[], Argon2KeySpec> extract(String rawPassword, String encodedPassword) {
+    protected DerivedPBEKey extract(String rawPassword, String encodedPassword) {
         Argon2KeySpecBuilder paramsBuilder;
         String[] parts = encodedPassword.split("\\$");
         if (parts.length < 4) {
@@ -124,20 +120,7 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor {
 
         paramsBuilder.withKeyBitSize(hashBytes.length * 8).withPassword(rawPassword.toCharArray());
 
-        return new Pair<byte[], Argon2KeySpec>(hashBytes, paramsBuilder.build());
+        return new DerivedPBEKey(this.pbkdfAlgorithm,  paramsBuilder.build(), hashBytes);
     }
 
-    @Override
-    public boolean check(String rawPassword, String encryptedPassword) {
-        if (encryptedPassword == null) {
-            return false;
-        }
-        Pair<byte[], Argon2KeySpec> p = extract(rawPassword, encryptedPassword);
-        byte[] actualHash = p.getKey();
-        Argon2KeySpec keySpec = p.getValue();
-
-        byte[] expectedHash = new PBKDFEngine(new Argon2DerivedKeyGeneratorFactory()).apply("argon2", keySpec).getEncoded();
-
-        return Objs.deepEquals(expectedHash, actualHash);
-    }
 }
