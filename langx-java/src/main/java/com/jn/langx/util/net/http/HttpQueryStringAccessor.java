@@ -18,9 +18,14 @@ import java.net.URLDecoder;
  * @author jinuo.fang
  */
 public class HttpQueryStringAccessor extends BasedStringAccessor<String, String> implements Parser<String, HttpQueryStringAccessor> {
-    private MultiValueMapAccessor delegate;
+    private MultiValueMapAccessor<String> delegate;
+    private boolean decodeQueryParams = false;
 
     public HttpQueryStringAccessor() {
+    }
+
+    public HttpQueryStringAccessor(boolean decodeQueryParams) {
+        this.decodeQueryParams = decodeQueryParams;
     }
 
     public HttpQueryStringAccessor(@NonNull String url) {
@@ -28,8 +33,8 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
     }
 
     public HttpQueryStringAccessor(@NonNull String url, boolean decodeQueryParams) {
-        this();
-        setTarget(url, decodeQueryParams);
+        this(decodeQueryParams);
+        setTarget(url);
     }
 
     public static HttpQueryStringAccessor access(String url) {
@@ -40,12 +45,8 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
 
     @Override
     public void setTarget(String url) {
-        setTarget(url, false);
-    }
-
-    public void setTarget(String url, boolean decodeQueryParams) {
         super.setTarget(url);
-        delegate = parse0(url, decodeQueryParams);
+        delegate = parse0(url);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
         return delegate.getString(key, defaultValue);
     }
 
-    private MultiValueMapAccessor parse0(String url, boolean decodeQueryParams) {
+    private MultiValueMapAccessor parse0(String url) {
         MultiValueMapAccessor accessor = new MultiValueMapAccessor();
 
         Transformer<String, String> queryParamTransformer = decodeQueryParams ? new Transformer<String, String>() {
