@@ -24,8 +24,7 @@ public class HttpQueryParametersTests {
         System.out.println("the userKey: " + userKey);
         System.out.println("the login uri: " + uri);
 
-        HttpQueryStringAccessor accessor = new HttpQueryStringAccessor(true);
-        accessor.setTarget(uri);
+        HttpQueryStringAccessor accessor = new HttpQueryStringAccessor(uri, true);
         MultiValueMap<String, String> map = accessor.getMultiValueMap();
         String actualUserKey = map.getFirst("userKey");
         Assert.assertEquals(actualUserKey, userKey);
