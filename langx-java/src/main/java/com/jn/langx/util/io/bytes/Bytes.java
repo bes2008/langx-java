@@ -1,6 +1,8 @@
 package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.util.Chars;
+import com.jn.langx.util.Throwables;
+import com.jn.langx.util.function.Consumer;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -33,19 +35,6 @@ public class Bytes {
         int getAsByte() throws IOException;
     }
 
-    /**
-     * Used to consume bytes.
-     */
-    public interface ByteConsumer {
-        /**
-         * The contract is similar to {@link OutputStream#write(int)},
-         * consume the lower eight bytes of the int as a byte.
-         *
-         * @param b the byte to consume
-         * @throws IOException if consuming fails
-         */
-        void accept(int b) throws IOException;
-    }
 
     /**
      * Reads the given byte array as a little endian long.
@@ -200,7 +189,7 @@ public class Bytes {
      * @param length   the number of bytes to use to represent the value
      * @throws IOException if writing fails
      */
-    public static void toLittleEndian(ByteConsumer consumer, final long value, final int length)
+    public static void toLittleEndian(Consumer<Integer> consumer, final long value, final int length)
             throws IOException {
         long num = value;
         for (int i = 0; i < length; i++) {
@@ -261,9 +250,9 @@ public class Bytes {
     }
 
     /**
-     * {@link ByteConsumer} based on {@link OutputStream}.
+     * {@link Consumer} based on {@link OutputStream}.
      */
-    public static class OutputStreamByteConsumer implements ByteConsumer {
+    public static class OutputStreamByteConsumer implements Consumer<Integer> {
         private final OutputStream os;
 
         public OutputStreamByteConsumer(OutputStream os) {
@@ -271,8 +260,12 @@ public class Bytes {
         }
 
         @Override
-        public void accept(int b) throws IOException {
-            os.write(b);
+        public void accept(Integer b) {
+            try {
+                os.write(b.intValue());
+            } catch (IOException e) {
+                throw Throwables.wrapAsRuntimeIOException(e);
+            }
         }
     }
 
