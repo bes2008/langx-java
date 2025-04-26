@@ -30,9 +30,7 @@ public class ZeroBytePaddingAdder implements BlockCipherPaddingAdder {
      * add the pad bytes to the passed in block, returning the
      * number of bytes added.
      */
-    public int addPadding(
-            byte[] in,
-            int inOff) {
+    public int addPadding(byte[] in, int inOff) {
         int added = (in.length - inOff);
 
         while (inOff < in.length) {

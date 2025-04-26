@@ -14,8 +14,7 @@ public class X923PaddingAdder implements BlockCipherPaddingAdder {
      *
      * @param random a SecureRandom if one is available.
      */
-    public void init(SecureRandom random)
-            throws IllegalArgumentException {
+    public void init(SecureRandom random) throws IllegalArgumentException {
         this.random = random;
     }
 
@@ -32,9 +31,7 @@ public class X923PaddingAdder implements BlockCipherPaddingAdder {
      * add the pad bytes to the passed in block, returning the
      * number of bytes added.
      */
-    public int addPadding(
-            byte[] in,
-            int inOff) {
+    public int addPadding(byte[] in, int inOff) {
         byte code = (byte) (in.length - inOff);
 
         while (inOff < in.length - 1) {

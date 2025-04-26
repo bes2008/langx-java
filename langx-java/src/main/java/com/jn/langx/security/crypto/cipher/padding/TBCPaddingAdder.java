@@ -16,8 +16,7 @@ public class TBCPaddingAdder implements BlockCipherPaddingAdder {
      *
      * @param random - a SecureRandom if available.
      */
-    public void init(SecureRandom random)
-            throws IllegalArgumentException {
+    public void init(SecureRandom random) throws IllegalArgumentException {
         // nothing to do.
     }
 
@@ -40,9 +39,7 @@ public class TBCPaddingAdder implements BlockCipherPaddingAdder {
      * should be the same as the last block of plain text.
      * </p>
      */
-    public int addPadding(
-            byte[] in,
-            int inOff) {
+    public int addPadding(byte[] in, int inOff) {
         int count = in.length - inOff;
         byte code;
 

@@ -1,7 +1,5 @@
 package com.jn.langx.security.crypto.cipher.padding;
 
-import com.jn.langx.security.SecurityException;
-
 import java.security.SecureRandom;
 
 /**
@@ -32,9 +30,7 @@ public class ISO10126d2PaddingAdder implements BlockCipherPaddingAdder {
      * add the pad bytes to the passed in block, returning the
      * number of bytes added.
      */
-    public int addPadding(
-            byte[] in,
-            int inOff) {
+    public int addPadding(byte[] in, int inOff) {
         byte code = (byte) (in.length - inOff);
 
         while (inOff < (in.length - 1)) {
