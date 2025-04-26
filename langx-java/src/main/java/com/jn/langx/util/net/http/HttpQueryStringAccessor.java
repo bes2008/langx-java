@@ -24,8 +24,12 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
     }
 
     public HttpQueryStringAccessor(@NonNull String url) {
+        this(url, false);
+    }
+
+    public HttpQueryStringAccessor(@NonNull String url, boolean decodeQueryParams) {
         this();
-        setTarget(url);
+        setTarget(url, decodeQueryParams);
     }
 
     public static HttpQueryStringAccessor access(String url) {
@@ -36,8 +40,7 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
 
     @Override
     public void setTarget(String url) {
-        super.setTarget(url);
-        delegate = parse0(url, false);
+        setTarget(url, false);
     }
 
     public void setTarget(String url, boolean decodeQueryParams) {
@@ -62,7 +65,8 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
 
     private MultiValueMapAccessor parse0(String url, boolean decodeQueryParams) {
         MultiValueMapAccessor accessor = new MultiValueMapAccessor();
-        Transformer<String, String> queryParamTransformer = new Transformer<String, String>() {
+
+        Transformer<String, String> queryParamTransformer = decodeQueryParams ? new Transformer<String, String>() {
             @Override
             public String transform(String input) {
                 if (Strings.isEmpty(input)) {
@@ -74,8 +78,8 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
                     return input;
                 }
             }
-        };
-        accessor.setTarget(HttpQueryStrings.getQueryStringMultiValueMap(url));
+        } : null;
+        accessor.setTarget(HttpQueryStrings.getQueryStringMultiValueMap(url, queryParamTransformer));
         return accessor;
     }
 
@@ -92,7 +96,7 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
         return map;
     }
 
-    public MultiValueMap getMultiValueMap() {
+    public MultiValueMap<String, String> getMultiValueMap() {
         if (this.delegate != null) {
             return (MultiValueMap) this.delegate.getTarget();
         } else {

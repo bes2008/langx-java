@@ -106,12 +106,16 @@ public class Entry<K, V> extends Pair<K, V> {
         Entry<String, String> entry;
         for (String keyValue : entryArray) {
             try {
-                entry = Entry.newEntry(keyValue, keyValueSpec);
+                entry = Entry.newEntry(keyValue, keyValueSpec, valueTransformer);
             } catch (IllegalArgumentException ex) {
                 entry = null;
             }
             if (entry != null) {
-                map.add(entry.getKey(), entry.getValue());
+                String value = entry.getValue();
+                if (valueTransformer != null) {
+                    value = valueTransformer.transform(value);
+                }
+                map.add(entry.getKey(), value);
             }
         }
 
