@@ -1,5 +1,7 @@
-package com.jn.langx.validation;
+package com.jn.langx.validation.javabean;
 
+import com.jn.langx.validation.ValidateMode;
+import com.jn.langx.validation.Validator;
 import com.jn.langx.validation.rule.ValidationResult;
 
 import java.util.List;

@@ -1,6 +1,7 @@
-package com.jn.langx.validation;
+package com.jn.langx.validation.javabean;
 
 import com.jn.langx.Factory;
+import com.jn.langx.validation.Validator;
 
 public class JavaBeanValidatorFactory implements Factory<Class, Validator> {
 
