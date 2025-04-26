@@ -89,7 +89,7 @@ public interface UriBuilder {
      * <p><strong>Note:</strong> When inserting a URI variable value that
      * contains slashes in a {@link #path(String) path}, whether those are
      * encoded depends on the configured encoding mode. For more details, see
-     * {@link UriComponentsBuilder#encode()}, or otherwise if building URIs
+     * {@link UriComponentsBuilder#enableEncode()} , or otherwise if building URIs
      * indirectly via {@code WebClient} or {@code RestTemplate}, see its
      * {@link EncodingMode encodingMode}.
      * Also see the <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#web-uri-encoding">

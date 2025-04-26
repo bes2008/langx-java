@@ -1,12 +1,18 @@
 package com.jn.langx.util.net.http;
 
 import com.jn.langx.Parser;
+import com.jn.langx.Transformer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMapAccessor;
+import com.jn.langx.util.io.Charsets;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * @author jinuo.fang
@@ -31,7 +37,12 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
     @Override
     public void setTarget(String url) {
         super.setTarget(url);
-        delegate = parse0(url);
+        delegate = parse0(url, false);
+    }
+
+    public void setTarget(String url, boolean decodeQueryParams) {
+        super.setTarget(url);
+        delegate = parse0(url, decodeQueryParams);
     }
 
     @Override
@@ -49,8 +60,21 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
         return delegate.getString(key, defaultValue);
     }
 
-    private MultiValueMapAccessor parse0(String url) {
+    private MultiValueMapAccessor parse0(String url, boolean decodeQueryParams) {
         MultiValueMapAccessor accessor = new MultiValueMapAccessor();
+        Transformer<String, String> queryParamTransformer = new Transformer<String, String>() {
+            @Override
+            public String transform(String input) {
+                if (Strings.isEmpty(input)) {
+                    return input;
+                }
+                try {
+                    return URLDecoder.decode(input, Charsets.UTF_8.name());
+                } catch (UnsupportedEncodingException use) {
+                    return input;
+                }
+            }
+        };
         accessor.setTarget(HttpQueryStrings.getQueryStringMultiValueMap(url));
         return accessor;
     }
