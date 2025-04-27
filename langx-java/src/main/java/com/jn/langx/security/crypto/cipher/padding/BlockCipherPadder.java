@@ -1,13 +1,11 @@
 package com.jn.langx.security.crypto.cipher.padding;
 
-import com.jn.langx.security.SecurityException;
-
 import java.security.SecureRandom;
 
 /**
  * Block cipher padders are expected to conform to this interface
  */
-public interface BlockCipherPaddingAdder {
+public interface BlockCipherPadder {
     /**
      * Initialise the padder.
      *

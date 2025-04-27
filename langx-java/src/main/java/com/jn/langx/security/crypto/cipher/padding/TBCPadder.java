@@ -10,7 +10,7 @@ import java.security.SecureRandom;
  * of the plain text.
  * </p>
  */
-public class TBCPaddingAdder implements BlockCipherPaddingAdder {
+public class TBCPadder implements BlockCipherPadder {
     /**
      * Initialise the padding adder.
      *

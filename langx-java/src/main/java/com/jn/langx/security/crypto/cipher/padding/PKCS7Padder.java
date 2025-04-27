@@ -3,18 +3,16 @@ package com.jn.langx.security.crypto.cipher.padding;
 import java.security.SecureRandom;
 
 /**
- * A padding adder that adds ISO10126-2 padding to a block.
+ * A padder that adds PKCS7/PKCS5 padding to a block.
  */
-public class ISO10126d2PaddingAdder implements BlockCipherPaddingAdder {
-    SecureRandom random;
-
+public class PKCS7Padder implements BlockCipherPadder {
     /**
      * Initialise the padder.
      *
-     * @param random a SecureRandom if available.
+     * @param random - a SecureRandom if available.
      */
     public void init(SecureRandom random) throws IllegalArgumentException {
-        this.random = random;
+        // nothing to do.
     }
 
     /**
@@ -23,7 +21,7 @@ public class ISO10126d2PaddingAdder implements BlockCipherPaddingAdder {
      * @return the name of the algorithm the padder implements.
      */
     public String getPaddingName() {
-        return "ISO10126-2";
+        return "PKCS7";
     }
 
     /**
@@ -33,12 +31,10 @@ public class ISO10126d2PaddingAdder implements BlockCipherPaddingAdder {
     public int addPadding(byte[] in, int inOff) {
         byte code = (byte) (in.length - inOff);
 
-        while (inOff < (in.length - 1)) {
-            in[inOff] = (byte) random.nextInt();
+        while (inOff < in.length) {
+            in[inOff] = code;
             inOff++;
         }
-
-        in[inOff] = code;
 
         return code;
     }
@@ -48,8 +44,16 @@ public class ISO10126d2PaddingAdder implements BlockCipherPaddingAdder {
      */
     public int padCount(byte[] in) throws PaddingException {
         int count = in[in.length - 1] & 0xff;
+        byte countAsbyte = (byte) count;
 
-        if (count > in.length) {
+        // constant time version
+        boolean failed = (count > in.length | count == 0);
+
+        for (int i = 0; i < in.length; i++) {
+            failed |= (in.length - i <= count) & (in[i] != countAsbyte);
+        }
+
+        if (failed) {
             throw new PaddingException("pad block corrupted");
         }
 

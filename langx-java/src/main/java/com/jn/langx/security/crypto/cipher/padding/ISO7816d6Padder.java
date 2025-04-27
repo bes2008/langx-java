@@ -3,19 +3,17 @@ package com.jn.langx.security.crypto.cipher.padding;
 import java.security.SecureRandom;
 
 /**
- * A padder that adds X9.23 padding to a block - if a SecureRandom is
- * passed in random padding is assumed, otherwise padding with zeros is used.
+ * A padder that adds the padding according to the scheme referenced in
+ * ISO 7814-4 - scheme 2 from ISO 9797-1. The first byte is 0x80, rest is 0x00
  */
-public class X923PaddingAdder implements BlockCipherPaddingAdder {
-    SecureRandom random = null;
-
+public class ISO7816d6Padder implements BlockCipherPadder {
     /**
      * Initialise the padder.
      *
-     * @param random a SecureRandom if one is available.
+     * @param random - a SecureRandom if available.
      */
     public void init(SecureRandom random) throws IllegalArgumentException {
-        this.random = random;
+        // nothing to do.
     }
 
     /**
@@ -24,7 +22,7 @@ public class X923PaddingAdder implements BlockCipherPaddingAdder {
      * @return the name of the algorithm the padder implements.
      */
     public String getPaddingName() {
-        return "X9.23";
+        return "ISO7816-4";
     }
 
     /**
@@ -32,32 +30,33 @@ public class X923PaddingAdder implements BlockCipherPaddingAdder {
      * number of bytes added.
      */
     public int addPadding(byte[] in, int inOff) {
-        byte code = (byte) (in.length - inOff);
+        int added = (in.length - inOff);
 
-        while (inOff < in.length - 1) {
-            if (random == null) {
-                in[inOff] = 0;
-            } else {
-                in[inOff] = (byte) random.nextInt();
-            }
+        in[inOff] = (byte) 0x80;
+        inOff++;
+
+        while (inOff < in.length) {
+            in[inOff] = (byte) 0;
             inOff++;
         }
 
-        in[inOff] = code;
-
-        return code;
+        return added;
     }
 
     /**
      * return the number of pad bytes present in the block.
      */
     public int padCount(byte[] in) throws PaddingException {
-        int count = in[in.length - 1] & 0xff;
+        int count = in.length - 1;
 
-        if (count > in.length) {
+        while (count > 0 && in[count] == 0) {
+            count--;
+        }
+
+        if (in[count] != (byte) 0x80) {
             throw new PaddingException("pad block corrupted");
         }
 
-        return count;
+        return in.length - count;
     }
 }

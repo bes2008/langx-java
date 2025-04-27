@@ -2,19 +2,19 @@ package com.jn.langx.security.crypto.cipher.padding;
 
 import java.security.SecureRandom;
 
-
 /**
- * A padder that adds NULL byte padding to a block.
+ * A padding adder that adds ISO10126-2 padding to a block.
  */
-public class ZeroBytePaddingAdder implements BlockCipherPaddingAdder {
+public class ISO10126d2Padder implements BlockCipherPadder {
+    SecureRandom random;
+
     /**
      * Initialise the padder.
      *
-     * @param random - a SecureRandom if available.
+     * @param random a SecureRandom if available.
      */
-    public void init(SecureRandom random)
-            throws IllegalArgumentException {
-        // nothing to do.
+    public void init(SecureRandom random) throws IllegalArgumentException {
+        this.random = random;
     }
 
     /**
@@ -23,7 +23,7 @@ public class ZeroBytePaddingAdder implements BlockCipherPaddingAdder {
      * @return the name of the algorithm the padder implements.
      */
     public String getPaddingName() {
-        return "ZeroByte";
+        return "ISO10126-2";
     }
 
     /**
@@ -31,30 +31,28 @@ public class ZeroBytePaddingAdder implements BlockCipherPaddingAdder {
      * number of bytes added.
      */
     public int addPadding(byte[] in, int inOff) {
-        int added = (in.length - inOff);
+        byte code = (byte) (in.length - inOff);
 
-        while (inOff < in.length) {
-            in[inOff] = (byte) 0;
+        while (inOff < (in.length - 1)) {
+            in[inOff] = (byte) random.nextInt();
             inOff++;
         }
 
-        return added;
+        in[inOff] = code;
+
+        return code;
     }
 
     /**
      * return the number of pad bytes present in the block.
      */
     public int padCount(byte[] in) throws PaddingException {
-        int count = in.length;
+        int count = in[in.length - 1] & 0xff;
 
-        while (count > 0) {
-            if (in[count - 1] != 0) {
-                break;
-            }
-
-            count--;
+        if (count > in.length) {
+            throw new PaddingException("pad block corrupted");
         }
 
-        return in.length - count;
+        return count;
     }
 }
