@@ -352,6 +352,10 @@ public class Strings {
         return join(separator, Collects.asIterable(obj));
     }
 
+    public static String insert(@NonNull final String string, @NonNull String insertment, int... slotIndexes) {
+        return insert(string, Lists.<Integer>newArrayList(PrimitiveArrays.<Integer>wrap(slotIndexes)), insertment);
+    }
+
     public static String insert(@NonNull final String string, @Nullable final List<Integer> slotIndexes, @NonNull String insertment) {
         Preconditions.checkNotNull(string);
         if (Emptys.isEmpty(slotIndexes)) {
@@ -3948,6 +3952,14 @@ public class Strings {
         return transformer.transform(string);
     }
 
+    /**
+     * 使用省略号来将text进行缩短
+     *
+     * @param text
+     * @param maxLength
+     * @param suffixLength
+     * @return
+     */
     public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {
         Preconditions.checkNotNullArgument(text, "text");
         return shortenTextWithEllipsis(text, maxLength, suffixLength, false);
