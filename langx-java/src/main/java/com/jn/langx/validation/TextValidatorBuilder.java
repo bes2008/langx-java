@@ -3,12 +3,11 @@ package com.jn.langx.validation;
 import com.jn.langx.Builder;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.ranges.DoubleRange;
 import com.jn.langx.util.ranges.IntRange;
 import com.jn.langx.util.ranges.LongRange;
 import com.jn.langx.util.regexp.Regexp;
-import com.jn.langx.validation.rule.CharData;
-import com.jn.langx.validation.rule.CharSequenceData;
 import com.jn.langx.validation.rule.*;
 
 import java.util.List;
@@ -155,11 +154,12 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
     public TextValidatorBuilder rfc1123DomainName(String errorMessage) {
         return rule(new Rfc1123DomainNameRule(errorMessage));
     }
-    public TextValidatorBuilder port(int port){
+
+    public TextValidatorBuilder port(int port) {
         return rule(new PortRule(null, port));
     }
 
-    public TextValidatorBuilder port(String errorMessage, int port){
+    public TextValidatorBuilder port(String errorMessage, int port) {
         return rule(new PortRule(errorMessage, port));
     }
 
@@ -167,13 +167,14 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new PortRangeRule(errorMessage));
     }
 
-    public TextValidatorBuilder portRange(String errorMessage, IntRange intRange ) {
+    public TextValidatorBuilder portRange(String errorMessage, IntRange intRange) {
         return rule(new PortRangeRule(errorMessage, intRange));
     }
 
     public TextValidatorBuilder hostname(String errorMessage) {
         return rule(new HostnameRule(errorMessage));
     }
+
     public TextValidatorBuilder intRange(String errorMessage, IntRange range) {
         return rule(new IntRangeRule(errorMessage, range));
     }
@@ -224,7 +225,7 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
         return rule(new UrlRule(errorMessage, schemas));
     }
 
-    public TextValidatorBuilder email(){
+    public TextValidatorBuilder email() {
         return rule(new EmailRule());
     }
 
@@ -246,6 +247,22 @@ public class TextValidatorBuilder implements Builder<TextValidator> {
 
     public TextValidatorBuilder isbn13(String errorMessage) {
         return rule(new ISBN13Rule(errorMessage));
+    }
+
+    public TextValidatorBuilder filename(String errorMessage, boolean windows) {
+        return rule(new FilenameRule(errorMessage, windows));
+    }
+
+    public TextValidatorBuilder filename(String errorMessage) {
+        return filename(errorMessage, Platform.isWindows);
+    }
+
+    public TextValidatorBuilder filepath(String errorMessage, boolean windows) {
+        return rule(new FilePathRule(errorMessage, windows));
+    }
+
+    public TextValidatorBuilder filepath(String errorMessage) {
+        return filepath(errorMessage, Platform.isWindows);
     }
 
     public TextValidator build() {
