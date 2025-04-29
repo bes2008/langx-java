@@ -908,7 +908,6 @@ public class Strings {
      * @param str
      * @param ignoreCase
      * @param substrs
-     * @return
      * @since 5.4.6
      */
     public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs) {
@@ -3854,7 +3853,6 @@ public class Strings {
      *
      * @param string
      * @param firstLetterToLower
-     * @return
      */
     public static String underlineToCamel(String string, boolean firstLetterToLower) {
         return separatorToCamel(string, "_", firstLetterToLower);
@@ -3958,7 +3956,6 @@ public class Strings {
      * @param text
      * @param maxLength
      * @param suffixLength
-     * @return
      */
     public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {
         Preconditions.checkNotNullArgument(text, "text");

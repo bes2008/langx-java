@@ -411,10 +411,6 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
 
     /**
      * 在 uri 后面拼接 query param
-     *
-     * @param name
-     * @param values
-     * @return
      */
     public UriComponentsBuilder queryParam(String name, Object... values) {
         Preconditions.checkNotNull(name, "Name must not be null");
@@ -458,9 +454,6 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public UriComponentsBuilder queryParams(@Nullable MultiValueMap<String, String> params) {
         if (params != null) {
             this.queryParams.addAll(params);
