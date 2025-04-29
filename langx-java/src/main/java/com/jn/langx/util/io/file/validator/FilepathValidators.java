@@ -13,7 +13,7 @@ public class FilepathValidators {
         return validateName(path, Strings.contains(osFamily, "win"));
     }
 
-    private static boolean validateName(String path, boolean windows) {
+    public static boolean validateName(String path, boolean windows) {
         if (windows) {
             return WindowsFilepathValidator.INSTANCE.isLegalFilename(path);
         } else {
@@ -30,7 +30,7 @@ public class FilepathValidators {
         return validatePath(path, Strings.contains(osFamily, "win"));
     }
 
-    private static boolean validatePath(String path, boolean windows) {
+    public static boolean validatePath(String path, boolean windows) {
         if (windows) {
             return WindowsFilepathValidator.INSTANCE.isLegalFilepath(path);
         } else {
@@ -38,5 +38,6 @@ public class FilepathValidators {
         }
     }
 
-    private FilepathValidators(){}
+    private FilepathValidators() {
+    }
 }
