@@ -1,9 +1,10 @@
 package com.jn.langx.util.net.http;
 
+import com.jn.langx.Transformer;
 import com.jn.langx.codec.CodecException;
 import com.jn.langx.codec.base64.Base64;
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.StringJoiner;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
@@ -24,9 +25,10 @@ import java.util.Collection;
 import java.util.Map;
 
 public class HttpQueryStrings {
-    private HttpQueryStrings(){
+    private HttpQueryStrings() {
 
     }
+
     public static StringMap getQueryStringStringMap(String url) {
         if (url == null) {
             return StringMap.EMPTY;
@@ -41,6 +43,10 @@ public class HttpQueryStrings {
     }
 
     public static MultiValueMap<String, String> getQueryStringMultiValueMap(String url) {
+        return getQueryStringMultiValueMap(url, null);
+    }
+
+    public static MultiValueMap<String, String> getQueryStringMultiValueMap(String url, Transformer<String, String> transformer) {
         if (url == null) {
             return LinkedMultiValueMap.EMPTY;
         }
@@ -50,12 +56,11 @@ public class HttpQueryStrings {
         }
         int paramPartEndIndex = url.indexOf("#");
         String queryString = paramPartEndIndex == -1 ? url.substring(paramPartStartIndex) : url.substring(paramPartStartIndex, paramPartEndIndex);
-        return com.jn.langx.util.struct.Entry.getMultiValueMap(queryString, "=", "&");
+        return com.jn.langx.util.struct.Entry.getMultiValueMap(queryString, "=", "&", transformer);
     }
 
     /**
      * 不会对URL中的特殊字符做处理
-     *
      */
     public static String toQueryString(Map<String, Object> map, final Map<Class, Function<Object, String>> converterMap) {
         return toQueryString(map, true, null, converterMap);
@@ -72,7 +77,6 @@ public class HttpQueryStrings {
 
     /**
      * 不会对URL中的特殊字符做处理，如需处理，请调用 UrlEncoder 类
-     *
      */
     public static String toQueryString(Map<String, String> map, final boolean encode) {
         final StringJoiner joiner = new StringJoiner("&", "", "");

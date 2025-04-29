@@ -7,7 +7,7 @@ import com.jn.langx.util.io.bytes.Bytes;
 /**
  * Base class for SHA-384 and SHA-512.
  */
-public abstract class _AbstractLongDigest implements Digest,  Memoable {
+public abstract class _AbstractLongDigest implements Digest, Memoable {
     private static final int BYTE_LENGTH = 128;
 
     private byte[] xBuf = new byte[8];
@@ -183,7 +183,7 @@ public abstract class _AbstractLongDigest implements Digest,  Memoable {
         }
     }
 
-    public int getBufferSize() {
+    public int getByteLength() {
         return BYTE_LENGTH;
     }
 

@@ -11,6 +11,8 @@ import com.jn.langx.annotation.Nullable;
  * @see HttpStatus.Series
  * @see <a href="https://www.iana.org/assignments/http-status-codes">HTTP Status Code Registry</a>
  * @see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">List of HTTP status codes - Wikipedia</a>
+ *
+ * @see <a href="https://www.rfc-editor.org/rfc/rfc9110#name-500-internal-server-error">HTTP/1.1: Semantics and Content, section 6</a>
  */
 public enum HttpStatus {
 

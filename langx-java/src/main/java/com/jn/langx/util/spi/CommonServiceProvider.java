@@ -2,6 +2,7 @@ package com.jn.langx.util.spi;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.OrderedComparator;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
@@ -17,12 +18,13 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
 
     @Nullable
     private ClassLoader classLoader;
-    public CommonServiceProvider(){
+
+    public CommonServiceProvider() {
         this(null);
     }
 
-    public CommonServiceProvider(ClassLoader classLoader){
-        this.classLoader=classLoader;
+    public CommonServiceProvider(ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 
     public void setPredicate(Predicate<T> predicate) {
@@ -36,9 +38,9 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
     @Override
     public Iterator<T> get(Class<T> serviceClass) {
         Collection<T> ret = Collects.emptyArrayList();
-        if(this.classLoader!=null){
-            loadServicesInternal(serviceClass, this.classLoader,ret);
-        }else {
+        if (this.classLoader != null) {
+            loadServicesInternal(serviceClass, this.classLoader, ret);
+        } else {
             int serviceInstanceCount = loadServicesInternal(serviceClass, Thread.currentThread().getContextClassLoader(), ret);
             if (serviceInstanceCount == 0 && Thread.currentThread().getContextClassLoader() != serviceClass.getClassLoader()) {
                 loadServicesInternal(serviceClass, serviceClass.getClassLoader(), ret);
@@ -50,25 +52,29 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
         return ret.iterator();
     }
 
-    private int loadServicesInternal(Class<T> serviceClass, ClassLoader classLoader, Collection<T> tmpStorage){
+    private int loadServicesInternal(Class<T> serviceClass, ClassLoader classLoader, Collection<T> tmpStorage) {
         ServiceLoader<T> loader = ServiceLoader.load(serviceClass, classLoader);
         Iterator<T> iter = loader.iterator();
-        int loadedServiceInstanceCount=0;
+        int loadedServiceInstanceCount = 0;
         while (iter.hasNext()) {
             try {
                 T t = iter.next();
                 if (predicate.test(t)) {
                     tmpStorage.add(t);
                 }
-            }catch (Exception e){
-                logger.error(e.getMessage(),e);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
             }
             loadedServiceInstanceCount++;
         }
         return loadedServiceInstanceCount;
     }
 
-    public static <T> Iterable<T> loadService(Class<T> serviceClass){
+    public static <T> Iterable<T> loadService(Class<T> serviceClass) {
         return Collects.asIterable(new CommonServiceProvider<T>().get(serviceClass));
+    }
+
+    public static <T> T loadFirstService(Class<T> serviceClass) {
+        return Pipeline.of(loadService(serviceClass)).findFirst();
     }
 }

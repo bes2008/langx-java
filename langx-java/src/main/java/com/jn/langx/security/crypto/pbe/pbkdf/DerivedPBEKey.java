@@ -13,12 +13,11 @@ import javax.crypto.spec.IvParameterSpec;
 
 /**
  * 代表派生出来的key
- *
+ * <p>
  * 例子：
  * pbeAlgorithm：PBEWithMD5AndAES
  * cipherAlgorithm: AES
  * hashAlgorithm: MD5
- *
  *
  * @since 5.3.9
  */
@@ -39,26 +38,26 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
     @NonNull
     private byte[] key;
 
-    public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key){
+    public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key) {
         this(pbeAlgorithm, null, keySpec, key, null);
     }
 
 
-    public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
+    public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv) {
         this(pbeAlgorithm, null, keySpec, key, iv);
     }
 
-    public DerivedPBEKey(String pbeAlgorithm, String cipherAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
+    public DerivedPBEKey(String pbeAlgorithm, String cipherAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv) {
         super(Objs.useValueIfEmpty(iv, Emptys.EMPTY_BYTES));
-        this.key=key;
-        this.pbeAlgorithm=pbeAlgorithm;
-        this.cipherAlgorithm=cipherAlgorithm;
-        this.keySpec=keySpec;
+        this.key = key;
+        this.pbeAlgorithm = pbeAlgorithm;
+        this.cipherAlgorithm = cipherAlgorithm;
+        this.keySpec = keySpec;
     }
 
     @Override
     public String toString() {
-        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(keySpec.getSalt()), Hex.encodeHexString(key), getIV()==null?"":Hex.encodeHexString(getIV()));
+        return StringTemplates.formatWithPlaceholder("salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(keySpec.getSalt()), Hex.encodeHexString(key), getIV() == null ? "" : Hex.encodeHexString(getIV()));
     }
 
     @Override
@@ -96,22 +95,23 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
         return this.pbeAlgorithm;
     }
 
-    public String getCipherAlgorithm(){
+    public String getCipherAlgorithm() {
         return cipherAlgorithm;
     }
+
     public PBKDFKeySpec getKeySpec() {
         return keySpec;
     }
 
-    public int getKeyBitSize(){
+    public int getKeyBitSize() {
         return this.keySpec.getKeyLength();
     }
 
-    public int getIVBitSize(){
+    public int getIVBitSize() {
         return this.keySpec.getIvBitSize();
     }
 
-    public String getHashAlgorithm(){
+    public String getHashAlgorithm() {
         return this.keySpec.getHashAlgorithm();
     }
 }

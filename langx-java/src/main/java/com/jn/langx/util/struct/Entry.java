@@ -1,5 +1,6 @@
 package com.jn.langx.util.struct;
 
+import com.jn.langx.Transformer;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
@@ -15,11 +16,11 @@ import java.util.Map;
 
 public class Entry<K, V> extends Pair<K, V> {
     public Entry(K key) {
-        super(key,null);
+        super(key, null);
     }
 
     public Entry(K key, V value) {
-        super(key,value);
+        super(key, value);
     }
 
     @Override
@@ -49,16 +50,29 @@ public class Entry<K, V> extends Pair<K, V> {
     }
 
     public static Entry<String, String> newEntry(String keyValue, String spec) throws IllegalArgumentException {
-        Preconditions.checkArgument(Emptys.isNotEmpty(spec),"argument 'spec' is null .");
-        Preconditions.checkArgument(Emptys.isNotEmpty(keyValue),"argument 'keyValue' is null .");
-        int index = keyValue.indexOf(spec);
-        if (index == -1) {
-            return new Entry<String, String>(keyValue.trim(), "");
-        }
-        return new Entry<String, String>(keyValue.substring(0, index).trim(), keyValue.substring(index + spec.length()).trim());
+        return newEntry(keyValue, spec, null);
     }
 
-    public static Map<String, String> getMap(String str, String keyValueSpec,  String entrySpec) {
+    public static Entry<String, String> newEntry(String keyValue, String spec, Transformer<String, String> valueTransformer) throws IllegalArgumentException {
+        Preconditions.checkArgument(Emptys.isNotEmpty(spec), "argument 'spec' is null .");
+        Preconditions.checkArgument(Emptys.isNotEmpty(keyValue), "argument 'keyValue' is null .");
+        int index = keyValue.indexOf(spec);
+        String key;
+        String value;
+        if (index == -1) {
+            key = keyValue.trim();
+            value = "";
+        } else {
+            key = keyValue.substring(0, index);
+            value = keyValue.substring(index + spec.length()).trim();
+        }
+        if (valueTransformer != null) {
+            value = valueTransformer.transform(value);
+        }
+        return new Entry<String, String>(key, value);
+    }
+
+    public static Map<String, String> getMap(String str, String keyValueSpec, String entrySpec) {
         Map<String, String> map = new HashMap<String, String>();
         if (Emptys.isEmpty(str)) {
             return map;
@@ -79,8 +93,12 @@ public class Entry<K, V> extends Pair<K, V> {
         return map;
     }
 
-    public static MultiValueMap<String,String> getMultiValueMap(String str, String keyValueSpec, String entrySpec) {
-        MultiValueMap<String,String> map = new LinkedMultiValueMap<String, String>();
+    public static MultiValueMap<String, String> getMultiValueMap(String str, String keyValueSpec, String entrySpec) {
+        return getMultiValueMap(str, keyValueSpec, entrySpec, null);
+    }
+
+    public static MultiValueMap<String, String> getMultiValueMap(String str, String keyValueSpec, String entrySpec, Transformer<String, String> valueTransformer) {
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
         if (Emptys.isEmpty(str)) {
             return map;
         }
@@ -88,12 +106,16 @@ public class Entry<K, V> extends Pair<K, V> {
         Entry<String, String> entry;
         for (String keyValue : entryArray) {
             try {
-                entry = Entry.newEntry(keyValue, keyValueSpec);
+                entry = Entry.newEntry(keyValue, keyValueSpec, valueTransformer);
             } catch (IllegalArgumentException ex) {
                 entry = null;
             }
             if (entry != null) {
-                map.add(entry.getKey(), entry.getValue());
+                String value = entry.getValue();
+                if (valueTransformer != null) {
+                    value = valueTransformer.transform(value);
+                }
+                map.add(entry.getKey(), value);
             }
         }
 

@@ -220,7 +220,7 @@ public final class _MD2Digest implements Digest, Memoable {
             (byte) 159, (byte) 17, (byte) 131, (byte) 20
     };
 
-    public int getBufferSize() {
+    public int getByteLength() {
         return 16;
     }
 

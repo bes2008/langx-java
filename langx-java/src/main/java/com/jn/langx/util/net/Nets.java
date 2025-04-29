@@ -488,6 +488,59 @@ public class Nets {
         return isValidDomainAddress(str) || isValidIpV6Address(str) || isValidIpV4Address(str);
     }
 
+
+    /**
+     * hostname 被分为两大部分标签与顶级域名:
+     * <pre>label1.label2....labelN.top_domain</pre>
+     * <p>
+     * 要求：
+     * <pre>
+     *     整个域名（包括顶级域.tld）最长255个字符。
+     * </pre>
+     */
+    public static boolean isValidRFC1123Domain(String domainName) {
+        if (!Validations.lengthInRange(domainName, 1, 256)) {
+            return false;
+        }
+        String[] labels = Strings.split(domainName, ".", false, false);
+        return Pipeline.of(labels).allMatch(new Predicate<String>() {
+            @Override
+            public boolean test(String label) {
+                return isValidRFC1123Label(label);
+            }
+        });
+    }
+
+    /**
+     * RFC1123 Label规则如下：
+     * <pre>
+     * 最多 63 个字符
+     * 只能包含小写字母、数字，以及 '-'
+     * 必须以字母数字开头
+     * 必须以字母数字结尾
+     * </pre>
+     */
+    private static boolean isValidRFC1123Label(String label) {
+        if (!Validations.lengthInRange(label, 1, 64)) {
+            return false;
+        }
+        for (int i = 0; i < label.length(); i++) {
+            char ch = label.charAt(i);
+            // 判断是否为有效的字符
+            if (ch != '-' && !Chars.isLowerCase(ch) && !Chars.isNumber(ch)) {
+                return false;
+            }
+            // 判断开头、结尾字符
+            if (i == 0 || (i == label.length() - 1)) {
+                if (!Chars.isLowerCase(ch) && !Chars.isNumber(ch)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     /**
      * Checks validity of a domain name.
      *
@@ -647,7 +700,7 @@ public class Nets {
 
     private static boolean isValidIpV4Word(String word) {
         int num = Numbers.createInteger(word);
-        return num>=0 && num <=255;
+        return num >= 0 && num <= 255;
     }
 
     private static boolean isValidHexChar(char c) {
@@ -766,7 +819,7 @@ public class Nets {
 
     public static byte[] ipv4MappingToIpv6Bytes(byte[] ipv4Bytes) {
         if (ipv4Bytes == null || ipv4Bytes.length != IPV4_PART_COUNT) {
-            throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("illegal ipv4 address: {}", Objs.isEmpty(ipv4Bytes)?"":new String(ipv4Bytes,Charsets.UTF_8)));
+            throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("illegal ipv4 address: {}", Objs.isEmpty(ipv4Bytes) ? "" : new String(ipv4Bytes, Charsets.UTF_8)));
         }
         byte[] ipv6Bytes = new byte[16];
         for (int i = 0; i < 10; i++) {
@@ -811,9 +864,9 @@ public class Nets {
 
     private static boolean isValidIpV4Address(String ip, int from, int toExcluded) {
         int len = toExcluded - from;
-        if(len <= 15 && len >= 7){
-            String[] words =Strings.split(ip,":");
-            if(words.length!=4){
+        if (len <= 15 && len >= 7) {
+            String[] words = Strings.split(ip, ".");
+            if (words.length != 4) {
                 return false;
             }
             return Pipeline.of(words).allMatch(new Predicate<String>() {
@@ -822,7 +875,7 @@ public class Nets {
                     return isValidIpV4Word(word);
                 }
             });
-        }else{
+        } else {
             return false;
         }
     }
@@ -987,7 +1040,7 @@ public class Nets {
                     // The following bit shifting is to restructure the bytes to be left (most significant) to
                     // right (least significant) while also accounting for each IPv4 digit is base 10.
                     begin = (value & 0xf) * 100 + ((value >> 4) & 0xf) * 10 + ((value >> 8) & 0xf);
-                    if ( begin > 255) {
+                    if (begin > 255) {
                         return null;
                     }
                     bytes[currentIndex++] = (byte) begin;
@@ -1429,7 +1482,7 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </ul>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1550,7 +1603,6 @@ public class Nets {
             }
         }
     }
-
 
 
     public static Enumeration<InetAddress> addressesFromNetworkInterface(final NetworkInterface intf) {
@@ -2081,63 +2133,64 @@ public class Nets {
         return subnetMask;
     }
 
-    public static boolean isValidIpv4SubnetMask(int prefix){
-        return prefix>=1 && prefix<=32;
+    public static boolean isValidIpv4SubnetMask(int prefix) {
+        return prefix >= 1 && prefix <= 32;
     }
 
-    public static boolean isValidIpv4SubnetMask(String subnetMask){
+    public static boolean isValidIpv4SubnetMask(String subnetMask) {
         int prefix = getIpv4SubnetMaskPrefixLength(subnetMask);
         return isValidIpv4SubnetMask(prefix);
     }
 
     /**
      * 获取 子网掩码的 前缀，如果是不合法的 Ipv4 子网掩码，则返回 -1
+     *
      * @param subnetMask 子网掩码
      * @return 前缀数
      */
-    public static int getIpv4SubnetMaskPrefixLength(String subnetMask){
-        if(!isValidIpV4Address(subnetMask)){
+    public static int getIpv4SubnetMaskPrefixLength(String subnetMask) {
+        if (!isValidIpV4Address(subnetMask)) {
             return -1;
         }
         String[] segments = Strings.split(subnetMask, false, ".", true, true);
-        List<String> bitsList= Pipeline.of(segments)
+        List<String> bitsList = Pipeline.of(segments)
                 .map(new Function<String, String>() {
                     @Override
                     public String apply(String segment) {
-                        String binary= Radixs.toBinary(Numbers.createInteger(segment));
-                        if(binary.length()<8){
-                            binary= binary+Strings.repeat("0",8-binary.length());
+                        String binary = Radixs.toBinary(Numbers.createInteger(segment));
+                        if (binary.length() < 8) {
+                            binary = binary + Strings.repeat("0", 8 - binary.length());
                         }
                         return binary;
                     }
                 }).asList();
         // 前面是 1 是连续的，有0之后，不能再有 1
         String subnetMaskBitsString = Strings.join("", bitsList);
-        if(subnetMaskBitsString.length()!=32){
+        if (subnetMaskBitsString.length() != 32) {
             return -1;
         }
 
-        int prefix=-1;
-        int maxCount=subnetMaskBitsString.length();
+        int prefix = -1;
+        int maxCount = subnetMaskBitsString.length();
         // 首次遇到 0，就停止遍历
-        for(int i=0; i<subnetMaskBitsString.length();i++){
-            char c= subnetMaskBitsString.charAt(i);
-            if(c=='0'){
-                prefix=i;
+        for (int i = 0; i < subnetMaskBitsString.length(); i++) {
+            char c = subnetMaskBitsString.charAt(i);
+            if (c == '0') {
+                prefix = i;
                 break;
             }
         }
         // 没有遇到0，说明 全是1
-        if(prefix==-1){
-            prefix=maxCount;
+        if (prefix == -1) {
+            prefix = maxCount;
         }
 
         // 在首个0之后，如果还有 1，那肯定 是无效的
-        if(prefix<maxCount){
-            for(int i=prefix+1; i< maxCount; i++){
-                char c= subnetMaskBitsString.charAt(i);
-                if(c=='1'){
-                    prefix=-1;
+        if (prefix < maxCount) {
+            for (int i = prefix + 1; i < maxCount; i++) {
+                char c = subnetMaskBitsString.charAt(i);
+                if (c == '1') {
+                    prefix = -1;
                     break;
                 }
             }

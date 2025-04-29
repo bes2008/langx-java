@@ -1,12 +1,13 @@
 package com.jn.langx.security.crypto.digest;
 
 
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.security.crypto.digest.internal.Xof;
 
 import java.security.MessageDigest;
 
-public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAware{
+public class LangxMessageDigestSpi extends MessageDigest implements DigestSizeAware {
     protected Digest delegate;
     /**
      * 产生的 digest 的长度，bytes
@@ -24,7 +25,7 @@ public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAw
         super(digest.getAlgorithmName());
 
         this.delegate = digest;
-        this.digestSize = outputSize / 8;
+        this.digestSize = Securitys.getBytesLength(outputSize);
     }
 
     public void engineReset() {
@@ -53,7 +54,11 @@ public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAw
     }
 
     @Override
-    public int getBufferSize() {
-        return delegate.getBufferSize();
+    public int getDigestSize() {
+        return delegate.getDigestSize();
+    }
+
+    public int getByteLength() {
+        return delegate.getByteLength();
     }
 }

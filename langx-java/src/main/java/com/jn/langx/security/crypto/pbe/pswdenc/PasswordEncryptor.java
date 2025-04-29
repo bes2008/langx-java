@@ -4,6 +4,7 @@ package com.jn.langx.security.crypto.pbe.pswdenc;
  * Interface for password encryption and verification.
  * This interface defines methods for password encryption and verification.
  *
+ * 常用于password存储场景
  * @since 5.3.9
  */
 public interface PasswordEncryptor {

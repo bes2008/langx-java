@@ -21,6 +21,10 @@ import java.util.List;
 
 public class MessageDigests extends Securitys {
 
+    public static MessageDigest getDigest(String digestAlgorithm) {
+        return MessageDigests.newDigest(digestAlgorithm);
+    }
+
     public static String md5(InputStream inputStream) {
         return getDigestHexString(JCAEStandardName.MD5.getName(), inputStream);
     }
@@ -58,15 +62,15 @@ public class MessageDigests extends Securitys {
         BufferedInputStream bi = new BufferedInputStream(inputStream);
         byte[] bytes = new byte[8192];
         int length;
-        boolean bytesReadIsEmpty=true;
+        boolean bytesReadIsEmpty = true;
         try {
             while ((length = bi.read(bytes, 0, 8192)) != -1) {
                 messageDigest.update(bytes, 0, length);
-                bytesReadIsEmpty=false;
+                bytesReadIsEmpty = false;
             }
-            if(!bytesReadIsEmpty) {
+            if (!bytesReadIsEmpty) {
                 return messageDigest.digest();
-            }else{
+            } else {
                 return Emptys.EMPTY_BYTES;
             }
         } catch (IOException ex) {

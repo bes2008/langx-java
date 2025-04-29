@@ -21,6 +21,7 @@ import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.io.unicode.BOM;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -47,7 +48,6 @@ public class Strings {
     public static final int INDEX_NOT_FOUND = -1;
 
     private static final int PAD_LIMIT = 8192;
-
 
 
     /**
@@ -82,10 +82,11 @@ public class Strings {
     public static final String CR_STRING = charToString(Strings.CR);
     public static final String LF_STRING = charToString(Strings.LF);
 
-    public static final boolean isTextLineBreak(char c){
+    public static final boolean isTextLineBreak(char c) {
         return c == LF || c == CR;
     }
-    public static final String charToString(char c){
+
+    public static final String charToString(char c) {
         return Character.toString(c);
 
     }
@@ -100,10 +101,10 @@ public class Strings {
 
     public static final String WHITESPACE = join("", WHITESPACE_CHAR);
 
-    public static final boolean isWhitespace(String str){
-        for (int i =0; i< str.length(); i++){
+    public static final boolean isWhitespace(String str) {
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if(!WHITESPACE.contains(""+c)){
+            if (!WHITESPACE.contains("" + c)) {
                 return false;
             }
         }
@@ -235,7 +236,7 @@ public class Strings {
     }
 
     public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterable<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
-        return join(separator,prefix,suffix, objects.iterator(), mapper, predicate);
+        return join(separator, prefix, suffix, objects.iterator(), mapper, predicate);
     }
 
     public static <E> String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator<E> objects, Function<E, String> mapper, Predicate2<Integer, String> predicate) {
@@ -349,6 +350,10 @@ public class Strings {
             return "";
         }
         return join(separator, Collects.asIterable(obj));
+    }
+
+    public static String insert(@NonNull final String string, @NonNull String insertment, int... slotIndexes) {
+        return insert(string, Lists.<Integer>newArrayList(PrimitiveArrays.<Integer>wrap(slotIndexes)), insertment);
     }
 
     public static String insert(@NonNull final String string, @Nullable final List<Integer> slotIndexes, @NonNull String insertment) {
@@ -475,23 +480,23 @@ public class Strings {
         return Collects.toArray(tokens, String[].class);
     }
 
-    public static String[] slice(String str, int substringLength){
-        if(isEmpty(str)){
+    public static String[] slice(String str, int substringLength) {
+        if (isEmpty(str)) {
             return Emptys.EMPTY_STRINGS;
         }
-        if(str.length()<=substringLength){
+        if (str.length() <= substringLength) {
             return new String[]{str};
         }
 
         List<String> substrings = Lists.newArrayList();
 
-        int startOffset=0;
-        while(startOffset<str.length()){
-            int endOffsetExclude= Maths.min(startOffset+substringLength, str.length());
-            if(endOffsetExclude>startOffset){
+        int startOffset = 0;
+        while (startOffset < str.length()) {
+            int endOffsetExclude = Maths.min(startOffset + substringLength, str.length());
+            if (endOffsetExclude > startOffset) {
                 substrings.add(str.substring(startOffset, endOffsetExclude));
             }
-            startOffset=endOffsetExclude;
+            startOffset = endOffsetExclude;
         }
         return Collects.toArray(substrings, String[].class);
     }
@@ -900,16 +905,14 @@ public class Strings {
     }
 
     /**
-     *
      * @param str
      * @param ignoreCase
      * @param substrs
      * @return
-     *
      * @since 5.4.6
      */
-    public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs){
-        if(Objs.isEmpty(substrs)){
+    public static boolean containsAny(final CharSequence str, final boolean ignoreCase, final String... substrs) {
+        if (Objs.isEmpty(substrs)) {
             return false;
         }
         return Pipeline.of(substrs)
@@ -921,7 +924,7 @@ public class Strings {
                 });
     }
 
-    public static boolean containsAny(final CharSequence str, final String[] substrs){
+    public static boolean containsAny(final CharSequence str, final String[] substrs) {
         return containsAny(str, false, substrs);
     }
 
@@ -2080,14 +2083,14 @@ public class Strings {
         return name.substring(0, firstLetterIndex) + uppercased + name.substring(firstLetterIndex + 1);
     }
 
-    public static String transformFirstChar(String str, Transformer<String, String> transformer){
-        Preconditions.checkNotNull(str,"null");
-        char firstChar=str.charAt(0);
-        String replacement=transformer.transform(firstChar+"");
-        return replacement+(str.length()>1?Strings.substring(str,1):"");
+    public static String transformFirstChar(String str, Transformer<String, String> transformer) {
+        Preconditions.checkNotNull(str, "null");
+        char firstChar = str.charAt(0);
+        String replacement = transformer.transform(firstChar + "");
+        return replacement + (str.length() > 1 ? Strings.substring(str, 1) : "");
     }
 
-    public static String lowerCaseFirstChar(String str){
+    public static String lowerCaseFirstChar(String str) {
         return transformFirstChar(str, new Transformer<String, String>() {
             @Override
             public String transform(String input) {
@@ -2096,7 +2099,7 @@ public class Strings {
         });
     }
 
-    public static String upperCaseFirstChar(String str){
+    public static String upperCaseFirstChar(String str) {
         return transformFirstChar(str, new Transformer<String, String>() {
             @Override
             public String transform(String input) {
@@ -2105,7 +2108,7 @@ public class Strings {
         });
     }
 
-    public static String removeFirstChar(String str){
+    public static String removeFirstChar(String str) {
         return transformFirstChar(str, new Transformer<String, String>() {
             @Override
             public String transform(String input) {
@@ -2114,7 +2117,7 @@ public class Strings {
         });
     }
 
-    public static String replaceFirstChar(String str,final String replacement){
+    public static String replaceFirstChar(String str, final String replacement) {
         return transformFirstChar(str, new Transformer<String, String>() {
             @Override
             public String transform(String input) {
@@ -3375,7 +3378,7 @@ public class Strings {
             return INDEX_NOT_FOUND;
         }
         if (seq instanceof String) {
-            return seq.toString().indexOf(searchChar, 0);
+            return seq.toString().indexOf(searchChar, startPos);
         }
         final int sz = seq.length();
         if (startPos < 0) {
@@ -3848,6 +3851,7 @@ public class Strings {
 
     /**
      * 将下划线转为驼峰方式
+     *
      * @param string
      * @param firstLetterToLower
      * @return
@@ -3874,11 +3878,11 @@ public class Strings {
      * 将字符串转换为帕斯卡命名法（Pascal Case）。
      * 帕斯卡命名法是指每个单词的首字母都大写，不使用空格或下划线等分隔符。
      *
-     * @param string 待转换的字符串
+     * @param string     待转换的字符串
      * @param delimiters 可变参数，定义了单词间的分隔符
      * @return 转换后的帕斯卡命名法字符串
      */
-    public static String toPascalCase(String string, String... delimiters){
+    public static String toPascalCase(String string, String... delimiters) {
         PascalCaseTransformer transformer = new PascalCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
@@ -3888,13 +3892,13 @@ public class Strings {
      * 将字符串转换为驼峰命名法（Camel Case）。
      * 驼峰命名法是指除第一个单词外，其他单词的首字母大写，不使用空格或下划线等分隔符。
      *
-     * @param string 待转换的字符串
+     * @param string               待转换的字符串
      * @param firstLetterUpperCase 指定第一个单词的首字母是否转为大写
-     * @param delimiters 可变参数，定义了单词间的分隔符
+     * @param delimiters           可变参数，定义了单词间的分隔符
      * @return 转换后的驼峰命名法字符串
      */
-    public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters){
-        AbstractTokenCaseTransformer transformer = firstLetterUpperCase ? new PascalCaseTransformer(): new CamelCaseTransformer();
+    public static String toCamelCase(String string, boolean firstLetterUpperCase, String... delimiters) {
+        AbstractTokenCaseTransformer transformer = firstLetterUpperCase ? new PascalCaseTransformer() : new CamelCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
@@ -3903,11 +3907,11 @@ public class Strings {
      * 将字符串转换为蛇形命名法（Snake Case）。
      * 蛇形命名法是指所有单词小写，单词间以下划线连接。
      *
-     * @param string 待转换的字符串
+     * @param string     待转换的字符串
      * @param delimiters 可变参数，定义了单词间的分隔符
      * @return 转换后的蛇形命名法字符串  （使用_连接，每个token小写）
      */
-    public static String toSnakeCase(String string, String... delimiters){
+    public static String toSnakeCase(String string, String... delimiters) {
         SnakeCaseTransformer transformer = new SnakeCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
@@ -3917,11 +3921,11 @@ public class Strings {
      * 将字符串转换为短横线命名法（Hyphen Case）。
      * 短横线命名法是指所有单词小写，单词间以短横线连接。
      *
-     * @param string 待转换的字符串
+     * @param string     待转换的字符串
      * @param delimiters 可变参数，定义了单词间的分隔符
      * @return 转换后的短横线命名法字符串 （使用-连接，每个token保持原样）
      */
-    public static String toHyphenCase(String string, String... delimiters){
+    public static String toHyphenCase(String string, String... delimiters) {
         HyphenCaseTransformer transformer = new HyphenCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
@@ -3931,23 +3935,31 @@ public class Strings {
      * 将字符串转换为 kebab 命名法。
      * kebab 命名法是指所有单词小写，单词间以短横线连接，与短横线命名法相似，但强调第一个和最后一个字符不能是短横线。
      *
-     * @param string 待转换的字符串
+     * @param string     待转换的字符串
      * @param delimiters 可变参数，定义了单词间的分隔符
      * @return 转换后的 kebab 命名法字符串 （使用-连接，每个token小写）
      */
-    public static String toKebabCase(String string, String... delimiters){
+    public static String toKebabCase(String string, String... delimiters) {
         KebabCaseTransformer transformer = new KebabCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
 
-    public static String toTrainCase(String string, String... delimiters){
+    public static String toTrainCase(String string, String... delimiters) {
         TrainCaseTransformer transformer = new TrainCaseTransformer();
         transformer.setSplitter(new TokenCaseStringSplitter(delimiters));
         return transformer.transform(string);
     }
 
+    /**
+     * 使用省略号来将text进行缩短
+     *
+     * @param text
+     * @param maxLength
+     * @param suffixLength
+     * @return
+     */
     public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {
         Preconditions.checkNotNullArgument(text, "text");
         return shortenTextWithEllipsis(text, maxLength, suffixLength, false);
@@ -4003,6 +4015,22 @@ public class Strings {
             ret[i] = sub.charAt(i);
         }
         return ret;
+    }
+
+    /**
+     * Normalize the path by suppressing sequences like "path/.." and
+     * inner simple dots.
+     * <p>The result is convenient for path comparison. For other uses,
+     * notice that Windows separators ("\") are replaced by simple slashes.
+     * <p><strong>NOTE</strong> that {@code cleanPath} should not be depended
+     * upon in a security context. Other mechanisms should be used to prevent
+     * path-traversal issues.
+     *
+     * @param path the original path
+     * @return the normalized path
+     */
+    public static String cleanPath(String path) {
+        return Filenames.cleanAsUnixPath(path);
     }
 
 }

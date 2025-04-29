@@ -22,7 +22,7 @@ public class HMacPasswordEncryptor extends CheckByEncryptEncryptor{
 
     @Override
     public String encrypt(String password) {
-        byte[] bytes= HMacs.hmac(hmacAlgorithm, secretKey, password.getBytes(Charsets.UTF_8));
+        byte[] bytes = HMacs.hmac(hmacAlgorithm, secretKey, password.getBytes(Charsets.UTF_8));
         return Stringifys.stringify(bytes, this.format);
     }
 }

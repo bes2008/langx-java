@@ -16,7 +16,9 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.struct.Holder;
 
 public class CryptoJS {
-    private CryptoJS(){}
+    private CryptoJS() {
+    }
+
     public static class SymmetricConfig {
 
         public int keyBitSize;
@@ -36,7 +38,7 @@ public class CryptoJS {
                                String cipherAlgorithm,
                                Symmetrics.MODE mode,
                                CipherAlgorithmPadding padding) {
-            this(saltBitSize,keyBitSize,ivBitSize,iterations,cipherAlgorithm,mode,padding,null);
+            this(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding, null);
         }
 
         public SymmetricConfig(int saltBitSize,
@@ -54,7 +56,7 @@ public class CryptoJS {
             this.cipherAlgorithm = cipherAlgorithm;
             this.mode = mode;
             this.padding = padding;
-            this.iv=iv;
+            this.iv = iv;
         }
     }
 
@@ -75,7 +77,7 @@ public class CryptoJS {
                 String hashAlgorithm,
                 String pbeAlgorithm,
                 byte[] iv) {
-            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding,iv);
+            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding, iv);
             this.hashAlgorithm = hashAlgorithm;
             this.pbeAlgorithm = pbeAlgorithm;
             this.cipherTextFormatter = new FixedSaltedPrefixCipherTextFormatter("Salted__");
@@ -85,7 +87,7 @@ public class CryptoJS {
     public static class AESConfig extends PBEConfig {
         public AESConfig() {
             // Crypto-JS中默认使用的padding是pkcs7,但因为jdk默认不支持AES/CBC/Pkcs7，且pkcs5与pkcs7兼容，所以可以先用pkcs5代替。一定要使用pkcs7，则需要使用 BouncyCastle
-            this(64, 256, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBEWithMD5AndAES-OPENSSL_EVP", null);
+            this(64, 256, 1, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding, JCAEStandardName.MD5.getName(), "PBKDFWithOpenSSLEvpMD5AndAES-CBC", null);
         }
 
         public AESConfig(
@@ -136,7 +138,7 @@ public class CryptoJS {
             byte[] encryptedBytes;
 
             boolean hasSalt = Objs.isNotEmpty(this.saltPrefix) && Base64.decodeBase64ToString(saltedCipherText).startsWith(this.saltPrefix);
-            int saltBitSize= cfg.saltBitSize;
+            int saltBitSize = cfg.saltBitSize;
             byte[] saltAndEncryptedBytes = Base64.decodeBase64(saltedCipherText);
             if (!hasSalt) {
                 salt = Emptys.EMPTY_BYTES;
@@ -158,9 +160,10 @@ public class CryptoJS {
         }
     }
 
-    public static abstract class Symmetric{
+    public static abstract class Symmetric {
 
-        private Symmetric(){}
+        private Symmetric() {
+        }
 
         protected static String encryptWithPBE(String message, String passphrase, CryptoJS.PBEConfig cfg) {
             Preconditions.checkNotNull(cfg);
@@ -169,7 +172,7 @@ public class CryptoJS {
             PBKDFKeySpec pbeKeySpec = new PBKDFKeySpec(passphrase.toCharArray(), salt, cfg.keyBitSize, cfg.ivBitSize, cfg.iterations, cfg.hashAlgorithm);
             String transformation = Ciphers.createAlgorithmTransformation(cfg.cipherAlgorithm, cfg.mode.name(), cfg.padding);
             byte[] iv = cfg.iv;
-            if(iv == null){
+            if (iv == null) {
                 iv = Ciphers.createIvParameterSpec(cfg.ivBitSize).getIV();
             }
             byte[] encryptedBytes = PBEs.encrypt(
@@ -190,9 +193,9 @@ public class CryptoJS {
 
             Holder<byte[]> saltHolder = new Holder<byte[]>();
             Holder<byte[]> ciphertextHolder = new Holder<byte[]>();
-            Holder<byte[]> ivHolder=new Holder<byte[]>();
-            cfg.cipherTextFormatter.parse(encryptedText, cfg, saltHolder, ciphertextHolder,ivHolder);
-            if(Objs.isEmpty(ivHolder.get())){
+            Holder<byte[]> ivHolder = new Holder<byte[]>();
+            cfg.cipherTextFormatter.parse(encryptedText, cfg, saltHolder, ciphertextHolder, ivHolder);
+            if (Objs.isEmpty(ivHolder.get())) {
                 ivHolder.set(cfg.iv);
             }
             byte[] salt = saltHolder.get();
@@ -216,19 +219,19 @@ public class CryptoJS {
         }
     }
 
-    public static class AES extends Symmetric{
+    public static class AES extends Symmetric {
         public static String encrypt(String message, String passphrase, CryptoJS.AESConfig cfg) {
             if (cfg == null) {
                 cfg = new CryptoJS.AESConfig();
             }
-            return encryptWithPBE(message,passphrase,cfg);
+            return encryptWithPBE(message, passphrase, cfg);
         }
 
         public static String decrypt(String encryptedText, String passphrase, CryptoJS.AESConfig cfg) {
             if (cfg == null) {
                 cfg = new CryptoJS.AESConfig();
             }
-            return decryptWithPBE(encryptedText,passphrase, cfg);
+            return decryptWithPBE(encryptedText, passphrase, cfg);
         }
 
     }

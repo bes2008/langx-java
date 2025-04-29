@@ -11,6 +11,9 @@ import org.slf4j.Logger;
 
 import static java.util.regex.Matcher.quoteReplacement;
 
+/**
+ * 提供基于模板的文本替换功能
+ */
 public class StringTemplate {
     /**
      * index pattern
@@ -22,6 +25,9 @@ public class StringTemplate {
     private String template;
     private Function2<String, Object[], String> valueGetter = defaultValueGetter;
 
+    /**
+     * set the variable pattern
+     */
     public StringTemplate variablePattern(String pattern) {
         if (Emptys.isNotEmpty(pattern)) {
             return variablePattern(Regexps.compile(pattern));
@@ -29,6 +35,9 @@ public class StringTemplate {
         return this;
     }
 
+    /**
+     * set the variable pattern
+     */
     public StringTemplate variablePattern(Regexp regexp){
         if (Emptys.isNotNull(regexp)) {
             this.variableRegexp = regexp;
@@ -36,7 +45,9 @@ public class StringTemplate {
         return this;
     }
 
-
+    /**
+     * set the template
+     */
     public StringTemplate using(String template) {
         Preconditions.checkNotNull(template);
         this.template = template;
@@ -58,6 +69,9 @@ public class StringTemplate {
         return this;
     }
 
+    /**
+     * format the template
+     */
     public String format(Object[] args) {
         if (Emptys.isNull(args)) {
             args = new Object[0];

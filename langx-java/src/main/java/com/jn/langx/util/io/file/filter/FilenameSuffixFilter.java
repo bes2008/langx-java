@@ -1,6 +1,9 @@
 package com.jn.langx.util.io.file.filter;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.function.predicate.StringEndsWithPredicate;
 import com.jn.langx.util.io.file.Filenames;
 
@@ -15,6 +18,25 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
     public FilenameSuffixFilter(String suffix, boolean ignoreCase) {
         super(new StringEndsWithPredicate(ignoreCase, suffix));
     }
+
+    public FilenameSuffixFilter(final boolean ignoreCase, String... suffixes) {
+        this(new Predicate2<String, String[]>() {
+            @Override
+            public boolean test(String suffix, String[] suffixes) {
+                return new StringEndsWithPredicate(ignoreCase, suffixes).test(suffix);
+            }
+        }, suffixes);
+    }
+
+    public FilenameSuffixFilter(final Predicate2<String, String[]> predicate, final String... suffixes) {
+        super(new Predicate<String>() {
+            @Override
+            public boolean test(String suffix) {
+                return predicate.test(suffix, suffixes);
+            }
+        });
+    }
+
 
     public FilenameSuffixFilter(String[] suffixes) {
         this(suffixes, true);
@@ -34,7 +56,35 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
 
     @Override
     protected boolean doTest(String name) {
-        String suffix =Filenames.getSuffix(name);
+        String suffix = Filenames.getSuffix(name);
         return super.doTest(suffix);
+    }
+
+    public static FilenameSuffixFilter ofIn(final boolean ignore, String... suffixes) {
+        return new FilenameSuffixFilter(new Predicate2<String, String[]>() {
+            @Override
+            public boolean test(final String suffix, String[] suffixes) {
+                return Collects.contains(suffixes, suffix, new Predicate<String>() {
+                    @Override
+                    public boolean test(String value) {
+                        return Strings.equals(suffix, value, ignore);
+                    }
+                });
+            }
+        }, suffixes);
+    }
+
+    public static FilenameSuffixFilter ofNotIn(final boolean ignore, String... suffixes) {
+        return new FilenameSuffixFilter(new Predicate2<String, String[]>() {
+            @Override
+            public boolean test(final String suffix, String[] suffixes) {
+                return !Collects.contains(suffixes, suffix, new Predicate<String>() {
+                    @Override
+                    public boolean test(String value) {
+                        return Strings.equals(suffix, value, ignore);
+                    }
+                });
+            }
+        }, suffixes);
     }
 }
