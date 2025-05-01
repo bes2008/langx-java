@@ -1,5 +1,7 @@
 package com.jn.langx.util.concurrent.promise;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Handler;
 
@@ -67,11 +69,11 @@ public class Promise {
         List<ResultSubscriber> list = new ArrayList<ResultSubscriber>();
         subscribers.drainTo(list);
         // 异步执行任务
-        for (final ResultSubscriber resultSubscriber : list) {
+        for (final ResultSubscriber subscriber : list) {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    resultSubscriber.handle();
+                    subscriber.handle();
                 }
             });
         }
@@ -95,7 +97,7 @@ public class Promise {
 
         private Promise outPromise;
 
-        public ResultSubscriber(DelayedCallback successCallback, DelayedCallback errorCallback) {
+        public ResultSubscriber(@NonNull DelayedCallback successCallback, @NonNull DelayedCallback errorCallback) {
             this.successCallback = successCallback;
             this.errorCallback = errorCallback;
         }
@@ -149,18 +151,22 @@ public class Promise {
         try {
             Object result = task.run(resolve, reject);
             if (result instanceof Task) {
-                result = new Promise(executor, (Task) result, false);
+                result = new Promise((Task) result);
             }
             if (result instanceof Promise) {
                 Promise newSource = (Promise) result;
+                if (newSource.state == STATE_PENDING && newSource.executor == null) {
+                    newSource.executor = executor;
+                }
                 List<ResultSubscriber> subscriberList = new ArrayList<ResultSubscriber>();
                 this.subscribers.drainTo(subscriberList);
                 for (ResultSubscriber subscriber : subscriberList) {
                     newSource.registerSubscriber(subscriber);
                 }
-            }
-            if (state == STATE_PENDING) {
-                resolve.handle(result);
+            } else {
+                if (state == STATE_PENDING) {
+                    resolve.handle(result);
+                }
             }
         } catch (Throwable e) {
             reject.handle(e);
@@ -174,7 +180,13 @@ public class Promise {
      * @param errorCallback   订阅失败结果
      * @return Promise 返回新的Promise，是一个与订阅者强绑定的 Promise。
      */
-    public Promise then(DelayedCallback successCallback, DelayedCallback errorCallback) {
+    public Promise then(@Nullable DelayedCallback successCallback, @Nullable DelayedCallback errorCallback) {
+        if (successCallback == null) {
+            successCallback = DelayedCallback.NOOP;
+        }
+        if (errorCallback == null) {
+            errorCallback = DelayedCallback.RETHROW;
+        }
         final ResultSubscriber subscriber = new ResultSubscriber(successCallback, errorCallback);
         final Promise outPromise = new Promise(executor, subscriber, true);
         subscriber.bindOutPromise(outPromise);
@@ -186,9 +198,8 @@ public class Promise {
     }
 
     private void registerSubscriber(ResultSubscriber subscriber) {
-        if (!isSettled()) {
-            subscribers.add(subscriber);
-        } else {
+        subscribers.add(subscriber);
+        if (isSettled()) {
             notifySubscribers();
         }
     }
