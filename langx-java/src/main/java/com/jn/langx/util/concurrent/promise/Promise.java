@@ -129,6 +129,9 @@ public class Promise {
         return state != STATE_PENDING;
     }
 
+    public Promise(final Task task) {
+        this(null, task, false);
+    }
     public Promise(Executor executor, final Task task) {
         this(executor, task, false);
     }
@@ -145,6 +148,17 @@ public class Promise {
     private void executeTask() {
         try {
             Object result = task.run(resolve, reject);
+            if (result instanceof Task) {
+                result = new Promise(executor, (Task) result, false);
+            }
+            if (result instanceof Promise) {
+                Promise newSource = (Promise) result;
+                List<ResultSubscriber> subscriberList = new ArrayList<ResultSubscriber>();
+                this.subscribers.drainTo(subscriberList);
+                for (ResultSubscriber subscriber : subscriberList) {
+                    newSource.registerSubscriber(subscriber);
+                }
+            }
             if (state == STATE_PENDING) {
                 resolve.handle(result);
             }
@@ -165,14 +179,18 @@ public class Promise {
         final Promise outPromise = new Promise(executor, subscriber, true);
         subscriber.bindOutPromise(outPromise);
 
+        registerSubscriber(subscriber);
+
+        return outPromise;
+
+    }
+
+    private void registerSubscriber(ResultSubscriber subscriber) {
         if (!isSettled()) {
             subscribers.add(subscriber);
         } else {
             notifySubscribers();
         }
-
-        return outPromise;
-
     }
 
     public Promise then(DelayedCallback successCallback) {
