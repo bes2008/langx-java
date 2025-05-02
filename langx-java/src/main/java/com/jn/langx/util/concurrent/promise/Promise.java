@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>
  * <pre>
  * Promise 的作用:
- *  1. 绑定一个task,并同步执行该 task，
+ *  1. 绑定一个task,并开始执行该 task
  *  2. 然后将 task 的执行结果通知给所有的 subscribes
  * Promise 到底承诺了什么？
  *  1. 它承诺的是，无论结果是成功或者是失败，它都会通知所有的订阅者。
@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *  2. 一个Subscriber是通过 Promise.then方法产生的，也就是then方法是用于注册订阅者的。
  *  3. Subscriber是一个异步任务，用于处理它订阅的Promise的运行结果。
  * Promise框架中的任务同步与异步：
- *  1. 通过new Promise(task)创建的Promise对象，JavaScript 中task是同步执行的，而这里实现的默认是异步的，可以通过参数指定为异步的。
+ *  1. 通过new Promise(task)创建的Promise对象，可以通过参数指定为异步的。
  *  2. 它的订阅者(通过then方法创建的Promise)则都是异步执行的。
  * Promise与 Subscriber的关系：
  *  1. 一个Promise可以有多个订阅者。
@@ -173,7 +173,7 @@ public class Promise {
     }
 
     /**
-     * 该方法用于完全模拟JavaScript Promise，task是同步执行的。
+     * 该方法用于创建一个同步执行的 Promise
      *
      * @param task
      */
