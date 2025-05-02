@@ -440,11 +440,6 @@ public class Promise {
                 try {
                     latch.await();
                 } catch (InterruptedException e) {
-                    long count = latch.getCount();
-                    while (count > 0) {
-                        latch.countDown();
-                        count--;
-                    }
                     reject.handle(e);
                 }
                 return results;
@@ -499,6 +494,10 @@ public class Promise {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 final List<StatedResult> results = new ArrayList<StatedResult>();
+                if (dependencyPromises.length == 0) {
+                    return results;
+                }
+                final CountDownLatch latch = new CountDownLatch(dependencyPromises.length);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
                     final Holder<Integer> indexHolder = new Holder<Integer>(i);
@@ -506,15 +505,22 @@ public class Promise {
                         @Override
                         public Object apply(Object lastResult) {
                             results.set(indexHolder.get(), new StatedResult(State.FULFILLED, lastResult));
+                            latch.countDown();
                             return null;
                         }
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
                             results.set(indexHolder.get(), new StatedResult(State.REJECTED, lastResult));
+                            latch.countDown();
                             return lastResult;
                         }
                     });
+                }
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    reject.handle(e);
                 }
                 return results;
             }
@@ -539,7 +545,7 @@ public class Promise {
     /**
      * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。
      */
-    public static Promise race() {
+    public static Promise race(final Promise... dependencyPromises) {
         return new Promise(new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
