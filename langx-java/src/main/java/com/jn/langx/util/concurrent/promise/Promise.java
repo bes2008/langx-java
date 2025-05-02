@@ -4,6 +4,7 @@ import com.jn.langx.Action;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  *  2. 一个Subscriber是通过 Promise.then方法产生的，也就是then方法是用于注册订阅者的。
  *  3. Subscriber是一个异步任务，用于处理它订阅的Promise的运行结果。
  * Promise框架中的任务同步与异步：
- *  1. 通过new Promise(task)创建的Promise对象，task是同步执行的。
+ *  1. 通过new Promise(task)创建的Promise对象，JavaScript 中task是同步执行的，而这里实现的默认是异步的，可以通过参数指定为异步的。
  *  2. 它的订阅者(通过then方法创建的Promise)则都是异步执行的。
  * Promise与 Subscriber的关系：
  *  1. 一个Promise可以有多个订阅者。
@@ -159,25 +160,52 @@ public class Promise {
         return state != STATE_PENDING;
     }
 
+    /**
+     * 该方法用于完全模拟JavaScript Promise，task是同步执行的。
+     *
+     * @param task
+     */
     public Promise(final Task task) {
-        this(null, task, false);
-    }
-
-    public Promise(Executor executor, final Task task) {
-        this(executor, task, false);
+        this(new ImmediateExecutor(), task, false);
     }
 
     /**
-     * @param executor 任务执行器，如果为null，则使用当前线程执行任务
+     * 创建一个异步执行的 Promise
+     */
+    public Promise(Executor executor, final Task task) {
+        this(executor, task, true);
+    }
+
+    /**
+     * 创建可自定义的是否异步执行的 Promise
+     */
+    public Promise(Executor executor, final Task task, boolean async) {
+        this(executor, task, async, false);
+    }
+
+    /**
+     * @param executor 任务执行器，如果为null，则使用当前线程执行任务，对于异步任务、订阅者时，它不能为null
      * @param task     promise绑定的 task
      * @param async    是否异步执行task
+     * @param isSubscriber 是否是订阅者，如果是订阅者，则只会异步执行task
      */
-    private Promise(Executor executor, final Task task, boolean async) {
-        Preconditions.checkArgument(task != null);
+    private Promise(Executor executor, final Task task, boolean async, boolean isSubscriber) {
+        Preconditions.checkNotNull(executor, "executor is required");
+        Preconditions.checkNotNull(task, "task is required");
         this.task = task;
         this.executor = executor;
-        if (!async) {
-            executeTask();
+        // 如果是订阅者，则只会异步执行task，并且不会立即提交任务到executor中，而是在上游 Promise通知时，才会提交到 executor中
+        if (!isSubscriber) {
+            if (async) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        executeTask();
+                    }
+                });
+            } else {
+                executeTask();
+            }
         }
     }
 
@@ -227,7 +255,7 @@ public class Promise {
             errorCallback = AsyncCallback.RETHROW;
         }
         final Subscriber subscriber = new Subscriber(successCallback, errorCallback);
-        final Promise outPromise = new Promise(executor, subscriber, true);
+        final Promise outPromise = new Promise(executor, subscriber, true, true);
         subscriber.bindOutPromise(outPromise);
 
         registerSubscriber(subscriber);
