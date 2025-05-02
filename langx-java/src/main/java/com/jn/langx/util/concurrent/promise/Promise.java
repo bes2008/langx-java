@@ -4,6 +4,8 @@ import com.jn.langx.Action;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
 import com.jn.langx.util.logging.Loggers;
@@ -427,9 +429,14 @@ public class Promise {
     }
 
     public static Promise all(Executor executor, final Object... tasks) {
-        Promise[] promises = new Promise[tasks.length];
-        for (int i = 0; i < tasks.length; i++) {
-            Promise promise = of(executor, tasks[i]);
+        return all(executor, Collects.asList(tasks));
+    }
+
+    public static Promise all(Executor executor, final Iterable tasks) {
+        List taskList = Lists.newArrayList(tasks);
+        Promise[] promises = new Promise[taskList.size()];
+        for (int i = 0; i < taskList.size(); i++) {
+            Promise promise = of(executor, taskList.get(i));
             promises[i] = promise;
         }
 
