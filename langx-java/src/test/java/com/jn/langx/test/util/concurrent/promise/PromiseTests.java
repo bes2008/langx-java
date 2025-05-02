@@ -230,4 +230,86 @@ public class PromiseTests {
             test_any_settled_with_error();
         }
     }
+
+    private List<Promise> newPromisesAllError(Executor executor) {
+        Promise promise = new Promise(executor, new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                return "promise";
+            }
+        });
+        List<Promise> promises = Lists.newArrayList();
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber1: " + lastResult);
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber2: " + lastResult);
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber3: " + lastResult);
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber4: " + lastResult);
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber5: " + lastResult);
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber6: " + lastResult);
+            }
+        }));
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber7: " + lastResult);
+            }
+        }));
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber8: " + lastResult);
+            }
+        }));
+
+        return promises;
+    }
+
+    @Test
+    public void test_any_all_error() {
+        Executor executor = Executors.newFixedThreadPool(10);
+
+        List<Promise> promises = newPromisesAllError(executor);
+        Promises.AggregateException result = Promises.<Promises.AggregateException>any(executor, promises).await();
+        System.out.println(result.getCauseCount());
+        System.out.println(result);
+    }
 }

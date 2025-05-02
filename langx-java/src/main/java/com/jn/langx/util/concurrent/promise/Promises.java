@@ -480,6 +480,13 @@ public class Promises {
             return causes.get(index);
         }
 
+        public int getCauseCount() {
+            return causes.size();
+        }
+
+        public List<Throwable> getCauses() {
+            return Collects.immutableArrayList(causes);
+        }
 
     }
 
