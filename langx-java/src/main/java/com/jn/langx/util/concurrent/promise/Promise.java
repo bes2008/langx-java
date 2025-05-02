@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -79,24 +80,27 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Promise {
     private static final Logger logger = Loggers.getLogger(Promise.class);
-    /**
-     * The task is in the initial state. 也代表了还在运行中，没有运行完成
-     */
-    private static final int STATE_PENDING = 0;
-    /**
-     * Fulfilled: The task was completed successfully, and the result is available.
-     */
-    private static final int STATE_FULFILLED = 1;
-    /**
-     * Rejected: The task failed, and an error is provided.
-     */
-    private static final int STATE_REJECTED = 2;
+
+    public static enum State {
+        /**
+         * The task is in the initial state. 也代表了还在运行中，没有运行完成
+         */
+        PENDING,
+        /**
+         * Fulfilled: The task was completed successfully, and the result is available.
+         */
+        FULFILLED,
+        /**
+         * Rejected: The task failed, and an error is provided.
+         */
+        REJECTED
+    }
 
     /**
      * The state of the promise.
      * Promise 只会有三个状态：pending, fulfilled, rejected
      */
-    private AtomicInteger state = new AtomicInteger(STATE_PENDING);
+    private AtomicInteger state = new AtomicInteger(State.PENDING.ordinal());
     /**
      * 任务结果,  可以是任意对象
      * 当 state = PENDING 时, result = null
@@ -115,7 +119,7 @@ public class Promise {
                 return;
             }
             Promise.this.result.set(lastActionResult);
-            Promise.this.state.set(Promise.STATE_FULFILLED);
+            Promise.this.state.set(State.FULFILLED.ordinal());
             notifySubscribers();
         }
     };
@@ -126,7 +130,7 @@ public class Promise {
                 return;
             }
             Promise.this.result.set(lastActionException);
-            Promise.this.state.set(Promise.STATE_REJECTED);
+            Promise.this.state.set(Promise.State.REJECTED.ordinal());
             notifySubscribers();
         }
     };
@@ -165,7 +169,7 @@ public class Promise {
      * Promise是否已敲定（settled）
      */
     private boolean isSettled() {
-        return state.get() != STATE_PENDING;
+        return state.get() != State.PENDING.ordinal();
     }
 
     /**
@@ -335,9 +339,9 @@ public class Promise {
         @Override
         public Object run(Handler resolve, Handler reject) {
             Object newResult = null;
-            if (state.get() == STATE_FULFILLED && successCallback != null) {
+            if (state.get() == State.FULFILLED.ordinal() && successCallback != null) {
                 newResult = successCallback.apply(result.get());
-            } else if (state.get() == STATE_REJECTED && errorCallback != null) {
+            } else if (state.get() == State.REJECTED.ordinal() && errorCallback != null) {
                 newResult = errorCallback.apply(result.get());
             }
             return newResult;
@@ -394,34 +398,54 @@ public class Promise {
      * </pre>
      *
      * @param dependencyPromises 要并行完成的任务集，这些任务在创建时最好是 async，不然就失去了并行运行的效果。
-     * @return Promise 封装的新的Promise
+     * @return Promise 以 List&lt;Object> 为结果的Promise。
      */
-    public static Promise all(final Promise... dependencyPromises) {
-        return new Promise(new Task() {
+    public static Promise all(Executor executor, final Promise... dependencyPromises) {
+        return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, final Handler reject) {
+
                 final List<Object> results = new ArrayList<Object>();
+                if (dependencyPromises.length == 0) {
+                    return results;
+                }
+                final CountDownLatch latch = new CountDownLatch(dependencyPromises.length);
                 // 先创建一个空的结果集，用于保存所有结果，避免后续出现 IndexOutOfBoundsException
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     results.add(null);
                 }
-
                 for (int i = 0; i < dependencyPromises.length; i++) {
-                    Promise promise = dependencyPromises[i];
+                    Promise dependencyPromise = dependencyPromises[i];
                     final Holder<Integer> indexHolder = new Holder<Integer>(i);
-                    promise.then(new AsyncCallback() {
+                    dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
                             results.set(indexHolder.get(), lastResult);
+                            latch.countDown();
                             return null;
                         }
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
+                            long count = latch.getCount();
+                            while (count > 0) {
+                                latch.countDown();
+                                count--;
+                            }
                             reject.handle(lastResult);
                             return lastResult;
                         }
                     });
+                }
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    long count = latch.getCount();
+                    while (count > 0) {
+                        latch.countDown();
+                        count--;
+                    }
+                    reject.handle(e);
                 }
                 return results;
             }
@@ -440,6 +464,87 @@ public class Promise {
             promises[i] = promise;
         }
 
-        return all(promises);
+        return all(executor, promises);
+    }
+
+    /**
+     * 用于对外的状态
+     */
+    public static class StatedResult {
+        private State state;
+        private Object result;
+
+        StatedResult(State state, Object result) {
+            this.state = state;
+            this.result = result;
+        }
+
+        public State getState() {
+            return state;
+        }
+
+        public Object getResult() {
+            return result;
+        }
+    }
+
+    /**
+     * 不管依赖的 promise 是成功还是失败，都会在它们完成时，将结果收集起来。
+     *
+     * @param dependencyPromises 依赖的任务
+     * @return 以List&lt;StatedResult>为完成结果的 Promise
+     */
+    public static Promise allSettled(final Promise... dependencyPromises) {
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                final List<StatedResult> results = new ArrayList<StatedResult>();
+                for (int i = 0; i < dependencyPromises.length; i++) {
+                    Promise dependencyPromise = dependencyPromises[i];
+                    final Holder<Integer> indexHolder = new Holder<Integer>(i);
+                    dependencyPromise.then(new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            results.set(indexHolder.get(), new StatedResult(State.FULFILLED, lastResult));
+                            return null;
+                        }
+                    }, new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            results.set(indexHolder.get(), new StatedResult(State.REJECTED, lastResult));
+                            return lastResult;
+                        }
+                    });
+                }
+                return results;
+            }
+        });
+    }
+
+    public static Promise allSettled(Executor executor, final Object... dependencyTasks) {
+        return allSettled(executor, Collects.asList(dependencyTasks));
+    }
+
+    public static Promise allSettled(Executor executor, final Iterable dependencyTasks) {
+        List tasks = Lists.newArrayList(dependencyTasks);
+        Promise[] promises = new Promise[tasks.size()];
+        for (int i = 0; i < tasks.size(); i++) {
+            Promise promise = of(executor, tasks.get(i));
+            promises[i] = promise;
+        }
+
+        return allSettled(promises);
+    }
+
+    /**
+     * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。
+     */
+    public static Promise race() {
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                return null;
+            }
+        });
     }
 }

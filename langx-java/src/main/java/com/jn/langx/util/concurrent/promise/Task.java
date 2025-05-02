@@ -4,11 +4,13 @@ import com.jn.langx.util.function.Handler;
 
 /**
  * 代表Promise中要运行的任务。
+ * <pre>
  * 如果在run方法中抛出异常，那么Promise会认为失败，并通知订阅者。
  * 如果在run方法中执行了 resolve或者reject，那么 resolve或者reject之后的 下列情况都会被忽略：
  * 1. resolve或者reject之后，再执行resolve或者reject，将会被忽略
  * 2. resolve或者reject之后，run 方法的返回值将会被忽略
  * 3. resolve或者reject之后，run 方法中的后续代码出现了异常，也将被忽略
+ * </pre>
  */
 public interface Task {
     /**
