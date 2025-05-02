@@ -190,4 +190,44 @@ public class PromiseTests {
         List<Promises.StatedResult<String>> result = Promises.<String>allSettled(executor, promises).await();
         System.out.println(Strings.join("\r\n", result));
     }
+
+    @Test
+    public void test_any_settled_without_error() {
+        Executor executor = Executors.newFixedThreadPool(10);
+
+        List<Promise> promises = newPromises(executor, false);
+        try {
+            String result = Promises.<String>anySettled(executor, promises).await();
+            System.out.println(result);
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void test_any_settled_with_error() {
+        Executor executor = Executors.newFixedThreadPool(10);
+
+        List<Promise> promises = newPromises(executor, true);
+        try {
+            String result = Promises.<String>anySettled(executor, promises).await();
+            System.out.println(result);
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void test_any_settled_batch_without_error() {
+        for (int i = 0; i < 1000; i++) {
+            test_any_settled_without_error();
+        }
+    }
+
+    @Test
+    public void test_any_settled_batch_with_error() {
+        for (int i = 0; i < 1000; i++) {
+            test_any_settled_with_error();
+        }
+    }
 }

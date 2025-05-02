@@ -228,38 +228,38 @@ public class Promises {
     /**
      * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。
      */
-    public static Promise race(Executor executor, final Promise... dependencyPromises) {
+    public static <R> Promise<R> race(Executor executor, final Promise... dependencyPromises) {
         return anySettled(executor, dependencyPromises);
     }
 
     /**
      * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。如果成功，则返回它的结果，如果失败，则返回它的原因。
      */
-    public static Promise anySettled(Executor executor, final Promise... dependencyPromises) {
-        return new Promise(executor, new Task() {
+    public static <R> Promise<R> anySettled(Executor executor, final Promise... dependencyPromises) {
+        return new Promise<R>(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 if (dependencyPromises.length == 0) {
                     return null;
                 }
 
-                final AtomicReference<Object> result = new AtomicReference<Object>();
+                final AtomicReference<R> result = new AtomicReference<R>();
                 final CountDownLatch latch = new CountDownLatch(1);
                 final AtomicBoolean isDone = new AtomicBoolean(false);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
-                    dependencyPromise.then(new AsyncCallback() {
+                    dependencyPromise.then(new AsyncCallback<R, R>() {
                         @Override
-                        public Object apply(Object lastResult) {
+                        public R apply(R lastResult) {
                             if (!isDone.get()) {
                                 result.set(lastResult);
                                 latch.countDown();
                             }
                             return lastResult;
                         }
-                    }, new AsyncCallback() {
+                    }, new AsyncCallback<R, R>() {
                         @Override
-                        public Object apply(Object lastResult) {
+                        public R apply(R lastResult) {
                             if (!isDone.get()) {
                                 result.set(lastResult);
                                 latch.countDown();
@@ -278,11 +278,11 @@ public class Promises {
         });
     }
 
-    public static Promise anySettled(Executor executor, final Object... dependencyTasks) {
+    public static <R> Promise<R> anySettled(Executor executor, final Object... dependencyTasks) {
         return anySettled(executor, Collects.asList(dependencyTasks));
     }
 
-    public static Promise anySettled(Executor executor, final Iterable dependencyTasks) {
+    public static <R> Promise<R> anySettled(Executor executor, final Iterable dependencyTasks) {
         List tasks = Lists.newArrayList(dependencyTasks);
         Promise[] promises = new Promise[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {
@@ -392,7 +392,9 @@ public class Promises {
     }
 
     /**
-     * 用于模拟 JavaScript中的async/await 中的 await 指令。
+     * 用于模拟 JavaScript中的async/await 中的 await 指令。等待该promise运行完成，获取结果。
+     *
+     * 当Promise执行成功，可以返回运行结果，当Promise执行失败，通常会抛出异常。
      *
      * @param promise promise对象
      * @param <R>     返回值类型
