@@ -14,7 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Promises {
 
@@ -85,22 +85,19 @@ public class Promises {
             @Override
             public Object run(Handler resolve, final Handler reject) {
 
-                final List<Object> results = new ArrayList<Object>();
                 if (dependencyPromises.length == 0) {
-                    return results;
+                    return Collects.emptyArrayList();
                 }
+                final Object[] results = new Object[dependencyPromises.length];
                 final CountDownLatch latch = new CountDownLatch(dependencyPromises.length);
-                // 先创建一个空的结果集，用于保存所有结果，避免后续出现 IndexOutOfBoundsException
-                for (int i = 0; i < dependencyPromises.length; i++) {
-                    results.add(null);
-                }
+
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
                     final Holder<Integer> indexHolder = new Holder<Integer>(i);
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            results.set(indexHolder.get(), lastResult);
+                            results[indexHolder.get()] = lastResult;
                             latch.countDown();
                             return null;
                         }
@@ -122,7 +119,7 @@ public class Promises {
                 } catch (InterruptedException e) {
                     reject.handle(e);
                 }
-                return results;
+                return Collects.asList(results);
             }
         });
     }
@@ -236,25 +233,31 @@ public class Promises {
         return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
-                final Holder<Object> result = new Holder<Object>();
                 if (dependencyPromises.length == 0) {
-                    return result.get();
+                    return null;
                 }
+
+                final AtomicReference<Object> result = new AtomicReference<Object>();
                 final CountDownLatch latch = new CountDownLatch(1);
+                final AtomicBoolean isDone = new AtomicBoolean(false);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            result.set(lastResult);
-                            latch.countDown();
-                            return null;
+                            if (!isDone.get()) {
+                                result.set(lastResult);
+                                latch.countDown();
+                            }
+                            return lastResult;
                         }
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            result.set(lastResult);
-                            latch.countDown();
+                            if (!isDone.get()) {
+                                result.set(lastResult);
+                                latch.countDown();
+                            }
                             return lastResult;
                         }
                     });
@@ -295,7 +298,7 @@ public class Promises {
         return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
-                final Holder<Object> result = new Holder<Object>();
+                final AtomicReference<Object> result = new AtomicReference<Object>();
                 if (dependencyPromises.length == 0) {
                     return result.get();
                 }
