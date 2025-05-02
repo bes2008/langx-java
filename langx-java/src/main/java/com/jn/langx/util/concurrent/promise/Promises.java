@@ -1,10 +1,20 @@
 package com.jn.langx.util.concurrent.promise;
 
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.struct.Holder;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class Promises {
+
+    /**
+     * 用于模拟 JavaScript中的async/await 中的 await 指令。
+     *
+     * @param promise promise对象
+     * @param <R>     返回值类型
+     * @return promise 运行的返回值
+     */
     public static <R> R await(Promise promise) {
         final CountDownLatch latch = new CountDownLatch(1);
         final Holder<Promise.StatedResult<R>> resultHolder = new Holder<Promise.StatedResult<R>>();
@@ -56,5 +66,37 @@ public class Promises {
         }
         throw new ValuedException(rejectedResult);
     }
+
+
+    public static class ValuedException extends RuntimeException {
+        private Object value;
+
+        public ValuedException(Object value) {
+            this.value = value;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+    }
+
+    public static class AggregateException extends RuntimeException {
+        public AggregateException() {
+            super();
+        }
+
+        private List<Throwable> causes = Lists.newArrayList();
+
+        public void add(Throwable cause) {
+            causes.add(cause);
+        }
+
+        public Throwable getCause(int index) {
+            return causes.get(index);
+        }
+
+
+    }
+
 
 }

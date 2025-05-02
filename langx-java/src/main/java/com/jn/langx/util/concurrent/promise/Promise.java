@@ -627,7 +627,7 @@ public class Promise {
             public Object run(Handler resolve, Handler reject) {
                 final Holder<Object> result = new Holder<Object>();
                 final Holder<Boolean> anySuccess = new Holder<Boolean>();
-                final AggregateException aggregateException = new AggregateException();
+                final Promises.AggregateException aggregateException = new Promises.AggregateException();
                 if (dependencyPromises.length == 0) {
                     return result.get();
                 }
