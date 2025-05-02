@@ -489,8 +489,8 @@ public class Promise {
      * @param dependencyPromises 依赖的任务
      * @return 以List&lt;StatedResult>为完成结果的 Promise
      */
-    public static Promise allSettled(final Promise... dependencyPromises) {
-        return new Promise(new Task() {
+    public static Promise allSettled(Executor executor, final Promise... dependencyPromises) {
+        return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 final List<StatedResult> results = new ArrayList<StatedResult>();
@@ -539,18 +539,68 @@ public class Promise {
             promises[i] = promise;
         }
 
-        return allSettled(promises);
+        return allSettled(executor, promises);
     }
 
     /**
      * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。
      */
-    public static Promise race(final Promise... dependencyPromises) {
-        return new Promise(new Task() {
+    public static Promise race(Executor executor, final Promise... dependencyPromises) {
+        return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
-                return null;
+                final Holder<Object> result = new Holder<Object>();
+                if (dependencyPromises.length == 0) {
+                    return result.get();
+                }
+                final CountDownLatch latch = new CountDownLatch(1);
+                for (int i = 0; i < dependencyPromises.length; i++) {
+                    Promise dependencyPromise = dependencyPromises[i];
+                    final Holder<Integer> indexHolder = new Holder<Integer>(i);
+                    dependencyPromise.then(new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            result.set(lastResult);
+                            latch.countDown();
+                            return null;
+                        }
+                    }, new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            result.set(lastResult);
+                            latch.countDown();
+                            return lastResult;
+                        }
+                    });
+                }
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    reject.handle(e);
+                }
+                return result.get();
             }
         });
     }
+
+
+    public static Promise anySettled(Executor executor, final Promise... dependencyPromises) {
+        return race(executor, dependencyPromises);
+    }
+
+    public static Promise anySettled(Executor executor, final Object... dependencyTasks) {
+        return anySettled(executor, Collects.asList(dependencyTasks));
+    }
+
+    public static Promise anySettled(Executor executor, final Iterable dependencyTasks) {
+        List tasks = Lists.newArrayList(dependencyTasks);
+        Promise[] promises = new Promise[tasks.size()];
+        for (int i = 0; i < tasks.size(); i++) {
+            Promise promise = of(executor, tasks.get(i));
+            promises[i] = promise;
+        }
+
+        return anySettled(executor, promises);
+    }
+
 }
