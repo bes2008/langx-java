@@ -1,5 +1,6 @@
 package com.jn.langx.util.concurrent.promise;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
@@ -158,6 +159,11 @@ public class Promises {
         public R getResult() {
             return result;
         }
+
+        @Override
+        public String toString() {
+            return StringTemplates.formatWithPlaceholder("state: {}, {}: {}", state, state == Promise.State.REJECTED ? "reason" : "result", result);
+        }
     }
 
     /**
@@ -170,10 +176,10 @@ public class Promises {
         return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
-                final List<StatedResult> results = new ArrayList<StatedResult>();
                 if (dependencyPromises.length == 0) {
-                    return results;
+                    return Lists.newArrayList();
                 }
+                final StatedResult[] results = new StatedResult[dependencyPromises.length];
                 final CountDownLatch latch = new CountDownLatch(dependencyPromises.length);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
@@ -181,14 +187,14 @@ public class Promises {
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            results.set(indexHolder.get(), new StatedResult(Promise.State.FULFILLED, lastResult));
+                            results[indexHolder.get()] = new StatedResult(Promise.State.FULFILLED, lastResult);
                             latch.countDown();
                             return null;
                         }
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            results.set(indexHolder.get(), new StatedResult(Promise.State.REJECTED, lastResult));
+                            results[indexHolder.get()] = new StatedResult(Promise.State.REJECTED, lastResult);
                             latch.countDown();
                             return lastResult;
                         }
@@ -199,7 +205,7 @@ public class Promises {
                 } catch (InterruptedException e) {
                     reject.handle(e);
                 }
-                return results;
+                return Lists.newArrayList(results);
             }
         });
     }

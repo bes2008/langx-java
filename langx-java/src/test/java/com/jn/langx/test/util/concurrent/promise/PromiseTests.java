@@ -48,7 +48,7 @@ public class PromiseTests {
         System.out.println(result);
     }
 
-    private List<Promise> newPromises(Executor executor) {
+    private List<Promise> newPromises(Executor executor, final boolean hasError) {
         Promise promise = new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
@@ -91,7 +91,10 @@ public class PromiseTests {
         promises.add(promise.then(new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
-                throw new RuntimeException("subscriber5: " + lastResult);
+                if (hasError) {
+                    throw new RuntimeException("subscriber5: " + lastResult);
+                }
+                return "subscriber5: " + lastResult;
             }
         }));
 
@@ -121,32 +124,62 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_all() throws Throwable {
+    public void test_all_without_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(3);
-        List<Promise> promises = newPromises(executor);
+        List<Promise> promises = newPromises(executor, false);
 
         List<String> result = Promises.all(executor, promises).await();
         System.out.println(Strings.join("\r\n", result));
     }
 
     @Test
-    public void test_any() {
+    public void test_all_with_error() throws Throwable {
+        Executor executor = Executors.newFixedThreadPool(3);
+        List<Promise> promises = newPromises(executor, true);
+
+        List<String> result = Promises.all(executor, promises).await();
+        System.out.println(Strings.join("\r\n", result));
+    }
+
+    @Test
+    public void test_any_without_error() {
         Executor executor = Executors.newFixedThreadPool(10);
 
-        List<Promise> promises = newPromises(executor);
+        List<Promise> promises = newPromises(executor, false);
         String result = Promises.any(executor, promises).await();
         System.out.println(result);
     }
 
     @Test
-    public void test_any2() {
+    public void test_any_batch_without_error() {
         for (int i = 0; i < 1000; i++) {
-            test_any();
+            test_any_without_error();
+        }
+    }
+
+
+    @Test
+    public void test_any_with_error() {
+        Executor executor = Executors.newFixedThreadPool(10);
+
+        List<Promise> promises = newPromises(executor, true);
+        String result = Promises.any(executor, promises).await();
+        System.out.println(result);
+    }
+
+
+    @Test
+    public void test_any_batch_with_error() {
+        for (int i = 0; i < 1000; i++) {
+            test_any_with_error();
         }
     }
 
     @Test
     public void test_all_settled() {
-
+        Executor executor = Executors.newFixedThreadPool(10);
+        List<Promise> promises = newPromises(executor, true);
+        List<String> result = Promises.allSettled(executor, promises).await();
+        System.out.println(Strings.join("\r\n", result));
     }
 }
