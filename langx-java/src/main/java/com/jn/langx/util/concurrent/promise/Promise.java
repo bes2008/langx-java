@@ -343,27 +343,41 @@ public class Promise {
 
     }
 
-
-    public static Promise of(Executor executor, final Runnable task) {
-        return new Promise(executor, new Task() {
-            @Override
-            public Object run(Handler resolve, Handler reject) {
-                // 想要代表失败，需要抛出一个异常
-                task.run();
-                return "success";
-            }
-        });
-    }
-
-    public static Promise of(Executor executor, final Callable task) {
-        return new Promise(executor, new Task() {
-            @Override
-            public Object run(Handler resolve, Handler reject) {
-                try {
-                    return task.call();
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
+    public static Promise of(Executor executor, final Object task) {
+        if (task instanceof Promise) {
+            return (Promise) task;
+        }
+        if (task instanceof Task) {
+            return new Promise(executor, (Task) task);
+        }
+        if (task instanceof Runnable) {
+            return new Promise(executor, new Task() {
+                @Override
+                public Object run(Handler resolve, Handler reject) {
+                    // 想要代表失败，需要抛出一个异常
+                    ((Runnable) task).run();
+                    return "success";
                 }
+            });
+        }
+        if (task instanceof Callable) {
+            return new Promise(executor, new Task() {
+                @Override
+                public Object run(Handler resolve, Handler reject) {
+                    try {
+                        return ((Callable) task).call();
+                    } catch (Throwable e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
+
+        // task 是 一个值，就判定为一个结果
+        return new Promise(executor, new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                return task;
             }
         });
     }
@@ -412,28 +426,7 @@ public class Promise {
         });
     }
 
-    public static Promise all(Executor executor, final Task... tasks) {
-        Promise[] promises = new Promise[tasks.length];
-        for (int i = 0; i < tasks.length; i++) {
-            Task task = tasks[i];
-            Promise promise = new Promise(executor, task);
-            promises[i] = promise;
-        }
-
-        return all(promises);
-    }
-
-    public static Promise all(Executor executor, final Callable... tasks) {
-        Promise[] promises = new Promise[tasks.length];
-        for (int i = 0; i < tasks.length; i++) {
-            Promise promise = of(executor, tasks[i]);
-            promises[i] = promise;
-        }
-
-        return all(promises);
-    }
-
-    public static Promise all(Executor executor, final Runnable... tasks) {
+    public static Promise all(Executor executor, final Object... tasks) {
         Promise[] promises = new Promise[tasks.length];
         for (int i = 0; i < tasks.length; i++) {
             Promise promise = of(executor, tasks[i]);
