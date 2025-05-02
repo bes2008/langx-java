@@ -1,5 +1,6 @@
 package com.jn.langx.util.concurrent.promise;
 
+import com.jn.langx.Action;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
@@ -7,17 +8,70 @@ import com.jn.langx.util.function.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
- * 模拟 JavaScript 的 Promise涉及。
+ * 模拟 JavaScript中的Promise实现。
  * <p>
- * Promise 用于执行任务，并且将任务的执行结果传递给所有订阅者。
+ * <pre>
+ * Promise 的作用:
+ *  1. 绑定一个task,并同步执行该 task，
+ *  2. 然后将 task 的执行结果通知给所有的 subscribes
+ * Promise 到底承诺了什么？
+ *  1. 它承诺的是，无论结果是成功或者是失败，它都会通知所有的订阅者。
+ *  2. 它承诺的是，无论订阅者在结果产生前，还是结果产生后进行的订阅，都会收到通知。
+ * Promise 的状态：
+ *  1. pending: 待定，任务正在运行中，没有运行完成，所以结果是待定的。
+ *  2. fulfilled: 任务运行成功，有结果
+ *  3. rejected: 任务运行失败，或者 task 运行过程 throw exception
+ * Subscriber是什么？
+ *  1. Subscriber 也被包装为一个Promise，它是一个Promise的订阅者，也叫 Subscriber
+ *  2. 一个Subscriber是通过 Promise.then方法产生的，也就是then方法是用于注册订阅者的。
+ *  3. Subscriber是一个异步任务，用于处理它订阅的Promise的运行结果。
+ * Promise框架中的任务同步与异步：
+ *  1. 通过new Promise(task)创建的Promise对象，task是同步执行的。
+ *  2. 它的订阅者(通过then方法创建的Promise)则都是异步执行的。
+ * Promise与 Subscriber的关系：
+ *  1. 一个Promise可以有多个订阅者。
+ *  2. 一个Subscriber 同一时间只订阅一个 Promise。
+ *  3. Subscriber 订阅的本质是 Promise的运行结果，当Promise的运行结果是一个新的Promise，则自动转移订阅关系，订阅新的Promise。
+ *  4. Promise 与 Promise(Subscriber)产生订阅关系后，会自动形成 Promise Chain
+ * Promise 的task 的执行结果的处理：
+ *  1. 如果task执行成功，则调用resolve(result)
+ *  2. 如果task执行失败，则调用reject(error)
+ *  3. 如果task结果是 一个新的task，则 task会被包装成一个新的 Promise
+ *  4. 如果task结果是一个新的Promise，则自动转移订阅关系，订阅新的Promise。
+ *  5. 如果  Promise (subscriber) `A`在订阅时，没有指定 errorHandler，则error 会自动往`A`的下游的 Promise (subscriber) 传递
+ * </pre>
+ *
+ * <pre>
+ *                  ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ *                  +                   Promise                          +
+ *                  ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ *                     /                        |                       \
+ *           +++++++++++++++++++++++ +++++++++++++++++++++++ +++++++++++++++++++++++
+ *           + Promise(Subscriber) + + Promise(Subscriber) + + Promise(Subscriber) +
+ *           +++++++++++++++++++++++ +++++++++++++++++++++++ +++++++++++++++++++++++
+ *            /         |       \               |               /         |       \
+ *         Promise   Promise   Promise       Promise         Promise   Promise   Promise
+ *                      |
+ *                   Promise
+ *                      |
+ *                   Promise
+ *            /         |       \    
+ *         Promise   Promise   Promise
+ *
+ * </pre>
+ *
+ * 参考链接：
+ * 1. <a href="https://javascript.info/async">JavaScript Promise</a>
+ * </p>
  */
 public class Promise {
     /**
-     * The task is in the initial state. 也代表了还没有运行完成
+     * The task is in the initial state. 也代表了还在运行中，没有运行完成
      */
     private static final int STATE_PENDING = 0;
     /**
@@ -29,6 +83,10 @@ public class Promise {
      */
     private static final int STATE_REJECTED = 2;
 
+    /**
+     * The state of the promise.
+     * Promise 只会有三个状态：pending, fulfilled, rejected
+     */
     private int state = STATE_PENDING;
     /**
      * 任务结果,  可以是任意对象
@@ -39,8 +97,7 @@ public class Promise {
     private Object result;
     private Executor executor;
     private Task task;
-    private List<DelayedCallback> finallySubscribers;
-    private LinkedBlockingDeque<ResultSubscriber> subscribers = new LinkedBlockingDeque<ResultSubscriber>();
+    private LinkedBlockingDeque<Subscriber> subscribers = new LinkedBlockingDeque<Subscriber>();
 
     private Handler resolve = new Handler() {
         @Override
@@ -65,11 +122,14 @@ public class Promise {
         }
     };
 
+    /**
+     * 运行结果通知给所有订阅者
+     */
     private synchronized void notifySubscribers() {
-        List<ResultSubscriber> list = new ArrayList<ResultSubscriber>();
+        List<Subscriber> list = new ArrayList<Subscriber>();
         subscribers.drainTo(list);
         // 异步执行任务
-        for (final ResultSubscriber subscriber : list) {
+        for (final Subscriber subscriber : list) {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -77,6 +137,128 @@ public class Promise {
                 }
             });
         }
+    }
+
+    /**
+     * 注册一个订阅者
+     *
+     * @param subscriber 订阅者
+     */
+    private void registerSubscriber(Subscriber subscriber) {
+        subscribers.add(subscriber);
+        if (isSettled()) {
+            notifySubscribers();
+        }
+    }
+
+
+    /**
+     * Promise是否已敲定（settled）
+     */
+    private boolean isSettled() {
+        return state != STATE_PENDING;
+    }
+
+    public Promise(final Task task) {
+        this(null, task, false);
+    }
+
+    public Promise(Executor executor, final Task task) {
+        this(executor, task, false);
+    }
+
+    /**
+     * @param executor 任务执行器，如果为null，则使用当前线程执行任务
+     * @param task     promise绑定的 task
+     * @param async    是否异步执行task
+     */
+    private Promise(Executor executor, final Task task, boolean async) {
+        Preconditions.checkArgument(task != null);
+        this.task = task;
+        this.executor = executor;
+        if (!async) {
+            executeTask();
+        }
+    }
+
+    private void executeTask() {
+        try {
+            Object result = task.run(resolve, reject);
+            if (result instanceof Task) {
+                result = new Promise((Task) result);
+            }
+            if (result instanceof Promise) {
+                Promise newInPromise = (Promise) result;
+                if (newInPromise.state == STATE_PENDING && newInPromise.executor == null) {
+                    newInPromise.executor = executor;
+                }
+
+                // 将当前Promise的订阅者，转交给新的Promise上。
+                List<Subscriber> subscriberList = new ArrayList<Subscriber>();
+                this.subscribers.drainTo(subscriberList);
+                for (Subscriber subscriber : subscriberList) {
+                    newInPromise.registerSubscriber(subscriber);
+                }
+            } else {
+                if (state == STATE_PENDING) {
+                    resolve.handle(result);
+                }
+            }
+        } catch (Throwable e) {
+            if (state == STATE_PENDING) {
+                reject.handle(e);
+            }
+        }
+    }
+
+    /**
+     * 用于订阅当前Promise，并创建一个新的Promise。新的Promise本质是一个订阅者。
+     * 以回调的方式，订阅当前Promise的运行结果。
+     *
+     * @param successCallback 订阅成功结果
+     * @param errorCallback   订阅失败结果
+     * @return Promise 返回新的Promise，是一个与订阅者强绑定的 Promise。
+     */
+    public Promise then(@Nullable AsyncCallback successCallback, @Nullable AsyncCallback errorCallback) {
+        if (successCallback == null) {
+            successCallback = AsyncCallback.NOOP;
+        }
+        if (errorCallback == null) {
+            errorCallback = AsyncCallback.RETHROW;
+        }
+        final Subscriber subscriber = new Subscriber(successCallback, errorCallback);
+        final Promise outPromise = new Promise(executor, subscriber, true);
+        subscriber.bindOutPromise(outPromise);
+
+        registerSubscriber(subscriber);
+
+        return outPromise;
+
+    }
+
+
+    public Promise then(AsyncCallback successCallback) {
+        return then(successCallback, null);
+    }
+
+    public Promise catchError(AsyncCallback errorCallback) {
+        return then(null, errorCallback);
+    }
+
+    public Promise finallyAction(final Action callback) {
+        return then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                callback.doAction();
+                return lastResult;
+            }
+        }, new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                callback.doAction();
+                return RETHROW.apply(lastResult);
+            }
+        });
     }
 
     /**
@@ -88,16 +270,16 @@ public class Promise {
      * <p>
      * Subscriber 是 一个 Task，是 outPromise 的任务。
      */
-    private class ResultSubscriber implements Task {
+    private class Subscriber implements Task {
         /**
          *
          */
-        private DelayedCallback successCallback;
-        private DelayedCallback errorCallback;
+        private AsyncCallback successCallback;
+        private AsyncCallback errorCallback;
 
         private Promise outPromise;
 
-        public ResultSubscriber(@NonNull DelayedCallback successCallback, @NonNull DelayedCallback errorCallback) {
+        public Subscriber(@NonNull AsyncCallback successCallback, @NonNull AsyncCallback errorCallback) {
             this.successCallback = successCallback;
             this.errorCallback = errorCallback;
         }
@@ -124,92 +306,27 @@ public class Promise {
     }
 
 
-    /**
-     * 已敲定（settled）
-     */
-    private boolean isSettled() {
-        return state != STATE_PENDING;
-    }
-
-    public Promise(final Task task) {
-        this(null, task, false);
-    }
-    public Promise(Executor executor, final Task task) {
-        this(executor, task, false);
-    }
-
-    private Promise(Executor executor, final Task task, boolean asyncDelayed) {
-        Preconditions.checkArgument(task != null);
-        this.task = task;
-        this.executor = executor;
-        if (!asyncDelayed) {
-            executeTask();
-        }
-    }
-
-    private void executeTask() {
-        try {
-            Object result = task.run(resolve, reject);
-            if (result instanceof Task) {
-                result = new Promise((Task) result);
+    public static Promise of(final Runnable task) {
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                // 想要代表失败，需要抛出一个异常
+                task.run();
+                return "success";
             }
-            if (result instanceof Promise) {
-                Promise newSource = (Promise) result;
-                if (newSource.state == STATE_PENDING && newSource.executor == null) {
-                    newSource.executor = executor;
-                }
-                List<ResultSubscriber> subscriberList = new ArrayList<ResultSubscriber>();
-                this.subscribers.drainTo(subscriberList);
-                for (ResultSubscriber subscriber : subscriberList) {
-                    newSource.registerSubscriber(subscriber);
-                }
-            } else {
-                if (state == STATE_PENDING) {
-                    resolve.handle(result);
+        });
+    }
+
+    public static Promise of(final Callable task) {
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                try {
+                    return task.call();
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
                 }
             }
-        } catch (Throwable e) {
-            reject.handle(e);
-        }
+        });
     }
-
-    /**
-     * 以回调的方式，订阅当前Promise的运行结果。
-     *
-     * @param successCallback 订阅成功结果
-     * @param errorCallback   订阅失败结果
-     * @return Promise 返回新的Promise，是一个与订阅者强绑定的 Promise。
-     */
-    public Promise then(@Nullable DelayedCallback successCallback, @Nullable DelayedCallback errorCallback) {
-        if (successCallback == null) {
-            successCallback = DelayedCallback.NOOP;
-        }
-        if (errorCallback == null) {
-            errorCallback = DelayedCallback.RETHROW;
-        }
-        final ResultSubscriber subscriber = new ResultSubscriber(successCallback, errorCallback);
-        final Promise outPromise = new Promise(executor, subscriber, true);
-        subscriber.bindOutPromise(outPromise);
-
-        registerSubscriber(subscriber);
-
-        return outPromise;
-
-    }
-
-    private void registerSubscriber(ResultSubscriber subscriber) {
-        subscribers.add(subscriber);
-        if (isSettled()) {
-            notifySubscribers();
-        }
-    }
-
-    public Promise then(DelayedCallback successCallback) {
-        return then(successCallback, null);
-    }
-
-    public Promise catchError(DelayedCallback errorCallback) {
-        return then(null, errorCallback);
-    }
-
 }
