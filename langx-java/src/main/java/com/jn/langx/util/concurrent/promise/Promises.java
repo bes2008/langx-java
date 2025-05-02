@@ -13,6 +13,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Promises {
 
@@ -294,22 +296,28 @@ public class Promises {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 final Holder<Object> result = new Holder<Object>();
-                final Holder<Boolean> anySuccess = new Holder<Boolean>();
-                final AggregateException aggregateException = new AggregateException();
                 if (dependencyPromises.length == 0) {
                     return result.get();
                 }
-                final CountDownLatch anySuccessLatch = new CountDownLatch(1);
+
+                final AtomicBoolean anySuccess = new AtomicBoolean(false);
                 final AtomicIntegerCounter allSettledCount = new AtomicIntegerCounter(0);
+                final CountDownLatch anySuccessLatch = new CountDownLatch(1);
+
+
+                final AggregateException aggregateException = new AggregateException();
+
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            result.set(lastResult);
-                            anySuccess.set(true);
+                            if (!anySuccess.get()) {
+                                result.set(lastResult);
+                                anySuccess.set(true);
+                                anySuccessLatch.countDown();
+                            }
                             allSettledCount.increment();
-                            anySuccessLatch.countDown();
                             return null;
                         }
                     }, new AsyncCallback() {
@@ -322,7 +330,9 @@ public class Promises {
                         }
                     });
                 }
+
                 try {
+                    // 最多等到所有的任务都 settled
                     while (allSettledCount.get() != dependencyPromises.length) {
                         anySuccessLatch.await(10, TimeUnit.MILLISECONDS);
                     }
