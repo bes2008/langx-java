@@ -6,6 +6,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
+import com.jn.langx.util.struct.Holder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -334,8 +335,8 @@ public class Promise {
     }
 
 
-    public static Promise of(final Runnable task) {
-        return new Promise(new Task() {
+    public static Promise of(Executor executor, final Runnable task) {
+        return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 // 想要代表失败，需要抛出一个异常
@@ -345,8 +346,8 @@ public class Promise {
         });
     }
 
-    public static Promise of(final Callable task) {
-        return new Promise(new Task() {
+    public static Promise of(Executor executor, final Callable task) {
+        return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 try {
@@ -356,5 +357,80 @@ public class Promise {
                 }
             }
         });
+    }
+
+
+    /**
+     * 用于将所有的 promises封装成一个Promise。
+     * <pre>
+     * 1. 这个Promise用于将所有的 Promises都运行完，再将它们的结果整理成一个 List交给 订阅者。
+     *   1.1 返回的结果List中元素的顺序，就是传入的promises的顺序。
+     * 2. 如果这些 promise有一个是失败了，则这个Promise也会失败，并且是立即失败。
+     * </pre>
+     *
+     * @param promises
+     * @return
+     */
+    public static Promise all(final Promise... promises) {
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, final Handler reject) {
+                final List<Object> results = new ArrayList<Object>();
+                // 先创建一个空的结果集，用于保存所有结果，避免后续出现 IndexOutOfBoundsException
+                for (int i = 0; i < promises.length; i++) {
+                    results.add(null);
+                }
+
+                for (int i = 0; i < promises.length; i++) {
+                    Promise promise = promises[i];
+                    final Holder<Integer> indexHolder = new Holder<Integer>(i);
+                    promise.then(new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            results.set(indexHolder.get(), lastResult);
+                            return null;
+                        }
+                    }, new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            reject.handle(lastResult);
+                            return lastResult;
+                        }
+                    });
+                }
+                return results;
+            }
+        });
+    }
+
+    public static Promise all(Executor executor, final Task... tasks) {
+        Promise[] promises = new Promise[tasks.length];
+        for (int i = 0; i < tasks.length; i++) {
+            Task task = tasks[i];
+            Promise promise = new Promise(executor, task);
+            promises[i] = promise;
+        }
+
+        return all(promises);
+    }
+
+    public static Promise all(Executor executor, final Callable... tasks) {
+        Promise[] promises = new Promise[tasks.length];
+        for (int i = 0; i < tasks.length; i++) {
+            Promise promise = of(executor, tasks[i]);
+            promises[i] = promise;
+        }
+
+        return all(promises);
+    }
+
+    public static Promise all(Executor executor, final Runnable... tasks) {
+        Promise[] promises = new Promise[tasks.length];
+        for (int i = 0; i < tasks.length; i++) {
+            Promise promise = of(executor, tasks[i]);
+            promises[i] = promise;
+        }
+
+        return all(promises);
     }
 }
