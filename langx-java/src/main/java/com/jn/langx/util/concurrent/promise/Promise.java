@@ -386,28 +386,28 @@ public class Promise {
 
 
     /**
-     * 用于将所有的 promises封装成一个Promise, 只有所有的 promises都成功，才是一个成功的 Promise。
+     * 用于将所有的 dependency promises封装成一个Promise, 只有所有的 dependency promises都成功，才是一个成功的 Promise。
      * <pre>
      * 1. 这个Promise用于将所有的 Promises都运行完，再将它们的结果整理成一个 List交给 订阅者。
      *   1.1 返回的结果List中元素的顺序，就是传入的promises的顺序。
      * 2. 如果这些 promise有一个是失败了，则这个Promise也会失败，并且是立即失败。那么其它的 promise即便是成功了，它们的结果也是被ignore了。
      * </pre>
      *
-     * @param promises 要并行完成的任务集，这些任务在创建时最好是 async，不然就失去了并行运行的效果。
+     * @param dependencyPromises 要并行完成的任务集，这些任务在创建时最好是 async，不然就失去了并行运行的效果。
      * @return Promise 封装的新的Promise
      */
-    public static Promise all(final Promise... promises) {
+    public static Promise all(final Promise... dependencyPromises) {
         return new Promise(new Task() {
             @Override
             public Object run(Handler resolve, final Handler reject) {
                 final List<Object> results = new ArrayList<Object>();
                 // 先创建一个空的结果集，用于保存所有结果，避免后续出现 IndexOutOfBoundsException
-                for (int i = 0; i < promises.length; i++) {
+                for (int i = 0; i < dependencyPromises.length; i++) {
                     results.add(null);
                 }
 
-                for (int i = 0; i < promises.length; i++) {
-                    Promise promise = promises[i];
+                for (int i = 0; i < dependencyPromises.length; i++) {
+                    Promise promise = dependencyPromises[i];
                     final Holder<Integer> indexHolder = new Holder<Integer>(i);
                     promise.then(new AsyncCallback() {
                         @Override
