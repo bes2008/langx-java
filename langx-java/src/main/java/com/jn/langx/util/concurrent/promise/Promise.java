@@ -546,6 +546,11 @@ public class Promise {
      * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。
      */
     public static Promise race(Executor executor, final Promise... dependencyPromises) {
+        return anySettled(executor, dependencyPromises);
+    }
+
+
+    public static Promise anySettled(Executor executor, final Promise... dependencyPromises) {
         return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
@@ -583,11 +588,6 @@ public class Promise {
         });
     }
 
-
-    public static Promise anySettled(Executor executor, final Promise... dependencyPromises) {
-        return race(executor, dependencyPromises);
-    }
-
     public static Promise anySettled(Executor executor, final Object... dependencyTasks) {
         return anySettled(executor, Collects.asList(dependencyTasks));
     }
@@ -602,5 +602,44 @@ public class Promise {
 
         return anySettled(executor, promises);
     }
+
+    public static Promise any(Executor executor, final Promise... dependencyPromises) {
+        return new Promise(executor, new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                final Holder<Object> result = new Holder<Object>();
+                if (dependencyPromises.length == 0) {
+                    return result.get();
+                }
+                final CountDownLatch latch = new CountDownLatch(1);
+                for (int i = 0; i < dependencyPromises.length; i++) {
+                    Promise dependencyPromise = dependencyPromises[i];
+                    final Holder<Integer> indexHolder = new Holder<Integer>(i);
+                    dependencyPromise.then(new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            result.set(lastResult);
+                            latch.countDown();
+                            return null;
+                        }
+                    }, new AsyncCallback() {
+                        @Override
+                        public Object apply(Object lastResult) {
+                            result.set(lastResult);
+                            latch.countDown();
+                            return lastResult;
+                        }
+                    });
+                }
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    reject.handle(e);
+                }
+                return result.get();
+            }
+        });
+    }
+
 
 }
