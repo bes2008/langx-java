@@ -685,5 +685,32 @@ public class Promise {
         return any(executor, promises);
     }
 
+    /**
+     * 创建一个 resolved promise
+     */
+    public static Promise resolve(final Object obj) {
+        if (obj instanceof Runnable || obj instanceof Callable || obj instanceof Task || obj instanceof Promise) {
+            throw new IllegalArgumentException("obj is not a common value");
+        }
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                return obj;
+            }
+        });
+    }
+
+    /**
+     * 创建一个 rejected promise
+     */
+    public static Promise reject(final Object obj) {
+        return new Promise(new Task() {
+            @Override
+            public Object run(Handler resolve, Handler reject) {
+                reject.handle(obj);
+                return null;
+            }
+        });
+    }
 
 }
