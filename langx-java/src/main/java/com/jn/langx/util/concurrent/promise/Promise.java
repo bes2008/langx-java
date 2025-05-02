@@ -237,14 +237,14 @@ public class Promise {
                 if (!isSettled()) {
                     resolve.handle(result);
                 } else {
-                    logger.error("resolve or reject invoked in your task, the result in subsequences will ignored, the result is: {} ", result);
+                    logger.info("resolve or reject invoked in your task, the result in subsequences will ignored, the result is: {} ", result);
                 }
             }
         } catch (Throwable e) {
             if (!isSettled()) {
                 reject.handle(e);
             } else {
-                logger.error("resolve or reject invoked in your task, the exception in subsequences will ignored, error :{} ", e.getMessage(), e);
+                logger.info("resolve or reject invoked in your task, the exception in subsequences will ignored, error :{} ", e.getMessage(), e);
             }
         }
     }
