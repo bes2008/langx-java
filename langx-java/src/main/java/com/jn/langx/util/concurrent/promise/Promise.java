@@ -294,7 +294,7 @@ public class Promise {
                 try {
                     callback.doAction();
                 } catch (Throwable e) {
-                    throw PromiseExceptions.toRuntimeException(lastResult);
+                    throw Promises.toRuntimeException(lastResult);
                 }
                 return lastResult;
             }
@@ -304,7 +304,7 @@ public class Promise {
                 try {
                     callback.doAction();
                 } catch (Throwable e) {
-                    throw PromiseExceptions.toRuntimeException(lastResult);
+                    throw Promises.toRuntimeException(lastResult);
                 }
                 return REJECT.apply(lastResult);
             }
@@ -352,7 +352,7 @@ public class Promise {
                     newResult = errorCallback.apply(result.get());
                 }
             } catch (Throwable e) {
-                throw PromiseExceptions.toRuntimeException(e);
+                throw Promises.toRuntimeException(e);
             }
             return newResult;
         }
@@ -475,11 +475,11 @@ public class Promise {
     /**
      * 用于对外的状态
      */
-    public static class StatedResult {
+    public static class StatedResult<R> {
         private State state;
-        private Object result;
+        private R result;
 
-        StatedResult(State state, Object result) {
+        StatedResult(State state, R result) {
             this.state = state;
             this.result = result;
         }
@@ -488,7 +488,7 @@ public class Promise {
             return state;
         }
 
-        public Object getResult() {
+        public R getResult() {
             return result;
         }
     }
@@ -647,10 +647,10 @@ public class Promise {
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            Throwable e = PromiseExceptions.toThrowable(lastResult);
+                            Throwable e = Promises.toThrowable(lastResult);
                             aggregateException.add(e);
                             allSettledCount.increment();
-                            throw PromiseExceptions.toRuntimeException(e);
+                            throw Promises.toRuntimeException(e);
                         }
                     });
                 }
@@ -688,26 +688,18 @@ public class Promise {
     /**
      * 创建一个 resolved promise
      */
-    public static Promise resolve(final Object obj) {
-        if (obj instanceof Runnable || obj instanceof Callable || obj instanceof Task || obj instanceof Promise) {
-            throw new IllegalArgumentException("obj is not a common value");
-        }
-        return new Promise(new Task() {
-            @Override
-            public Object run(Handler resolve, Handler reject) {
-                return obj;
-            }
-        });
+    public static Promise resolve(final Object result) {
+        return of(new ImmediateExecutor(), result);
     }
 
     /**
      * 创建一个 rejected promise
      */
-    public static Promise reject(final Object obj) {
+    public static Promise reject(final Object reason) {
         return new Promise(new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
-                reject.handle(obj);
+                reject.handle(reason);
                 return null;
             }
         });

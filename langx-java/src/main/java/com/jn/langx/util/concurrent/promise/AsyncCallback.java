@@ -23,7 +23,7 @@ public interface AsyncCallback<I, O> extends Function<I, O> {
     AsyncCallback REJECT = new AsyncCallback() {
         @Override
         public Object apply(Object lastResult) {
-            return PromiseExceptions.toRuntimeException(lastResult);
+            return Promises.toRuntimeException(lastResult);
         }
     };
 }
