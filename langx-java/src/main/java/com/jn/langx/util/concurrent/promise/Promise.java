@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 模拟 JavaScript中的Promise实现。
@@ -89,7 +90,7 @@ public class Promise {
      * The state of the promise.
      * Promise 只会有三个状态：pending, fulfilled, rejected
      */
-    private int state = STATE_PENDING;
+    private AtomicInteger state = new AtomicInteger(STATE_PENDING);
     /**
      * 任务结果,  可以是任意对象
      * 当 state = PENDING 时, result = null
@@ -108,7 +109,7 @@ public class Promise {
                 return;
             }
             Promise.this.result = (lastActionResult);
-            Promise.this.state = Promise.STATE_FULFILLED;
+            Promise.this.state.set(Promise.STATE_FULFILLED);
             notifySubscribers();
         }
     };
@@ -119,7 +120,7 @@ public class Promise {
                 return;
             }
             Promise.this.result = lastActionException;
-            Promise.this.state = Promise.STATE_REJECTED;
+            Promise.this.state.set(Promise.STATE_REJECTED);
             notifySubscribers();
         }
     };
@@ -158,7 +159,7 @@ public class Promise {
      * Promise是否已敲定（settled）
      */
     private boolean isSettled() {
-        return state != STATE_PENDING;
+        return state.get() != STATE_PENDING;
     }
 
     /**
@@ -218,7 +219,7 @@ public class Promise {
             }
             if (result instanceof Promise) {
                 Promise newInPromise = (Promise) result;
-                if (newInPromise.state == STATE_PENDING && newInPromise.executor == null) {
+                if (!newInPromise.isSettled() && newInPromise.executor == null) {
                     newInPromise.executor = executor;
                 }
 
@@ -229,12 +230,12 @@ public class Promise {
                     newInPromise.registerSubscriber(subscriber);
                 }
             } else {
-                if (state == STATE_PENDING) {
+                if (!isSettled()) {
                     resolve.handle(result);
                 }
             }
         } catch (Throwable e) {
-            if (state == STATE_PENDING) {
+            if (!isSettled()) {
                 reject.handle(e);
             }
         }
@@ -324,9 +325,9 @@ public class Promise {
         @Override
         public Object run(Handler resolve, Handler reject) {
             Object newResult = null;
-            if (state == STATE_FULFILLED && successCallback != null) {
+            if (state.get() == STATE_FULFILLED && successCallback != null) {
                 newResult = successCallback.apply(result);
-            } else if (state == STATE_REJECTED && errorCallback != null) {
+            } else if (state.get() == STATE_REJECTED && errorCallback != null) {
                 newResult = errorCallback.apply(result);
             }
             return newResult;
