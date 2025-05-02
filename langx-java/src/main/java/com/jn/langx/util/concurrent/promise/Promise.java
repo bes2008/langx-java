@@ -355,4 +355,8 @@ public class Promise {
 
     }
 
+    public <R> R await() {
+        return Promises.await(this);
+    }
+
 }

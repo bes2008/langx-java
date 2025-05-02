@@ -79,13 +79,13 @@ public class PromiseTests {
             }
         });
 
-        List<String> result = Promises.await(Promises.all(executor, subscriber1, subscriber2, subscriber3));
+        List<String> result = Promises.all(executor, subscriber1, subscriber2, subscriber3).await();
         System.out.println(Strings.join("\r\n", result));
     }
 
     @Test
     public void test_any() {
-        Executor executor = Executors.newFixedThreadPool(3);
+        Executor executor = Executors.newFixedThreadPool(10);
         Promise promise = new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
@@ -116,7 +116,56 @@ public class PromiseTests {
             }
         });
 
-        String result = Promises.await(Promises.any(executor, subscriber1, subscriber2, subscriber3));
+
+        Promise subscriber4 = promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber4: " + lastResult;
+            }
+        });
+
+
+        Promise subscriber5 = promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber5: " + lastResult;
+            }
+        });
+
+
+        Promise subscriber6 = promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber6: " + lastResult;
+            }
+        });
+
+        Promise subscriber7 = promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber7: " + lastResult;
+            }
+        });
+
+        Promise subscriber8 = promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber8: " + lastResult;
+            }
+        });
+
+
+        String result = Promises.any(executor,
+                subscriber1, subscriber2, subscriber3, subscriber4,
+                subscriber5, subscriber6, subscriber7, subscriber8
+        ).await();
         System.out.println(result);
+    }
+
+    @Test
+    public void test_any2() {
+        for (int i = 0; i < 1000; i++) {
+            test_any();
+        }
     }
 }
