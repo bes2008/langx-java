@@ -2,6 +2,8 @@ package com.jn.langx.test.util.concurrent.promise;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.concurrent.promise.AsyncCallback;
 import com.jn.langx.util.concurrent.promise.Promise;
 import com.jn.langx.util.concurrent.promise.Promises;
@@ -46,119 +48,93 @@ public class PromiseTests {
         System.out.println(result);
     }
 
-    @Test
-    public void test_all() throws Throwable {
-        Executor executor = Executors.newFixedThreadPool(3);
+    private List<Promise> newPromises(Executor executor) {
         Promise promise = new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 return "promise";
             }
         });
-
-        Promise subscriber1 = promise.then(new AsyncCallback() {
+        List<Promise> promises = Lists.newArrayList();
+        promises.add(promise.then(new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
                 return "subscriber1: " + lastResult;
             }
-        });
+        }));
 
 
-        Promise subscriber2 = promise.then(new AsyncCallback() {
+        promises.add(promise.then(new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
                 return "subscriber2: " + lastResult;
             }
-        });
+        }));
 
 
-        Promise subscriber3 = promise.then(new AsyncCallback() {
+        promises.add(promise.then(new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
                 return "subscriber3: " + lastResult;
             }
-        });
+        }));
 
-        List<String> result = Promises.all(executor, subscriber1, subscriber2, subscriber3).await();
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber4: " + lastResult;
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                throw new RuntimeException("subscriber5: " + lastResult);
+            }
+        }));
+
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber6: " + lastResult;
+            }
+        }));
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber7: " + lastResult;
+            }
+        }));
+
+        promises.add(promise.then(new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return "subscriber8: " + lastResult;
+            }
+        }));
+
+        return promises;
+    }
+
+    @Test
+    public void test_all() throws Throwable {
+        Executor executor = Executors.newFixedThreadPool(3);
+        List<Promise> promises = newPromises(executor);
+
+        List<String> result = Promises.all(executor, promises).await();
         System.out.println(Strings.join("\r\n", result));
     }
 
     @Test
     public void test_any() {
         Executor executor = Executors.newFixedThreadPool(10);
-        Promise promise = new Promise(executor, new Task() {
-            @Override
-            public Object run(Handler resolve, Handler reject) {
-                return "promise";
-            }
-        });
 
-        Promise subscriber1 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber1: " + lastResult;
-            }
-        });
-
-
-        Promise subscriber2 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber2: " + lastResult;
-            }
-        });
-
-
-        Promise subscriber3 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber3: " + lastResult;
-            }
-        });
-
-
-        Promise subscriber4 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber4: " + lastResult;
-            }
-        });
-
-
-        Promise subscriber5 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber5: " + lastResult;
-            }
-        });
-
-
-        Promise subscriber6 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber6: " + lastResult;
-            }
-        });
-
-        Promise subscriber7 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber7: " + lastResult;
-            }
-        });
-
-        Promise subscriber8 = promise.then(new AsyncCallback() {
-            @Override
-            public Object apply(Object lastResult) {
-                return "subscriber8: " + lastResult;
-            }
-        });
-
-
-        String result = Promises.any(executor,
-                subscriber1, subscriber2, subscriber3, subscriber4,
-                subscriber5, subscriber6, subscriber7, subscriber8
-        ).await();
+        List<Promise> promises = newPromises(executor);
+        String result = Promises.any(executor, promises).await();
         System.out.println(result);
     }
 
@@ -167,5 +143,10 @@ public class PromiseTests {
         for (int i = 0; i < 1000; i++) {
             test_any();
         }
+    }
+
+    @Test
+    public void test_all_settled() {
+
     }
 }

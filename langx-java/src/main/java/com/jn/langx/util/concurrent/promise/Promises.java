@@ -421,7 +421,7 @@ public class Promises {
             return resultHolder.get().getResult();
         } else {
             if (resultHolder.get().getResult() instanceof Throwable) {
-                throw toRuntimeException(promise);
+                throw toRuntimeException(resultHolder.get().getResult());
             }
             return resultHolder.get().getResult();
         }
