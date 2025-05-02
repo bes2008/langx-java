@@ -81,8 +81,8 @@ public class Promises {
      * @param dependencyPromises 要并行完成的任务集，这些任务在创建时最好是 async，不然就失去了并行运行的效果。
      * @return Promise 以 List&lt;Object> 为结果的Promise。
      */
-    public static Promise all(Executor executor, final Promise... dependencyPromises) {
-        return new Promise(executor, new Task() {
+    public static <E> Promise<List<E>> all(Executor executor, final Promise... dependencyPromises) {
+        return new Promise<List<E>>(executor, new Task() {
             @Override
             public Object run(Handler resolve, final Handler reject) {
 
@@ -125,11 +125,11 @@ public class Promises {
         });
     }
 
-    public static Promise all(Executor executor, final Object... dependencyTasks) {
+    public static <E> Promise<List<E>> all(Executor executor, final Object... dependencyTasks) {
         return all(executor, Collects.asList(dependencyTasks));
     }
 
-    public static Promise all(Executor executor, final Iterable dependencyTasks) {
+    public static <E> Promise<List<E>> all(Executor executor, final Iterable dependencyTasks) {
         List tasks = Lists.newArrayList(dependencyTasks);
         Promise[] promises = new Promise[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {
@@ -172,8 +172,8 @@ public class Promises {
      * @param dependencyPromises 依赖的任务
      * @return 以List&lt;StatedResult>为完成结果的 Promise
      */
-    public static Promise allSettled(Executor executor, final Promise... dependencyPromises) {
-        return new Promise(executor, new Task() {
+    public static <E> Promise<List<StatedResult<E>>> allSettled(Executor executor, final Promise... dependencyPromises) {
+        return new Promise<List<StatedResult<E>>>(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 if (dependencyPromises.length == 0) {
@@ -210,11 +210,11 @@ public class Promises {
         });
     }
 
-    public static Promise allSettled(Executor executor, final Object... dependencyTasks) {
+    public static <E> Promise<List<StatedResult<E>>> allSettled(Executor executor, final Object... dependencyTasks) {
         return allSettled(executor, Collects.asList(dependencyTasks));
     }
 
-    public static Promise allSettled(Executor executor, final Iterable dependencyTasks) {
+    public static <E> Promise<List<StatedResult<E>>> allSettled(Executor executor, final Iterable dependencyTasks) {
         List tasks = Lists.newArrayList(dependencyTasks);
         Promise[] promises = new Promise[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {
@@ -300,15 +300,14 @@ public class Promises {
      * @param dependencyPromises 依赖任务
      * @return 以第一个成功的结果为完成结果的 Promise
      */
-    public static Promise any(Executor executor, final Promise... dependencyPromises) {
-        return new Promise(executor, new Task() {
+    public static <R> Promise<R> any(Executor executor, final Promise... dependencyPromises) {
+        return new Promise<R>(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
-                final AtomicReference<Object> result = new AtomicReference<Object>();
                 if (dependencyPromises.length == 0) {
-                    return result.get();
+                    return null;
                 }
-
+                final AtomicReference<R> result = new AtomicReference<R>();
                 final AtomicBoolean anySuccess = new AtomicBoolean(false);
                 final AtomicIntegerCounter allSettledCount = new AtomicIntegerCounter(0);
                 final CountDownLatch anySuccessLatch = new CountDownLatch(1);
@@ -317,10 +316,10 @@ public class Promises {
                 final AggregateException aggregateException = new AggregateException();
 
                 for (int i = 0; i < dependencyPromises.length; i++) {
-                    Promise dependencyPromise = dependencyPromises[i];
-                    dependencyPromise.then(new AsyncCallback() {
+                    Promise<R> dependencyPromise = dependencyPromises[i];
+                    dependencyPromise.then(new AsyncCallback<R, R>() {
                         @Override
-                        public Object apply(Object lastResult) {
+                        public R apply(R lastResult) {
                             if (!anySuccess.get()) {
                                 result.set(lastResult);
                                 anySuccess.set(true);
@@ -329,9 +328,9 @@ public class Promises {
                             allSettledCount.increment();
                             return null;
                         }
-                    }, new AsyncCallback() {
+                    }, new AsyncCallback<R, R>() {
                         @Override
-                        public Object apply(Object lastResult) {
+                        public R apply(R lastResult) {
                             Throwable e = Promises.toThrowable(lastResult);
                             aggregateException.add(e);
                             allSettledCount.increment();
@@ -357,11 +356,11 @@ public class Promises {
         });
     }
 
-    public static Promise any(Executor executor, final Object... dependencyTasks) {
+    public static <R> Promise<R> any(Executor executor, final Object... dependencyTasks) {
         return any(executor, Collects.asList(dependencyTasks));
     }
 
-    public static Promise any(Executor executor, final Iterable dependencyTasks) {
+    public static <R> Promise<R> any(Executor executor, final Iterable dependencyTasks) {
         List tasks = Lists.newArrayList(dependencyTasks);
         Promise[] promises = new Promise[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {

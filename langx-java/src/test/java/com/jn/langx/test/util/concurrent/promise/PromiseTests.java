@@ -128,7 +128,7 @@ public class PromiseTests {
         Executor executor = Executors.newFixedThreadPool(3);
         List<Promise> promises = newPromises(executor, false);
 
-        List<String> result = Promises.all(executor, promises).await();
+        List<String> result = Promises.<String>all(executor, promises).await();
         System.out.println(Strings.join("\r\n", result));
     }
 
@@ -137,7 +137,7 @@ public class PromiseTests {
         Executor executor = Executors.newFixedThreadPool(3);
         List<Promise> promises = newPromises(executor, true);
 
-        List<String> result = Promises.all(executor, promises).await();
+        List<String> result = Promises.<String>all(executor, promises).await();
         System.out.println(Strings.join("\r\n", result));
     }
 
@@ -146,7 +146,7 @@ public class PromiseTests {
         Executor executor = Executors.newFixedThreadPool(10);
 
         List<Promise> promises = newPromises(executor, false);
-        String result = Promises.any(executor, promises).await();
+        String result = Promises.<String>any(executor, promises).await();
         System.out.println(result);
     }
 
@@ -163,7 +163,7 @@ public class PromiseTests {
         Executor executor = Executors.newFixedThreadPool(10);
 
         List<Promise> promises = newPromises(executor, true);
-        String result = Promises.any(executor, promises).await();
+        String result = Promises.<String>any(executor, promises).await();
         System.out.println(result);
     }
 
@@ -176,10 +176,18 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_all_settled() {
+    public void test_all_settled_without_error() {
+        Executor executor = Executors.newFixedThreadPool(10);
+        List<Promise> promises = newPromises(executor, false);
+        List<Promises.StatedResult<String>> result = Promises.<String>allSettled(executor, promises).await();
+        System.out.println(Strings.join("\r\n", result));
+    }
+
+    @Test
+    public void test_all_settled_with_error() {
         Executor executor = Executors.newFixedThreadPool(10);
         List<Promise> promises = newPromises(executor, true);
-        List<String> result = Promises.allSettled(executor, promises).await();
+        List<Promises.StatedResult<String>> result = Promises.<String>allSettled(executor, promises).await();
         System.out.println(Strings.join("\r\n", result));
     }
 }

@@ -72,7 +72,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 1. <a href="https://javascript.info/async">JavaScript Promise</a>
  * </p>
  */
-public class Promise {
+public class Promise<R> {
     private static final Logger logger = Loggers.getLogger(Promise.class);
 
     public static enum State {
@@ -355,7 +355,7 @@ public class Promise {
 
     }
 
-    public <R> R await() {
+    public R await() {
         return Promises.await(this);
     }
 
