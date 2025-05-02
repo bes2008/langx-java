@@ -8,7 +8,6 @@ import com.jn.langx.util.function.Handler;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.counter.AtomicIntegerCounter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
