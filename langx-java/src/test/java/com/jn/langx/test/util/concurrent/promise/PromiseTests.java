@@ -3,6 +3,7 @@ package com.jn.langx.test.util.concurrent.promise;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.concurrent.promise.AsyncCallback;
 import com.jn.langx.util.concurrent.promise.Promise;
+import com.jn.langx.util.concurrent.promise.Promises;
 import com.jn.langx.util.concurrent.promise.Task;
 import com.jn.langx.util.function.Handler;
 import org.junit.Test;
@@ -39,6 +40,7 @@ public class PromiseTests {
                 return null;
             }
         });
-        Thread.sleep(2000);
+        Object result = Promises.await(promise);
+        System.out.println(result);
     }
 }

@@ -101,7 +101,7 @@ public class Promise {
      * 当 state = FULFILLED 时, result = 任务返回的结果
      * 当 state = REJECTED 时, result = 任务抛出的异常
      */
-    private AtomicReference<Object> result;
+    private AtomicReference<Object> result = new AtomicReference<Object>();
     private Executor executor;
     private Task task;
     private LinkedBlockingDeque<Subscriber> subscribers = new LinkedBlockingDeque<Subscriber>();
