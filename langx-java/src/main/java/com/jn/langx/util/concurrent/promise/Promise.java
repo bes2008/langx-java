@@ -368,8 +368,8 @@ public class Promise {
      * 2. 如果这些 promise有一个是失败了，则这个Promise也会失败，并且是立即失败。
      * </pre>
      *
-     * @param promises
-     * @return
+     * @param promises 要并行完成的任务集，这些任务在创建时最好是 async，不然就失去了并行运行的效果。
+     * @return Promise 封装的新的Promise
      */
     public static Promise all(final Promise... promises) {
         return new Promise(new Task() {
