@@ -12,4 +12,11 @@ class PromiseExceptions {
         return new ValuedException(rejectedResult);
     }
 
+    static Throwable toThrowable(Object rejectedResult) {
+        if (rejectedResult instanceof Throwable) {
+            return (Throwable) rejectedResult;
+        }
+        throw new ValuedException(rejectedResult);
+    }
+
 }

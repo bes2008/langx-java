@@ -10,14 +10,12 @@ import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
+import com.jn.langx.util.struct.counter.AtomicIntegerCounter;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -303,7 +301,11 @@ public class Promise {
         }, new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
-                callback.doAction();
+                try {
+                    callback.doAction();
+                } catch (Throwable e) {
+                    throw PromiseExceptions.toRuntimeException(lastResult);
+                }
                 return REJECT.apply(lastResult);
             }
         });
@@ -557,7 +559,9 @@ public class Promise {
         return anySettled(executor, dependencyPromises);
     }
 
-
+    /**
+     * 适用于多个task 竞赛的场景，只要有一个settled就行（不论它是成功还是失败）。如果成功，则返回它的结果，如果失败，则返回它的原因。
+     */
     public static Promise anySettled(Executor executor, final Promise... dependencyPromises) {
         return new Promise(executor, new Task() {
             @Override
@@ -611,7 +615,7 @@ public class Promise {
     }
 
     /**
-     * 只要有一个 dependency 是成功的就返回它的结果。
+     * 适用场景：只要有一个 dependency 是成功的就返回它的结果。如果都没有成功，则返回AggregateException。
      *
      * @param executor           执行器
      * @param dependencyPromises 依赖任务
@@ -622,35 +626,63 @@ public class Promise {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 final Holder<Object> result = new Holder<Object>();
+                final Holder<Boolean> anySuccess = new Holder<Boolean>();
                 final AggregateException aggregateException = new AggregateException();
                 if (dependencyPromises.length == 0) {
                     return result.get();
                 }
-                final CountDownLatch latch = new CountDownLatch(1);
+                final CountDownLatch anySuccessLatch = new CountDownLatch(1);
+                final AtomicIntegerCounter allSettledCount = new AtomicIntegerCounter(0);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
                             result.set(lastResult);
-                            latch.countDown();
+                            anySuccess.set(true);
+                            allSettledCount.increment();
+                            anySuccessLatch.countDown();
                             return null;
                         }
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            return PromiseExceptions.toRuntimeException(lastResult);
+                            Throwable e = PromiseExceptions.toThrowable(lastResult);
+                            aggregateException.add(e);
+                            allSettledCount.increment();
+                            throw PromiseExceptions.toRuntimeException(e);
                         }
                     });
                 }
                 try {
-                    latch.await();
+                    while (allSettledCount.get() != dependencyPromises.length) {
+                        anySuccessLatch.await(10, TimeUnit.MILLISECONDS);
+                    }
                 } catch (InterruptedException e) {
                     reject.handle(e);
                 }
-                return result.get();
+                if (anySuccess.get()) {
+                    return result.get();
+                } else {
+                    return aggregateException;
+                }
             }
         });
+    }
+
+    public static Promise any(Executor executor, final Object... dependencyTasks) {
+        return any(executor, Collects.asList(dependencyTasks));
+    }
+
+    public static Promise any(Executor executor, final Iterable dependencyTasks) {
+        List tasks = Lists.newArrayList(dependencyTasks);
+        Promise[] promises = new Promise[tasks.size()];
+        for (int i = 0; i < tasks.size(); i++) {
+            Promise promise = of(executor, tasks.get(i));
+            promises[i] = promise;
+        }
+
+        return any(executor, promises);
     }
 
 
