@@ -36,8 +36,7 @@ public class PromiseTests {
         }).then(new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
-                System.out.println(lastResult);
-                return null;
+                return lastResult;
             }
         });
         Object result = Promises.await(promise);
