@@ -6,7 +6,9 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 模拟 JavaScript中的Promise实现。
@@ -73,6 +76,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </p>
  */
 public class Promise {
+    private static final Logger logger = Loggers.getLogger(Promise.class);
     /**
      * The task is in the initial state. 也代表了还在运行中，没有运行完成
      */
@@ -97,7 +101,7 @@ public class Promise {
      * 当 state = FULFILLED 时, result = 任务返回的结果
      * 当 state = REJECTED 时, result = 任务抛出的异常
      */
-    private Object result;
+    private AtomicReference<Object> result;
     private Executor executor;
     private Task task;
     private LinkedBlockingDeque<Subscriber> subscribers = new LinkedBlockingDeque<Subscriber>();
@@ -108,7 +112,7 @@ public class Promise {
             if (isSettled()) {
                 return;
             }
-            Promise.this.result = (lastActionResult);
+            Promise.this.result.set(lastActionResult);
             Promise.this.state.set(Promise.STATE_FULFILLED);
             notifySubscribers();
         }
@@ -119,7 +123,7 @@ public class Promise {
             if (isSettled()) {
                 return;
             }
-            Promise.this.result = lastActionException;
+            Promise.this.result.set(lastActionException);
             Promise.this.state.set(Promise.STATE_REJECTED);
             notifySubscribers();
         }
@@ -232,11 +236,15 @@ public class Promise {
             } else {
                 if (!isSettled()) {
                     resolve.handle(result);
+                } else {
+                    logger.error("resolve or reject invoked in your task, the result in subsequences will ignored, the result is: {} ", result);
                 }
             }
         } catch (Throwable e) {
             if (!isSettled()) {
                 reject.handle(e);
+            } else {
+                logger.error("resolve or reject invoked in your task, the exception in subsequences will ignored, error :{} ", e.getMessage(), e);
             }
         }
     }
@@ -326,9 +334,9 @@ public class Promise {
         public Object run(Handler resolve, Handler reject) {
             Object newResult = null;
             if (state.get() == STATE_FULFILLED && successCallback != null) {
-                newResult = successCallback.apply(result);
+                newResult = successCallback.apply(result.get());
             } else if (state.get() == STATE_REJECTED && errorCallback != null) {
-                newResult = errorCallback.apply(result);
+                newResult = errorCallback.apply(result.get());
             }
             return newResult;
         }
