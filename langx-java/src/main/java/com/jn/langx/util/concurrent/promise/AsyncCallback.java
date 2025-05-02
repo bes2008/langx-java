@@ -20,16 +20,10 @@ public interface AsyncCallback<I, O> extends Function<I, O> {
         }
     };
 
-    AsyncCallback RETHROW = new AsyncCallback() {
+    AsyncCallback REJECT = new AsyncCallback() {
         @Override
         public Object apply(Object lastResult) {
-            if (lastResult instanceof Throwable) {
-                if (lastResult instanceof RuntimeException) {
-                    throw (RuntimeException) lastResult;
-                }
-                throw new RuntimeException((Throwable) lastResult);
-            }
-            return lastResult;
+            return PromiseExceptions.toRuntimeException(lastResult);
         }
     };
 }

@@ -268,7 +268,7 @@ public class Promise {
             successCallback = AsyncCallback.NOOP;
         }
         if (errorCallback == null) {
-            errorCallback = AsyncCallback.RETHROW;
+            errorCallback = AsyncCallback.REJECT;
         }
         final Subscriber subscriber = new Subscriber(successCallback, errorCallback);
         final Promise outPromise = new Promise(executor, subscriber, true, true);
@@ -293,14 +293,18 @@ public class Promise {
         return then(new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
-                callback.doAction();
+                try {
+                    callback.doAction();
+                } catch (Throwable e) {
+                    throw PromiseExceptions.toRuntimeException(lastResult);
+                }
                 return lastResult;
             }
         }, new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
                 callback.doAction();
-                return RETHROW.apply(lastResult);
+                return REJECT.apply(lastResult);
             }
         });
     }
@@ -339,10 +343,14 @@ public class Promise {
         @Override
         public Object run(Handler resolve, Handler reject) {
             Object newResult = null;
-            if (state.get() == State.FULFILLED.ordinal() && successCallback != null) {
-                newResult = successCallback.apply(result.get());
-            } else if (state.get() == State.REJECTED.ordinal() && errorCallback != null) {
-                newResult = errorCallback.apply(result.get());
+            try {
+                if (state.get() == State.FULFILLED.ordinal() && successCallback != null) {
+                    newResult = successCallback.apply(result.get());
+                } else if (state.get() == State.REJECTED.ordinal() && errorCallback != null) {
+                    newResult = errorCallback.apply(result.get());
+                }
+            } catch (Throwable e) {
+                throw PromiseExceptions.toRuntimeException(e);
             }
             return newResult;
         }
@@ -561,7 +569,6 @@ public class Promise {
                 final CountDownLatch latch = new CountDownLatch(1);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
-                    final Holder<Integer> indexHolder = new Holder<Integer>(i);
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
@@ -603,18 +610,25 @@ public class Promise {
         return anySettled(executor, promises);
     }
 
+    /**
+     * 只要有一个 dependency 是成功的就返回它的结果。
+     *
+     * @param executor           执行器
+     * @param dependencyPromises 依赖任务
+     * @return 以第一个成功的结果为完成结果的 Promise
+     */
     public static Promise any(Executor executor, final Promise... dependencyPromises) {
         return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, Handler reject) {
                 final Holder<Object> result = new Holder<Object>();
+                final AggregateException aggregateException = new AggregateException();
                 if (dependencyPromises.length == 0) {
                     return result.get();
                 }
                 final CountDownLatch latch = new CountDownLatch(1);
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
-                    final Holder<Integer> indexHolder = new Holder<Integer>(i);
                     dependencyPromise.then(new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
@@ -625,9 +639,7 @@ public class Promise {
                     }, new AsyncCallback() {
                         @Override
                         public Object apply(Object lastResult) {
-                            result.set(lastResult);
-                            latch.countDown();
-                            return lastResult;
+                            return PromiseExceptions.toRuntimeException(lastResult);
                         }
                     });
                 }
