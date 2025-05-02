@@ -370,11 +370,11 @@ public class Promise {
 
 
     /**
-     * 用于将所有的 promises封装成一个Promise。
+     * 用于将所有的 promises封装成一个Promise, 只有所有的 promises都成功，才是一个成功的 Promise。
      * <pre>
      * 1. 这个Promise用于将所有的 Promises都运行完，再将它们的结果整理成一个 List交给 订阅者。
      *   1.1 返回的结果List中元素的顺序，就是传入的promises的顺序。
-     * 2. 如果这些 promise有一个是失败了，则这个Promise也会失败，并且是立即失败。
+     * 2. 如果这些 promise有一个是失败了，则这个Promise也会失败，并且是立即失败。那么其它的 promise即便是成功了，它们的结果也是被ignore了。
      * </pre>
      *
      * @param promises 要并行完成的任务集，这些任务在创建时最好是 async，不然就失去了并行运行的效果。
