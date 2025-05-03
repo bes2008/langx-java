@@ -104,13 +104,13 @@ public class Promise<R> {
      */
     private AtomicReference<Object> result = new AtomicReference<Object>();
     private Executor executor;
-    private Task task;
+    private Task<R> task;
     private LinkedBlockingDeque<Subscriber> subscribers = new LinkedBlockingDeque<Subscriber>();
 
 
-    private final Handler resolve = new Handler() {
+    private final Handler<R> resolve = new Handler<R>() {
         @Override
-        public void handle(Object lastActionResult) {
+        public void handle(R lastActionResult) {
             if (isSettled()) {
                 return;
             }
@@ -119,9 +119,9 @@ public class Promise<R> {
             notifySubscribers();
         }
     };
-    private final Handler reject = new Handler() {
+    private final Handler<Throwable> reject = new Handler<Throwable>() {
         @Override
-        public void handle(Object lastActionException) {
+        public void handle(Throwable lastActionException) {
             if (isSettled()) {
                 return;
             }
@@ -237,7 +237,7 @@ public class Promise<R> {
                 }
             } else {
                 if (!isSettled()) {
-                    resolve.handle(result);
+                    resolve.handle((R) result);
                 } else {
                     logger.info("resolve or reject invoked in your task {}, the result in subsequences will ignored, the result is: {} ", task.getClass(), result);
                 }
