@@ -4,6 +4,7 @@ import com.jn.langx.Action;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
 import com.jn.langx.util.logging.Loggers;
@@ -292,7 +293,7 @@ public class Promise<R> {
                 try {
                     callback.doAction();
                 } catch (Throwable e) {
-                    throw Promises.toRuntimeException(lastResult);
+                    throw Throwables.wrapAsRuntimeException(e);
                 }
                 return lastResult;
             }
@@ -302,9 +303,9 @@ public class Promise<R> {
                 try {
                     callback.doAction();
                 } catch (Throwable e) {
-                    throw Promises.toRuntimeException(lastResult);
+                    throw Throwables.wrapAsRuntimeException(e);
                 }
-                throw Promises.toRuntimeException(lastResult);
+                throw Throwables.wrapAsRuntimeException(lastResult);
             }
         });
     }
@@ -350,11 +351,10 @@ public class Promise<R> {
                     newResult = errorCallback.apply(result.get());
                 }
             } catch (Throwable e) {
-                throw Promises.toRuntimeException(e);
+                throw Throwables.wrapAsRuntimeException(e);
             }
             return newResult;
         }
-
     }
 
     public R await() {

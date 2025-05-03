@@ -142,7 +142,7 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_any_without_error() {
+    public void test_any_without_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(10);
 
         List<Promise> promises = newPromises(executor, false);
@@ -151,7 +151,7 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_any_batch_without_error() {
+    public void test_any_batch_without_error() throws Throwable {
         for (int i = 0; i < 1000; i++) {
             test_any_without_error();
         }
@@ -159,7 +159,7 @@ public class PromiseTests {
 
 
     @Test
-    public void test_any_with_error() {
+    public void test_any_with_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(10);
 
         List<Promise> promises = newPromises(executor, true);
@@ -169,14 +169,14 @@ public class PromiseTests {
 
 
     @Test
-    public void test_any_batch_with_error() {
+    public void test_any_batch_with_error() throws Throwable {
         for (int i = 0; i < 1000; i++) {
             test_any_with_error();
         }
     }
 
     @Test
-    public void test_all_settled_without_error() {
+    public void test_all_settled_without_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(10);
         List<Promise> promises = newPromises(executor, false);
         List<Promises.StatedResult<String>> result = Promises.<String>allSettled(executor, promises).await();
@@ -184,7 +184,7 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_all_settled_with_error() {
+    public void test_all_settled_with_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(10);
         List<Promise> promises = newPromises(executor, true);
         List<Promises.StatedResult<String>> result = Promises.<String>allSettled(executor, promises).await();
@@ -192,7 +192,7 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_any_settled_without_error() {
+    public void test_any_settled_without_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(10);
 
         List<Promise> promises = newPromises(executor, false);
@@ -205,7 +205,7 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_any_settled_with_error() {
+    public void test_any_settled_with_error() throws Throwable {
         Executor executor = Executors.newFixedThreadPool(10);
 
         List<Promise> promises = newPromises(executor, true);
@@ -218,14 +218,14 @@ public class PromiseTests {
     }
 
     @Test
-    public void test_any_settled_batch_without_error() {
+    public void test_any_settled_batch_without_error() throws Throwable {
         for (int i = 0; i < 1000; i++) {
             test_any_settled_without_error();
         }
     }
 
     @Test
-    public void test_any_settled_batch_with_error() {
+    public void test_any_settled_batch_with_error() throws Throwable {
         for (int i = 0; i < 1000; i++) {
             test_any_settled_with_error();
         }

@@ -1,6 +1,7 @@
 package com.jn.langx.util.concurrent.promise;
 
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
@@ -332,7 +333,7 @@ public class Promises {
                         public R apply(Throwable ex) {
                             aggregateException.add(ex);
                             allSettledCount.increment();
-                            throw Promises.toRuntimeException(ex);
+                            throw Throwables.wrapAsRuntimeException(ex);
                         }
                     });
                 }
@@ -425,23 +426,11 @@ public class Promises {
         if (resultHolder.get().getState() == Promise.State.FULFILLED) {
             return resultHolder.get().getResult();
         } else {
-            if (resultHolder.get().getResult() instanceof Throwable) {
-                throw toRuntimeException(resultHolder.get().getResult());
-            }
-            return resultHolder.get().getResult();
+            throw Throwables.wrapAsRuntimeException((Throwable) resultHolder.get().getResult());
         }
     }
 
 
-    static RuntimeException toRuntimeException(Object rejectedResult) {
-        if (rejectedResult instanceof Throwable) {
-            if (rejectedResult instanceof RuntimeException) {
-                return (RuntimeException) rejectedResult;
-            }
-            throw new RuntimeException((Throwable) rejectedResult);
-        }
-        return new ValuedException(rejectedResult);
-    }
 
     static Throwable toThrowable(Object rejectedResult) {
         if (rejectedResult instanceof Throwable) {
@@ -492,7 +481,7 @@ public class Promises {
         return new AsyncCallback<Throwable, R>() {
             @Override
             public R apply(Throwable reason) {
-                throw toRuntimeException(reason);
+                throw Throwables.wrapAsRuntimeException(reason);
             }
         };
     }
