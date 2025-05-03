@@ -343,7 +343,7 @@ public class Promise<R> {
         }
 
         @Override
-        public Object run(Handler resolve, Handler reject) {
+        public Object run(Handler resolve, ErrorHandler reject) {
             Object newResult = null;
             try {
                 if (state.get() == State.FULFILLED.ordinal() && successCallback != null) {

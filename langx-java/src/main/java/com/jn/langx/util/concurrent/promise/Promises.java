@@ -54,9 +54,9 @@ public class Promises {
             return new Promise(executor, new Task() {
                 @Override
                 public Object run(Handler resolve, ErrorHandler reject) {
-                    Throwable ex = (Throwable) task;
-                    reject.handle(ex);
-                    throw Throwables.wrapAsRuntimeException(ex);
+                    Throwable reason = (Throwable) task;
+                    reject.handle(reason);
+                    throw null;
                 }
             });
         }
@@ -372,17 +372,25 @@ public class Promises {
         return any(executor, promises);
     }
 
+    public static Promise run(Runnable task) {
+        return of(new ImmediateExecutor(), task);
+    }
+
+    public static Promise runAsync(Executor executor, Runnable task) {
+        return of(executor, task);
+    }
+
     /**
      * 创建一个 resolved promise
      */
-    public static Promise resolve(final Object result) {
+    public static <E> Promise<E> resolved(final E result) {
         return of(new ImmediateExecutor(), result);
     }
 
     /**
      * 创建一个 rejected promise
      */
-    public static Promise reject(final Throwable reason) {
+    public static Promise rejected(final Throwable reason) {
         return new Promise(new Task<Object>() {
             @Override
             public Object run(Handler<Object> resolve, ErrorHandler reject) {
@@ -432,28 +440,6 @@ public class Promises {
         }
     }
 
-
-
-    static Throwable toThrowable(Object rejectedResult) {
-        if (rejectedResult instanceof Throwable) {
-            return (Throwable) rejectedResult;
-        }
-        throw new ValuedException(rejectedResult);
-    }
-
-
-    public static class ValuedException extends RuntimeException {
-        private Object value;
-
-        public ValuedException(Object value) {
-            this.value = value;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-    }
-
     public static class AggregateException extends RuntimeException {
         public AggregateException() {
             super();
@@ -479,7 +465,7 @@ public class Promises {
 
     }
 
-    public static <R> AsyncCallback<? extends Throwable, R> newRejectCallback() {
+    static <R> AsyncCallback<? extends Throwable, R> newRejectCallback() {
         return new AsyncCallback<Throwable, R>() {
             @Override
             public R apply(Throwable reason) {
@@ -488,7 +474,7 @@ public class Promises {
         };
     }
 
-    public static AsyncCallback newNoopResolveCallback() {
+    static AsyncCallback newNoopResolveCallback() {
         return new AsyncCallback() {
             @Override
             public Object apply(Object lastResult) {
