@@ -261,7 +261,7 @@ public class Promise<R> {
      */
     public <U> Promise<U> then(@Nullable AsyncCallback<R, U> successCallback, @Nullable AsyncCallback<? extends Throwable, U> errorCallback) {
         if (successCallback == null) {
-            successCallback = AsyncCallback.NOOP;
+            successCallback = Promises.newNoopResolveCallback();
         }
         if (errorCallback == null) {
             errorCallback = Promises.newRejectCallback();

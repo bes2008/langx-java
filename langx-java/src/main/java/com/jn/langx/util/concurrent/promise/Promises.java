@@ -496,4 +496,13 @@ public class Promises {
             }
         };
     }
+
+    public static AsyncCallback newNoopResolveCallback() {
+        return new AsyncCallback() {
+            @Override
+            public Object apply(Object lastResult) {
+                return lastResult;
+            }
+        };
+    }
 }

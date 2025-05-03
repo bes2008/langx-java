@@ -12,11 +12,4 @@ import com.jn.langx.util.function.Function;
  */
 public interface AsyncCallback<I, O> extends Function<I, O> {
     O apply(I lastResult);
-
-    AsyncCallback NOOP = new AsyncCallback() {
-        @Override
-        public Object apply(Object lastResult) {
-            return lastResult;
-        }
-    };
 }
