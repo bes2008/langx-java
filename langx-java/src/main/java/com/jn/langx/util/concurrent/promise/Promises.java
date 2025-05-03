@@ -1,5 +1,6 @@
 package com.jn.langx.util.concurrent.promise;
 
+import com.jn.langx.exception.ErrorHandler;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
@@ -19,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Promises {
 
-    public static Promise of(Executor executor, final Object task) {
+    static Promise of(Executor executor, final Object task) {
         if (task instanceof Promise) {
             return (Promise) task;
         }
@@ -29,17 +30,17 @@ public class Promises {
         if (task instanceof Runnable) {
             return new Promise(executor, new Task() {
                 @Override
-                public Object run(Handler resolve, Handler reject) {
+                public Object run(Handler resolve, ErrorHandler reject) {
                     // 想要代表失败，需要抛出一个异常
                     ((Runnable) task).run();
-                    return "success";
+                    return null;
                 }
             });
         }
         if (task instanceof Callable) {
             return new Promise(executor, new Task() {
                 @Override
-                public Object run(Handler resolve, Handler reject) {
+                public Object run(Handler resolve, ErrorHandler reject) {
                     try {
                         return ((Callable) task).call();
                     } catch (Throwable e) {
@@ -52,9 +53,10 @@ public class Promises {
         if (task instanceof Throwable) {
             return new Promise(executor, new Task() {
                 @Override
-                public Object run(Handler resolve, Handler reject) {
-                    reject.handle(task);
-                    return task;
+                public Object run(Handler resolve, ErrorHandler reject) {
+                    Throwable ex = (Throwable) task;
+                    reject.handle(ex);
+                    throw Throwables.wrapAsRuntimeException(ex);
                 }
             });
         }
@@ -62,7 +64,7 @@ public class Promises {
         // task 是 一个值，就判定为一个结果
         return new Promise(executor, new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 resolve.handle(task);
                 return task;
             }
@@ -84,7 +86,7 @@ public class Promises {
     public static <E> Promise<List<E>> all(Executor executor, final Promise... dependencyPromises) {
         return new Promise<List<E>>(executor, new Task() {
             @Override
-            public Object run(Handler resolve, final Handler reject) {
+            public Object run(Handler resolve, final ErrorHandler reject) {
 
                 if (dependencyPromises.length == 0) {
                     return Collects.emptyArrayList();
@@ -95,23 +97,23 @@ public class Promises {
                 for (int i = 0; i < dependencyPromises.length; i++) {
                     Promise dependencyPromise = dependencyPromises[i];
                     final Holder<Integer> indexHolder = new Holder<Integer>(i);
-                    dependencyPromise.then(new AsyncCallback() {
+                    dependencyPromise.then(new AsyncCallback<E, E>() {
                         @Override
-                        public Object apply(Object lastResult) {
+                        public E apply(E lastResult) {
                             results[indexHolder.get()] = lastResult;
                             latch.countDown();
-                            return null;
+                            return lastResult;
                         }
-                    }, new AsyncCallback() {
+                    }, new AsyncCallback<Throwable, E>() {
                         @Override
-                        public Object apply(Object lastResult) {
+                        public E apply(Throwable lastResult) {
                             long count = latch.getCount();
                             while (count > 0) {
                                 latch.countDown();
                                 count--;
                             }
                             reject.handle(lastResult);
-                            return lastResult;
+                            return null;
                         }
                     });
                 }
@@ -175,7 +177,7 @@ public class Promises {
     public static <E> Promise<List<StatedResult<E>>> allSettled(Executor executor, final Promise... dependencyPromises) {
         return new Promise<List<StatedResult<E>>>(executor, new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 if (dependencyPromises.length == 0) {
                     return Lists.newArrayList();
                 }
@@ -238,7 +240,7 @@ public class Promises {
     public static <R> Promise<R> anySettled(Executor executor, final Promise... dependencyPromises) {
         return new Promise<R>(executor, new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 if (dependencyPromises.length == 0) {
                     return null;
                 }
@@ -303,7 +305,7 @@ public class Promises {
     public static <R> Promise<R> any(Executor executor, final Promise... dependencyPromises) {
         return new Promise<R>(executor, new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 if (dependencyPromises.length == 0) {
                     return null;
                 }
@@ -380,10 +382,10 @@ public class Promises {
     /**
      * 创建一个 rejected promise
      */
-    public static Promise reject(final Object reason) {
-        return new Promise(new Task() {
+    public static Promise reject(final Throwable reason) {
+        return new Promise(new Task<Object>() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler<Object> resolve, ErrorHandler reject) {
                 reject.handle(reason);
                 return null;
             }

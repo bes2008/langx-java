@@ -3,6 +3,7 @@ package com.jn.langx.util.concurrent.promise;
 import com.jn.langx.Action;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.exception.ErrorHandler;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
@@ -120,7 +121,7 @@ public class Promise<R> {
             notifySubscribers();
         }
     };
-    private final Handler<Throwable> reject = new Handler<Throwable>() {
+    private final ErrorHandler reject = new ErrorHandler() {
         @Override
         public void handle(Throwable lastActionException) {
             if (isSettled()) {

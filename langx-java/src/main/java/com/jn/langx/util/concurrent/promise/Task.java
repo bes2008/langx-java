@@ -1,5 +1,6 @@
 package com.jn.langx.util.concurrent.promise;
 
+import com.jn.langx.exception.ErrorHandler;
 import com.jn.langx.util.function.Handler;
 
 /**
@@ -18,6 +19,6 @@ public interface Task<R> {
      * @param reject 它是由Promise自动创建的，用来在失败时传递结果给订阅者
      * @return 任务的返回值，也是任务的运行结果
      */
-    R run(Handler<R> resolve, Handler<? extends Throwable> reject);
+    R run(Handler<R> resolve, ErrorHandler reject);
 
 }

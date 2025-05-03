@@ -1,8 +1,8 @@
 package com.jn.langx.test.util.concurrent.promise;
 
+import com.jn.langx.exception.ErrorHandler;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.concurrent.promise.AsyncCallback;
 import com.jn.langx.util.concurrent.promise.Promise;
@@ -20,7 +20,7 @@ public class PromiseTests {
     public void test_chain() throws Throwable {
         Promise promise = new Promise(Executors.newFixedThreadPool(3), new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 return "promise";
             }
         }).then(new AsyncCallback() {
@@ -51,7 +51,7 @@ public class PromiseTests {
     private List<Promise> newPromises(Executor executor, final boolean hasError) {
         Promise promise = new Promise(executor, new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 return "promise";
             }
         });
@@ -234,7 +234,7 @@ public class PromiseTests {
     private List<Promise> newPromisesAllError(Executor executor) {
         Promise promise = new Promise(executor, new Task() {
             @Override
-            public Object run(Handler resolve, Handler reject) {
+            public Object run(Handler resolve, ErrorHandler reject) {
                 return "promise";
             }
         });
