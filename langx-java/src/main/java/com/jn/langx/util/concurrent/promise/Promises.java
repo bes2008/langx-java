@@ -7,6 +7,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.function.Handler;
+import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.counter.AtomicIntegerCounter;
 
@@ -376,8 +377,42 @@ public class Promises {
         return of(new ImmediateExecutor(), task);
     }
 
+    public static <R> Promise<R> run(Callable<R> task) {
+        return of(new ImmediateExecutor(), task);
+    }
+
+    public static <R> Promise<R> run(Task<R> task) {
+        return of(new ImmediateExecutor(), task);
+    }
+
+    public static <R> Promise<R> run(final Supplier0<R> supplier) {
+        return run(new Callable<R>() {
+            @Override
+            public R call() {
+                return supplier.get();
+            }
+        });
+    }
+
     public static Promise runAsync(Executor executor, Runnable task) {
         return of(executor, task);
+    }
+
+    public static <R> Promise<R> runAsync(Executor executor, Callable<R> task) {
+        return of(executor, task);
+    }
+
+    public static <R> Promise<R> runAsync(Executor executor, Task<R> task) {
+        return of(executor, task);
+    }
+
+    public static <R> Promise<R> runAsync(Executor executor, final Supplier0<R> supplier) {
+        return runAsync(executor, new Callable<R>() {
+            @Override
+            public R call() {
+                return supplier.get();
+            }
+        });
     }
 
     /**
