@@ -327,13 +327,12 @@ public class Promises {
                             allSettledCount.increment();
                             return null;
                         }
-                    }, new AsyncCallback<R, R>() {
+                    }, new AsyncCallback<Throwable, R>() {
                         @Override
-                        public R apply(R lastResult) {
-                            Throwable e = Promises.toThrowable(lastResult);
-                            aggregateException.add(e);
+                        public R apply(Throwable ex) {
+                            aggregateException.add(ex);
                             allSettledCount.increment();
-                            throw Promises.toRuntimeException(e);
+                            throw Promises.toRuntimeException(ex);
                         }
                     });
                 }
@@ -489,5 +488,12 @@ public class Promises {
 
     }
 
-
+    public static <R> AsyncCallback<? extends Throwable, R> newRejectCallback() {
+        return new AsyncCallback<Throwable, R>() {
+            @Override
+            public R apply(Throwable reason) {
+                throw toRuntimeException(reason);
+            }
+        };
+    }
 }

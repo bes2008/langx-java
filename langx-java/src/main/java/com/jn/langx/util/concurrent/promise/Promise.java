@@ -72,6 +72,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 1. <a href="https://javascript.info/async">JavaScript Promise</a>
  * </p>
  */
+@SuppressWarnings({"all"})
 public class Promise<R> {
     private static final Logger logger = Loggers.getLogger(Promise.class);
 
@@ -106,7 +107,8 @@ public class Promise<R> {
     private Task task;
     private LinkedBlockingDeque<Subscriber> subscribers = new LinkedBlockingDeque<Subscriber>();
 
-    private Handler resolve = new Handler() {
+
+    private final Handler resolve = new Handler() {
         @Override
         public void handle(Object lastActionResult) {
             if (isSettled()) {
@@ -117,7 +119,7 @@ public class Promise<R> {
             notifySubscribers();
         }
     };
-    private Handler reject = new Handler() {
+    private final Handler reject = new Handler() {
         @Override
         public void handle(Object lastActionException) {
             if (isSettled()) {
@@ -171,21 +173,21 @@ public class Promise<R> {
      *
      * @param task
      */
-    public Promise(final Task task) {
+    public Promise(final Task<R> task) {
         this(new ImmediateExecutor(), task, false);
     }
 
     /**
      * 创建一个异步执行的 Promise
      */
-    public Promise(Executor executor, final Task task) {
+    public Promise(Executor executor, final Task<R> task) {
         this(executor, task, true);
     }
 
     /**
      * 创建可自定义的是否异步执行的 Promise
      */
-    public Promise(Executor executor, final Task task, boolean async) {
+    public Promise(Executor executor, final Task<R> task, boolean async) {
         this(executor, task, async, false);
     }
 
@@ -195,7 +197,7 @@ public class Promise<R> {
      * @param async    是否异步执行task
      * @param isSubscriber 是否是订阅者，如果是订阅者，则只会异步执行task
      */
-    private Promise(Executor executor, final Task task, boolean async, boolean isSubscriber) {
+    private Promise(Executor executor, final Task<R> task, boolean async, boolean isSubscriber) {
         Preconditions.checkNotNull(executor, "executor is required");
         Preconditions.checkNotNull(task, "task is required");
         this.task = task;
@@ -257,12 +259,12 @@ public class Promise<R> {
      * @param errorCallback   订阅失败结果
      * @return Promise 返回新的Promise，是一个与订阅者强绑定的 Promise。
      */
-    public Promise then(@Nullable AsyncCallback successCallback, @Nullable AsyncCallback errorCallback) {
+    public <U> Promise<U> then(@Nullable AsyncCallback<R, U> successCallback, @Nullable AsyncCallback<? extends Throwable, U> errorCallback) {
         if (successCallback == null) {
             successCallback = AsyncCallback.NOOP;
         }
         if (errorCallback == null) {
-            errorCallback = AsyncCallback.REJECT;
+            errorCallback = Promises.newRejectCallback();
         }
         final Subscriber subscriber = new Subscriber(successCallback, errorCallback);
         final Promise outPromise = new Promise(executor, subscriber, true, true);
@@ -275,16 +277,16 @@ public class Promise<R> {
     }
 
 
-    public Promise then(AsyncCallback successCallback) {
+    public <U> Promise<U> then(AsyncCallback<R, U> successCallback) {
         return then(successCallback, null);
     }
 
-    public Promise catchError(AsyncCallback errorCallback) {
+    public <U> Promise<U> catchError(AsyncCallback<? extends Throwable, U> errorCallback) {
         return then(null, errorCallback);
     }
 
-    public Promise finallyAction(final Action callback) {
-        return then(new AsyncCallback() {
+    public Promise<R> finallyAction(final Action callback) {
+        return then(new AsyncCallback<R, R>() {
             @Override
             public Object apply(Object lastResult) {
                 try {
@@ -294,15 +296,15 @@ public class Promise<R> {
                 }
                 return lastResult;
             }
-        }, new AsyncCallback() {
+        }, new AsyncCallback<Throwable, R>() {
             @Override
-            public Object apply(Object lastResult) {
+            public R apply(Throwable lastResult) {
                 try {
                     callback.doAction();
                 } catch (Throwable e) {
                     throw Promises.toRuntimeException(lastResult);
                 }
-                return REJECT.apply(lastResult);
+                throw Promises.toRuntimeException(lastResult);
             }
         });
     }

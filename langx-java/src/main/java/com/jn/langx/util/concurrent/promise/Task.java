@@ -12,12 +12,12 @@ import com.jn.langx.util.function.Handler;
  * 3. resolve或者reject之后，run 方法中的后续代码出现了异常，也将被忽略
  * </pre>
  */
-public interface Task {
+public interface Task<R> {
     /**
      * @param resolve 它是由Promise自动创建的，用来成功时传递结果给订阅者
      * @param reject 它是由Promise自动创建的，用来在失败时传递结果给订阅者
      * @return 任务的返回值，也是任务的运行结果
      */
-    Object run(Handler resolve, Handler reject);
+    R run(Handler resolve, Handler reject);
 
 }
