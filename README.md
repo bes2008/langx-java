@@ -19,73 +19,108 @@
 Java lang extensions
 
 ## Features
-+ Lang extensions, for examples: Bytes, Chars, Arrays, Numbers, Dates, Throwables, Filenames, Files, FileSystems ...
-+ Collection extensions:
-    + Supports Stream API for Java 6+
-    + Adapter any object to Iterable
-    + Supports NonAbsentMap, using it, the map.get(key) will not return the null
-    + Supports NonDistinctTreeSet, NonDistinctTreeMap, just sort 
-    + Supports Tuple
-    + Supports WheelQueue, CopyOnWriteHashMap
-    + NamedInheritableThreadLocal
-    + IdentityMap
-    + IdentitySet
-    + WeakIdentityHashMap
-    + ConcurrentReferenceHashMap
++ Utils
+  + Lang extensions, for examples: Bytes, Chars, Arrays, Numbers, Dates, Throwables, Filenames, Files, FileSystems ...
+  + Beans, ModelMapper
+  + Bits
+  + Bloom Filter
+  + Collection extensions:
+      + Supports Stream API for Java 6+
+      + Adapter any object to Iterable
+      + Supports NonAbsentMap, using it, the map.get(key) will not return the null
+      + Supports NonDistinctTreeSet, NonDistinctTreeMap, just sort 
+      + Supports Tuple
+      + Supports WheelQueue, CopyOnWriteHashMap
+      + NamedInheritableThreadLocal
+      + IdentityMap
+      + IdentitySet
+      + WeakIdentityHashMap
+      + ConcurrentReferenceHashMap
+      + Table
+      + Forwarding API
+      + MultiValueMap
+      + Sequence
+      + Pushback
+      + Queue
+      + Stack
+      + Tree
+      + Trie
+      + Differ API
+        + Collection Differ
+        + Map Differ
+  + Comparator
+  + concurrent
+    + async 
+      + future listeners
+      + Promise
+    + executor
+    + lock
+    + thread local factory
+    + CommonTask, CommonThreadFactory
+    + Threads
+  + converter
+  + datetime
+    + DateTimeParser
+    + DateTimeFormatter
+  + enums
+    + CommonEnum
+    + Enums
+  + escape
+  + function API
+  + hash
+    + CRC
+    + FNV
+    + Murmur
+  + IdGenerator
+    + AutoIncrementId
+    + Base64Id
+    + SimpleId
+    + UUID
+    + ShortUUID
+    + SnowflakeId
+    + NanoId
+    + Sqids
+    + ULID
+    + VMID
+  + io
+    + Bytes
+    + file
+    + Charsets
+    + Files
+    + Channels
+    + unicode
+  + jar
+    + Manifests
+    + MultipleLevel jar
+  + jni
+  + logging
+  + matchexp
+  + math
+  + money
+  + net
+    + CIDR
+    + Hosts
+    + http
+    + UriBuilder
+    + port
+  + ValueGetter
 + Classpath API
-    + DirectoryClasspath
-    + JarFileClasspath
-    + WarFileClasspath
-    + JarDirectoryClasspath
-    + ClassLoaderClasspath
-    + ClassClasspath
-    + ResourceLoaderClasspath
-    + ByteArrayClasspath
-    + InputStreamClasspath
-+ Differ API
-    + Collection Differ
-    + Map Differ
 + Cache
     + Local Cache
       + LRUCache
       + FIFOCache
 + Accessor API
-    + Tuple
-    + Environment Accessor
-    + Properties Accessor
-    + Map Accessor
-    + StringMap Accessor
-    + Field Accessor
-    + Array Accessor 
-    + HTTP Query String Accessor
-+ ValueGetter
-    + ArrayValueGetter
-    + CompositeValueGetter
-    + IterableValueGetter
-    + LiteralValueGetter
-    + MapValueGetter
-    + MemberValueGetter
-    + PipelineValueGetter
-    + StreamValueGetter
+
 + Reflect utilities
-    + Modifiers
-    + Reflects
-    + Types
-    + Primitives
 + timing
     + HashedWheelTimer
     + Linux NTP
     + Cron
-    + Joda-time
+    + Scheduling
     + Clock
     + StopWatch
 + JavaScript in Java
-+ IdGenerator
-    + AutoIncrementIdGenerator
-    + Base64IdGenerator
-    + SimpleIdGenerator
-    + UuidGenerator
-    + SnowflakeIdGenerator
+
 + Proxy
     + AOP
     + delegate
@@ -97,8 +132,8 @@ Java lang extensions
       + placeholder: {}
       + index:       {0}, {1}
       + C style:     %d, %s ...
-      + bean :      ${fieldName1}, ${fieldName2}
-      + map:         ${key1}, ${key2}
+      + bean :       `${fieldName1}`, `${fieldName2}`
+      + map:         `${key1}`, `${key2}`
 + Null judge is unnecessary
 + Environment
     + SystemEnvironment
@@ -106,8 +141,6 @@ Java lang extensions
 + Comparators
 + Parse Hosts File
 + Codec
-+ ClassPath Scanner
-+ Local JNDI
 + Security checksum
     + message digest
         + MD2
@@ -126,28 +159,11 @@ Java lang extensions
         + SM4
 + Radix converter
 + JMX management API
-+ File Filter
-    + ExecutableFilter
-    + ExistsFileFilter
-    + FilenamePrefixFilter
-    + FilenameSuffixFilter
-    + IsDirectoryFileFilter
-    + IsFileFilter
-    + IsHiddenFileFilter
-    + IsSymlinkFileFilter
-    + ReadableFileFilter
-    + ReadonlyFileFilter
-    + ValidFilenameFilter
-    + WriteableFileFilter
 + Lifecycle API
 + ClassParser
-+ Converter Service
-+ BloomFilter
 + IO Resource Load API
 + Common Configuration API
-+ Multiple Level Jar URLStreamHandler
-+ Escaper API
-+ Delimiter Channel
+
 。。。
 
 
