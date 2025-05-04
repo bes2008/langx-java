@@ -9,3 +9,6 @@
 + 支持 PBKDF1, PBKDF2, PBKDF12, PBKDF_OPENSSL_EVP
 + 提供多种 padding
 + 提供 StringFlow
+
+## 5.5.1
++ 支持 Promise
