@@ -7,6 +7,7 @@ import com.jn.langx.exception.ErrorHandler;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Handler;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -251,6 +251,39 @@ public class Promise<R> {
                 logger.info("resolve or reject invoked in your task {}, the exception in subsequences will ignored, error :{} ", task.getClass(), e.getMessage(), e);
             }
         }
+    }
+
+    public Promise<R> then(final Runnable runnable) {
+        return then(new AsyncCallback<R, R>() {
+            @Override
+            public R apply(R lastResult) {
+                runnable.run();
+                return lastResult;
+            }
+        });
+    }
+
+    public <U> Promise<U> then(final Callable<U> callable) {
+        return then(new AsyncCallback<R, U>() {
+            @Override
+            public U apply(R lastResult) {
+                try {
+                    return callable.call();
+                } catch (Exception e) {
+                    throw Throwables.wrapAsRuntimeException(e);
+                }
+            }
+        });
+    }
+
+    public Promise<Void> then(final Consumer<R> consumer) {
+        return then(new AsyncCallback<R, Void>() {
+            @Override
+            public Void apply(R lastResult) {
+                consumer.accept(lastResult);
+                return null;
+            }
+        });
     }
 
     /**
