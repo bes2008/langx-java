@@ -66,8 +66,9 @@ public class Promises {
         return new Promise(executor, new Task() {
             @Override
             public Object run(Handler resolve, ErrorHandler reject) {
-                resolve.handle(task);
-                return task;
+                Object result = task;
+                resolve.handle(result);
+                return result;
             }
         });
     }
