@@ -97,7 +97,7 @@ public class Promise<R> {
      * The state of the promise.
      * Promise 只会有三个状态：pending, fulfilled, rejected
      */
-    private AtomicInteger state = new AtomicInteger(State.PENDING.ordinal());
+    private AtomicReference<State> state = new AtomicReference(State.PENDING);
     /**
      * 任务结果,  可以是任意对象
      * 当 state = PENDING 时, result = null
@@ -117,7 +117,7 @@ public class Promise<R> {
                 return;
             }
             Promise.this.result.set(lastActionResult);
-            Promise.this.state.set(State.FULFILLED.ordinal());
+            Promise.this.state.set(State.FULFILLED);
             notifySubscribers();
         }
     };
@@ -128,7 +128,7 @@ public class Promise<R> {
                 return;
             }
             Promise.this.result.set(lastActionException);
-            Promise.this.state.set(Promise.State.REJECTED.ordinal());
+            Promise.this.state.set(Promise.State.REJECTED);
             notifySubscribers();
         }
     };
@@ -136,7 +136,7 @@ public class Promise<R> {
     /**
      * 运行结果通知给所有订阅者
      */
-    private synchronized void notifySubscribers() {
+    private void notifySubscribers() {
         List<Subscriber> list = new ArrayList<Subscriber>();
         subscribers.drainTo(list);
         // 异步执行任务
@@ -167,7 +167,7 @@ public class Promise<R> {
      * Promise是否已敲定（settled）
      */
     private boolean isSettled() {
-        return state.get() != State.PENDING.ordinal();
+        return state.get() != State.PENDING;
     }
 
     /**
@@ -261,7 +261,7 @@ public class Promise<R> {
      * @param errorCallback   订阅失败结果
      * @return Promise 返回新的Promise，是一个与订阅者强绑定的 Promise。
      */
-    public <U> Promise<U> then(@Nullable AsyncCallback<R, U> successCallback, @Nullable AsyncCallback<? extends Throwable, U> errorCallback) {
+    public <U> Promise<U> then(@Nullable AsyncCallback<? extends R, ? extends U> successCallback, @Nullable AsyncCallback<? extends Throwable, ? extends U> errorCallback) {
         if (successCallback == null) {
             successCallback = Promises.newNoopResolveCallback();
         }
@@ -279,10 +279,13 @@ public class Promise<R> {
     }
 
 
-    public <U> Promise<U> then(AsyncCallback<R, U> successCallback) {
+    public <U> Promise<U> then(AsyncCallback<? extends R, ? extends U> successCallback) {
         return then(successCallback, null);
     }
 
+    /**
+     * 订阅当前Promise的失败结果
+     */
     public <U> Promise<U> catchError(AsyncCallback<? extends Throwable, U> errorCallback) {
         return then(null, errorCallback);
     }
@@ -346,9 +349,9 @@ public class Promise<R> {
         public Object run(Handler resolve, ErrorHandler reject) {
             Object newResult = null;
             try {
-                if (state.get() == State.FULFILLED.ordinal() && successCallback != null) {
+                if (state.get() == State.FULFILLED && successCallback != null) {
                     newResult = successCallback.apply(result.get());
-                } else if (state.get() == State.REJECTED.ordinal() && errorCallback != null) {
+                } else if (state.get() == State.REJECTED && errorCallback != null) {
                     newResult = errorCallback.apply(result.get());
                 }
             } catch (Throwable e) {
