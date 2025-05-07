@@ -1,3 +1,8 @@
+## 5.5.1
+
++ 提供 Promise
++ 提供 Table
+
 ## 5.5.0
 
 + 提供 Validator 框架
@@ -9,7 +14,3 @@
 + 提供 PBKDF1, PBKDF2, PBKDF12, PBKDF_OPENSSL_EVP
 + 提供多种 padding
 + 提供 StringFlow
-
-## 5.5.1
-+ 提供 Promise
-+ 提供 Table
