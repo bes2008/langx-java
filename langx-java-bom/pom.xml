@@ -30,11 +30,6 @@
             </dependency>
             <dependency>
                 <groupId>io.github.bes2008.solution.langx</groupId>
-                <artifactId>langx-java8tojava6</artifactId>
-                <version>5.5.1</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.bes2008.solution.langx</groupId>
                 <artifactId>langx-java-distributed</artifactId>
                 <version>5.5.1</version>
             </dependency>
