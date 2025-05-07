@@ -2,6 +2,7 @@
 
 + 提供 Promise
 + 提供 Table
++ 移除 java8tojava6 模块
 
 ## 5.5.0
 
