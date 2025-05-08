@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -65,11 +67,11 @@ import java.util.concurrent.atomic.AtomicReference;
  *                   Promise
  *                      |
  *                   Promise
- *            /         |       \    
+ *            /         |       \
  *         Promise   Promise   Promise
  *
  * </pre>
- *
+ * <p>
  * 参考链接：
  * 1. <a href="https://javascript.info/async">JavaScript Promise</a>
  * </p>
@@ -176,27 +178,20 @@ public class Promise<R> {
      * @param task
      */
     public Promise(final Task<R> task) {
-        this(new ImmediateExecutor(), task, false);
+        this(new ImmediateExecutor(), task, false, false);
     }
 
     /**
      * 创建一个异步执行的 Promise
      */
     public Promise(Executor executor, final Task<R> task) {
-        this(executor, task, true);
+        this(executor, task, true, false);
     }
 
     /**
-     * 创建可自定义的是否异步执行的 Promise
-     */
-    public Promise(Executor executor, final Task<R> task, boolean async) {
-        this(executor, task, async, false);
-    }
-
-    /**
-     * @param executor 任务执行器，如果为null，则使用当前线程执行任务，对于异步任务、订阅者时，它不能为null
-     * @param task     promise绑定的 task
-     * @param async    是否异步执行task
+     * @param executor     任务执行器，如果为null，则使用当前线程执行任务，对于异步任务、订阅者时，它不能为null
+     * @param task         promise绑定的 task
+     * @param async        是否异步执行task
      * @param isSubscriber 是否是订阅者，如果是订阅者，则只会异步执行task
      */
     private Promise(Executor executor, final Task<R> task, boolean async, boolean isSubscriber) {
