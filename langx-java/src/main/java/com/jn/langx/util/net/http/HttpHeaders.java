@@ -1445,9 +1445,32 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 
     @Override
     public void addIfAbsent(String key, String value) {
+        if (key == null || value == null) {
+            return;
+        }
         if (!containsKey(key)) {
             add(key, value);
         }
+    }
+
+    /**
+     * @param key   要添加的key
+     * @param value 要添加的value
+     * @since 5.5.2
+     */
+    @Override
+    public void addIfValueAbsent(String key, String value) {
+        if (key == null || value == null) {
+            return;
+        }
+        if (!containsKey(key)) {
+            add(key, value);
+        } else {
+            if (!get(key).contains(value)) {
+                add(key, value);
+            }
+        }
+
     }
 
     @Override

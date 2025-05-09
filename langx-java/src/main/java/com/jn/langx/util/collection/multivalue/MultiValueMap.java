@@ -24,6 +24,7 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      */
     @Nullable
     V getFirst(K key);
+
     @Nullable
     V getValue(K key, int index);
 
@@ -60,6 +61,16 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      * @param value the value to be added
      */
     void addIfAbsent(K key, @Nullable V value);
+
+    /**
+     * 当key, value都不存在时，才添加
+     *
+     * @param key   要添加的key
+     * @param value 要添加的value
+     * @see #addIfAbsent(Object, Object)
+     * @since 5.5.2
+     */
+    void addIfValueAbsent(K key, @Nullable V value);
 
     /**
      * @since 4.6.14

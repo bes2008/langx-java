@@ -121,6 +121,21 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     }
 
     @Override
+    public void addIfValueAbsent(K key, V value) {
+        if (key == null || value == null) {
+            return;
+        }
+        if (!containsKey(key)) {
+            add(key, value);
+        } else {
+            if (!getValues(key).contains(value)) {
+                add(key, value);
+            }
+        }
+
+    }
+
+    @Override
     public void removeValue(K key, V value) {
         if (value != null) {
             Collection<V> values = this.getValues(key);
