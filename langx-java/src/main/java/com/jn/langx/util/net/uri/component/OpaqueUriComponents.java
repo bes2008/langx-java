@@ -20,7 +20,7 @@ import java.util.List;
  */
 final class OpaqueUriComponents extends UriComponents {
 
-    private static final MultiValueMap<String, String> QUERY_PARAMS_NONE = new LinkedMultiValueMap<String, String>();
+    private static final MultiValueMap<String, Object> QUERY_PARAMS_NONE = new LinkedMultiValueMap<String, Object>();
 
     @Nullable
     private final String ssp;
@@ -73,7 +73,7 @@ final class OpaqueUriComponents extends UriComponents {
     }
 
     @Override
-    public MultiValueMap<String, String> getQueryParams() {
+    public MultiValueMap<String, Object> getQueryParams() {
         return QUERY_PARAMS_NONE;
     }
 

@@ -209,7 +209,7 @@ public interface UriBuilder {
      *
      * @param params the params
      */
-    UriBuilder queryParams(MultiValueMap<String, String> params);
+    UriBuilder queryParams(MultiValueMap<String, Object> params);
 
     /**
      * Set the query parameter values replacing existing values, or if no
@@ -244,7 +244,7 @@ public interface UriBuilder {
      *
      * @param params the query parameter name
      */
-    UriBuilder replaceQueryParams(MultiValueMap<String, String> params);
+    UriBuilder replaceQueryParams(MultiValueMap<String, Object> params);
 
     /**
      * Set the URI fragment. The given fragment may contain URI template variables,

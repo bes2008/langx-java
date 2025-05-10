@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.jn.langx.util.net.uri.component.UriComponentUtils.getQueryParamValue;
+
 /**
  * Builder for {@link UriComponents}.
  *
@@ -91,7 +93,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
 
     private CompositePathComponentBuilder pathBuilder;
 
-    private final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+    private final MultiValueMap<String, Object> queryParams = new LinkedMultiValueMap<String, Object>();
 
     @Nullable
     private String fragment;
@@ -204,7 +206,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         if (this.ssp != null) {
             result = new OpaqueUriComponents(this.scheme, this.ssp, this.fragment);
         } else {
-            MultiValueMap<String, String> theQueryParams = new LinkedMultiValueMap<String, String>(this.queryParams);
+            MultiValueMap<String, Object> theQueryParams = new LinkedMultiValueMap<String, Object>(this.queryParams);
             HierarchicalUriComponents uric = new HierarchicalUriComponents(this.scheme, this.fragment,
                     this.userInfo, this.host, this.port, this.pathBuilder.build(), theQueryParams,
                     hint == EncodingHint.FULLY_ENCODED);
@@ -426,16 +428,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         return this;
     }
 
-    @Nullable
-    private String getQueryParamValue(@Nullable Object value) {
-        if (value != null) {
-            if (value instanceof Holder<?>) {
-                value = ((Holder<?>) value).get().toString();
-            }
-            return value.toString();
-        }
-        return null;
-    }
+
 
     public UriComponentsBuilder queryParam(String name, @Nullable Collection<?> values) {
         return queryParam(name, (Objs.isEmpty(values) ? EMPTY_VALUES : values.toArray()));
@@ -454,7 +447,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
         return this;
     }
 
-    public UriComponentsBuilder queryParams(@Nullable MultiValueMap<String, String> params) {
+    public UriComponentsBuilder queryParams(@Nullable MultiValueMap<String, Object> params) {
         if (params != null) {
             this.queryParams.addAll(params);
             resetSchemeSpecificPart();
@@ -479,7 +472,7 @@ public class UriComponentsBuilder implements Builder<UriComponents>, Cloneable {
     /**
      * {@inheritDoc}
      */
-    public UriComponentsBuilder replaceQueryParams(@Nullable MultiValueMap<String, String> params) {
+    public UriComponentsBuilder replaceQueryParams(@Nullable MultiValueMap<String, Object> params) {
         this.queryParams.clear();
         if (params != null) {
             this.queryParams.putAll(params);

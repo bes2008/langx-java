@@ -163,7 +163,7 @@ public class DefaultUriBuilder implements UriBuilder {
     }
 
     @Override
-    public DefaultUriBuilder queryParams(MultiValueMap<String, String> params) {
+    public DefaultUriBuilder queryParams(MultiValueMap<String, Object> params) {
         this.uriComponentsBuilder.queryParams(params);
         return this;
     }
@@ -181,7 +181,7 @@ public class DefaultUriBuilder implements UriBuilder {
     }
 
     @Override
-    public DefaultUriBuilder replaceQueryParams(MultiValueMap<String, String> params) {
+    public DefaultUriBuilder replaceQueryParams(MultiValueMap<String, Object> params) {
         this.uriComponentsBuilder.replaceQueryParams(params);
         return this;
     }

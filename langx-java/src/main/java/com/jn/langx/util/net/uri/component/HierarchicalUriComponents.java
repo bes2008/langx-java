@@ -14,6 +14,7 @@ import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Operator;
 import com.jn.langx.util.net.uri.QueryUriTemplateVariableResolver;
 import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
+import com.jn.langx.util.struct.Holder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,7 +32,7 @@ final class HierarchicalUriComponents extends UriComponents {
 
     private static final char PATH_DELIMITER = '/';
 
-    private static final MultiValueMap<String, String> EMPTY_QUERY_PARAMS = new LinkedMultiValueMap<String, String>();
+    private static final MultiValueMap EMPTY_QUERY_PARAMS = new LinkedMultiValueMap<String, Object>();
 
 
     @Nullable
@@ -45,7 +46,7 @@ final class HierarchicalUriComponents extends UriComponents {
 
     private final PathComponent path;
 
-    private final MultiValueMap<String, String> queryParams;
+    private final MultiValueMap<String, Object> queryParams;
 
     private final EncodeState encodeState;
 
@@ -67,7 +68,7 @@ final class HierarchicalUriComponents extends UriComponents {
      */
     HierarchicalUriComponents(@Nullable String scheme, @Nullable String fragment, @Nullable String userInfo,
                               @Nullable String host, @Nullable String port, @Nullable PathComponent path,
-                              @Nullable MultiValueMap<String, String> query, boolean encoded) {
+                              @Nullable MultiValueMap<String, Object> query, boolean encoded) {
 
         super(scheme, fragment);
 
@@ -86,7 +87,7 @@ final class HierarchicalUriComponents extends UriComponents {
 
     private HierarchicalUriComponents(@Nullable String scheme, @Nullable String fragment,
                                       @Nullable String userInfo, @Nullable String host, @Nullable String port,
-                                      PathComponent path, MultiValueMap<String, String> queryParams,
+                                      PathComponent path, MultiValueMap<String, Object> queryParams,
                                       EncodeState encodeState, @Nullable Operator<String> variableEncoder) {
 
         super(scheme, fragment);
@@ -152,9 +153,9 @@ final class HierarchicalUriComponents extends UriComponents {
     public String getQuery() {
         if (!this.queryParams.isEmpty()) {
             final StringBuilder queryBuilder = new StringBuilder();
-            Collects.forEach(this.queryParams, new Consumer2<String, Collection<String>>() {
+            Collects.forEach(this.queryParams, new Consumer2<String, Collection<Object>>() {
                 @Override
-                public void accept(String name, Collection<String> values) {
+                public void accept(String name, Collection<Object> values) {
                     if (Objs.isEmpty(values)) {
                         if (queryBuilder.length() != 0) {
                             queryBuilder.append('&');
@@ -167,7 +168,8 @@ final class HierarchicalUriComponents extends UriComponents {
                             }
                             queryBuilder.append(name);
                             if (value != null) {
-                                queryBuilder.append('=').append(value.toString());
+                                String valueStr = UriComponentUtils.getQueryParamValue(value);
+                                queryBuilder.append('=').append(valueStr);
                             }
                         }
                     }
@@ -183,7 +185,7 @@ final class HierarchicalUriComponents extends UriComponents {
      * Return the map of query parameters. Empty if no query has been set.
      */
     @Override
-    public MultiValueMap<String, String> getQueryParams() {
+    public MultiValueMap<String, Object> getQueryParams() {
         return this.queryParams;
     }
 
@@ -213,7 +215,7 @@ final class HierarchicalUriComponents extends UriComponents {
         String userInfoTo = (getUserInfo() != null ? encoder.apply(getUserInfo(), UriComponentType.USER_INFO) : null);
         String hostTo = (getHost() != null ? encoder.apply(getHost(), getHostType()) : null);
         PathComponent pathTo = this.path.encode(encoder);
-        MultiValueMap<String, String> queryParamsTo = encodeQueryParams(encoder);
+        MultiValueMap<String, Object> queryParamsTo = encodeQueryParams(encoder);
 
         return new HierarchicalUriComponents(schemeTo, fragmentTo, userInfoTo,
                 hostTo, this.port, pathTo, queryParamsTo, EncodeState.TEMPLATE_ENCODED, this.variableEncoder);
@@ -237,23 +239,23 @@ final class HierarchicalUriComponents extends UriComponents {
             }
         };
         PathComponent pathTo = this.path.encode(encoder);
-        MultiValueMap<String, String> queryParamsTo = encodeQueryParams(encoder);
+        MultiValueMap<String, Object> queryParamsTo = encodeQueryParams(encoder);
 
         return new HierarchicalUriComponents(schemeTo, fragmentTo, userInfoTo,
                 hostTo, this.port, pathTo, queryParamsTo, EncodeState.FULLY_ENCODED, null);
     }
 
-    private MultiValueMap<String, String> encodeQueryParams(final Function2<String, UriComponentType, String> encoder) {
+    private MultiValueMap<String, Object> encodeQueryParams(final Function2<String, UriComponentType, String> encoder) {
         int size = this.queryParams.size();
-        final MultiValueMap<String, String> result = new LinkedMultiValueMap<String, String>(size);
+        final MultiValueMap<String, Object> result = new LinkedMultiValueMap<String, Object>(size);
 
-        Collects.forEach(this.queryParams, new Consumer2<String, Collection<String>>() {
+        Collects.forEach(this.queryParams, new Consumer2<String, Collection<Object>>() {
             @Override
-            public void accept(String key, Collection<String> values) {
+            public void accept(String key, Collection<Object> values) {
                 String name = encoder.apply(key, UriComponentType.QUERY_PARAM);
-                List<String> encodedValues = new ArrayList<String>(values.size());
-                for (String value : values) {
-                    encodedValues.add(value != null ? encoder.apply(value, UriComponentType.QUERY_PARAM) : null);
+                List<Object> encodedValues = new ArrayList<Object>(values.size());
+                for (Object value : values) {
+                    encodedValues.add(value != null ? encoder.apply(UriComponentUtils.getQueryParamValue(value), UriComponentType.QUERY_PARAM) : null);
                 }
                 result.put(name, encodedValues);
             }
@@ -278,12 +280,12 @@ final class HierarchicalUriComponents extends UriComponents {
         verifyUriComponent(this.userInfo, UriComponentType.USER_INFO);
         verifyUriComponent(this.host, getHostType());
         this.path.verify();
-        Collects.forEach(this.queryParams, new Consumer2<String, Collection<String>>() {
+        Collects.forEach(this.queryParams, new Consumer2<String, Collection<Object>>() {
             @Override
-            public void accept(String key, Collection<String> values) {
+            public void accept(String key, Collection<Object> values) {
                 verifyUriComponent(key, UriComponentType.QUERY_PARAM);
-                for (String value : values) {
-                    verifyUriComponent(value, UriComponentType.QUERY_PARAM);
+                for (Object value : values) {
+                    verifyUriComponent(UriComponentUtils.getQueryParamValue(value), UriComponentType.QUERY_PARAM);
                 }
             }
         });
@@ -333,24 +335,24 @@ final class HierarchicalUriComponents extends UriComponents {
         String hostTo = UriComponentUtils.replaceUriComponent(this.host, uriVariables, this.variableEncoder);
         String portTo = UriComponentUtils.replaceUriComponent(this.port, uriVariables, this.variableEncoder);
         PathComponent pathTo = this.path.replaceVariables(uriVariables, this.variableEncoder);
-        MultiValueMap<String, String> queryParamsTo = expandQueryParams(uriVariables);
+        MultiValueMap<String, Object> queryParamsTo = expandQueryParams(uriVariables);
         String fragmentTo = UriComponentUtils.replaceUriComponent(getFragment(), uriVariables, this.variableEncoder);
 
         return new HierarchicalUriComponents(schemeTo, fragmentTo, userInfoTo,
                 hostTo, portTo, pathTo, queryParamsTo, this.encodeState, this.variableEncoder);
     }
 
-    private MultiValueMap<String, String> expandQueryParams(UriTemplateVariableResolver variables) {
+    private MultiValueMap<String, Object> expandQueryParams(UriTemplateVariableResolver variables) {
         int size = this.queryParams.size();
-        final MultiValueMap<String, String> result = new LinkedMultiValueMap<String, String>(size);
+        final MultiValueMap<String, Object> result = new LinkedMultiValueMap<String, Object>(size);
         final UriTemplateVariableResolver queryVariables = new QueryUriTemplateVariableResolver(variables);
-        Collects.forEach(this.queryParams, new Consumer2<String, Collection<String>>() {
+        Collects.forEach(this.queryParams, new Consumer2<String, Collection<Object>>() {
             @Override
-            public void accept(String key, Collection<String> values) {
+            public void accept(String key, Collection<Object> values) {
                 String name = UriComponentUtils.replaceUriComponent(key, queryVariables, HierarchicalUriComponents.this.variableEncoder);
-                List<String> expandedValues = new ArrayList<String>(values.size());
-                for (String value : values) {
-                    expandedValues.add(UriComponentUtils.replaceUriComponent(value, queryVariables, HierarchicalUriComponents.this.variableEncoder));
+                List<Object> expandedValues = new ArrayList<Object>(values.size());
+                for (Object value : values) {
+                    expandedValues.add(UriComponentUtils.replaceUriComponent(UriComponentUtils.getQueryParamValue(value), queryVariables, HierarchicalUriComponents.this.variableEncoder));
                 }
                 result.put(name, expandedValues);
             }

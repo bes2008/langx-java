@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Maps;
@@ -24,6 +25,7 @@ import com.jn.langx.util.net.uri.UriTemplateVariableResolver;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
+import com.jn.langx.util.struct.Holder;
 
 /**
  * Utility methods for URI encoding and decoding based on RFC 3986.
@@ -580,8 +582,17 @@ public abstract class UriComponentUtils {
     }
 
     private static String getVariableValueAsString(@Nullable Object variableValue) {
-        return (variableValue != null ? variableValue.toString() : "");
+        return Objs.useValueIfNull(getQueryParamValue(variableValue), "");
     }
 
-
+    @Nullable
+    public static String getQueryParamValue(@Nullable Object value) {
+        if (value != null) {
+            if (value instanceof Holder<?>) {
+                value = ((Holder<?>) value).get().toString();
+            }
+            return value.toString();
+        }
+        return null;
+    }
 }
