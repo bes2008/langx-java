@@ -28,6 +28,10 @@ public class Promises {
         if (task instanceof Promise) {
             return (Promise) task;
         }
+
+        if (executor == null) {
+            executor = ImmediateExecutor.INSTANCE;
+        }
         if (task instanceof Task) {
             return new Promise(executor, (Task) task);
         }
@@ -65,10 +69,6 @@ public class Promises {
             });
         }
 
-
-        if (executor == null) {
-            executor = ImmediateExecutor.INSTANCE;
-        }
         // task 是 一个值，就判定为一个结果
         return new Promise(executor, new Task() {
             @Override
