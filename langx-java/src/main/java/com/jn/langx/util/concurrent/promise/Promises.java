@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Promises {
 
-    static Promise of(Executor executor, final Object task) {
+    public static Promise of(Executor executor, final Object task) {
         if (task instanceof Promise) {
             return (Promise) task;
         }
@@ -62,6 +62,10 @@ public class Promises {
             });
         }
 
+
+        if (executor == null) {
+            executor = ImmediateExecutor.INSTANCE;
+        }
         // task 是 一个值，就判定为一个结果
         return new Promise(executor, new Task() {
             @Override
