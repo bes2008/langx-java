@@ -2,6 +2,7 @@ package com.jn.langx.util.net.http;
 
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Strings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ public enum HttpMethod {
      */
     @Nullable
     public static HttpMethod resolve(@Nullable String method) {
-        return (method != null ? mappings.get(method) : null);
+        return (method != null ? mappings.get(Strings.upperCase(method)) : null);
     }
 
 
