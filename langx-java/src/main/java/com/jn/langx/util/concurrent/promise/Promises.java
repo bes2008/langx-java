@@ -21,6 +21,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Promises {
 
+    /**
+     * @since 5.5.2
+     */
     public static Promise of(Executor executor, final Object task) {
         if (task instanceof Promise) {
             return (Promise) task;

@@ -120,6 +120,22 @@ public class Throwables {
     }
 
     /**
+     * @since 5.5.2
+     */
+    public static boolean hasCause(Throwable ex, Class<? extends Throwable> causeType) {
+        if (Reflects.isSubClassOrEquals(causeType, ex.getClass())) {
+            return true;
+        }
+        while (ex.getCause() != null) {
+            ex = ex.getCause();
+            if (Reflects.isSubClassOrEquals(causeType, ex.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * step1 : get root cause
      * step2 : throwIfIOException(root cause)
      */
