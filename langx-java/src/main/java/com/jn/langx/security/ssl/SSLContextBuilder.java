@@ -52,6 +52,19 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         this.trustManagers = new LinkedHashSet<TrustManager>();
     }
 
+    public void addKeyManager(final KeyManager keyManager) {
+        if (keyManager != null) {
+            this.keyManagers.add(keyManager);
+        }
+    }
+
+    public void addTrustManager(final TrustManager trustManager) {
+        if (trustManager != null) {
+            this.trustManagers.add(trustManager);
+        }
+    }
+
+
     public SSLContextBuilder setProtocol(String protocol) {
         protocol = Strings.useValueIfEmpty(protocol, SSLs.TLS);
         SSLProtocolVersion protocolVersion;
