@@ -52,12 +52,18 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         this.trustManagers = new LinkedHashSet<TrustManager>();
     }
 
+    /**
+     * @since 5.5.2
+     */
     public void addKeyManager(final KeyManager keyManager) {
         if (keyManager != null) {
             this.keyManagers.add(keyManager);
         }
     }
 
+    /**
+     * @since 5.5.2
+     */
     public void addTrustManager(final TrustManager trustManager) {
         if (trustManager != null) {
             this.trustManagers.add(trustManager);
