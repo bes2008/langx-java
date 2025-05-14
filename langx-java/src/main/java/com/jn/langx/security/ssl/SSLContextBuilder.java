@@ -55,19 +55,21 @@ public class SSLContextBuilder implements Builder<SSLContext> {
     /**
      * @since 5.5.2
      */
-    public void addKeyManager(final KeyManager keyManager) {
+    public SSLContextBuilder addKeyManager(final KeyManager keyManager) {
         if (keyManager != null) {
             this.keyManagers.add(keyManager);
         }
+        return this;
     }
 
     /**
      * @since 5.5.2
      */
-    public void addTrustManager(final TrustManager trustManager) {
+    public SSLContextBuilder addTrustManager(final TrustManager trustManager) {
         if (trustManager != null) {
             this.trustManagers.add(trustManager);
         }
+        return this;
     }
 
 
