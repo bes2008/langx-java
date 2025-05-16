@@ -1,3 +1,11 @@
+## 5.5.2
+
++ 增强 SSLContextBuilder
++ 移除 langx-java-distributed 模块，迁移到 agileway项目中
++ 增强 Promises
++ 完善 http method 转换
++ 优化 UriBuilder
+
 ## 5.5.1
 
 + 提供 Promise
