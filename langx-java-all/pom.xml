@@ -27,10 +27,6 @@
         </dependency>
         <dependency>
             <groupId>io.github.bes2008.solution.langx</groupId>
-            <artifactId>langx-java-distributed</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.bes2008.solution.langx</groupId>
             <artifactId>langx-java-el</artifactId>
         </dependency>
         <dependency>
