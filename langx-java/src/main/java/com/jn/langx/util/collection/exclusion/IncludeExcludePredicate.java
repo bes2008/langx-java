@@ -115,13 +115,4 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
         });
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s@%x{i=%s,ip=%s,e=%s,ep=%s}", this.getClass().getSimpleName(), hashCode(),
-                inclusions,
-                includePredicate == null ? "SELF" : includePredicate,
-                exclusions,
-                excludePredicate == null ? "SELF" : excludePredicate);
-    }
-
 }
