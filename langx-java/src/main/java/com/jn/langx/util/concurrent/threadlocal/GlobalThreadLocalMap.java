@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
+import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.datetime.DateFormatCacheKey;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
@@ -12,6 +13,8 @@ import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.random.PooledBytesRandom;
 import com.jn.langx.util.random.RandomProxy;
 import com.jn.langx.util.random.ThreadLocalRandom;
+import com.jn.langx.util.timing.timer.HashedWheelTimer;
+import com.jn.langx.util.timing.timer.WheelTimers;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
@@ -19,6 +22,9 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class GlobalThreadLocalMap {
     private static final ThreadLocal<GlobalThreadLocalMap> CACHE = new ThreadLocal<GlobalThreadLocalMap>() {
@@ -117,9 +123,9 @@ public class GlobalThreadLocalMap {
         return new RandomProxy(ThreadLocalRandom.current());
     }
 
-    private static final PooledBytesRandom pooledBytesRandom = new PooledBytesRandom();
+    private final PooledBytesRandom pooledBytesRandom = new PooledBytesRandom();
 
     public static PooledBytesRandom pooledBytesRandom() {
-        return pooledBytesRandom;
+        return get().pooledBytesRandom;
     }
 }
