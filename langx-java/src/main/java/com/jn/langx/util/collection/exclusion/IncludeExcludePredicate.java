@@ -3,10 +3,7 @@ package com.jn.langx.util.collection.exclusion;
 
 import com.jn.langx.util.function.Predicate;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A {@link Predicate} that allows for inclusion and exclusion of items.
@@ -29,11 +26,11 @@ public class IncludeExcludePredicate<T> implements Predicate<T> {
     }
 
 
-    public IncludeExcludePredicate(Set<T> includeSet, Set<T> excludeSet) {
+    public IncludeExcludePredicate(Collection<T> includeSet, Collection<T> excludeSet) {
         this(includeSet, null, excludeSet, null);
     }
 
-    public IncludeExcludePredicate(Set<T> includeSet, Predicate<T> includePredicate, Set<T> excludeSet, Predicate<T> excludePredicate) {
+    public IncludeExcludePredicate(Collection<T> includeSet, Predicate<T> includePredicate, Collection<T> excludeSet, Predicate<T> excludePredicate) {
         if (includeSet != null) {
             inclusions.addAll(includeSet);
         }
