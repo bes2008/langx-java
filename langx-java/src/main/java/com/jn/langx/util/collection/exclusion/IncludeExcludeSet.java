@@ -19,7 +19,9 @@ import java.util.Set;
  *
  * @param <T> The type of element of the set (often a pattern)
  * @param <P> The type of the instance passed to the predicate
+ * @deprecated use {@link IncludeExcludePredicate}
  */
+@Deprecated
 public class IncludeExcludeSet<T, P> implements Predicate<P> {
     private final Set<T> inclusions;
     private final Predicate<P> includePredicate;

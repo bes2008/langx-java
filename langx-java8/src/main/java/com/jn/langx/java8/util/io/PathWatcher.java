@@ -4,7 +4,8 @@ package com.jn.langx.java8.util.io;
 import com.jn.langx.java8.util.exception.MultiException;
 import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.collection.exclusion.IncludeExcludeSet;
+import com.jn.langx.util.collection.exclusion.IncludeExcludePredicate;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
 
         protected final PathWatcher.Config parent;
         protected final Path path;
-        protected final IncludeExcludeSet<PathMatcher, Path> includeExclude;
+        protected final IncludeExcludePredicate<PathMatcher, Path> includeExclude;
         protected int recurseDepth = 0; // 0 means no sub-directories are scanned
         protected boolean excludeHidden = false;
         protected long pauseUntil;
@@ -57,7 +58,12 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
 
         public Config(Path path, PathWatcher.Config parent) {
             this.parent = parent;
-            this.includeExclude = parent == null ? new IncludeExcludeSet<>(PathWatcher.PathMatcherSet.class) : parent.includeExclude;
+            this.includeExclude = parent == null ? new IncludeExcludePredicate<>(new Predicate2<PathMatcher, Path>() {
+                @Override
+                public boolean test(PathMatcher matcher, Path p) {
+                    return matcher.matches(p);
+                }
+            }) : parent.includeExclude;
 
             Path dir = path;
             if (!Files.exists(path))
@@ -1130,17 +1136,4 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         }
     }
 
-    public static class PathMatcherSet extends HashSet<PathMatcher> implements Predicate<Path> {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public boolean test(Path path) {
-            for (PathMatcher pm : this) {
-                if (pm.matches(path)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
 }

@@ -31,7 +31,15 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
 
 
     public IncludeExcludePredicate(Collection<E> includeSet, Collection<E> excludeSet) {
-        this(includeSet, null, excludeSet, null);
+        this(includeSet, excludeSet, null);
+    }
+
+    public IncludeExcludePredicate(Predicate2<E, T> predicate) {
+        this(null, predicate, null, predicate);
+    }
+
+    public IncludeExcludePredicate(Collection<E> includeSet, Collection<E> excludeSet, Predicate2<E, T> predicate) {
+        this(includeSet, predicate, excludeSet, predicate);
     }
 
     public IncludeExcludePredicate(Collection<E> includeSet, Predicate2<E, T> includePredicate, Collection<E> excludeSet, Predicate2<E, T> excludePredicate) {
@@ -53,6 +61,14 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
                 return Objs.deepEquals(element, value);
             }
         };
+    }
+
+    public void addInclusion(E element) {
+        inclusions.add(element);
+    }
+
+    public void addExclusion(E element) {
+        exclusions.add(element);
     }
 
     public void addInclusions(E... element) {
