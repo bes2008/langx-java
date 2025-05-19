@@ -1,21 +1,25 @@
 package com.jn.langx.util.collection.exclusion;
 
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Predicate2;
 
 import java.util.*;
 
 /**
  * A {@link Predicate} that allows for inclusion and exclusion of items.
  *
- * @param <T> the type of the items to be tested
+ * @param <E> 集体中元素的类型
+ * @param <T>
  * @since 5.5.2
  */
-public class IncludeExcludePredicate<T> implements Predicate<T> {
-    private final Set<T> inclusions = new LinkedHashSet<T>();
-    private final Predicate<T> includePredicate;
-    private final Set<T> exclusions = new LinkedHashSet<T>();
-    private final Predicate<T> excludePredicate;
+public class IncludeExcludePredicate<E, T> implements Predicate<T> {
+    private final Set<E> inclusions = new LinkedHashSet<E>();
+    private final Predicate2<E, T> includePredicate;
+    private final Set<E> exclusions = new LinkedHashSet<E>();
+    private final Predicate2<E, T> excludePredicate;
 
     /**
      * Default constructor over {@link HashSet}
@@ -26,48 +30,63 @@ public class IncludeExcludePredicate<T> implements Predicate<T> {
     }
 
 
-    public IncludeExcludePredicate(Collection<T> includeSet, Collection<T> excludeSet) {
+    public IncludeExcludePredicate(Collection<E> includeSet, Collection<E> excludeSet) {
         this(includeSet, null, excludeSet, null);
     }
 
-    public IncludeExcludePredicate(Collection<T> includeSet, Predicate<T> includePredicate, Collection<T> excludeSet, Predicate<T> excludePredicate) {
+    public IncludeExcludePredicate(Collection<E> includeSet, Predicate2<E, T> includePredicate, Collection<E> excludeSet, Predicate2<E, T> excludePredicate) {
         if (includeSet != null) {
             inclusions.addAll(includeSet);
         }
-        this.includePredicate = includePredicate != null ? includePredicate : new Predicate<T>() {
+        this.includePredicate = includePredicate != null ? includePredicate : new Predicate2<E, T>() {
             @Override
-            public boolean test(T value) {
-                return IncludeExcludePredicate.this.inclusions.contains(value);
+            public boolean test(E element, T value) {
+                return Objs.deepEquals(element, value);
             }
         };
         if (excludeSet != null) {
             exclusions.addAll(excludeSet);
         }
-        this.excludePredicate = excludePredicate != null ? excludePredicate : new Predicate<T>() {
+        this.excludePredicate = excludePredicate != null ? excludePredicate : new Predicate2<E, T>() {
             @Override
-            public boolean test(T value) {
-                return IncludeExcludePredicate.this.exclusions.contains(value);
+            public boolean test(E element, T value) {
+                return Objs.deepEquals(element, value);
             }
         };
     }
 
-    public void addInclusions(T... element) {
+    public void addInclusions(E... element) {
         inclusions.addAll(Arrays.asList(element));
     }
 
-    public void addExclusions(T... element) {
+    public void addExclusions(E... element) {
         exclusions.addAll(Arrays.asList(element));
     }
 
     @Override
-    public boolean test(T t) {
-        if (!inclusions.isEmpty() && !includePredicate.test(t)) {
-            return false;
+    public boolean test(final T t) {
+        if (!inclusions.isEmpty()) {
+            boolean found = Collects.anyMatch(inclusions, new Predicate<E>() {
+                @Override
+                public boolean test(E element) {
+                    return includePredicate.test(element, t);
+                }
+            });
+
+            if (!found) {
+                return false;
+            }
         }
         if (exclusions.isEmpty()) {
             return true;
         }
-        return !excludePredicate.test(t);
+
+        return Collects.noneMatch(exclusions, new Predicate<E>() {
+            @Override
+            public boolean test(E element) {
+                return excludePredicate.test(element, t);
+            }
+        });
     }
 
     public boolean hasInclusions() {
@@ -78,11 +97,11 @@ public class IncludeExcludePredicate<T> implements Predicate<T> {
         return !exclusions.isEmpty();
     }
 
-    public Set<T> getInclusions() {
+    public Set<E> getInclusions() {
         return inclusions;
     }
 
-    public Set<T> getExclusions() {
+    public Set<E> getExclusions() {
         return exclusions;
     }
 
