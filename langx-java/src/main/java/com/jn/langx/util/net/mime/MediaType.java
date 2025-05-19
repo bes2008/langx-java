@@ -419,6 +419,10 @@ public class MediaType extends MimeType implements Serializable {
         super(other, charset);
     }
 
+    public MediaType(MediaType other, String parameterKey, String parameterValue) {
+        super(other, parameterKey, parameterValue);
+    }
+
     /**
      * Copy-constructor that copies the type and subtype of the given {@code MediaType},
      * and allows for different parameters.
