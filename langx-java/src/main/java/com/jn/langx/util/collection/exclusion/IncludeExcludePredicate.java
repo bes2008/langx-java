@@ -12,7 +12,7 @@ import java.util.*;
  * A {@link Predicate} that allows for inclusion and exclusion of items.
  *
  * @param <E> 集体中元素的类型
- * @param <T>
+ * @param <T> 要检测的数据类型
  * @since 5.5.2
  */
 public class IncludeExcludePredicate<E, T> implements Predicate<T> {
