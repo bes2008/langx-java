@@ -76,10 +76,6 @@ public class IncludeExcludePredicate<T> implements Predicate<T> {
         return !exclusions.isEmpty();
     }
 
-    public int size() {
-        return inclusions.size() + exclusions.size();
-    }
-
     public Set<T> getInclusions() {
         return inclusions;
     }
