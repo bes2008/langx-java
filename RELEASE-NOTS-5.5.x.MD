@@ -5,6 +5,7 @@
 + 增强 Promises
 + 完善 http method 转换
 + 优化 UriBuilder
++ 支持 IncludeExcludePredicate
 
 ## 5.5.1
 
