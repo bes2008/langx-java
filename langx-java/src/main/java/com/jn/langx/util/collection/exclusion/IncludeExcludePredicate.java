@@ -28,7 +28,12 @@ public class IncludeExcludePredicate<T> implements Predicate<T> {
         this(null, null, null, null);
     }
 
-    public <SET extends Set<T>> IncludeExcludePredicate(Set<T> includeSet, Predicate<T> includePredicate, Set<T> excludeSet, Predicate<T> excludePredicate) {
+
+    public IncludeExcludePredicate(Set<T> includeSet, Set<T> excludeSet) {
+        this(includeSet, null, excludeSet, null);
+    }
+
+    public IncludeExcludePredicate(Set<T> includeSet, Predicate<T> includePredicate, Set<T> excludeSet, Predicate<T> excludePredicate) {
         if (includeSet != null) {
             inclusions.addAll(includeSet);
         }
