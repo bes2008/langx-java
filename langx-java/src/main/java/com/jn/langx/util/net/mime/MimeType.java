@@ -134,6 +134,10 @@ public class MimeType implements Comparable<MimeType>, Serializable {
         this(other.getType(), other.getSubtype(), addCharsetParameter(charset, other.getParameters()));
     }
 
+    public MimeType(MimeType other, String parameterKey, String parameterValue) {
+        this(other, addParameter(other.getParameters(), parameterKey, parameterValue));
+    }
+
     /**
      * Copy-constructor that copies the type and subtype of the given {@code MimeType},
      * and allows for different parameter.
@@ -566,11 +570,14 @@ public class MimeType implements Comparable<MimeType>, Serializable {
     }
 
     private static Map<String, String> addCharsetParameter(Charset charset, Map<String, String> parameters) {
-        Map<String, String> map = new LinkedHashMap<String, String>(parameters);
-        map.put(PARAM_CHARSET, charset.name());
-        return map;
+        return addParameter(parameters, PARAM_CHARSET, charset.name());
     }
 
+    private static Map<String, String> addParameter(Map<String, String> parameters, String key, String value) {
+        Map<String, String> map = new LinkedHashMap<String, String>(parameters);
+        map.put(key, value);
+        return map;
+    }
 
     /**
      * Comparator to sort {@link MimeType MimeTypes} in order of specificity.

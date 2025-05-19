@@ -359,43 +359,6 @@ public class MimeTypes {
 
 
     /**
-     * Lazily initialize the {@link SecureRandom} for {@link #generateMultipartBoundary()}.
-     */
-    private static Random initRandom() {
-        Random randomToUse = random;
-        if (randomToUse == null) {
-            synchronized (MimeTypes.class) {
-                randomToUse = random;
-                if (randomToUse == null) {
-                    randomToUse = new SecureRandom();
-                    random = randomToUse;
-                }
-            }
-        }
-        return randomToUse;
-    }
-
-    /**
-     * Generate a random MIME boundary as bytes, often used in multipart mime types.
-     */
-    public static byte[] generateMultipartBoundary() {
-        Random randomToUse = initRandom();
-        byte[] boundary = new byte[randomToUse.nextInt(11) + 30];
-        for (int i = 0; i < boundary.length; i++) {
-            boundary[i] = BOUNDARY_CHARS[randomToUse.nextInt(BOUNDARY_CHARS.length)];
-        }
-        return boundary;
-    }
-
-    /**
-     * Generate a random MIME boundary as String, often used in multipart mime types.
-     */
-    public static String generateMultipartBoundaryString() {
-        return new String(generateMultipartBoundary(), Charsets.US_ASCII);
-    }
-
-
-    /**
      * Simple Least Recently Used cache, bounded by the maximum size given
      * to the class constructor.
      * <p>This implementation is backed by a {@code ConcurrentHashMap} for storing
