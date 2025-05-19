@@ -27,7 +27,6 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
     /**
      * Default constructor over {@link HashSet}
      */
-    @SuppressWarnings("unchecked")
     public IncludeExcludePredicate() {
         this(null, null, null, null);
     }
@@ -114,22 +113,6 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
                 return excludePredicate.test(element, t);
             }
         });
-    }
-
-    public boolean hasInclusions() {
-        return !inclusions.isEmpty();
-    }
-
-    public boolean hasExclusions() {
-        return !exclusions.isEmpty();
-    }
-
-    public Set<E> getInclusions() {
-        return inclusions;
-    }
-
-    public Set<E> getExclusions() {
-        return exclusions;
     }
 
     @Override
