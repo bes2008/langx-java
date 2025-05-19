@@ -6,7 +6,10 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Predicate2;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A {@link Predicate} that allows for inclusion and exclusion of items.
@@ -64,19 +67,27 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
     }
 
     public void addInclusion(E element) {
-        inclusions.add(element);
+        if (element != null) {
+            inclusions.add(element);
+        }
     }
 
     public void addExclusion(E element) {
-        exclusions.add(element);
+        if (element != null) {
+            exclusions.add(element);
+        }
     }
 
-    public void addInclusions(E... element) {
-        inclusions.addAll(Arrays.asList(element));
+    public void addInclusions(E... elements) {
+        for (E e : elements) {
+            addInclusion(e);
+        }
     }
 
-    public void addExclusions(E... element) {
-        exclusions.addAll(Arrays.asList(element));
+    public void addExclusions(E... elements) {
+        for (E e : elements) {
+            addExclusion(e);
+        }
     }
 
     @Override
@@ -121,11 +132,6 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
         return exclusions;
     }
 
-    public void clear() {
-        inclusions.clear();
-        exclusions.clear();
-    }
-
     @Override
     public String toString() {
         return String.format("%s@%x{i=%s,ip=%s,e=%s,ep=%s}", this.getClass().getSimpleName(), hashCode(),
@@ -135,7 +141,4 @@ public class IncludeExcludePredicate<E, T> implements Predicate<T> {
                 excludePredicate == null ? "SELF" : excludePredicate);
     }
 
-    public boolean isEmpty() {
-        return inclusions.isEmpty() && exclusions.isEmpty();
-    }
 }
