@@ -18,7 +18,7 @@ public class Globals {
             synchronized (lock) {
                 if (wheelTimer == null) {
                     Executor executor = new ThreadPoolExecutor(0, 100, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), new CommonThreadFactory("Global-WheelTimer-TimeoutTask", true));
-                    wheelTimer = WheelTimers.newHashedWheelTimer(new CommonThreadFactory("Global-WheelTimer-Worker", true), 10, TimeUnit.MILLISECONDS, 100, false, executor);
+                    wheelTimer = WheelTimers.newHashedWheelTimer(new CommonThreadFactory("Global-WheelTimer-Worker", true), 100, TimeUnit.MILLISECONDS, 600, false, executor);
                 }
             }
         }
