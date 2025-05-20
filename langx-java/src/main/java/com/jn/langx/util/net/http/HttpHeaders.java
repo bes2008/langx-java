@@ -4,7 +4,6 @@ package com.jn.langx.util.net.http;
 import com.jn.langx.annotation.NotThreadSafe;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
-import com.jn.langx.text.StringJoiner;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -713,11 +712,14 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * as specified by the {@code Accept-Charset} header.
      */
     public void setAcceptCharset(List<Charset> acceptableCharsets) {
-        StringJoiner joiner = new StringJoiner(", ");
-        for (Charset charset : acceptableCharsets) {
-            joiner.add(charset.name().toLowerCase(Locale.ENGLISH));
-        }
-        set(ACCEPT_CHARSET, joiner.toString());
+        List<String> values = Pipeline.of(acceptableCharsets)
+                .map(new Function<Charset, String>() {
+                    @Override
+                    public String apply(Charset charset) {
+                        return charset.name().toLowerCase(Locale.ENGLISH);
+                    }
+                }).asList();
+        set(ACCEPT_CHARSET, Strings.join(", ", values));
     }
 
     /**
@@ -1231,13 +1233,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * @return a combined result with comma delimitation
      */
     protected String toCommaDelimitedString(List<String> headerValues) {
-        StringJoiner joiner = new StringJoiner(", ");
-        for (String val : headerValues) {
-            if (val != null) {
-                joiner.add(val);
-            }
-        }
-        return joiner.toString();
+        return Strings.join(", ", headerValues);
     }
 
     /**
