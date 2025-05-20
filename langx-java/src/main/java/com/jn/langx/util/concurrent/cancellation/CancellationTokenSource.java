@@ -19,7 +19,6 @@ public class CancellationTokenSource {
     private volatile boolean disposed = false;
 
     public CancellationTokenSource() {
-        this.token = new CancellationToken(false);
     }
 
     public CancellationTokenSource(int delayMills) {
@@ -32,10 +31,8 @@ public class CancellationTokenSource {
     }
 
     public CancellationToken getToken() {
-        if (disposed) {
-
-        }
-        return token;
+        throwIfDisposed();
+        return new CancellationToken(this);
     }
 
     public void cancel() {
@@ -69,6 +66,7 @@ public class CancellationTokenSource {
     }
 
     public void dispose() {
+        disposed = true;
     }
 
     private void throwIfDisposed() {
