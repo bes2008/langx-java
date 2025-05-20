@@ -7,14 +7,14 @@ import com.jn.langx.Action;
  * 在任务中，可以使用 isCancellationRequested() 方法判断是否取消了任务，也可以使用 throwIfCancellationRequested() 方法.
  */
 public class CancellationToken {
-    private volatile boolean isRequested;
+    private CancellationTokenSource source;
 
-    public CancellationToken(boolean canceled) {
-        this.isRequested = canceled;
+    CancellationToken(CancellationTokenSource source) {
+        this.source = source;
     }
 
     public boolean isCancellationRequested() {
-        return isRequested;
+        return source.isCancellationRequested();
     }
 
     public void register(Action callback) {
@@ -22,7 +22,7 @@ public class CancellationToken {
     }
 
     public void throwIfCancellationRequested() {
-        if (isRequested) {
+        if (isCancellationRequested()) {
             throw new OperationCanceledException();
         }
     }

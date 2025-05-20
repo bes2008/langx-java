@@ -1,23 +1,22 @@
 package com.jn.langx.util.concurrent.cancellation;
 
-import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Globals;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.timing.timer.Timeout;
 
-import java.io.Closeable;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 这是一种协作取消模型。采用类似于事件监听机制的方式实现。
  */
-public class CancellationTokenSource implements Closeable {
-    private CancellationToken token;
-    private static final int STATE_INIT = 0;
-    private int state = STATE_INIT;
+public class CancellationTokenSource {
 
-    @Nullable
-    private Timeout timeout;
+    private static final int NotCanceledState = 0; // default value of _state
+    private static final int NotifyingState = 1;
+    private static final int NotifyingCompleteState = 2;
+
+    private volatile int state = NotCanceledState;
+
+    private volatile boolean disposed = false;
 
     public CancellationTokenSource() {
         this.token = new CancellationToken(false);
@@ -28,16 +27,31 @@ public class CancellationTokenSource implements Closeable {
         cancelAfter(delayMills);
     }
 
-    public boolean isCanceled() {
-        return token.isCancellationRequested();
+    public boolean isCancellationRequested() {
+        return state != NotCanceledState;
     }
 
     public CancellationToken getToken() {
+        if (disposed) {
+
+        }
         return token;
     }
 
     public void cancel() {
+        cancel(false);
+    }
 
+    private void cancel(boolean throwIfFirstException) {
+        throwIfDisposed();
+        notifyCancellation(throwIfFirstException);
+    }
+
+    private void notifyCancellation(boolean throwIfFirstException) {
+        if (state == NotCanceledState) {
+            state = NotifyingState;
+            // 调用回调函数
+        }
     }
 
     public void cancelAfter(int delayMills) {
@@ -45,7 +59,7 @@ public class CancellationTokenSource implements Closeable {
         if (delayMills == 0) {
             cancel();
         } else {
-            this.timeout = Globals.getWheelTimer().newTimeout(new Runnable() {
+            Globals.getWheelTimer().newTimeout(new Runnable() {
                 @Override
                 public void run() {
                     cancel();
@@ -54,15 +68,14 @@ public class CancellationTokenSource implements Closeable {
         }
     }
 
-    @Override
-    public void close() {
-        if (this.timeout != null) {
-            if (!this.timeout.isExpired()) {
-                this.timeout.cancel();
-            }
-        }
+    public void dispose() {
     }
 
+    private void throwIfDisposed() {
+        if (disposed) {
+            throw new IllegalStateException("token source is disposed");
+        }
+    }
 
     /**
      * 创建一个链接的CancellationTokenSource，只要有一个依赖的CancellationToken被取消，那么新创建的CancellationTokenSource就会取消
