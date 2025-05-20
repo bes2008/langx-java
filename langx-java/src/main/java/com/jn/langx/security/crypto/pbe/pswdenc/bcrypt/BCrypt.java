@@ -1,6 +1,8 @@
 package com.jn.langx.security.crypto.pbe.pswdenc.bcrypt;
 
 
+import com.jn.langx.util.io.bytes.Bytes;
+
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 
@@ -784,13 +786,6 @@ public class BCrypt {
         } catch (UnsupportedEncodingException uee) {
             return false;
         }
-        if (hashed_bytes.length != try_bytes.length) {
-            return false;
-        }
-        byte ret = 0;
-        for (int i = 0; i < try_bytes.length; i++) {
-            ret |= hashed_bytes[i] ^ try_bytes[i];
-        }
-        return ret == 0;
+        return Bytes.arrayEquals(hashed_bytes, try_bytes);
     }
 }
