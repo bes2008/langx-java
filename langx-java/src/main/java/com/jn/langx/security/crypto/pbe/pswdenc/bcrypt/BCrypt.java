@@ -775,17 +775,22 @@ public class BCrypt {
         byte hashed_bytes[];
         byte try_bytes[];
         try {
-            String try_pw = hashpw(plaintext, hashed);
             hashed_bytes = hashed.getBytes("UTF-8");
+            if (hashed_bytes.length > 72) {
+                return false;
+            }
+            String try_pw = hashpw(plaintext, hashed);
             try_bytes = try_pw.getBytes("UTF-8");
         } catch (UnsupportedEncodingException uee) {
             return false;
         }
-        if (hashed_bytes.length != try_bytes.length)
+        if (hashed_bytes.length != try_bytes.length) {
             return false;
+        }
         byte ret = 0;
-        for (int i = 0; i < try_bytes.length; i++)
+        for (int i = 0; i < try_bytes.length; i++) {
             ret |= hashed_bytes[i] ^ try_bytes[i];
+        }
         return ret == 0;
     }
 }
