@@ -1,5 +1,6 @@
 package com.jn.langx.util.concurrent;
 
+@Deprecated
 public class WrappedThread extends Thread {
 
     public WrappedThread() {
