@@ -18,7 +18,9 @@ public class CancellationToken {
     }
 
     public void register(Action callback) {
-
+        if (!isCancellationRequested()) {
+            this.source.register(callback);
+        }
     }
 
     public void throwIfCancellationRequested() {
