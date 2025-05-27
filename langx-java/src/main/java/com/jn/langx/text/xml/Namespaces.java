@@ -32,6 +32,10 @@ public class Namespaces {
         return XMLNS_ATTRIBUTE.equals(attribute.getLocalName()) || (XMLNS_ATTRIBUTE + ":" + attribute.getLocalName()).equals(attribute.getName());
     }
 
+    public static String getDocumentRootNamespace(Document document) {
+        return document.getDocumentElement().getPrefix();
+    }
+
     public static Map<String, Namespace> getDocumentNamespaces(Node node) {
         Element root = node.getOwnerDocument().getDocumentElement();
         return findNamespaces(root);
