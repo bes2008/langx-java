@@ -311,6 +311,7 @@ public class MediaType extends MimeType implements Serializable {
      * Public constant media type for {@code text/xml}.
      */
     public static final MediaType TEXT_XML;
+    public static final MediaType TEXT_XML_UTF8;
 
     /**
      * A String equivalent of {@link MediaType#TEXT_XML}.
@@ -349,6 +350,7 @@ public class MediaType extends MimeType implements Serializable {
         TEXT_MARKDOWN = new MediaType("text", "markdown");
         TEXT_PLAIN = new MediaType("text", "plain");
         TEXT_XML = new MediaType("text", "xml");
+        TEXT_XML_UTF8 = new MediaType("text", "xml", Charsets.UTF_8);
     }
 
 
