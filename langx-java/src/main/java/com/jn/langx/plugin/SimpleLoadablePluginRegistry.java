@@ -29,6 +29,7 @@ public class SimpleLoadablePluginRegistry extends SimplePluginRegistry {
             }).forEach(new Consumer<P>() {
                 @Override
                 public void accept(P p) {
+                    p.init();
                     register(p);
                 }
             });
