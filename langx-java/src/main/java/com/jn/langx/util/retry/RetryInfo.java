@@ -7,9 +7,14 @@ public class RetryInfo<R> {
 
     private int attempts;
     private final int maxAttempts;
-
+    /**
+     * 任务开始时间，也就是第一次尝试的开始时间
+     */
     private final long startTime;  // mills
 
+    /**
+     * 任务超时时间，如果 当前 时间 > startTime + timeout，则认为超时了，就不能再重试了。
+     */
     private final long timeout; // mills
 
     // 当次try的backoff，-1代表还没有设置

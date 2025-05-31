@@ -129,8 +129,10 @@ public class Retryer<R> {
      * @return 返回是否需要retry
      */
     private boolean await(RetryInfo<R> retryInfo) {
+        // 计算要等待多久
         long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, retryInfo.getAttempts());
         retryInfo.setBackoff(backoffMillis);
+        // 没有可等待的时间了，不需要等待了
         if (backoffMillis <= 0) {
             return false;
         }
@@ -161,7 +163,7 @@ public class Retryer<R> {
             return false;
         }
         if (startTime <= 0) {
-            throw new RuntimeException("Illegal args, startTime: " + startTime);
+            throw new RuntimeException("Illegal state, startTime: " + startTime);
         }
         return System.currentTimeMillis() > (startTime + timeout);
     }
