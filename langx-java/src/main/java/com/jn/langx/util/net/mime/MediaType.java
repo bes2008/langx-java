@@ -35,7 +35,7 @@ public class MediaType extends MimeType implements Serializable {
      * A String equivalent of {@link MediaType#APPLICATION_ATOM_XML}.
      */
     public static final String APPLICATION_ATOM_XML_VALUE = "application/atom+xml";
-    public static final MediaType APPLICATION_SOAP12_XML;
+    public static final MediaType APPLICATION_SOAP12_XML_UTF8;
 
     /**
      * Public constant media type for {@code application/cbor}.
@@ -311,6 +311,7 @@ public class MediaType extends MimeType implements Serializable {
      * Public constant media type for {@code text/xml}.
      */
     public static final MediaType TEXT_XML;
+    public static final MediaType TEXT_XML_UTF8;
 
     /**
      * A String equivalent of {@link MediaType#TEXT_XML}.
@@ -337,7 +338,7 @@ public class MediaType extends MimeType implements Serializable {
         APPLICATION_STREAM_JSON = new MediaType("application", "stream+json");
         APPLICATION_XHTML_XML = new MediaType("application", "xhtml+xml");
         APPLICATION_XML = new MediaType("application", "xml");
-        APPLICATION_SOAP12_XML = new MediaType("application", "soap+xml");
+        APPLICATION_SOAP12_XML_UTF8 = new MediaType("application", "soap+xml", Charsets.UTF_8);
         IMAGE_GIF = new MediaType("image", "gif");
         IMAGE_JPEG = new MediaType("image", "jpeg");
         IMAGE_PNG = new MediaType("image", "png");
@@ -349,6 +350,7 @@ public class MediaType extends MimeType implements Serializable {
         TEXT_MARKDOWN = new MediaType("text", "markdown");
         TEXT_PLAIN = new MediaType("text", "plain");
         TEXT_XML = new MediaType("text", "xml");
+        TEXT_XML_UTF8 = new MediaType("text", "xml", Charsets.UTF_8);
     }
 
 
