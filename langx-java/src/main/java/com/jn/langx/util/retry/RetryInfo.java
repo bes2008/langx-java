@@ -13,7 +13,7 @@ public class RetryInfo<R> {
     private final long timeout; // mills
 
     // 当次try的backoff，-1代表还没有设置
-    private long backoff=-1; // mills
+    private long backoff = -1; // mills
 
     private Throwable error;
     private R result;
@@ -22,10 +22,11 @@ public class RetryInfo<R> {
         this.attempts = attempts;
         this.maxAttempts = maxAttempts;
         this.startTime = startTime;
-        this.timeout= timeout;
+        this.timeout = timeout;
     }
+
     public RetryInfo(int attempt, int maxAttempts, long backoff) {
-        this(attempt,maxAttempts,System.currentTimeMillis(),0L);
+        this(attempt, maxAttempts, System.currentTimeMillis(), 0L);
         this.setBackoff(backoff);
     }
 
@@ -74,11 +75,11 @@ public class RetryInfo<R> {
         return attempts == 1;
     }
 
-    public RetryInfo<R> nextAttempts(){
+    public RetryInfo<R> nextAttempts() {
         this.attempts++;
-        this.backoff=-1;
-        this.error=null;
-        this.result=null;
+        this.backoff = -1;
+        this.error = null;
+        this.result = null;
         return this;
     }
 
@@ -96,7 +97,7 @@ public class RetryInfo<R> {
 
     void setError(Throwable error) {
         this.error = error;
-        this.result=null;
+        this.result = null;
     }
 
     public R getResult() {
@@ -105,10 +106,10 @@ public class RetryInfo<R> {
 
     void setResult(R result) {
         this.result = result;
-        this.error=null;
+        this.error = null;
     }
 
-    public boolean hasError(){
-        return this.error!=null;
+    public boolean hasError() {
+        return this.error != null;
     }
 }

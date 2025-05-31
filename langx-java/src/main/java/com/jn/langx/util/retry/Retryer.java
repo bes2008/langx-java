@@ -1,7 +1,6 @@
 package com.jn.langx.util.retry;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.function.*;
 
 import java.util.concurrent.Callable;
@@ -77,63 +76,75 @@ public class Retryer<R> {
             retryInfo.setError(e);
         }
 
-        if (!judgeRetryAndWait(retryInfo)) {
-            // 因为有错或者因为没有backoff时，都要执行 fallback
-            if(retryInfo.hasError() || retryInfo.getBackoff()<0){
-                if(fallback!=null){
-                    try {
-                        return fallback.call();
-                    }catch (Exception e){
-                        throw new RuntimeException(e);
-                    }
+        boolean retryLimitExhausted = retryLimitExhausted(retryInfo);
+        if (!retryLimitExhausted) { // 还有重试的机会
+            boolean needRetry = judgeRetryWhenLimitNotExhausted(retryInfo);
+            if (!needRetry) {
+                return whenNotRetry(retryInfo, fallback);
+            } else {
+                // 进行等待
+                needRetry = await(retryInfo);
+                if (!needRetry) {
+                    return whenNotRetry(retryInfo, fallback);
                 }
-                if(retryInfo.hasError()) {
-                    throw new RuntimeException(retryInfo.getError());
-                }else{
-                    throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", retryInfo.getBackoff()));
-                }
-            }else {
-                return retryInfo.getResult();
             }
+        } else {
+            // 不能再尝试了
+            return whenNotRetry(retryInfo, fallback);
         }
-        else{
-           return executeWithRetry(retryInfo.nextAttempts(),task, fallback);
+
+        return executeWithRetry(retryInfo.nextAttempts(), task, fallback);
+    }
+
+    private R whenNotRetry(RetryInfo<R> retryInfo, Callable<R> fallback) {
+        if (retryInfo.hasError()) {
+            // 做降级处理
+            if (fallback != null) {
+                try {
+                    return fallback.call();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            throw new RuntimeException(retryInfo.getError());
+        } else {
+            // 不管对这个执行结果是否满意，都返回它
+            return retryInfo.getResult();
         }
+    }
+
+    private boolean retryLimitExhausted(RetryInfo<R> retryInfo) {
+        return isExhausted(retryInfo.getAttempts(), this.config.getMaxAttempts())
+                || isExhaustedTimeout(retryInfo.getStartTime(), retryInfo.getTimeout());
+    }
+
+    private boolean judgeRetryWhenLimitNotExhausted(RetryInfo<R> retryInfo) {
+        boolean needRetry = retryInfo.hasError()
+                ? this.errorRetryPredicate.test(retryInfo.getError())
+                : this.resultRetryPredicate.test(retryInfo.getResult());
+        return needRetry;
     }
 
     /**
      * @return 返回是否需要retry
      */
-    private boolean judgeRetryAndWait(RetryInfo<R> retryInfo) {
-        boolean needRetry=!isExhausted(retryInfo.getAttempts(), this.config.getMaxAttempts())
-                && !isExhaustedTimeout(retryInfo.getStartTime(), retryInfo.getTimeout())
-                && retryInfo.hasError() ? this.errorRetryPredicate.test(retryInfo.getError()) : this.resultRetryPredicate.test(retryInfo.getResult());
-
-        if (needRetry) {
-            long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, retryInfo.getAttempts());
-            retryInfo.setBackoff(backoffMillis);
-            if (backoffMillis < 0) {
-                return false;
-            }
+    private boolean await(RetryInfo<R> retryInfo) {
+        long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, retryInfo.getAttempts());
+        retryInfo.setBackoff(backoffMillis);
+        if (backoffMillis <= 0) {
+            return false;
         }
 
         attemptsListener.accept(retryInfo);
-
-        if(needRetry){
-            try {
-                if (retryInfo.getBackoff() > 0) {
-                    waitStrategy.await(retryInfo.getBackoff());
-                } else {
-                    return false;
-                }
-            } catch (InterruptedException interruptedException) {
-                Thread.currentThread().interrupt();
-                if(retryInfo.hasError()){
-                    throw new RuntimeException(retryInfo.getError());
-                }
+        try {
+            waitStrategy.await(retryInfo.getBackoff());
+        } catch (InterruptedException interruptedException) {
+            Thread.currentThread().interrupt();
+            if (retryInfo.hasError()) {
+                throw new RuntimeException(retryInfo.getError());
             }
         }
-        return needRetry;
+        return true;
     }
 
     private static boolean isExhausted(int attempts, int maxAttempts) {
