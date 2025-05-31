@@ -114,7 +114,7 @@ public class Retryer<R> {
     }
 
     private boolean retryLimitExhausted(RetryInfo<R> retryInfo) {
-        return isExhausted(retryInfo.getAttempts(), this.config.getMaxAttempts())
+        return isExhaustedAttempts(retryInfo.getAttempts(), this.config.getMaxAttempts())
                 || isExhaustedTimeout(retryInfo.getStartTime(), retryInfo.getTimeout());
     }
 
@@ -147,7 +147,7 @@ public class Retryer<R> {
         return true;
     }
 
-    private static boolean isExhausted(int attempts, int maxAttempts) {
+    private static boolean isExhaustedAttempts(int attempts, int maxAttempts) {
         if (maxAttempts <= 0) {
             // 无次数限制
             return false;
