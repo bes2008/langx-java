@@ -6,6 +6,18 @@
 + 完善 http method 转换
 + 优化 UriBuilder
 + 支持 IncludeExcludePredicate
++ 提供更多 MediaType
++ 增强 Strings，支持 quote相关方法
++ 添加 HttpHeaderValueBuilders
++ 完善 Retryer
++ 完善 SimpleLoadablePluginRegistry
++ 完善 XML工具：Namespaces 支持获取root节点的命令空间前缀
++ 添加 Cancellation API
++ 完善 BCrypt
++ 过时 WrappedThread
++ 增强 提供全局的 WheelTimer
++ 添加 Globals
++ 完善 PoolRandom
 
 ## 5.5.1
 
