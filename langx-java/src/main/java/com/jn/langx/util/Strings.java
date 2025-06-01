@@ -4030,4 +4030,31 @@ public class Strings {
         return Filenames.cleanAsUnixPath(path);
     }
 
+
+    public static String unquoted(String str) {
+        if (str == null) {
+            return null;
+        }
+        if (Strings.isEmpty(str)) {
+            return "";
+        }
+        return Strings.strip(str, "\"");
+    }
+
+    public static String quoted(String str) {
+        if (Strings.isBlank(str)) {
+            return "";
+        }
+        return "\"" + unquoted(str) + "\"";
+    }
+
+    public static boolean isQuoted(String str) {
+        if (str == null) {
+            return false;
+        }
+        if (Strings.isEmpty(str)) {
+            return false;
+        }
+        return str.length() > 1 && str.startsWith("\"") && str.endsWith("\"");
+    }
 }
