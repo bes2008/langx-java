@@ -109,7 +109,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         if (!running) {
             return;
         }
-        evictExpired();
+        // evictExpired(); 由异步线程执行
         long now = System.currentTimeMillis();
         if (value == null) {
             remove(key, RemoveCause.EXPLICIT);
@@ -181,7 +181,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         if (!running) {
             return null;
         }
-        evictExpired();
+        // evictExpired(); 由异步线程执行
         Entry<K, V> entry = map.get(key);
         if (entry != null) {
             if (!entry.isExpired()) {
@@ -354,7 +354,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
 
     @Override
     public V remove(@NonNull K key) {
-        evictExpired();
+        // evictExpired();
         return remove(key, RemoveCause.EXPLICIT);
     }
 
@@ -437,7 +437,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
 
     @Override
     public int size() {
-        evictExpired();
+        // evictExpired(); 由异步线程执行
         return map.size();
     }
 
