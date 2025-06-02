@@ -18,6 +18,7 @@
 + 增强 提供全局的 WheelTimer
 + 添加 Globals
 + 完善 PoolRandom
++ 优化 Cache
 
 ## 5.5.1
 
