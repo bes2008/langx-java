@@ -1,5 +1,6 @@
 package com.jn.langx.util.pagination;
 
+@Deprecated
 public class PagingRequest<E> {
     PagingResult<E> result;
     private Boolean count = null;

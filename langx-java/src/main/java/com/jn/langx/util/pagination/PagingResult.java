@@ -1,7 +1,7 @@
 package com.jn.langx.util.pagination;
 
 import java.util.List;
-
+@Deprecated
 public class PagingResult<E>{
     private int pageNo;
     private int pageSize;
