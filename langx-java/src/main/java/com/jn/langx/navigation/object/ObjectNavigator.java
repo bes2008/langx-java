@@ -78,7 +78,7 @@ public class ObjectNavigator implements Navigator<Object> {
         }
 
         String[] segments = Navigators.getPathSegments(pathExpression, this.prefix, this.suffix);
-        if (Collects.contains(segments, "declaredClass")) {
+        if (Collects.contains(segments, "declaredClass") || Collects.contains(segments, "class")) {
             throw new IllegalArgumentException("illegal path expression, 'declaredClass' is not allowed");
         }
         return navigate(context, Collects.asList(segments));
